@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#8b5cf6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Maryse">
+    <title>Maryse · Aprende, crece, conecta</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #8b5cf6; --primary-light: #c084fc; --bg: #f5f3ff; --card: white; --text: #1e1b4b; --subtext: #8b79c9; --border: #eeeef7; --accent: #10b981; }
+        body { background: var(--bg); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 80px; color: var(--text); transition: background 0.3s, color 0.3s; }
+        body.dark { --bg: #1a1a2e; --card: #252542; --text: #e2e2f0; --subtext: #b0b0cc; --border: #353560; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+        .logo h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo p { font-size: 0.75rem; color: var(--subtext); margin-top: 4px; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; overflow: hidden; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .hero { background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 32px; padding: 32px 28px; margin-bottom: 32px; color: white; }
+        .hero h2 { font-size: 1.5rem; font-weight: 600; }
+        .hero-quote { font-size: 1rem; font-style: italic; margin-top: 16px; opacity: 0.95; }
+        .section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 18px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .mood-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)); gap: 12px; margin-bottom: 28px; }
+        .mood-card { background: var(--card); border-radius: 24px; padding: 14px 6px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
+        .mood-card:hover { transform: translateY(-3px); }
+        .mood-card.selected { background: linear-gradient(135deg, var(--primary), var(--primary-light)); }
+        .mood-card.selected .mood-label { color: white; }
+        .mood-emoji { font-size: 1.8rem; margin-bottom: 4px; }
+        .mood-label { font-size: 0.7rem; font-weight: 500; color: var(--subtext); }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 28px; }
+        .card { background: var(--card); border-radius: 28px; padding: 22px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; margin-bottom: 18px; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
+        .card-icon { font-size: 2rem; margin-bottom: 14px; }
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+        .card-subtitle { font-size: 0.75rem; color: var(--subtext); }
+        .birthday-card { background: linear-gradient(135deg, #fff9e8, #fff3d4); border-radius: 28px; padding: 22px; margin-bottom: 28px; border: 1px solid #ffe6b3; }
+        .countdown { display: flex; justify-content: center; gap: 14px; margin: 16px 0; flex-wrap: wrap; }
+        .countdown-item { text-align: center; background: white; border-radius: 20px; padding: 10px 14px; min-width: 65px; }
+        .countdown-number { font-size: 1.4rem; font-weight: 700; color: #d97706; }
+        .countdown-label { font-size: 0.6rem; color: #92400e; }
+        .quick-access { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 12px; margin-top: 16px; }
+        .quick-btn { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .quick-btn:hover { background: #f8f6ff; transform: translateY(-3px); }
+        .quick-icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .quick-label { font-size: 0.7rem; font-weight: 600; color: #5e3ab6; }
+        .view { display: none; }
+        .view.active { display: block; }
+        .back-btn { background: #f0ecff; border: none; padding: 10px 20px; border-radius: 60px; color: #5e3ab6; font-weight: 600; cursor: pointer; font-size: 0.8rem; margin-bottom: 20px; display: inline-block; }
+        .footer { text-align: center; font-size: 0.7rem; color: #aaa5c9; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .badge { display: inline-block; background: #e3d6ff; padding: 4px 12px; border-radius: 60px; font-size: 0.7rem; font-weight: 600; color: #5e3ab6; margin-bottom: 12px; }
+        .btn { padding: 10px 20px; border-radius: 60px; font-weight: 600; cursor: pointer; border: none; font-size: 0.8rem; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: #d1fae5; color: #059669; }
+        .btn-danger { background: #fee2e2; color: #dc2626; }
+        .btn-pink { background: #fce7f3; color: #be185d; }
+        .btn-warning { background: #fef3c7; color: #d97706; }
+        .btn-small { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 60px; font-size: 0.7rem; cursor: pointer; margin-top: 8px; }
+        input, textarea, select { width: 100%; padding: 12px; border-radius: 16px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; margin: 8px 0; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: var(--card); border-radius: 32px; max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 28px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #aaa; }
+        .lang-selector { display: flex; gap: 12px; margin-bottom: 20px; }
+        .lang-btn { flex: 1; padding: 12px; border-radius: 60px; text-align: center; font-weight: 600; background: var(--card); border: 1px solid var(--border); cursor: pointer; }
+        .lang-btn.active { background: var(--primary); color: white; }
+        .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 24px; }
+        .lesson-card { background: var(--card); border-radius: 24px; padding: 18px; cursor: pointer; border: 1px solid var(--border); }
+        .lesson-card:hover { transform: translateY(-3px); }
+        .lesson-level { font-size: 0.65rem; font-weight: 600; padding: 3px 10px; border-radius: 60px; display: inline-block; margin-bottom: 12px; background: #fff3e3; color: #f59e0b; }
+        .vocab-section, .flashcard-section, .pronunciation-section, .podcast-section, .conjugation-section { background: var(--card); border-radius: 28px; padding: 20px; margin: 24px 0; border: 1px solid var(--border); }
+        .sound-card { background: #f8f6ff; border-radius: 20px; padding: 16px; margin-bottom: 16px; }
+        .podcast-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f8f6ff; border-radius: 20px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; }
+        .podcast-item:hover { background: #ede7ff; transform: translateX(5px); }
+        .vocab-pack { display: inline-block; background: #e3d6ff; padding: 8px 16px; border-radius: 60px; margin: 4px; cursor: pointer; font-size: 0.8rem; }
+        .vocab-words { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+        .word-card { background: #f8f6ff; padding: 8px 16px; border-radius: 60px; font-size: 0.8rem; border: 1px solid #e0d6ff; }
+        .flashcard { background: linear-gradient(135deg, #f8f6ff, #ffffff); border-radius: 24px; padding: 30px 20px; cursor: pointer; transition: transform 0.3s; min-height: 130px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; border: 2px solid #e9e5ff; position: relative; text-align: center; }
+        .flashcard:hover { transform: scale(1.02); }
+        .flashcard .audio-btn { position: absolute; top: 10px; right: 10px; background: #f0ecff; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; }
+        .flashcard-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: center; flex-wrap: wrap; }
+        .flashcard-btn { padding: 10px 20px; border-radius: 60px; font-weight: 600; cursor: pointer; border: none; font-size: 0.8rem; }
+        .flashcard-btn.success { background: #d1fae5; color: #059669; }
+        .flashcard-btn.danger { background: #fee2e2; color: #dc2626; }
+        .flashcard-btn.info { background: #e0e7ff; color: #4f46e5; }
+        .flashcard-mode-selector { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .flashcard-mode-btn { padding: 10px 20px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid #e9e5ff; background: var(--card); }
+        .flashcard-mode-btn.active { background: var(--primary); color: white; }
+        .conjugation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+        .conjugation-card { background: #f8f6ff; border-radius: 20px; padding: 16px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
+        .conjugation-card:hover { transform: translateY(-3px); background: #ede7ff; }
+        .conjugation-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        .conjugation-lang { font-size: 0.7rem; color: var(--subtext); margin-bottom: 8px; }
+        .conjugation-preview { font-size: 0.8rem; color: var(--text); }
+        .discover-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .filter-chip { padding: 8px 20px; border-radius: 60px; font-size: 0.8rem; background: var(--card); border: 1px solid var(--border); cursor: pointer; }
+        .filter-chip.active { background: var(--primary); color: white; }
+        .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-bottom: 32px; }
+        .article-card { background: var(--card); border-radius: 28px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
+        .article-card:hover { transform: translateY(-5px); }
+        .article-icon { font-size: 2rem; padding: 20px 20px 0 20px; }
+        .article-content { padding: 16px 20px 20px; }
+        .article-category { font-size: 0.7rem; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; }
+        .article-excerpt { font-size: 0.8rem; color: var(--subtext); line-height: 1.4; }
+        .mom-section { background: var(--card); border-radius: 28px; padding: 20px; margin: 24px 0; border: 1px solid var(--border); }
+        .mom-card { background: #f8f6ff; border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; }
+        .mom-card:hover { background: #ede7ff; transform: translateX(5px); }
+        .dad-week-grid { display: flex; flex-direction: column; gap: 16px; }
+        .dad-day-card { background: var(--card); border-radius: 24px; padding: 20px; border-left: 8px solid var(--primary); margin-bottom: 16px; }
+        .dad-day-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        .dad-section { margin-top: 12px; padding: 12px; background: #f8f6ff; border-radius: 20px; }
+        .dad-section strong { color: var(--primary); }
+        .clock-card { text-align: center; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; margin-bottom: 20px; cursor: default; }
+        .clock-card:hover { transform: none; }
+        .clock-time { font-size: 2rem; font-weight: bold; letter-spacing: 2px; font-family: monospace; }
+        .clock-date { font-size: 0.7rem; margin-top: 5px; opacity: 0.9; }
+        .dark-toggle { background: #353560; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        .mama-card { background: linear-gradient(135deg, #fdf2f8, #fce7f3); border-left: 8px solid #ec4899; }
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0; }
+        .memory-card { aspect-ratio: 1; background: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; color: white; font-weight: 700; text-align: center; padding: 4px; word-break: break-word; }
+        .memory-card.flipped { background: var(--card); color: var(--text); border: 2px solid var(--primary); }
+        .memory-card.matched { background: #d1fae5; color: #059669; pointer-events: none; }
+        .diary-entry { background: var(--card); border-radius: 20px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .diary-entry img { width: 100%; border-radius: 12px; margin-top: 8px; max-height: 200px; object-fit: cover; }
+        .photo-editor-tools { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; justify-content: center; }
+        .photo-canvas-container { position: relative; overflow: hidden; border-radius: 12px; background: #000; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+        .photo-canvas-container canvas { max-width: 100%; max-height: 300px; }
+        .karaoke-song-list { max-height: 450px; overflow-y: auto; margin-top: 8px; }
+        .karaoke-song-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--card); border-radius: 14px; margin-bottom: 6px; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; }
+        .karaoke-song-item:hover { background: #f0ecff; transform: translateX(3px); }
+        .friend-card { display: flex; align-items: center; gap: 12px; background: var(--card); border-radius: 20px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .game-selector { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .game-btn { padding: 10px 20px; border-radius: 60px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--card); font-size: 0.8rem; transition: 0.2s; }
+        .game-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .quiz-option { padding: 14px 18px; background: var(--card); border: 2px solid var(--border); border-radius: 16px; margin: 8px 0; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .quiz-option:hover { border-color: var(--primary); background: #f8f6ff; }
+        .quiz-option.correct { background: #d1fae5; border-color: #059669; color: #059669; }
+        .quiz-option.wrong { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
+        .quiz-timer { height: 6px; background: #e9e5ff; border-radius: 10px; margin: 12px 0; overflow: hidden; }
+        .quiz-timer-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.1s linear; }
+        .scramble-letters { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+        .scramble-letter { width: 48px; height: 48px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .scramble-letter:hover { transform: scale(1.1); }
+        .scramble-letter.used { opacity: 0.3; pointer-events: none; }
+        .scramble-answer { display: flex; gap: 6px; justify-content: center; min-height: 50px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+        .scramble-answer-letter { width: 40px; height: 40px; border-bottom: 3px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; }
+        .install-btn { display: none; position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 20px; border-radius: 60px; cursor: pointer; z-index: 100; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .backup-section { background: var(--card); border-radius: 28px; padding: 20px; margin-top: 16px; border: 1px solid var(--border); }
+        .notification-section { background: var(--card); border-radius: 28px; padding: 20px; margin-top: 16px; border: 1px solid var(--border); }
+        .weekly-content-badge { display: inline-block; background: #fef3c7; color: #d97706; padding: 3px 10px; border-radius: 60px; font-size: 0.6rem; margin-left: 8px; }
+        .week-theme-hero { border-radius: 20px; padding: 16px; margin-bottom: 18px; text-align: center; border: 1px solid #fcd34d; }
+        .week-theme-hero h3 { margin-bottom: 4px; }
+        .week-theme-hero p { font-size: 0.8rem; }
+        .week-selector-container { text-align: center; margin-bottom: 12px; }
+        .week-selector-container select { width: auto; display: inline-block; font-size: 0.7rem; padding: 6px 12px; border-radius: 60px; border: 1px solid var(--border); background: var(--card); color: var(--text); }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 28px; transition: 0.3s; }
+        .toggle-slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+        input:checked + .toggle-slider { background: var(--primary); }
+        input:checked + .toggle-slider:before { transform: translateX(22px); }
+        .day-selector { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+        .day-chip { padding: 6px 12px; border-radius: 60px; font-size: 0.7rem; cursor: pointer; border: 1px solid var(--border); background: var(--card); transition: 0.2s; }
+        .day-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .theme-preset { text-align: center; cursor: pointer; padding: 8px; border-radius: 16px; border: 2px solid transparent; transition: 0.2s; }
+        .theme-preset:hover { background: #f8f6ff; }
+        .theme-preset .preset-circle { width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 4px; }
+        .theme-preset span { font-size: 0.6rem; display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="viewHome" class="view active">
+        <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
+        <div class="hero"><h2 id="greeting">Hola, Maryse 👋</h2><div class="hero-quote" id="dailyQuote">"Cada día es una nueva página."</div></div>
+        <div class="section-title">😊 ¿Cómo te sientes?</div>
+        <div class="mood-grid" id="moodGrid">
+            <div class="mood-card" data-mood="happy"><div class="mood-emoji">😊</div><div class="mood-label">Feliz</div></div>
+            <div class="mood-card" data-mood="calm"><div class="mood-emoji">😌</div><div class="mood-label">Calma</div></div>
+            <div class="mood-card" data-mood="sad"><div class="mood-emoji">😢</div><div class="mood-label">Triste</div></div>
+            <div class="mood-card" data-mood="stressed"><div class="mood-emoji">😰</div><div class="mood-label">Estresada</div></div>
+            <div class="mood-card" data-mood="motivated"><div class="mood-emoji">🤩</div><div class="mood-label">Motivada</div></div>
+            <div class="mood-card" data-mood="tired"><div class="mood-emoji">😴</div><div class="mood-label">Cansada</div></div>
+        </div>
+        <div class="week-theme-hero" id="weekThemeHero"></div>
+        <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
+        <div class="cards-grid">
+            <div class="card" onclick="showView('academy')"><div class="card-icon">🎓</div><div class="card-title">Academy <span class="weekly-content-badge" id="academyBadge"></span></div><div class="card-subtitle">Lecciones, flashcards</div></div>
+            <div class="card" onclick="showView('discover')"><div class="card-icon">🔭</div><div class="card-title">Discover <span class="weekly-content-badge" id="discoverBadge"></span></div><div class="card-subtitle">Artículos, cultura</div></div>
+            <div class="card" onclick="showView('games')"><div class="card-icon">🎮</div><div class="card-title">Games</div><div class="card-subtitle">Memory, Speed Quiz, Word Scramble</div></div>
+            <div class="card" onclick="showView('dad')"><div class="card-icon">👨‍👧</div><div class="card-title">Rincón de Papá</div><div class="card-subtitle">Lunes a Viernes · Cartas y actividades</div></div>
+            <div class="card" onclick="showView('karaoke')"><div class="card-icon">🎤</div><div class="card-title">Karaoke</div><div class="card-subtitle">20 canciones EN/FR</div></div>
+            <div class="card" onclick="showView('diary')"><div class="card-icon">📸</div><div class="card-title">Diario</div><div class="card-subtitle">Con editor de fotos</div></div>
+            <div class="card" onclick="showView('friends')"><div class="card-icon">👥</div><div class="card-title">Invitaciones</div><div class="card-subtitle">Control parental</div></div>
+            <div class="card" onclick="showView('theme')"><div class="card-icon">🎨</div><div class="card-title">Tema</div><div class="card-subtitle">7 combinaciones</div></div>
+        </div>
+        <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
+        <div class="card mama-card" style="display:flex;justify-content:space-between;"><div><div class="card-icon">🎵</div><div class="card-title" id="mamaPlaylistTitle">Maryse</div><div class="card-subtitle">💕 Playlist de Maman (Fiona)</div></div><button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button></div>
+        <div class="quick-access"><div class="quick-btn" onclick="showView('academy')"><div class="quick-icon">🎓</div><div class="quick-label">Academy</div></div><div class="quick-btn" onclick="showView('games')"><div class="quick-icon">🎮</div><div class="quick-label">Games</div></div><div class="quick-btn" onclick="showView('karaoke')"><div class="quick-icon">🎤</div><div class="quick-label">Karaoke</div></div><div class="quick-btn" onclick="showView('profile')"><div class="quick-icon">👤</div><div class="quick-label">Perfil</div></div></div>
+        <div class="footer">💜 Tu espacio para aprender</div>
+    </div>
+
+    <!-- ACADEMY REORGANIZADA CON CONJUGACIÓN -->
+    <div id="viewAcademy" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="lang-selector">
+            <div id="lang-en" class="lang-btn active">🇬🇧 English</div>
+            <div id="lang-fr" class="lang-btn">🇫🇷 Français</div>
+        </div>
+        <div class="vocab-section" id="vocabSection"></div>
+        <div class="flashcard-section">
+            <div class="badge">📇 Flashcards</div>
+            <p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p>
+            <div class="flashcard-mode-selector" id="flashcardModes"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;">
+                <span id="flashScore">Score: 0/0</span>
+                <button class="back-btn" onclick="nextFlashcard()">⏭️</button>
+            </div>
+            <div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div>
+        </div>
+        <div class="pronunciation-section" id="pronunciationSection"></div>
+        <div class="podcast-section" id="podcastSection"></div>
+        <div class="conjugation-section" id="conjugationSection">
+            <div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div>
+            <div class="conjugation-grid" id="conjugationGrid"></div>
+        </div>
+        <div class="lessons-grid" id="lessonsContainer"></div>
+    </div>
+
+    <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
+    <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><p style="font-size:0.8rem;color:var(--subtext);margin-bottom:12px;">Elige un juego para practicar</p><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
+    
+    <div id="viewDad" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="card clock-card">
+            <div style="font-size: 0.8rem; opacity: 0.9;">🕐 HORA ACTUAL</div>
+            <div class="clock-time" id="dadLiveClock">--:--:--</div>
+            <div class="clock-date" id="dadLiveDate"></div>
+        </div>
+        <div id="dadContainer"></div>
+    </div>
+    
+    <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><p style="font-size:0.8rem;color:var(--subtext);">🎵 20 canciones (10 EN + 10 FR) · Elige y canta (se abre en YouTube)</p><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" id="karaokeFilterAll" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" id="karaokeFilterEN" onclick="filterKaraokeSongs('en')" style="background:var(--card);color:var(--text);">🇬🇧 English (10)</button><button class="btn" id="karaokeFilterFR" onclick="filterKaraokeSongs('fr')" style="background:var(--card);color:var(--text);">🇫🇷 Français (10)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
+    <div id="viewDiary" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📸 Diario</div><input type="text" id="diaryTitle" placeholder="Título..."><textarea id="diaryText" rows="3" placeholder="¿Qué pasó hoy?"></textarea><div id="photoEditor" style="display:none;"><p style="font-size:0.7rem;color:var(--subtext);">✂️ Edita tu foto :</p><div class="photo-canvas-container"><canvas id="photoCanvas"></canvas></div><div class="photo-editor-tools"><button class="btn" onclick="rotatePhoto(-90)">↺</button><button class="btn" onclick="rotatePhoto(90)">↻</button><button class="btn" onclick="flipPhoto('horizontal')">↔️</button><button class="btn" onclick="flipPhoto('vertical')">↕️</button><button class="btn" onclick="centerPhoto()">🎯</button><button class="btn" onclick="resetPhoto()">🔄</button><button class="btn btn-success" onclick="applyEdit()">✅ Aplicar</button></div></div><input type="file" id="diaryPhoto" accept="image/*" onchange="previewDiaryPhoto()"><img id="diaryPreview" style="display:none;width:100%;border-radius:12px;max-height:200px;object-fit:cover;"><button class="btn btn-primary" onclick="saveDiaryEntry()" style="width:100%;">💾 Guardar recuerdo</button><div id="diaryEntries" style="margin-top:16px;"></div></div></div>
+    <div id="viewFriends" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">👥 Invitaciones</div><p style="font-size:0.7rem;color:var(--subtext);">Control parental · Genera, valida o rechaza invitaciones</p><button class="btn btn-primary" onclick="generateFriendCode()" style="width:100%;">🔗 Generar código de invitación</button><input type="text" id="friendCodeInput" placeholder="Pega el código de invitación..."><button class="btn btn-success" onclick="addFriend()" style="width:100%;">➕ Enviar solicitud</button><h4 style="font-size:0.8rem;margin-top:16px;">📤 Invitaciones enviadas</h4><div id="sentInvitesList"></div><h4 style="font-size:0.8rem;margin-top:16px;">📥 Invitaciones recibidas</h4><div id="receivedInvitesList"></div><h4 style="font-size:0.8rem;margin-top:16px;">✅ Amigas conectadas</h4><div id="friendsList"></div></div></div>
+
+    <div id="viewTheme" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="card">
+            <div class="card-title">🎨 Personalizar Tema</div>
+            <p style="font-size:0.7rem;color:var(--subtext);margin-bottom:16px;">Elige una combinación de colores o crea la tuya</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;" id="themePresets">
+                <div class="theme-preset" data-primary="#8b5cf6" data-secondary="#c084fc" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div>
+                <div class="theme-preset" data-primary="#ec4899" data-secondary="#f472b6" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div>
+                <div class="theme-preset" data-primary="#06b6d4" data-secondary="#67e8f9" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div>
+                <div class="theme-preset" data-primary="#10b981" data-secondary="#6ee7b7" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div>
+                <div class="theme-preset" data-primary="#f97316" data-secondary="#fdba74" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div>
+                <div class="theme-preset" data-primary="#6366f1" data-secondary="#a5b4fc" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div>
+                <div class="theme-preset" data-primary="#d4a574" data-secondary="#e6c9a8" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div>
+            </div>
+            <p style="font-size:0.7rem;color:var(--subtext);margin-top:12px;">O crea tu propio tema:</p>
+            <label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6">
+            <label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc">
+            <button class="btn btn-primary" onclick="saveTheme()" style="width:100%;margin-top:12px;">💾 Guardar tema</button>
+        </div>
+    </div>
+
+    <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title" style="margin-bottom:12px;">🔔 Recordatorios</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Recibe notificaciones diarias para no perder tu racha</p><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="font-size:0.8rem;">Activar recordatorios</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label style="font-size:0.7rem;">Hora del recordatorio:</label><input type="time" id="notifTime" value="17:00" onchange="saveNotifSettings()"><label style="font-size:0.7rem;">Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0" onclick="toggleDay(0)">Dom</div><div class="day-chip active" data-day="1" onclick="toggleDay(1)">Lun</div><div class="day-chip active" data-day="2" onclick="toggleDay(2)">Mar</div><div class="day-chip active" data-day="3" onclick="toggleDay(3)">Mié</div><div class="day-chip active" data-day="4" onclick="toggleDay(4)">Jue</div><div class="day-chip active" data-day="5" onclick="toggleDay(5)">Vie</div><div class="day-chip" data-day="6" onclick="toggleDay(6)">Sáb</div></div><label style="font-size:0.7rem;">Mensaje:</label><select id="notifMessage" onchange="saveNotifSettings()"><option value="📚 ¿Ya practicaste hoy? ¡No pierdas tu racha!">📚 ¿Ya practicaste hoy?</option><option value="🎯 ¡Hora de aprender! Te espera una nueva lección">🎯 ¡Hora de aprender!</option><option value="💜 Papá te recuerda que eres increíble">💜 Mensaje de Papá</option><option value="🔥 Sigue tu racha, ¡cada día cuenta!">🔥 Sigue tu racha</option></select><button class="btn btn-primary" onclick="testNotification()" style="width:100%;margin-top:12px;">🔔 Probar notificación</button></div></div><div class="backup-section"><div class="card-title" style="margin-bottom:12px;">💾 Copia de seguridad</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Guarda tus datos antes de actualizar.</p><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-warning" onclick="exportData()" style="flex:1;">📥 Exportar datos</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()" style="flex:1;">📤 Importar datos</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"><p id="backupStatus" style="font-size:0.65rem;color:var(--subtext);margin-top:8px;"></p></div></div>
+</div>
+<button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
+
+<script>
+// ==================== SERVICE WORKER ====================
+if ('serviceWorker' in navigator) {
+    const swCode = `self.addEventListener('install',function(e){self.skipWaiting();});self.addEventListener('activate',function(e){e.waitUntil(clients.claim());});self.addEventListener('message',function(e){if(e.data.type==='schedule-notification'){const{title,message,hour,minute}=e.data;const now=new Date();const target=new Date();target.setHours(hour,minute,0,0);if(target<=now)target.setDate(target.getDate()+1);const delay=target-now;setTimeout(()=>{self.registration.showNotification(title,{body:message,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>',tag:'daily-reminder',requireInteraction:true,vibrate:[200,100,200]});},delay);}});self.addEventListener('notificationclick',function(e){e.notification.close();e.waitUntil(clients.openWindow('/'));});`;
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const swUrl = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+// ==================== 8 SEMAINES ====================
+let testWeekOverride = null;
+const weeklyThemes = [
+    { name: "Emociones y Sentimientos", emoji: "💭", color: "#fef3c7", desc: "Aprende a expresar lo que sientes en inglés y francés" },
+    { name: "Escuela y Aprendizaje", emoji: "📚", color: "#e0e7ff", desc: "Vocabulario escolar y frases para la clase" },
+    { name: "Viajes y Aventuras", emoji: "✈️", color: "#d1fae5", desc: "Explora el mundo con nuevos idiomas" },
+    { name: "Tecnología y Futuro", emoji: "🚀", color: "#fce7f3", desc: "El lenguaje de la era digital" },
+    { name: "Música y Arte", emoji: "🎵", color: "#fce7f3", desc: "Expresa tu creatividad en dos idiomas" },
+    { name: "Comida y Gastronomía", emoji: "🍽️", color: "#fef3c7", desc: "Sabores del mundo en inglés y francés" },
+    { name: "Deportes y Salud", emoji: "⚽", color: "#d1fae5", desc: "Mantente activa mientras aprendes idiomas" },
+    { name: "Naturaleza y Planeta", emoji: "🌍", color: "#e0e7ff", desc: "Cuida el planeta mientras aprendes" }
+];
+const weeklyVocab = {
+    0: { en: [{en:"happy",es:"feliz"},{en:"sad",es:"triste"},{en:"angry",es:"enfadado/a"},{en:"excited",es:"emocionado/a"},{en:"calm",es:"tranquilo/a"},{en:"proud",es:"orgulloso/a"},{en:"nervous",es:"nervioso/a"},{en:"brave",es:"valiente"}], fr: [{fr:"heureux",es:"feliz"},{fr:"triste",es:"triste"},{fr:"fâché",es:"enfadado/a"},{fr:"excité",es:"emocionado/a"},{fr:"calme",es:"tranquilo/a"},{fr:"fier",es:"orgulloso/a"},{fr:"nerveux",es:"nervioso/a"},{fr:"courageux",es:"valiente"}] },
+    1: { en: [{en:"teacher",es:"profesor/a"},{en:"homework",es:"deberes"},{en:"exam",es:"examen"},{en:"notebook",es:"cuaderno"},{en:"pencil",es:"lápiz"},{en:"library",es:"biblioteca"}], fr: [{fr:"professeur",es:"profesor/a"},{fr:"devoir",es:"deberes"},{fr:"examen",es:"examen"},{fr:"cahier",es:"cuaderno"},{fr:"crayon",es:"lápiz"},{fr:"bibliothèque",es:"biblioteca"}] },
+    2: { en: [{en:"passport",es:"pasaporte"},{en:"flight",es:"vuelo"},{en:"hotel",es:"hotel"},{en:"map",es:"mapa"},{en:"adventure",es:"aventura"},{en:"destination",es:"destino"}], fr: [{fr:"passeport",es:"pasaporte"},{fr:"vol",es:"vuelo"},{fr:"hôtel",es:"hotel"},{fr:"carte",es:"mapa"},{fr:"aventure",es:"aventura"},{fr:"destination",es:"destino"}] },
+    3: { en: [{en:"password",es:"contraseña"},{en:"download",es:"descargar"},{en:"screen",es:"pantalla"},{en:"network",es:"red"},{en:"data",es:"datos"},{en:"code",es:"código"}], fr: [{fr:"mot de passe",es:"contraseña"},{fr:"télécharger",es:"descargar"},{fr:"écran",es:"pantalla"},{fr:"réseau",es:"red"},{fr:"données",es:"datos"},{fr:"code",es:"código"}] },
+    4: { en: [{en:"song",es:"canción"},{en:"melody",es:"melodía"},{en:"painting",es:"pintura"},{en:"gallery",es:"galería"},{en:"creativity",es:"creatividad"}], fr: [{fr:"chanson",es:"canción"},{fr:"mélodie",es:"melodía"},{fr:"peinture",es:"pintura"},{fr:"galerie",es:"galería"},{fr:"créativité",es:"creatividad"}] },
+    5: { en: [{en:"recipe",es:"receta"},{en:"delicious",es:"delicioso/a"},{en:"spicy",es:"picante"},{en:"breakfast",es:"desayuno"},{en:"dinner",es:"cena"},{en:"dessert",es:"postre"}], fr: [{fr:"recette",es:"receta"},{fr:"délicieux",es:"delicioso/a"},{fr:"épicé",es:"picante"},{fr:"petit-déjeuner",es:"desayuno"},{fr:"dîner",es:"cena"},{fr:"dessert",es:"postre"}] },
+    6: { en: [{en:"exercise",es:"ejercicio"},{en:"strength",es:"fuerza"},{en:"healthy",es:"saludable"},{en:"team",es:"equipo"},{en:"victory",es:"victoria"},{en:"training",es:"entrenamiento"}], fr: [{fr:"exercice",es:"ejercicio"},{fr:"force",es:"fuerza"},{fr:"sain",es:"saludable"},{fr:"équipe",es:"equipo"},{fr:"victoire",es:"victoria"},{fr:"entraînement",es:"entrenamiento"}] },
+    7: { en: [{en:"forest",es:"bosque"},{en:"ocean",es:"océano"},{en:"mountain",es:"montaña"},{en:"recycle",es:"reciclar"},{en:"planet",es:"planeta"},{en:"wildlife",es:"vida salvaje"}], fr: [{fr:"forêt",es:"bosque"},{fr:"océan",es:"océano"},{fr:"montagne",es:"montaña"},{fr:"recycler",es:"reciclar"},{fr:"planète",es:"planeta"},{fr:"faune",es:"vida salvaje"}] }
+};
+const weeklySlang = {
+    0: { en: [
+        { phrase: "I'm so over it", meaning: "Ya estoy harta de esto", context: "Frustración", level: "intermediate" },
+        { phrase: "That hit me in the feels", meaning: "Me llegó al corazón", context: "Emoción", level: "intermediate" },
+        { phrase: "No biggie", meaning: "No es para tanto", context: "Restar importancia", level: "beginner" },
+        { phrase: "I'm shook", meaning: "Estoy en shock", context: "Sorpresa", level: "intermediate" },
+        { phrase: "That's a mood", meaning: "Me identifico totalmente", context: "Conexión emocional", level: "intermediate" },
+        { phrase: "I can't even", meaning: "No tengo palabras", context: "Sorpresa o frustración", level: "intermediate" },
+        { phrase: "It's not that deep", meaning: "No es para tanto", context: "Minimizar", level: "intermediate" },
+        { phrase: "For real", meaning: "¿En serio?", context: "Confirmar", level: "beginner" }
+    ], fr: [
+        { phrase: "Je suis au bout de ma vie", meaning: "Estoy harto/a", context: "Frustración", level: "intermediate" },
+        { phrase: "Avoir le seum", meaning: "Estar enfadado/a", context: "Rabia", level: "intermediate" },
+        { phrase: "C'est la vie", meaning: "Así es la vida", context: "Aceptación", level: "beginner" },
+        { phrase: "Être en PLS", meaning: "Estar agotado/a", context: "Fatiga", level: "intermediate" },
+        { phrase: "Avoir le cafard", meaning: "Estar triste", context: "Melancolía", level: "beginner" }
+    ] },
+    1: { en: [
+        { phrase: "Cramming", meaning: "Estudiar a última hora", context: "Exámenes", level: "beginner" },
+        { phrase: "Ace a test", meaning: "Sacar 10", context: "Éxito académico", level: "beginner" },
+        { phrase: "Pull an all-nighter", meaning: "No dormir estudiando", context: "Estudio intenso", level: "intermediate" },
+        { phrase: "I blanked out", meaning: "Me quedé en blanco", context: "Olvidar", level: "intermediate" },
+        { phrase: "That's a freebie", meaning: "Esa pregunta es regalada", context: "Algo fácil", level: "intermediate" },
+        { phrase: "I'm behind on homework", meaning: "Voy atrasada con la tarea", context: "Acumulación", level: "beginner" },
+        { phrase: "The teacher called me out", meaning: "La maestra me señaló", context: "En clase", level: "intermediate" },
+        { phrase: "It's a no-brainer", meaning: "Es obvio", context: "Decisión fácil", level: "intermediate" }
+    ], fr: [
+        { phrase: "Bachoter", meaning: "Estudiar a última hora", context: "Exámenes", level: "beginner" },
+        { phrase: "Cartonner", meaning: "Tener éxito", context: "Éxito", level: "beginner" },
+        { phrase: "Sécher un cours", meaning: "Saltarse clase", context: "Novillos", level: "beginner" },
+        { phrase: "C'est du gâteau", meaning: "Es pan comido", context: "Fácil", level: "beginner" },
+        { phrase: "Le chouchou du prof", meaning: "Favorito del profe", context: "Compañero ejemplar", level: "beginner" }
+    ] },
+    2: { en: [
+        { phrase: "Wanderlust", meaning: "Pasión por viajar", context: "Viajes", level: "beginner" },
+        { phrase: "Catch flights, not feelings", meaning: "Viaja, no te enamores", context: "Filosofía viajera", level: "intermediate" },
+        { phrase: "Living my best life", meaning: "Viviendo al máximo", context: "Felicidad", level: "beginner" },
+        { phrase: "Main character energy", meaning: "Energía de protagonista", context: "Actitud segura", level: "intermediate" },
+        { phrase: "Let's hit the road", meaning: "Vámonos ya", context: "Iniciar viaje", level: "beginner" },
+        { phrase: "I'm totally jet-lagged", meaning: "Estoy muy desvelada", context: "Efecto del viaje", level: "intermediate" },
+        { phrase: "Take me back", meaning: "Llévame otra vez", context: "Extrañar un lugar", level: "beginner" },
+        { phrase: "That's a bucket list destination", meaning: "Es un destino soñado", context: "Lugar por conocer", level: "intermediate" }
+    ], fr: [
+        { phrase: "Avoir la bougeotte", meaning: "No poder quedarse quieto", context: "Movimiento", level: "beginner" },
+        { phrase: "Voyager dans sa tête", meaning: "Soñar despierto", context: "Imaginación", level: "beginner" },
+        { phrase: "Prendre la poudre d'escampette", meaning: "Escaparse", context: "Huir", level: "intermediate" },
+        { phrase: "C'est le bout du monde", meaning: "Está lejísimos", context: "Distancia", level: "beginner" },
+        { phrase: "Avoir le mal du pays", meaning: "Extrañar casa", context: "Nostalgia", level: "beginner" }
+    ] },
+    3: { en: [
+        { phrase: "My battery is about to die", meaning: "Mi batería está a punto de acabarse", context: "Tecnología", level: "beginner" },
+        { phrase: "DM me", meaning: "Escríbeme por mensaje directo", context: "Redes sociales", level: "beginner" },
+        { phrase: "This app is a total game changer", meaning: "Esta app cambia las reglas", context: "Innovación", level: "intermediate" },
+        { phrase: "I'm trying to limit my screen time", meaning: "Intento reducir tiempo en pantalla", context: "Salud digital", level: "intermediate" },
+        { phrase: "You're blowing up my phone", meaning: "No dejas de escribirme", context: "Muchas notificaciones", level: "intermediate" },
+        { phrase: "I got ghosted", meaning: "Me dejaron de hablar", context: "Desaparecer sin aviso", level: "intermediate" },
+        { phrase: "That's so last season", meaning: "Eso ya pasó de moda", context: "Obsoleto", level: "intermediate" },
+        { phrase: "Don't @ me", meaning: "No me etiquetes", context: "Evitar polémica", level: "advanced" }
+    ], fr: [
+        { phrase: "C'est chelou", meaning: "Es raro", context: "Sospecha", level: "intermediate" },
+        { phrase: "C'est relou", meaning: "Es pesado", context: "Molestia", level: "intermediate" },
+        { phrase: "C'est la hess", meaning: "Es la miseria", context: "Dificultad", level: "intermediate" },
+        { phrase: "Trop stylé", meaning: "¡Muy guay!", context: "Elogio", level: "beginner" },
+        { phrase: "Être matrixé(e)", meaning: "Estar obsesionado", context: "Obsesión", level: "intermediate" }
+    ] },
+    4: { en: [
+        { phrase: "That song slaps", meaning: "Esa canción está increíble", context: "Música", level: "intermediate" },
+        { phrase: "It's a bop", meaning: "Es muy pegadiza", context: "Canción", level: "beginner" },
+        { phrase: "Drop the beat", meaning: "Que suene la música", context: "Fiesta", level: "beginner" },
+        { phrase: "This is fire", meaning: "Está súper bueno", context: "Algo excelente", level: "beginner" },
+        { phrase: "Earworm", meaning: "Canción pegadiza", context: "Melodía mental", level: "intermediate" },
+        { phrase: "She ate that performance", meaning: "Arrasó con su presentación", context: "Elogio", level: "intermediate" },
+        { phrase: "That's my jam", meaning: "Esa es mi canción favorita", context: "Tema que te representa", level: "beginner" },
+        { phrase: "I've had this on repeat", meaning: "La he tenido en repetición", context: "Obsesión musical", level: "intermediate" }
+    ], fr: [
+        { phrase: "Ça déchire", meaning: "Es genial", context: "Impresionante", level: "intermediate" },
+        { phrase: "Avoir la musique dans la peau", meaning: "Llevar la música dentro", context: "Pasión", level: "beginner" },
+        { phrase: "C'est de la bombe", meaning: "Es excelente", context: "Calidad", level: "beginner" },
+        { phrase: "Un tube", meaning: "Un hit musical", context: "Éxito", level: "beginner" },
+        { phrase: "Avoir le rythme dans la peau", meaning: "Tener ritmo natural", context: "Baile", level: "beginner" }
+    ] },
+    5: { en: [
+        { phrase: "I'm starving", meaning: "Me muero de hambre", context: "Hambre", level: "beginner" },
+        { phrase: "It's finger-lickin' good", meaning: "Para chuparse los dedos", context: "Comida deliciosa", level: "intermediate" },
+        { phrase: "Let's grab a bite", meaning: "Vamos a comer algo rápido", context: "Plan informal", level: "beginner" },
+        { phrase: "Food coma", meaning: "Sueño después de comer", context: "Modorra", level: "beginner" },
+        { phrase: "This is my guilty pleasure", meaning: "Es mi placer culpable", context: "Algo que te gusta", level: "intermediate" },
+        { phrase: "I'm craving something sweet", meaning: "Se me antoja algo dulce", context: "Antojo", level: "beginner" },
+        { phrase: "That's overpriced", meaning: "Está muy caro", context: "Queja por precio", level: "intermediate" },
+        { phrase: "Can I get a doggy bag?", meaning: "¿Me lo puedo llevar?", context: "Comida que sobra", level: "beginner" }
+    ], fr: [
+        { phrase: "Avoir la dalle", meaning: "Tener mucha hambre", context: "Hambre", level: "intermediate" },
+        { phrase: "C'est un régal", meaning: "Es una delicia", context: "Excelente", level: "beginner" },
+        { phrase: "Manger sur le pouce", meaning: "Comer rápido", context: "Informal", level: "intermediate" },
+        { phrase: "Avoir les crocs", meaning: "Tener hambre", context: "Hambre", level: "beginner" },
+        { phrase: "Se régaler", meaning: "Disfrutar comiendo", context: "Placer", level: "beginner" }
+    ] },
+    6: { en: [
+        { phrase: "No pain, no gain", meaning: "Sin esfuerzo no hay resultado", context: "Motivación", level: "beginner" },
+        { phrase: "Let's hit the gym", meaning: "Vamos al gimnasio", context: "Ejercicio", level: "beginner" },
+        { phrase: "You got this", meaning: "Tú puedes", context: "Ánimo", level: "beginner" },
+        { phrase: "I'm sore but worth it", meaning: "Adolorida pero valió la pena", context: "Después de entrenar", level: "intermediate" },
+        { phrase: "Crushing it", meaning: "Arrasando", context: "Rendimiento excelente", level: "intermediate" },
+        { phrase: "I need to stretch", meaning: "Necesito estirarme", context: "Antes o después del ejercicio", level: "beginner" },
+        { phrase: "I'm in beast mode", meaning: "Estoy a tope", context: "Energía máxima", level: "intermediate" },
+        { phrase: "That was a good sweat", meaning: "Eso fue un buen entrenamiento", context: "Esfuerzo físico", level: "beginner" }
+    ], fr: [
+        { phrase: "Avoir la pêche", meaning: "Tener energía", context: "Vitalidad", level: "beginner" },
+        { phrase: "Se donner à fond", meaning: "Darlo todo", context: "Esfuerzo", level: "intermediate" },
+        { phrase: "C'est dans la poche", meaning: "Está ganado", context: "Victoria", level: "beginner" },
+        { phrase: "Avoir du souffle", meaning: "Tener resistencia", context: "Físico", level: "beginner" },
+        { phrase: "Être au taquet", meaning: "Estar al máximo", context: "Motivación", level: "intermediate" }
+    ] },
+    7: { en: [
+        { phrase: "Go green", meaning: "Sé ecológico", context: "Ecología", level: "beginner" },
+        { phrase: "Reduce your carbon footprint", meaning: "Reduce tu huella de carbono", context: "Ambiente", level: "intermediate" },
+        { phrase: "Save the planet", meaning: "Salva el planeta", context: "Activismo", level: "beginner" },
+        { phrase: "Leave no trace", meaning: "No dejes rastro", context: "Respeto por la naturaleza", level: "intermediate" },
+        { phrase: "It's a breath of fresh air", meaning: "Es un respiro de aire fresco", context: "Algo que te renueva", level: "intermediate" },
+        { phrase: "I'm an outdoor person", meaning: "Soy de estar al aire libre", context: "Personalidad", level: "beginner" },
+        { phrase: "Let's go zero waste", meaning: "Intentemos no generar basura", context: "Sostenible", level: "intermediate" },
+        { phrase: "Mother Nature is angry", meaning: "La naturaleza está enfadada", context: "Cambio climático", level: "intermediate" }
+    ], fr: [
+        { phrase: "Être écolo", meaning: "Ser ecológico", context: "Ecología", level: "beginner" },
+        { phrase: "Sauver la planète", meaning: "Salvar el planeta", context: "Activismo", level: "beginner" },
+        { phrase: "C'est pas la mer à boire", meaning: "No es tan difícil", context: "Minimizar", level: "intermediate" },
+        { phrase: "Avoir la main verte", meaning: "Buena mano plantas", context: "Jardinería", level: "beginner" },
+        { phrase: "Un geste pour la planète", meaning: "Un gesto por el planeta", context: "Acción", level: "beginner" }
+    ] }
+};
+const weeklyLessons = {0:{en:[{id:"en1",title:"Expressing your feelings like a pro",level:"A2",duration:15,phrases:["I feel a bit overwhelmed today","That made me really happy!","I'm going through a rough patch","Honestly, I'm feeling mixed emotions","It is what it is, I'll get over it"],trans:["Me siento un poco abrumada hoy","¡Eso me hizo muy feliz!","Estoy pasando por un momento difícil","Honestamente, tengo emociones encontradas","Es lo que hay, lo superaré"],taskEs:"Describe cómo te sientes hoy usando 3 frases"}],fr:[{id:"fr1",title:"Exprimer tes sentiments comme une pro",level:"A2",duration:15,phrases:["Je me sens un peu dépassée aujourd'hui","Ça m'a rendue vraiment heureuse!","Je traverse une période difficile","Honnêtement, j'ai des émotions mitigées","C'est comme ça, je vais m'en remettre"],trans:["Me siento un poco abrumada hoy","¡Eso me hizo muy feliz!","Estoy pasando por un momento difícil","Honestamente, tengo emociones encontradas","Es lo que hay, lo superaré"],taskEs:"Décris comment tu te sens aujourd'hui avec 3 phrases"}]},1:{en:[{id:"en1",title:"Surviving school like a boss",level:"A2",duration:15,phrases:["I have a ton of homework due tomorrow","Can I get an extension on this assignment?","I totally spaced out during class","This subject is actually growing on me","Let's team up for the group project"],trans:["Tengo un montón de tarea para mañana","¿Puedo tener una extensión en esta tarea?","Me distraje completamente en clase","Esta materia me está gustando cada vez más","Hagamos equipo para el proyecto grupal"],taskEs:"Describe tu día escolar con 3 frases"}],fr:[{id:"fr1",title:"Survivre à l'école comme un chef",level:"A2",duration:15,phrases:["J'ai une tonne de devoirs pour demain","Je peux avoir un délai pour ce devoir?","J'étais complètement ailleurs en cours","Cette matière commence à me plaire","On fait équipe pour le projet de groupe?"],trans:["Tengo un montón de tarea para mañana","¿Puedo tener una extensión en esta tarea?","Me distraje completamente en clase","Esta materia me está gustando cada vez más","Hagamos equipo para el proyecto grupal"],taskEs:"Décris ta journée scolaire avec 3 phrases"}]},2:{en:[{id:"en1",title:"Travel like an influencer",level:"A2",duration:15,phrases:["I'm so excited for my trip next week!","What's the best way to get around here?","This view is absolutely breathtaking","I need to pick up some souvenirs","Do you know any cool spots off the beaten path?"],trans:["¡Estoy tan emocionada por mi viaje!","¿Cuál es la mejor forma de moverse?","Esta vista es absolutamente impresionante","Necesito comprar algunos recuerdos","¿Conoces lugares geniales fuera de lo turístico?"],taskEs:"Describe un viaje que te gustaría hacer"}],fr:[{id:"fr1",title:"Voyager comme un influenceur",level:"A2",duration:15,phrases:["Je suis trop excitée pour mon voyage!","Quel est le meilleur moyen de se déplacer?","Cette vue est à couper le souffle","Je dois acheter quelques souvenirs","Tu connais des endroits hors des sentiers battus?"],trans:["¡Estoy tan emocionada por mi viaje!","¿Cuál es la mejor forma de moverse?","Esta vista es absolutamente impresionante","Necesito comprar algunos recuerdos","¿Conoces lugares geniales fuera de lo turístico?"],taskEs:"Décris un voyage que tu aimerais faire"}]},3:{en:[{id:"en1",title:"Tech talk for teens",level:"A2",duration:15,phrases:["My phone battery is about to die","Can you send me the link via DM?","This app is a total game changer","I'm trying to limit my screen time","Have you checked out that new AI tool?"],trans:["Mi batería está a punto de morir","¿Me envías el enlace por DM?","Esta app cambia totalmente las reglas","Estoy tratando de limitar mi tiempo en pantalla","¿Ya probaste esa nueva herramienta de IA?"],taskEs:"Describe cómo usas la tecnología en tu día"}],fr:[{id:"fr1",title:"Parler tech pour ados",level:"A2",duration:15,phrases:["Ma batterie va bientôt mourir","Tu peux m'envoyer le lien en DM?","Cette appli change complètement la donne","J'essaie de limiter mon temps d'écran","T'as déjà testé ce nouvel outil IA?"],trans:["Mi batería está a punto de morir","¿Me envías el enlace por DM?","Esta app cambia totalmente las reglas","Estoy tratando de limitar mi tiempo en pantalla","¿Ya probaste esa nueva herramienta de IA?"],taskEs:"Décris comment tu utilises la technologie"}]},4:{en:[{id:"en1",title:"Music vibes & conversations",level:"A2",duration:15,phrases:["This song hits different at night","I've had this track on repeat all week","The lyrics speak to my soul","She absolutely killed that performance","What's your go-to playlist for studying?"],trans:["Esta canción se siente diferente de noche","He tenido esta canción en repetición toda la semana","La letra le habla a mi alma","Ella arrasó con esa presentación","¿Cuál es tu playlist para estudiar?"],taskEs:"Describe tu canción favorita y por qué te gusta"}],fr:[{id:"fr1",title:"Vibes musicales et conversations",level:"A2",duration:15,phrases:["Cette chanson fait un effet différent la nuit","J'ai ce morceau en boucle depuis une semaine","Les paroles parlent à mon âme","Elle a complètement déchiré sa performance","C'est quoi ta playlist pour étudier?"],trans:["Esta canción se siente diferente de noche","He tenido esta canción en repetición toda la semana","La letra le habla a mi alma","Ella arrasó con esa presentación","¿Cuál es tu playlist para estudiar?"],taskEs:"Décris ta chanson préférée"}]},5:{en:[{id:"en1",title:"Foodie conversations",level:"A2",duration:15,phrases:["I'm totally craving tacos right now","This dish is to die for!","I could eat this every single day","I'm not a picky eater at all","Let's grab a bite somewhere new"],trans:["Se me antojan unos tacos ahora mismo","¡Este platillo está para morirse!","Podría comer esto todos los días","No soy nada quisquillosa con la comida","Vamos a comer algo a un lugar nuevo"],taskEs:"Describe tu comida favorita"}],fr:[{id:"fr1",title:"Conversations de foodie",level:"A2",duration:15,phrases:["J'ai trop envie de tacos là tout de suite","Ce plat est à tomber par terre!","Je pourrais manger ça tous les jours","Je ne suis pas du tout difficile","On va manger un bout dans un nouvel endroit?"],trans:["Se me antojan unos tacos ahora mismo","¡Este platillo está para morirse!","Podría comer esto todos los días","No soy nada quisquillosa con la comida","Vamos a comer algo a un lugar nuevo"],taskEs:"Décris ton plat préféré"}]},6:{en:[{id:"en1",title:"Sports talk & motivation",level:"A2",duration:15,phrases:["I'm really into yoga lately","Let's go for a run, it'll clear your mind","No pain, no gain, right?","She's absolutely crushing it on the field!","I need to stretch before this workout"],trans:["Últimamente me está gustando mucho el yoga","Vamos a correr, te despejará la mente","Sin dolor no hay ganancia, ¿no?","¡La está rompiendo en la cancha!","Necesito estirar antes de este entrenamiento"],taskEs:"Describe tu deporte favorito"}],fr:[{id:"fr1",title:"Sport & motivation",level:"A2",duration:15,phrases:["Je suis à fond dans le yoga en ce moment","On va courir? Ça va te vider la tête","Pas de douleur, pas de gain, non?","Elle déchire tout sur le terrain!","Je dois m'étirer avant cette séance"],trans:["Últimamente me está gustando mucho el yoga","Vamos a correr, te despejará la mente","Sin dolor no hay ganancia, ¿no?","¡La está rompiendo en la cancha!","Necesito estirar antes de este entrenamiento"],taskEs:"Décris ton sport préféré"}]},7:{en:[{id:"en1",title:"Eco-friendly & nature convos",level:"A2",duration:15,phrases:["I'm trying to reduce my plastic waste","Nature is honestly the best therapy","Let's go hiking this weekend!","We should all do our part for the planet","This beach cleanup is so rewarding"],trans:["Estoy tratando de reducir mis residuos plásticos","La naturaleza es la mejor terapia","¡Vamos de excursión este fin de semana!","Todos deberíamos hacer nuestra parte","Esta limpieza de playa es tan gratificante"],taskEs:"Describe 3 cosas que haces para ayudar al planeta"}],fr:[{id:"fr1",title:"Écolo & nature",level:"A2",duration:15,phrases:["J'essaie de réduire mes déchets plastiques","La nature est franchement la meilleure thérapie","On part en rando ce week-end!","On devrait tous faire notre part","Ce nettoyage de plage est tellement gratifiant"],trans:["Estoy tratando de reducir mis residuos plásticos","La naturaleza es la mejor terapia","¡Vamos de excursión este fin de semana!","Todos deberíamos hacer nuestra parte","Esta limpieza de playa es tan gratificante"],taskEs:"Décris 3 choses que tu fais pour la planète"}]}};
+const weeklyArticles = {0:[{id:1,category:"🧠 Psicología",title:"¿Por qué lloramos? La ciencia detrás de las lágrimas",icon:"💧",excerpt:"Llorar no es debilidad: es una función biológica que nos ayuda a regular el estrés.",content:`<h4>3 tipos de lágrimas</h4><p>No todas las lágrimas son iguales. Los científicos identifican tres tipos: basales, reflejas y emocionales.</p><p>Las lágrimas emocionales contienen hormonas del estrés como el cortisol. Llorar es una forma de liberar estas sustancias.</p><p><strong>Para reflexionar:</strong> La próxima vez que sientas ganas de llorar, recuerda: tu cuerpo está haciendo algo inteligente para protegerte.</p>`},{id:2,category:"🧠 Psicología",title:"El poder de nombrar tus emociones",icon:"🎭",excerpt:"Decir 'estoy ansiosa' reduce la actividad de la amígdala en un 40%.",content:`<h4>Name it to tame it</h4><p>Cuando pones nombre a una emoción, su intensidad disminuye. La amígdala se calma.</p><p><strong>Ejercicio:</strong> Durante una semana, nombra tus emociones en voz alta.</p>`}],1:[{id:1,category:"📚 Educación",title:"Cómo aprende realmente tu cerebro",icon:"🧠",excerpt:"La repetición espaciada y el sueño son 3x más efectivos que estudiar sin parar.",content:`<h4>Técnica Pomodoro</h4><p>25 minutos de estudio + 5 de descanso. Después de 4 ciclos, descansa 15-30 min.</p><h4>El poder del sueño</h4><p>Durante el sueño, tu cerebro consolida lo aprendido.</p>`}],2:[{id:1,category:"✈️ Viajes",title:"Los destinos más fascinantes del mundo",icon:"🗺️",excerpt:"Viajar literalmente cambia la estructura de tu cerebro.",content:`<h4>Destinos que transforman</h4><p>Japón, Islandia, Perú, Nueva Zelanda.</p><p><strong>Para soñar:</strong> ¿A qué país viajarías primero?</p>`}],3:[{id:1,category:"🤖 Tecnología",title:"Inteligencia Artificial: lo que debes saber",icon:"🤖",excerpt:"La IA ya está en TikTok, Netflix, Instagram. Entenderla es poder.",content:`<h4>¿Cómo aprende una IA?</h4><p>Con millones de ejemplos. No "piensa": calcula probabilidades.</p><p><strong>Para reflexionar:</strong> ¿Qué pasaría si buscaras contenido diferente al que normalmente ves?</p>`}],4:[{id:1,category:"🎵 Música",title:"Cómo la música transforma tu cerebro",icon:"🧠",excerpt:"La música libera dopamina y mejora memoria, concentración y empatía.",content:`<h4>Beneficios</h4><p>Mejora la memoria, reduce la ansiedad, aumenta la empatía.</p><p><strong>Experimento:</strong> Crea una playlist de 5 canciones que te hagan sentir diferente.</p>`}],5:[{id:1,category:"🍽️ Gastronomía",title:"La ciencia del sabor",icon:"👅",excerpt:"El 80% del sabor viene del olfato. La vista y los recuerdos también influyen.",content:`<h4>Los 5 sabores básicos</h4><p>Dulce, salado, ácido, amargo y umami.</p><p><strong>Actividad:</strong> Investiga la receta de un plato típico de otro país.</p>`}],6:[{id:1,category:"⚽ Deportes",title:"Lo que el deporte le hace a tu cerebro",icon:"🏃‍♀️",excerpt:"30 minutos de ejercicio mejoran la memoria y el estado de ánimo.",content:`<h4>Beneficios</h4><p>Concentración, reduce ansiedad, libera endorfinas.</p><p><strong>Desafío:</strong> Hoy, muévete 15 minutos.</p>`}],7:[{id:1,category:"🌍 Ecología",title:"Pequeños gestos, gran impacto",icon:"🌱",excerpt:"No necesitas ser adulta para cambiar el mundo.",content:`<h4>10 gestos</h4><p>Botella reutilizable, apagar luces, ducha corta, bolsa propia, menos carne, plantar, donar ropa, papel reciclado, bici, hablar del tema.</p><p><strong>Compromiso:</strong> Elige 3 y hazlos una semana.</p>`}]};
+const weeklyMomActivities = {0:[{id:"m1",title:"🫙 Bocal des émotions",type:"manualidad",description:"Écris une émotion par jour.",steps:"1. Bocal.\n2. Papiers.\n3. Ouvre.",talkQuestions:"Quelle émotion?"}],1:[{id:"m1",title:"📋 Planning coloré",type:"taller",description:"Créez un planning.",steps:"1. Feuille.\n2. Matières.\n3. Couleurs.",talkQuestions:"Matière préférée?"}],2:[{id:"m1",title:"🗺️ Carte de rêve",type:"manualidad",description:"Créez une carte de voyage.",steps:"1. Carte.\n2. Photos.\n3. Accroche.",talkQuestions:"Quel pays?"}],3:[{id:"m1",title:"📱 Digital detox",type:"taller",description:"Journée sans téléphone.",steps:"1. Jour.\n2. Rangez.\n3. Activité.",talkQuestions:"Comment te sens-tu?"}],4:[{id:"m1",title:"🎵 Playlist duo",type:"manualidad",description:"5 chansons.",steps:"1. Choisissez.\n2. Écrivez.\n3. Écoutez.",talkQuestions:"Quelle chanson?"}],5:[{id:"m1",title:"🍳 Recette du monde",type:"manualidad",description:"Cuisinez un plat.",steps:"1. Pays.\n2. Recette.\n3. Cuisinez.",talkQuestions:"Quel pays?"}],6:[{id:"m1",title:"🧘 Session yoga",type:"taller",description:"15 min d'étirements.",steps:"1. Vidéo.\n2. Suivez.\n3. Partagez.",talkQuestions:"Comment te sens-tu?"}],7:[{id:"m1",title:"🌱 Planter une graine",type:"manualidad",description:"Plantez et regardez pousser.",steps:"1. Pot.\n2. Graine.\n3. Arrosez.",talkQuestions:"Que voir pousser?"}]};
+const baseVocabData = {en:{"Básico":[{en:"happy",es:"feliz"},{en:"sad",es:"triste"}]},fr:{"Básico":[{fr:"heureux",es:"feliz"},{fr:"triste",es:"triste"}]}};
+const baseSlangData = {en:[{phrase:"What's up?",meaning:"¿Qué tal?",level:"beginner"}],fr:[{phrase:"Ça va ?",meaning:"¿Qué tal?",level:"beginner"}]};
+const baseEnglishLessons = [{id:"en1",title:"How to give your opinion",level:"B1",duration:10,phrases:["I think that…"],trans:["Yo pienso que…"],taskEs:"Da tu opinión"}];
+const baseFrenchLessons = [{id:"fr1",title:"Exprimer son avis",level:"B1",duration:10,phrases:["Je pense que…"],trans:["Yo pienso que…"],taskEs:"Da tu opinión"}];
+const baseArticles = [{id:1,category:"🔬 Ciencia",title:"Mujeres que cambiaron la ciencia",icon:"🔬",excerpt:"Marie Curie.",content:"<p>Primera persona en ganar dos Premios Nobel.</p>"}];
+const baseMomActivities = [{id:"m1",title:"🎨 Tarjeta de emociones",type:"manualidad",description:"Escribe emociones.",steps:"1. Dobla.\n2. Escriban.",talkQuestions:"¿Qué emoción?"}];
+
+// ==================== PRONUNCIACIÓN (6 sonidos por idioma) ====================
+const pronData = {
+    en: [
+        { sound: "TH (θ) - sorda", desc: "Lengua entre los dientes, sin vibración", words: ["think", "thank you", "three", "thumb", "thunder", "healthy"] },
+        { sound: "TH (ð) - sonora", desc: "Lengua entre los dientes, con vibración", words: ["the", "this", "that", "mother", "father", "brother"] },
+        { sound: "R inglesa", desc: "La lengua NO toca el paladar. Se redondean los labios", words: ["red", "right", "car", "very", "sorry", "around"] },
+        { sound: "Schwa (ə)", desc: "El sonido más común del inglés. Vocal relajada", words: ["banana", "problem", "about", "today", "support", "family"] },
+        { sound: "Short i (ɪ)", desc: "Vocal corta, lengua relajada", words: ["sit", "hit", "miss", "different", "minute", "english"] },
+        { sound: "Long e (iː)", desc: "Vocal larga, sonrisa", words: ["see", "tree", "happy", "easy", "teacher", "complete"] }
+    ],
+    fr: [
+        { sound: "R gutural francés", desc: "La garganta vibra. Suena como una 'j' suave", words: ["rouge", "paris", "merci", "regarder", "triste", "fromage"] },
+        { sound: "U français (y)", desc: "Labios redondeados y hacia adelante", words: ["tu", "lune", "sur", "usine", "nuage", "future"] },
+        { sound: "E fermé (e)", desc: "Boca casi cerrada, como 'e' de 'bebé'", words: ["été", "parler", "café", "aimer", "télé", "vélo"] },
+        { sound: "E ouvert (ɛ)", desc: "Boca más abierta", words: ["père", "mère", "frère", "terre", "fête", "bête"] },
+        { sound: "AN / EN nasal", desc: "El aire sale por la nariz", words: ["enfant", "maman", "argent", "vent", "temps", "ensemble"] },
+        { sound: "ON nasal", desc: "Sonido redondeado, aire por la nariz", words: ["bon", "son", "nom", "long", "chanson", "maison"] }
+    ]
+};
+
+// ==================== PODCASTS (4 por idioma) ====================
+const podcasts = {
+    en: [
+        { title: "6 Minute English", desc: "BBC · Inglés británico en 6 minutos", level: "B1", link: "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english" },
+        { title: "VOA Learning English", desc: "Noticias en inglés americano, más lento", level: "A2-B1", link: "https://learningenglish.voanews.com/" },
+        { title: "English Learning for Curious Minds", desc: "Historias interesantes narradas en inglés claro", level: "B1-B2", link: "https://podcast.leonardoenglish.com/" },
+        { title: "Luke's English Podcast", desc: "Inglés británico con humor y cultura", level: "B1-C1", link: "https://teacherluke.co.uk/" }
+    ],
+    fr: [
+        { title: "Français Authentique", desc: "Francés natural, para hispanohablantes", level: "A2-B1", link: "https://francaisauthentique.com/podcast/" },
+        { title: "InnerFrench", desc: "Francés claro y pausado, temas interesantes", level: "A2-B1", link: "https://innerfrench.com/podcast/" },
+        { title: "Coffee Break French", desc: "Lecciones cortas de francés", level: "A1-B1", link: "https://coffeebreaklanguages.com/french/" },
+        { title: "France Culture", desc: "Podcast de radio francesa (más avanzado)", level: "B2-C1", link: "https://www.radiofrance.fr/franceculture/podcasts" }
+    ]
+};
+
+// ==================== CONJUGACIÓN (verbos esenciales) ====================
+const conjugationData = {
+    en: [
+        {
+            verb: "to be",
+            title: "TO BE · Ser o estar",
+            conjugations: {
+                "I": "am",
+                "You": "are",
+                "He/She/It": "is",
+                "We": "are",
+                "You (pl)": "are",
+                "They": "are"
+            },
+            examples: [
+                "I am happy today.",
+                "She is a teacher.",
+                "We are friends."
+            ],
+            exercises: [
+                { prompt: "I ___ happy.", answer: "am" },
+                { prompt: "She ___ my sister.", answer: "is" },
+                { prompt: "They ___ at home.", answer: "are" }
+            ]
+        },
+        {
+            verb: "to have",
+            title: "TO HAVE · Tener / Haber",
+            conjugations: {
+                "I": "have",
+                "You": "have",
+                "He/She/It": "has",
+                "We": "have",
+                "You (pl)": "have",
+                "They": "have"
+            },
+            examples: [
+                "I have a dog.",
+                "He has a car.",
+                "We have time."
+            ],
+            exercises: [
+                { prompt: "I ___ a book.", answer: "have" },
+                { prompt: "She ___ blue eyes.", answer: "has" },
+                { prompt: "They ___ two cats.", answer: "have" }
+            ]
+        }
+    ],
+    fr: [
+        {
+            verb: "être",
+            title: "ÊTRE · Ser o estar",
+            conjugations: {
+                "Je": "suis",
+                "Tu": "es",
+                "Il/Elle/On": "est",
+                "Nous": "sommes",
+                "Vous": "êtes",
+                "Ils/Elles": "sont"
+            },
+            examples: [
+                "Je suis étudiante.",
+                "Elle est gentille.",
+                "Nous sommes en classe."
+            ],
+            exercises: [
+                { prompt: "Je ___ fatiguée.", answer: "suis" },
+                { prompt: "Tu ___ mon ami.", answer: "es" },
+                { prompt: "Ils ___ contents.", answer: "sont" }
+            ]
+        },
+        {
+            verb: "avoir",
+            title: "AVOIR · Tener / Haber",
+            conjugations: {
+                "Je": "ai",
+                "Tu": "as",
+                "Il/Elle/On": "a",
+                "Nous": "avons",
+                "Vous": "avez",
+                "Ils/Elles": "ont"
+            },
+            examples: [
+                "J'ai 14 ans.",
+                "Tu as raison.",
+                "Ils ont faim."
+            ],
+            exercises: [
+                { prompt: "J'___ un frère.", answer: "ai" },
+                { prompt: "Elle ___ une idée.", answer: "a" },
+                { prompt: "Nous ___ des livres.", answer: "avons" }
+            ]
+        }
+    ]
+};
+
+const dadCartas=["Tu valor no depende de lo que logras, sino de quién eres.","No necesitas ser perfecta.","Perder no es caer.","El miedo se transforma en valentía."];
+const dadArticulos=[{title:"Por qué te sientes incomprendida",content:"No estás sola."},{title:"Presión de redes",content:"No te compares."},{title:"Responder cuando te lastiman",content:"Alejarse es ganar."},{title:"Pequeños hábitos",content:"Tiende tu cama, bebe agua."}];
+const dadConsejos=["1️⃣ Escribe 3 cosas buenas.<br>2️⃣ Sin pantallas.<br>3️⃣ Muévete.","💬 Aprende a decir 'no'.","🧘 Respiración 4-7-8.","📝 'Esto también pasará'."];
+const dadPodcasts=[{title:"Entiende tu mente",link:"https://open.spotify.com/"},{title:"Historias para crecer",link:"https://www.ivoox.com/"},{title:"Chicas increíbles",link:"https://podcasts.apple.com/"},{title:"Respira y avanza",link:"https://open.spotify.com/"}];
+const dadAlientos=["Eres más fuerte","Confía en ti","Los días malos no duran","Cada paso es un triunfo"];
+const dadActividades=[{title:"🎵 Playlist",desc:"3 canciones."},{title:"📸 Fotos",desc:"Una foto cada día."},{title:"💌 Audio",desc:"2-3 minutos."},{title:"📖 Leer juntos",desc:"Un artículo."}];
+const karaokeSongs = [
+    {title:"Let It Be",artist:"The Beatles",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=The+Beatles+Let+It+Be+karaoke+lyrics"},
+    {title:"Perfect",artist:"Ed Sheeran",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Ed+Sheeran+Perfect+karaoke+lyrics"},
+    {title:"Shallow",artist:"Lady Gaga & Bradley Cooper",language:"en",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Lady+Gaga+Shallow+karaoke+lyrics"},
+    {title:"Someone Like You",artist:"Adele",language:"en",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Adele+Someone+Like+You+karaoke+lyrics"},
+    {title:"Counting Stars",artist:"OneRepublic",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=OneRepublic+Counting+Stars+karaoke+lyrics"},
+    {title:"Happy",artist:"Pharrell Williams",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Pharrell+Williams+Happy+karaoke+lyrics"},
+    {title:"Firework",artist:"Katy Perry",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Katy+Perry+Firework+karaoke+lyrics"},
+    {title:"Shape of You",artist:"Ed Sheeran",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Ed+Sheeran+Shape+of+You+karaoke+lyrics"},
+    {title:"Roar",artist:"Katy Perry",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Katy+Perry+Roar+karaoke+lyrics"},
+    {title:"Fight Song",artist:"Rachel Platten",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Rachel+Platten+Fight+Song+karaoke+lyrics"},
+    {title:"Je veux",artist:"Zaz",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Zaz+Je+veux+karaoke+lyrics"},
+    {title:"Champs Élysées",artist:"Joe Dassin",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Joe+Dassin+Champs+Élysées+karaoke+lyrics"},
+    {title:"Papaoutai",artist:"Stromae",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Stromae+Papaoutai+karaoke+lyrics"},
+    {title:"Alors on danse",artist:"Stromae",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Stromae+Alors+on+danse+karaoke+lyrics"},
+    {title:"Dernière Danse",artist:"Indila",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Indila+Dernière+Danse+karaoke+lyrics"},
+    {title:"Formidable",artist:"Stromae",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Stromae+Formidable+karaoke+lyrics"},
+    {title:"Tous les mêmes",artist:"Stromae",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Stromae+Tous+les+mêmes+karaoke+lyrics"},
+    {title:"Balance ton quoi",artist:"Angèle",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Angèle+Balance+ton+quoi+karaoke+lyrics"},
+    {title:"Sur ma route",artist:"Black M",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Black+M+Sur+ma+route+karaoke+lyrics"},
+    {title:"Bella",artist:"Maître Gims",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Maître+Gims+Bella+karaoke+lyrics"}
+];
+
+// ==================== VARIABLES ====================
+let currentLang="en", karaokeFilter="all", currentGame="memory";
+let completedLessons=JSON.parse(localStorage.getItem("maryse_completed")||"[]");
+let userXP=parseInt(localStorage.getItem("maryse_xp")||"0");
+let userLevel=parseInt(localStorage.getItem("maryse_level")||"1");
+let userStreak=parseInt(localStorage.getItem("maryse_streak")||"0");
+let mamaPlaylist={name:"Maryse",desc:"💕 Playlist de Maman (Fiona)",url:"https://open.spotify.com/playlist/20GUebkx6nodOIyTg2bi9t?si=nQ4NUV_PRdWp1hrXTmU4bw"};
+let diaryEntries=JSON.parse(localStorage.getItem("maryse_diary")||"[]");
+let sentInvites=JSON.parse(localStorage.getItem("maryse_sent_invites")||"[]");
+let receivedInvites=JSON.parse(localStorage.getItem("maryse_received_invites")||"[]");
+let friends=JSON.parse(localStorage.getItem("maryse_friends")||"[]");
+let flashcardDeck=[],flashcardIndex=0,flashcardCorrect=0,flashcardTotal=0,flashcardFlipped=false,flashcardMode="slang";
+let memoryCards=[],memoryFlipped=[],memoryMatched=[],memoryLocked=false;
+let quizWords=[],quizIndex=0,quizScore=0,quizTotal=0,quizTimer=null,quizTimeLeft=10;
+let scrambleWords=[],scrambleIndex=0,scrambleScore=0,scrambleAnswer=[];
+let diaryPhotoData=null, originalPhotoData=null, photoRotation=0, photoFlipH=false, photoFlipV=false;
+let deferredPrompt;
+let notifSettings=JSON.parse(localStorage.getItem("maryse_notif_settings")||'{"enabled":false,"time":"17:00","days":[1,2,3,4,5],"message":"📚 ¿Ya practicaste hoy?"}');
+const BACKUP_KEYS=["maryse_completed","maryse_xp","maryse_level","maryse_streak","maryse_diary","maryse_sent_invites","maryse_received_invites","maryse_friends","maryse_theme","maryse_dark_mode","maryse_avatar","maryse_last_mood","maryse_mama_playlist","maryse_notif_settings","maryse_dad_completadas"];
+const TOTAL_LESSONS=16;
+
+// ==================== NUEVO RINCÓN DE PAPÁ ====================
+const dadWeek = [
+    { dia: "Lunes", emoji: "💌", carta: "Eres mucho más de lo que crees. Comienza la semana con valentía. Confío en ti.", articulo: "El poder de comenzar la semana con 3 objetivos claros. Los pequeños logros construyen grandes cambios.", consejo: "Escribe 3 objetivos realistas para hoy.", actividad: "Misión del lunes: Cumple un objetivo y compártelo con papá." },
+    { dia: "Martes", emoji: "😢", carta: "Todas las emociones son válidas. No las escondas, escúchalas.", articulo: "Entendiendo las emociones: nombrar una emoción la reduce.", consejo: "Escribe cómo te sientes ahora mismo sin juzgarlo.", actividad: "Diario emocional: Dibuja 3 emociones del día y comparte una con papá." },
+    { dia: "Miércoles", emoji: "👭", carta: "Las amigas que suman te ven brillar. Rodéate de personas que te impulsen.", articulo: "Amistades que suman: cómo identificar relaciones saludables.", consejo: "Regala un cumplido sincero a una amiga.", actividad: "Mensaje a una amiga: Envía un audio o nota bonita." },
+    { dia: "Jueves", emoji: "🪞", carta: "Mírate al espejo: 'Soy suficiente'. No necesitas ser perfecta.", articulo: "Construir confianza: el ejercicio del espejo.", consejo: "Repite frente al espejo: 'Soy suficiente, soy valiosa'.", actividad: "Ejercicio del espejo: Con papá, díganse algo positivo." },
+    { dia: "Viernes", emoji: "🌟", carta: "Tus sueños importan. Visualiza, cree, actúa.", articulo: "Perseguir sueños: la visualización activa el cerebro.", consejo: "Cierra los ojos 2 minutos e imagina tu sueño cumplido.", actividad: "Mapa de sueños: Dibuja o pega imágenes de tus metas." }
+];
+
+function renderDad() {
+    let completadas = JSON.parse(localStorage.getItem('maryse_dad_completadas') || '[]');
+    document.getElementById("dadContainer").innerHTML = `
+        <div class="card">
+            <div class="card-title">👨‍👧 Rincón de Papá · Semana de crecimiento</div>
+            <p style="margin-bottom:16px;">📅 Cada día: una carta, un artículo, un consejo y una actividad para compartir.</p>
+            <div class="dad-week-grid">
+                ${dadWeek.map(day => `
+                    <div class="dad-day-card">
+                        <div class="dad-day-header"><span>${day.emoji}</span><span>${day.dia}</span></div>
+                        <div class="dad-section"><strong>💌 Carta</strong><br>“${day.carta}”</div>
+                        <div class="dad-section"><strong>📖 Artículo</strong><br>${day.articulo}</div>
+                        <div class="dad-section"><strong>💡 Consejo</strong><br>${day.consejo}</div>
+                        <div class="dad-section">
+                            <strong>🎯 Actividad</strong><br>${day.actividad}<br>
+                            <button class="btn-small" onclick="marcarActividadDad('${day.dia}')">${completadas.includes(day.dia) ? '✅ Ya completada' : '✅ Marcar hecha (+10 XP)'}</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function marcarActividadDad(dia) {
+    let completadas = JSON.parse(localStorage.getItem('maryse_dad_completadas') || '[]');
+    if (!completadas.includes(dia)) {
+        completadas.push(dia);
+        localStorage.setItem('maryse_dad_completadas', JSON.stringify(completadas));
+        userXP += 10;
+        if (userXP >= userLevel * 100) { userLevel++; localStorage.setItem("maryse_level", userLevel); }
+        localStorage.setItem("maryse_xp", userXP);
+        updateProfile();
+        renderDad();
+        alert(`🎉 ¡Actividad del ${dia} completada! +10 XP`);
+    } else {
+        alert(`Ya completaste la actividad del ${dia}. ¡Sigue así!`);
+    }
+}
+
+// ==================== RELOJ EN VIVO ====================
+function updateDadClock() {
+    const clockEl = document.getElementById('dadLiveClock');
+    const dateEl = document.getElementById('dadLiveDate');
+    if (clockEl) {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+        if (dateEl) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = now.toLocaleDateString('es-ES', options);
+        }
+    }
+}
+setInterval(updateDadClock, 1000);
+
+// ==================== FUNCIONES PRINCIPALES ====================
+function showView(vn){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
+    if(target)target.classList.add('active');
+    if(vn==='academy'){renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderFlashcardModes();loadFlashcards();renderLessons();}
+    if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
+    if(vn==='games'){switchGame(currentGame);}
+    if(vn==='dad'){renderDad();updateDadClock();}
+    if(vn==='karaoke')renderKaraokeSongs();
+    if(vn==='diary')renderDiary();
+    if(vn==='friends')renderAllInvites();
+    if(vn==='theme')loadTheme();
+    if(vn==='profile'){updateProfile();loadNotifSettings();}
+    window.scrollTo(0,0);
+}
+
+function getCurrentWeekInfo(){const startDate=new Date(2025,5,1);const now=new Date();const diffWeeks=Math.floor((now-startDate)/(1000*60*60*24*7));let effectiveWeek=testWeekOverride!==null?testWeekOverride:(diffWeeks%8);return{weekNumber:effectiveWeek+1,cycleIndex:effectiveWeek,theme:weeklyThemes[effectiveWeek]};}
+function changeTestWeek(){const val=document.getElementById("weekSelector").value;testWeekOverride=val==="auto"?null:parseInt(val);updateWeeklyDisplay();if(document.getElementById("viewAcademy").classList.contains("active")){renderVocab();renderFlashcardModes();loadFlashcards();renderLessons();}if(document.getElementById("viewDiscover").classList.contains("active")){renderDiscoverFilters();renderArticles();renderMomActivities();}}
+function updateWeeklyDisplay(){const wi=getCurrentWeekInfo();const t=wi.theme;document.getElementById('weekThemeHero').innerHTML=`<h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3><p>${t.desc}</p>`;document.getElementById('weekThemeHero').style.background=`linear-gradient(135deg, ${t.color}, white)`;const badge=`<span class="weekly-content-badge">${t.emoji} ${t.name}</span>`;document.getElementById('academyBadge').innerHTML=badge;document.getElementById('discoverBadge').innerHTML=badge;}
+function getVocabData(){try{const ci=getCurrentWeekInfo().cycleIndex;const wv=weeklyVocab[ci];if(wv&&wv[currentLang])return{"Tema de la semana":wv[currentLang]};}catch(e){}return baseVocabData[currentLang]||baseVocabData["en"];}
+function getSlangData(){try{const ci=getCurrentWeekInfo().cycleIndex;const ws=weeklySlang[ci];if(ws&&ws[currentLang])return ws[currentLang];}catch(e){}return baseSlangData[currentLang]||baseSlangData["en"];}
+function getLessons(){try{const ci=getCurrentWeekInfo().cycleIndex;const wl=weeklyLessons[ci];if(wl&&wl[currentLang])return wl[currentLang];}catch(e){}return currentLang==="en"?baseEnglishLessons:baseFrenchLessons;}
+function renderVocab(){const d=getVocabData();const packs=Object.keys(d);document.getElementById("vocabSection").innerHTML=`<div class="badge">📖 Vocabulario</div><div id="vocabPacks">${packs.map(p=>`<span class="vocab-pack" data-pack="${p}">📦 ${p}</span>`).join('')}</div><div id="vocabWords" class="vocab-words"></div>`;if(packs.length){document.getElementById("vocabWords").innerHTML=d[packs[0]].map(item=>{const word=item.en||item.fr;return`<span class="word-card">${word} → ${item.es}</span>`;}).join('');}document.querySelectorAll(".vocab-pack").forEach(el=>el.addEventListener("click",()=>{const pack=el.getAttribute("data-pack");document.getElementById("vocabWords").innerHTML=d[pack].map(item=>{const word=item.en||item.fr;return`<span class="word-card">${word} → ${item.es}</span>`;}).join('');}));}
+function renderPronunciation() {
+    document.getElementById("pronunciationSection").innerHTML = `
+        <div class="badge">🗣️ FONÉTICA · 6 sonidos esenciales</div>
+        ${pronData[currentLang].map(s => `
+            <div class="sound-card">
+                <div class="sound-word">🔊 ${s.sound}</div>
+                <div style="font-size:0.8rem; margin: 4px 0;">${s.desc}</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                    ${s.words.map(w => `<button class="btn" style="display:inline-block;width:auto;padding:4px 12px;" onclick="speakText('${w}','${currentLang}')">${w}</button>`).join('')}
+                </div>
+            </div>
+        `).join('')}
+    `;
+}
+function renderPodcasts() {
+    document.getElementById("podcastSection").innerHTML = `
+        <div class="badge">📚 RESOURCES · Podcasts recomendados</div>
+        ${podcasts[currentLang].map(p => `
+            <div class="podcast-item" onclick="window.open('${p.link}','_blank')">
+                <div>
+                    <strong>🎙️ ${p.title}</strong>
+                    <br><small style="color:var(--subtext);">${p.desc} · Nivel ${p.level}</small>
+                </div>
+                <div>▶</div>
+            </div>
+        `).join('')}
+    `;
+}
+function renderConjugation() {
+    const data = conjugationData[currentLang];
+    const container = document.getElementById("conjugationGrid");
+    if (!container) return;
+    container.innerHTML = data.map(verb => `
+        <div class="conjugation-card" onclick="openConjugation('${verb.verb}')">
+            <div class="conjugation-title">${verb.title}</div>
+            <div class="conjugation-lang">${currentLang === 'en' ? '🇬🇧 English' : '🇫🇷 Français'}</div>
+            <div class="conjugation-preview">💡 Ej: ${verb.examples[0]}</div>
+        </div>
+    `).join('');
+}
+function openConjugation(verbName) {
+    const data = conjugationData[currentLang];
+    const verb = data.find(v => v.verb === verbName);
+    if (!verb) return;
+    let conjugationsHtml = '<table style="width:100%; border-collapse: collapse; margin: 16px 0;">';
+    for (const [person, conj] of Object.entries(verb.conjugations)) {
+        conjugationsHtml += `<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;"><strong>${person}</strong></td><td style="padding: 8px;">${conj}<\/td><\/tr>`;
+    }
+    conjugationsHtml += '<\/table>';
+    let exercisesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejercicio rápido:</strong><br>';
+    verb.exercises.forEach((ex, idx) => {
+        exercisesHtml += `<div style="margin: 8px 0;">${idx+1}. ${ex.prompt} <input type="text" id="ex_${idx}" style="width: 80px; display: inline-block; margin-left: 8px;" placeholder="_____"> <button class="btn-small" onclick="checkConjugationExercise('${verb.verb}', ${idx})">✓</button> <span id="ex_result_${idx}"></span></div>`;
+    });
+    exercisesHtml += '</div>';
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>📖 ${verb.title}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div><strong>🔊 Escucha la pronunciación:</strong> <button class="btn-small" onclick="speakText('${verb.verb}','${currentLang}')">🔊 ${verb.verb}</button></div>
+            ${conjugationsHtml}
+            <div><strong>📌 Ejemplos:</strong><ul>${verb.examples.map(ex => `<li>${ex}</li>`).join('')}</ul></div>
+            ${exercisesHtml}
+        </div>
+    `;
+    document.body.appendChild(m);
+}
+function checkConjugationExercise(verbName, exerciseIndex) {
+    const data = conjugationData[currentLang];
+    const verb = data.find(v => v.verb === verbName);
+    if (!verb) return;
+    const userAnswer = document.getElementById(`ex_${exerciseIndex}`).value.trim().toLowerCase();
+    const correctAnswer = verb.exercises[exerciseIndex].answer;
+    const resultSpan = document.getElementById(`ex_result_${exerciseIndex}`);
+    if (userAnswer === correctAnswer) {
+        resultSpan.innerHTML = ' ✅ ¡Correcto!';
+        resultSpan.style.color = '#059669';
+        userXP += 2;
+        localStorage.setItem("maryse_xp", userXP);
+        updateProfile();
+    } else {
+        resultSpan.innerHTML = ` ❌ Incorrecto. La respuesta es "${correctAnswer}".`;
+        resultSpan.style.color = '#dc2626';
+    }
+}
+function renderLessons(){const lessons=getLessons();document.getElementById("lessonsContainer").innerHTML=lessons.map(l=>`<div class="lesson-card" onclick="openLesson('${l.id}')"><div class="lesson-level">${l.level} · ${l.duration}min</div><div class="card-title">${l.title}</div><div>${completedLessons.includes(l.id)?"✅":"📖"}</div></div>`).join('');document.querySelectorAll(".lang-btn").forEach(b=>b.classList.remove("active"));document.getElementById(`lang-${currentLang}`).classList.add("active");}
+function openLesson(id){const lessons=getLessons();const l=lessons.find(l=>l.id===id);if(!l)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📚 Lección</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${l.title}</div><div style="background:#f8f6ff;padding:12px;border-radius:16px;">📌 ${l.taskEs}</div><ul>${l.phrases.map((p,i)=>`<li><strong>${p}</strong> → ${l.trans[i]} <button class="btn" onclick="speakText('${p}','${currentLang}')">🔊</button></li>`).join('')}</ul><button class="btn btn-primary" onclick="completeLesson('${l.id}')" style="width:100%;">✅ Marcar (+20 XP)</button></div>`;document.body.appendChild(m);}
+function completeLesson(id){if(!completedLessons.includes(id)){completedLessons.push(id);localStorage.setItem("maryse_completed",JSON.stringify(completedLessons));userXP+=20;if(userXP>=userLevel*100){userLevel++;localStorage.setItem("maryse_level",userLevel);}localStorage.setItem("maryse_xp",userXP);autoBackup();if(completedLessons.length>=TOTAL_LESSONS){setTimeout(()=>{alert("🎉🏆 ¡FELICIDADES!");},600);}alert("🎉 +20 XP!");renderLessons();updateProfile();}document.querySelector('.modal-overlay')?.remove();}
+function renderFlashcardModes(){document.getElementById("flashcardModes").innerHTML=`<button class="flashcard-mode-btn ${flashcardMode==='vocab'?'active':''}" onclick="switchFlashMode('vocab')">📖 Vocabulaire</button><button class="flashcard-mode-btn ${flashcardMode==='slang'?'active':''}" onclick="switchFlashMode('slang')">🗣️ Slang</button>`;}
+function switchFlashMode(mode){flashcardMode=mode;renderFlashcardModes();loadFlashcards();}
+function loadFlashcards(){const allCards=[];if(flashcardMode==="vocab"){const data=getVocabData();Object.keys(data).forEach(pack=>{data[pack].forEach(item=>{const word=item.en||item.fr;allCards.push({front:word,back:item.es,type:"vocab",pack:pack});});});}else{getSlangData().forEach(item=>{allCards.push({front:item.phrase,back:item.meaning,context:item.context,type:"slang",level:item.level});});}flashcardDeck=allCards.sort(()=>Math.random()-0.5);flashcardIndex=0;flashcardCorrect=0;flashcardTotal=0;flashcardFlipped=false;updateFlashScore();showFlashcard();}
+function showFlashcard(){const container=document.getElementById("flashcardContainer");if(flashcardIndex>=flashcardDeck.length){container.innerHTML=`<div class="flashcard"><div>🎉<br>Score: ${flashcardCorrect}/${flashcardTotal}</div></div><div class="flashcard-actions"><button class="flashcard-btn info" onclick="loadFlashcards()">🔁</button></div>`;return;}const card=flashcardDeck[flashcardIndex];flashcardFlipped=false;const flag=currentLang==="en"?"🇬🇧":"🇫🇷";container.innerHTML=`<div class="flashcard" id="flashcard" onclick="flipFlashcard()"><button class="audio-btn" onclick="event.stopPropagation();speakText('${card.front.replace(/'/g,"\\'")}','${currentLang}')">🔊</button><div><div style="font-size:2rem;">${flag}</div><div>${card.front}</div>${card.context?`<div style="font-size:0.7rem;">"${card.context}"</div>`:''}</div></div><div class="flashcard-actions"><button class="flashcard-btn success" onclick="flashcardResult(true)">✅</button><button class="flashcard-btn danger" onclick="flashcardResult(false)">❌</button></div>`;}
+function flipFlashcard(){if(flashcardFlipped)return;flashcardFlipped=true;const card=flashcardDeck[flashcardIndex];const fc=document.getElementById("flashcard");if(fc)fc.innerHTML=`<button class="audio-btn" onclick="speakText('${card.front.replace(/'/g,"\\'")}','${currentLang}')">🔊</button><div><div style="font-size:2rem;">🇪🇸</div><div>→ ${card.back}</div></div>`;}
+function flashcardResult(correct){flashcardTotal++;if(correct)flashcardCorrect++;updateFlashScore();flashcardIndex++;setTimeout(showFlashcard,300);}
+function nextFlashcard(){flashcardIndex++;flashcardFlipped=false;showFlashcard();}
+function updateFlashScore(){const el=document.getElementById("flashScore");if(el)el.textContent=`Score: ${flashcardCorrect}/${flashcardTotal}`;}
+function getArticlesData(){try{const a=weeklyArticles[getCurrentWeekInfo().cycleIndex];return a&&a.length>0?a:baseArticles;}catch(e){return baseArticles;}}
+function getMomActivitiesData(){try{const a=weeklyMomActivities[getCurrentWeekInfo().cycleIndex];return a&&a.length>0?a:baseMomActivities;}catch(e){return baseMomActivities;}}
+const categories=["todos",...new Set(getArticlesData().map(a=>a.category))];let currentFilter="todos";
+function renderDiscoverFilters(){document.getElementById("discoverFilters").innerHTML=categories.map(c=>`<div class="filter-chip ${currentFilter===c?'active':''}" data-filter="${c}">${c}</div>`).join('');document.querySelectorAll(".filter-chip").forEach(el=>el.addEventListener("click",()=>{currentFilter=el.getAttribute("data-filter");renderDiscoverFilters();renderArticles();}));}
+function renderArticles(){const articles=getArticlesData();let f=currentFilter==="todos"?articles:articles.filter(a=>a.category===currentFilter);document.getElementById("articlesContainer").innerHTML=f.map(a=>`<div class="article-card" onclick="openArticle(${a.id})"><div class="article-icon">${a.icon}</div><div class="article-content"><div class="article-category">${a.category}</div><div class="card-title">${a.title}</div><div class="article-excerpt">${a.excerpt}</div></div></div>`).join('');}
+function openArticle(id){const a=getArticlesData().find(a=>a.id===id);if(!a)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>${a.category}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${a.title}</div><div>${a.content}</div></div>`;document.body.appendChild(m);}
+function renderMomActivities(){const activities=getMomActivitiesData();document.getElementById("momSection").innerHTML=`<div class="badge">👩‍👧 Actividad de la semana</div>${activities.map(act=>`<div class="mom-card" onclick="openMomActivity('${act.id}')"><h3>${act.title}</h3><p>${act.description}</p></div>`).join('')}`;}
+function openMomActivity(id){const act=getMomActivitiesData().find(a=>a.id===id);if(!act)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>👩‍👧 ${act.type}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${act.title}</div><div>${act.steps.replace(/\n/g,'<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div></div>`;document.body.appendChild(m);}
+function getCycleDay(){return Math.floor((new Date()-new Date(2025,0,1))/(1000*60*60*24))%4;}
+function getGameWords(){const words=[];const ci=getCurrentWeekInfo().cycleIndex;const wv=weeklyVocab[ci];if(wv&&wv[currentLang]){wv[currentLang].forEach(item=>{words.push({front:item.en||item.fr,back:item.es});});}if(words.length===0){words.push({front:"hello",back:"hola"},{front:"friend",back:"amigo"},{front:"love",back:"amor"},{front:"dream",back:"sueño"});}return words;}
+function switchGame(game){currentGame=game;document.querySelectorAll(".game-btn").forEach(b=>b.classList.remove("active"));document.querySelector(`.game-btn[onclick="switchGame('${game}')"]`).classList.add("active");if(game==="memory")initMemoryGame();if(game==="quiz")initSpeedQuiz();if(game==="scramble")initWordScramble();}
+function initMemoryGame(){const words=getGameWords();const pairs=words.slice(0,8);memoryCards=[...pairs.flatMap(p=>[{text:p.front,pair:p.front,type:'word'},{text:p.back,pair:p.front,type:'trans'}])].sort(()=>Math.random()-0.5);memoryFlipped=[];memoryMatched=[];memoryLocked=false;renderMemoryGame();}
+function renderMemoryGame(){document.getElementById("gameContainer").innerHTML=`<div class="memory-grid" id="memoryGrid"></div><div style="text-align:center;margin-top:8px;"><span id="memoryScore">Pares: ${memoryMatched.length}/${memoryCards.length/2}</span></div><button class="btn btn-primary" onclick="initMemoryGame()" style="width:100%;margin-top:12px;">🔄 Nuevo juego</button>`;document.getElementById("memoryGrid").innerHTML=memoryCards.map((c,i)=>{const isFlipped=memoryFlipped.includes(i)||memoryMatched.includes(c.pair);const isMatched=memoryMatched.includes(c.pair);return`<div class="memory-card ${isFlipped?'flipped':''} ${isMatched?'matched':''}" onclick="flipMemoryCard(${i})">${isFlipped?c.text:'?'}</div>`;}).join('');}
+function flipMemoryCard(i){if(memoryLocked||memoryFlipped.includes(i)||memoryMatched.includes(memoryCards[i].pair))return;memoryFlipped.push(i);renderMemoryGame();if(memoryFlipped.length===2){memoryLocked=true;const[a,b]=memoryFlipped;if(memoryCards[a].pair===memoryCards[b].pair&&memoryCards[a].type!==memoryCards[b].type){memoryMatched.push(memoryCards[a].pair);memoryFlipped=[];memoryLocked=false;renderMemoryGame();if(memoryMatched.length===memoryCards.length/2){userXP+=15;localStorage.setItem("maryse_xp",userXP);setTimeout(()=>alert("🎉 +15 XP!"),300);}}else{setTimeout(()=>{memoryFlipped=[];memoryLocked=false;renderMemoryGame();},800);}}}
+function initSpeedQuiz(){quizWords=getGameWords().sort(()=>Math.random()-0.5);quizIndex=0;quizScore=0;quizTotal=0;renderSpeedQuiz();}
+function renderSpeedQuiz(){if(quizIndex>=quizWords.length){document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:3rem;">🎉</div><div>Score: ${quizScore}/${quizTotal}</div><button class="btn btn-primary" onclick="initSpeedQuiz()" style="width:100%;margin-top:16px;">🔄 Nuevo quiz</button></div>`;return;}const word=quizWords[quizIndex];const options=[word.back];while(options.length<4){const rw=quizWords[Math.floor(Math.random()*quizWords.length)].back;if(!options.includes(rw))options.push(rw);}options.sort(()=>Math.random()-0.5);quizTimeLeft=10;document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;"><div style="font-size:2rem;font-weight:700;margin:12px 0;">${word.front}</div><div class="quiz-timer"><div class="quiz-timer-fill" id="quizTimerFill" style="width:100%;"></div></div><div id="quizOptions">${options.map(o=>`<div class="quiz-option" onclick="answerSpeedQuiz('${o.replace(/'/g,"\\'")}')">${o}</div>`).join('')}</div><div style="margin-top:8px;">Score: ${quizScore}/${quizTotal}</div></div>`;startQuizTimer();}
+function startQuizTimer(){if(quizTimer)clearInterval(quizTimer);quizTimer=setInterval(()=>{quizTimeLeft--;document.getElementById("quizTimerFill").style.width=(quizTimeLeft/10*100)+"%";if(quizTimeLeft<=0){clearInterval(quizTimer);quizTotal++;document.querySelectorAll(".quiz-option").forEach(o=>{if(o.textContent===quizWords[quizIndex].back)o.classList.add("correct");});setTimeout(()=>{quizIndex++;renderSpeedQuiz();},1000);}},1000);}
+function answerSpeedQuiz(answer){if(quizTimer)clearInterval(quizTimer);quizTotal++;const correct=quizWords[quizIndex].back;document.querySelectorAll(".quiz-option").forEach(o=>{o.style.pointerEvents="none";if(o.textContent===correct)o.classList.add("correct");if(o.textContent===answer&&answer!==correct)o.classList.add("wrong");});if(answer===correct){quizScore++;userXP+=5;localStorage.setItem("maryse_xp",userXP);}setTimeout(()=>{quizIndex++;renderSpeedQuiz();},800);}
+function initWordScramble(){scrambleWords=getGameWords().sort(()=>Math.random()-0.5);scrambleIndex=0;scrambleScore=0;renderWordScramble();}
+function renderWordScramble(){if(scrambleIndex>=scrambleWords.length){document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:3rem;">🎉</div><div>Score: ${scrambleScore}/${scrambleWords.length}</div><button class="btn btn-primary" onclick="initWordScramble()" style="width:100%;margin-top:16px;">🔄 Nuevo juego</button></div>`;return;}const word=scrambleWords[scrambleIndex];const letters=word.front.split('').sort(()=>Math.random()-0.5);scrambleAnswer=[];document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;"><div style="font-size:0.9rem;">Ordena: <strong>${word.back}</strong></div><div class="scramble-letters" id="scrambleLetters">${letters.map((l,i)=>`<div class="scramble-letter" onclick="pickScrambleLetter('${l}',${i})">${l}</div>`).join('')}</div><div class="scramble-answer" id="scrambleAnswer"></div><div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-success" onclick="checkScrambleAnswer()" style="flex:1;">✅</button><button class="btn btn-danger" onclick="resetScrambleAnswer()" style="flex:1;">🔄</button></div></div>`;}
+function pickScrambleLetter(letter,index){scrambleAnswer.push(letter);document.querySelectorAll(".scramble-letter")[index].classList.add("used");document.getElementById("scrambleAnswer").innerHTML=scrambleAnswer.map(l=>`<div class="scramble-answer-letter">${l}</div>`).join('');}
+function resetScrambleAnswer(){scrambleAnswer=[];document.querySelectorAll(".scramble-letter").forEach(el=>el.classList.remove("used"));document.getElementById("scrambleAnswer").innerHTML='';}
+function checkScrambleAnswer(){const correct=scrambleWords[scrambleIndex].front;const answer=scrambleAnswer.join('');if(answer.toLowerCase()===correct.toLowerCase()){scrambleScore++;userXP+=10;localStorage.setItem("maryse_xp",userXP);alert("✅ ¡Correcto! +10 XP");scrambleIndex++;renderWordScramble();}else{alert("❌ Incorrecto. Era: "+correct);scrambleIndex++;renderWordScramble();}}
+function previewDiaryPhoto(){const file=document.getElementById("diaryPhoto").files[0];if(!file)return;const reader=new FileReader();reader.onload=(e)=>{originalPhotoData=e.target.result;photoRotation=0;photoFlipH=false;photoFlipV=false;document.getElementById("photoEditor").style.display="block";document.getElementById("diaryPreview").style.display="none";loadImageToCanvas(originalPhotoData);};reader.readAsDataURL(file);}
+function loadImageToCanvas(dataUrl){const canvas=document.getElementById("photoCanvas");const ctx=canvas.getContext("2d");const img=new Image();img.onload=()=>{let w=img.width,h=img.height;const maxW=500,maxH=400;if(w>maxW){h=h*(maxW/w);w=maxW;}if(h>maxH){w=w*(maxH/h);h=maxH;}canvas.width=w;canvas.height=h;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(photoRotation*Math.PI/180);if(photoFlipH)ctx.scale(-1,1);if(photoFlipV)ctx.scale(1,-1);ctx.drawImage(img,-w/2,-h/2,w,h);ctx.restore();};img.src=dataUrl;}
+function rotatePhoto(degrees){photoRotation+=degrees;loadImageToCanvas(originalPhotoData);}
+function flipPhoto(direction){if(direction==='horizontal')photoFlipH=!photoFlipH;if(direction==='vertical')photoFlipV=!photoFlipV;loadImageToCanvas(originalPhotoData);}
+function centerPhoto(){photoRotation=0;photoFlipH=false;photoFlipV=false;loadImageToCanvas(originalPhotoData);}
+function resetPhoto(){photoRotation=0;photoFlipH=false;photoFlipV=false;loadImageToCanvas(originalPhotoData);}
+function applyEdit(){const canvas=document.getElementById("photoCanvas");diaryPhotoData=canvas.toDataURL("image/jpeg",0.9);document.getElementById("photoEditor").style.display="none";document.getElementById("diaryPreview").src=diaryPhotoData;document.getElementById("diaryPreview").style.display="block";}
+function saveDiaryEntry(){const title=document.getElementById("diaryTitle").value||"Sin título";const text=document.getElementById("diaryText").value;if(!text&&!diaryPhotoData)return alert("Escribe algo o sube una foto");diaryEntries.unshift({title,text,photo:diaryPhotoData,date:new Date().toISOString()});localStorage.setItem("maryse_diary",JSON.stringify(diaryEntries));document.getElementById("diaryTitle").value="";document.getElementById("diaryText").value="";document.getElementById("diaryPhoto").value="";document.getElementById("diaryPreview").style.display="none";document.getElementById("photoEditor").style.display="none";diaryPhotoData=null;originalPhotoData=null;renderDiary();}
+function renderDiary(){document.getElementById("diaryEntries").innerHTML=diaryEntries.length===0?"<p style='text-align:center;'>No hay recuerdos aún</p>":diaryEntries.map(e=>`<div class="diary-entry"><strong>${e.title}</strong><br><small>${new Date(e.date).toLocaleDateString()}</small>${e.text?'<p>'+e.text+'</p>':''}${e.photo?'<img src="'+e.photo+'">':''}</div>`).join('');}
+function generateFriendCode(){const code="MARYSE-"+Math.random().toString(36).substring(2,8).toUpperCase();sentInvites.unshift({code,createdAt:new Date().toISOString(),status:"pending"});localStorage.setItem("maryse_sent_invites",JSON.stringify(sentInvites));renderAllInvites();alert("✅ Código: "+code);}
+function addFriend(){const code=document.getElementById("friendCodeInput").value.trim();if(!code)return alert("Pega un código");if(receivedInvites.find(i=>i.code===code))return alert("Ya enviaste una solicitud");if(friends.find(f=>f.code===code))return alert("Ya está conectada");receivedInvites.unshift({code,createdAt:new Date().toISOString(),status:"pending"});localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites));document.getElementById("friendCodeInput").value="";renderAllInvites();alert("✅ Solicitud enviada");}
+function approveReceivedInvite(code){const invite=receivedInvites.find(i=>i.code===code);if(invite){invite.status="accepted";friends.push({code,name:"Amiga "+(friends.length+1),addedAt:new Date().toISOString()});localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites));localStorage.setItem("maryse_friends",JSON.stringify(friends));renderAllInvites();alert("✅ Aceptada!");}}
+function rejectReceivedInvite(code){const invite=receivedInvites.find(i=>i.code===code);if(invite){invite.status="rejected";localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites));renderAllInvites();alert("❌ Rechazada");}}
+function cancelSentInvite(code){sentInvites=sentInvites.filter(i=>i.code!==code);localStorage.setItem("maryse_sent_invites",JSON.stringify(sentInvites));renderAllInvites();}
+function removeFriend(code){friends=friends.filter(f=>f.code!==code);localStorage.setItem("maryse_friends",JSON.stringify(friends));renderAllInvites();}
+function renderAllInvites(){
+    document.getElementById("sentInvitesList").innerHTML=sentInvites.length===0?"<p style='font-size:0.65rem;'>No has enviado invitaciones</p>":sentInvites.map(i=>`<div class="friend-card" style="justify-content:space-between;"><div><strong>📤 ${i.code}</strong><br><small>${new Date(i.createdAt).toLocaleDateString()} · <span style="color:${i.status==='pending'?'#d97706':'#059669'}">${i.status==='pending'?'⏳':'✅'}</span></small></div>${i.status==='pending'?`<button class="btn btn-danger" onclick="cancelSentInvite('${i.code}')" style="font-size:0.6rem;padding:4px 10px;">Cancelar</button>`:''}</div>`).join('');
+    document.getElementById("receivedInvitesList").innerHTML=receivedInvites.length===0?"<p style='font-size:0.65rem;'>No has recibido invitaciones</p>":receivedInvites.map(i=>`<div class="friend-card" style="justify-content:space-between;"><div><strong>📥 ${i.code}</strong><br><small>${new Date(i.createdAt).toLocaleDateString()} · <span style="color:${i.status==='pending'?'#d97706':'#059669'}">${i.status==='pending'?'⏳':'✅'}</span></small></div>${i.status==='pending'?`<div style="display:flex;gap:4px;"><button class="btn btn-success" onclick="approveReceivedInvite('${i.code}')" style="font-size:0.6rem;padding:4px 10px;">✅</button><button class="btn btn-danger" onclick="rejectReceivedInvite('${i.code}')" style="font-size:0.6rem;padding:4px 10px;">❌</button></div>`:''}</div>`).join('');
+    document.getElementById("friendsList").innerHTML=friends.length===0?"<p style='font-size:0.65rem;'>No tienes amigas conectadas</p>":friends.map(f=>`<div class="friend-card"><div class="card-icon">👤</div><div><strong>${f.name}</strong><br><small>${f.code}</small></div></div>`).join('');
+}
+function applyPreset(emoji, primary, secondary) {
+    document.getElementById("themeColor").value = primary;
+    document.getElementById("themeColor2").value = secondary;
+    updateThemeColors(primary, secondary);
+    document.querySelectorAll(".theme-preset").forEach(el => { el.style.border = "2px solid transparent"; });
+    const activePreset = document.querySelector(`.theme-preset[data-primary="${primary}"]`);
+    if (activePreset) activePreset.style.border = `2px solid ${primary}`;
+    localStorage.setItem("maryse_theme", JSON.stringify({primary, secondary}));
+}
+function loadTheme() {
+    const saved = JSON.parse(localStorage.getItem("maryse_theme") || '{}');
+    const primary = saved.primary || "#8b5cf6";
+    const secondary = saved.secondary || "#c084fc";
+    document.getElementById("themeColor").value = primary;
+    document.getElementById("themeColor2").value = secondary;
+    updateThemeColors(primary, secondary);
+    document.querySelectorAll(".theme-preset").forEach(el => { el.style.border = "2px solid transparent"; if (el.getAttribute("data-primary") === primary) { el.style.border = `2px solid ${primary}`; } });
+}
+function updateThemeColors(p,s){document.documentElement.style.setProperty('--primary',p);document.documentElement.style.setProperty('--primary-light',s);}
+function updateTheme(){updateThemeColors(document.getElementById("themeColor").value,document.getElementById("themeColor2").value);}
+function saveTheme(){const p=document.getElementById("themeColor").value;const s=document.getElementById("themeColor2").value;localStorage.setItem("maryse_theme",JSON.stringify({primary:p,secondary:s}));updateThemeColors(p,s);alert("✅ Tema guardado!");}
+function updateProfile(){document.getElementById("profileStats").innerHTML=`<p>🏆 Nivel: ${userLevel}</p><p>⭐ XP: ${userXP}</p><p>🔥 Racha: ${userStreak}</p><p>📚 Lecciones: ${completedLessons.length}/${TOTAL_LESSONS}</p>`;const badges=[];if(completedLessons.length>=1)badges.push("🎓 Primer paso");if(completedLessons.length>=4)badges.push("📚 Estudiosa");if(completedLessons.length>=8)badges.push("🏆 Avanzada");if(completedLessons.length>=TOTAL_LESSONS)badges.push("👑 Corona completa");let dadCompletadas=JSON.parse(localStorage.getItem('maryse_dad_completadas')||'[]').length;if(dadCompletadas>=1)badges.push("💌 Primer día con papá");if(dadCompletadas>=3)badges.push("💖 Hija increíble");if(dadCompletadas>=5)badges.push("👑 Rincón de Papá completo");document.getElementById("badgesList").innerHTML=badges.length?badges.map(b=>`<div class="badge">${b}</div>`).join(''):"<div>🔒 Completa lecciones y actividades de papá</div>";}
+function speakText(t,l){const u=new SpeechSynthesisUtterance(t);u.lang=l==='es'?'es-ES':l==='fr'?'fr-FR':'en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
+function toggleDarkMode(){const d=document.body.classList.toggle("dark");localStorage.setItem("maryse_dark_mode",d);}
+function updateBirthdayCountdown(){const t=new Date();const b=new Date(t.getFullYear(),11,12);if(t>b)b.setFullYear(t.getFullYear()+1);const d=b-t;document.getElementById("days").innerText=Math.floor(d/86400000);document.getElementById("hours").innerText=Math.floor((d%86400000)/3600000);document.getElementById("minutes").innerText=Math.floor((d%3600000)/60000);document.getElementById("seconds").innerText=Math.floor((d%60000)/1000);}
+function updateGreeting(){const h=new Date().getHours();document.getElementById("greeting").innerHTML=`${h<12?"🌞 Buenos días":h<18?"🌤️ Buenas tardes":"🌙 Buenas noches"}, Maryse 👋`;}
+function loadAvatar(){const s=localStorage.getItem("maryse_avatar");const a=document.getElementById("avatarContent");if(s)a.innerHTML=`<img src="${s}" style="width:100%;height:100%;object-fit:cover;">`;else a.innerHTML="👧";}
+function changeAvatar(){const i=document.createElement("input");i.type="file";i.accept="image/*";i.onchange=(e)=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=(ev)=>{localStorage.setItem("maryse_avatar",ev.target.result);loadAvatar();};r.readAsDataURL(f);}};i.click();}
+function openMamaPlaylist(){window.open(mamaPlaylist.url,"_blank");}
+function loadThemeFromStorage(){const saved=JSON.parse(localStorage.getItem("maryse_theme")||'{}');if(saved.primary){updateThemeColors(saved.primary,saved.secondary||saved.primary);}}
+function autoBackup(){const b={};BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){try{b[k]=JSON.parse(v);}catch(e){b[k]=v;}}});b._lastAutoBackup=new Date().toISOString();localStorage.setItem("maryse_auto_backup",JSON.stringify(b));}
+function exportData(){const b={};BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){try{b[k]=JSON.parse(v);}catch(e){b[k]=v;}}});b._lastAutoBackup=new Date().toISOString();const blob=new Blob([JSON.stringify(b,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`maryse_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);document.getElementById("backupStatus").textContent="✅ Exportado: "+new Date().toLocaleString();}
+function importData(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const b=JSON.parse(e.target.result);let c=0;BACKUP_KEYS.forEach(k=>{if(b[k]!==undefined){const v=typeof b[k]==="object"?JSON.stringify(b[k]):b[k];localStorage.setItem(k,v);c++;}});document.getElementById("backupStatus").textContent=`✅ ${c} datos restaurados. Recarga.`;completedLessons=JSON.parse(localStorage.getItem("maryse_completed")||"[]");userXP=parseInt(localStorage.getItem("maryse_xp")||"0");userLevel=parseInt(localStorage.getItem("maryse_level")||"1");userStreak=parseInt(localStorage.getItem("maryse_streak")||"0");diaryEntries=JSON.parse(localStorage.getItem("maryse_diary")||"[]");sentInvites=JSON.parse(localStorage.getItem("maryse_sent_invites")||"[]");receivedInvites=JSON.parse(localStorage.getItem("maryse_received_invites")||"[]");friends=JSON.parse(localStorage.getItem("maryse_friends")||"[]");notifSettings=JSON.parse(localStorage.getItem("maryse_notif_settings")||'{"enabled":false}');loadAvatar();updateProfile();loadNotifSettings();renderDad();}catch(err){document.getElementById("backupStatus").textContent="❌ Error";}};reader.readAsText(file);input.value="";}
+function loadNotifSettings(){document.getElementById("notifEnabled").checked=notifSettings.enabled;document.getElementById("notifTime").value=notifSettings.time;document.getElementById("notifMessage").value=notifSettings.message;document.getElementById("notifSettings").style.display=notifSettings.enabled?"block":"none";document.querySelectorAll(".day-chip").forEach(chip=>{const day=parseInt(chip.getAttribute("data-day"));if(notifSettings.days.includes(day))chip.classList.add("active");else chip.classList.remove("active");});}
+function toggleNotifications(){notifSettings.enabled=document.getElementById("notifEnabled").checked;document.getElementById("notifSettings").style.display=notifSettings.enabled?"block":"none";if(notifSettings.enabled)requestNotifPermission();saveNotifSettings();}
+function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default'){Notification.requestPermission().then(perm=>{if(perm==='granted')scheduleAllNotifications();});}else if('Notification' in window&&Notification.permission==='granted'){scheduleAllNotifications();}}
+function toggleDay(day){if(notifSettings.days.includes(day))notifSettings.days=notifSettings.days.filter(d=>d!==day);else notifSettings.days.push(day);saveNotifSettings();loadNotifSettings();if(notifSettings.enabled)scheduleAllNotifications();}
+function saveNotifSettings(){notifSettings.time=document.getElementById("notifTime").value;notifSettings.message=document.getElementById("notifMessage").value;notifSettings.enabled=document.getElementById("notifEnabled").checked;localStorage.setItem("maryse_notif_settings",JSON.stringify(notifSettings));if(notifSettings.enabled)scheduleAllNotifications();}
+function scheduleAllNotifications(){if(!('serviceWorker' in navigator)||Notification.permission!=='granted'||!notifSettings.enabled)return;const[h,m]=notifSettings.time.split(':').map(Number);const today=new Date().getDay();if(notifSettings.days.includes(today)){navigator.serviceWorker.ready.then(reg=>{reg.active.postMessage({type:'schedule-notification',title:'Maryse ✨',message:notifSettings.message,hour:h,minute:m});});}}
+function testNotification(){if('Notification' in window&&Notification.permission==='granted'){new Notification('Maryse ✨',{body:notifSettings.message,vibrate:[200,100,200]});alert("✅ Notificación enviada!");}else if('Notification' in window&&Notification.permission==='default'){Notification.requestPermission().then(perm=>{if(perm==='granted')testNotification();});}else{alert("❌ Notificaciones bloqueadas.");}}
+function renderKaraokeSongs(){const f=karaokeFilter==="all"?karaokeSongs:karaokeSongs.filter(s=>s.language===karaokeFilter);document.getElementById("karaokeSongList").innerHTML=f.map(s=>`<div class="karaoke-song-item" onclick="window.open('${s.searchLink}','_blank')"><div><strong>${s.language==="en"?"🇬🇧":"🇫🇷"} ${s.title}</strong><br><small>${s.artist}</small></div></div>`).join('');document.getElementById("karaokeFilterAll").style.background=karaokeFilter==="all"?"var(--primary)":"var(--card)";document.getElementById("karaokeFilterEN").style.background=karaokeFilter==="en"?"var(--primary)":"var(--card)";document.getElementById("karaokeFilterFR").style.background=karaokeFilter==="fr"?"var(--primary)":"var(--card)";}
+function filterKaraokeSongs(lang){karaokeFilter=lang;renderKaraokeSongs();}
+function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById("installBtn").style.display="none";});}}
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById("installBtn").style.display="block";});
+document.addEventListener("visibilitychange",function(){if(document.hidden)autoBackup();});
+window.addEventListener("beforeunload",function(){autoBackup();});
+document.getElementById("lang-en").onclick=()=>{currentLang="en";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderFlashcardModes();loadFlashcards();renderLessons();};
+document.getElementById("lang-fr").onclick=()=>{currentLang="fr";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderFlashcardModes();loadFlashcards();renderLessons();};
+updateGreeting();updateBirthdayCountdown();setInterval(updateBirthdayCountdown,1000);loadAvatar();loadThemeFromStorage();
+if(localStorage.getItem("maryse_dark_mode")==="true")document.body.classList.add("dark");
+updateWeeklyDisplay();loadNotifSettings();if(notifSettings.enabled)requestNotifPermission();
+document.querySelectorAll(".mood-card").forEach(c=>c.addEventListener("click",function(){document.querySelectorAll(".mood-card").forEach(c=>c.classList.remove("selected"));this.classList.add("selected");localStorage.setItem("maryse_last_mood",this.getAttribute("data-mood"));}));
+window.showView=showView;window.openLesson=openLesson;window.completeLesson=completeLesson;
+window.openArticle=openArticle;window.openMomActivity=openMomActivity;
+window.speakText=speakText;window.toggleDarkMode=toggleDarkMode;window.changeAvatar=changeAvatar;
+window.openMamaPlaylist=openMamaPlaylist;
+window.loadFlashcards=loadFlashcards;window.flipFlashcard=flipFlashcard;
+window.flashcardResult=flashcardResult;window.nextFlashcard=nextFlashcard;window.switchFlashMode=switchFlashMode;
+window.switchGame=switchGame;window.flipMemoryCard=flipMemoryCard;
+window.answerSpeedQuiz=answerSpeedQuiz;window.pickScrambleLetter=pickScrambleLetter;
+window.resetScrambleAnswer=resetScrambleAnswer;window.checkScrambleAnswer=checkScrambleAnswer;
+window.filterKaraokeSongs=filterKaraokeSongs;
+window.saveDiaryEntry=saveDiaryEntry;window.previewDiaryPhoto=previewDiaryPhoto;
+window.rotatePhoto=rotatePhoto;window.flipPhoto=flipPhoto;window.centerPhoto=centerPhoto;window.resetPhoto=resetPhoto;window.applyEdit=applyEdit;
+window.generateFriendCode=generateFriendCode;window.addFriend=addFriend;
+window.approveReceivedInvite=approveReceivedInvite;window.rejectReceivedInvite=rejectReceivedInvite;
+window.cancelSentInvite=cancelSentInvite;window.removeFriend=removeFriend;
+window.applyPreset=applyPreset;window.updateTheme=updateTheme;window.saveTheme=saveTheme;window.installPWA=installPWA;
+window.exportData=exportData;window.importData=importData;
+window.changeTestWeek=changeTestWeek;
+window.toggleNotifications=toggleNotifications;window.toggleDay=toggleDay;
+window.saveNotifSettings=saveNotifSettings;window.testNotification=testNotification;
+window.marcarActividadDad=marcarActividadDad;
+window.renderConjugation=renderConjugation;
+window.openConjugation=openConjugation;
+window.checkConjugationExercise=checkConjugationExercise;
+</script>
+</body>
+</html>
