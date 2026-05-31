@@ -964,15 +964,15 @@ function renderConjugation() {
     if (!container) return;
     
     container.innerHTML = data.map(verb => {
-        let previewExample = "";
+        let previewExample = "¡Practica este verbo!";
         if (verb.examples && verb.examples.present && verb.examples.present.length > 0) {
             previewExample = verb.examples.present[0];
+        } else if (verb.examples && verb.examples.length > 0) {
+            previewExample = verb.examples[0];
         } else if (verb.tenses && verb.tenses.present) {
             const firstPerson = Object.values(verb.tenses.present)[0];
             const firstSubject = Object.keys(verb.tenses.present)[0];
             previewExample = `${firstSubject} ${firstPerson}`;
-        } else {
-            previewExample = "Conjuga este verbo";
         }
         return `
             <div class="conjugation-card" onclick="openConjugation('${verb.verb}')">
@@ -983,7 +983,7 @@ function renderConjugation() {
         `;
     }).join('');
 }
-}
+
 function openConjugation(verbName) {
     const data = conjugationData[currentLang];
     const verb = data.find(v => v.verb === verbName);
@@ -991,24 +991,23 @@ function openConjugation(verbName) {
     
     const tenseNames = {
         present: "📌 PRESENTE",
-        past: "📌 PASADO",
-        future: "📌 FUTURO"
+        past: "📌 PASADO (PAST)",
+        future: "📌 FUTURO (FUTURE)"
     };
     
     let conjugationsHtml = '';
-    
     for (const [tenseKey, tenseName] of Object.entries(tenseNames)) {
         const tenseData = verb.tenses[tenseKey];
-        if (tenseData) {
+        if (tenseData && Object.keys(tenseData).length > 0) {
             conjugationsHtml += `<div style="margin-top: 16px;"><strong>${tenseName}</strong></div>`;
-            conjugationsHtml += '<table style="width:100%; border-collapse: collapse; margin: 8px 0;">';
+            conjugationsHtml += `<table style="width:100%; border-collapse: collapse; margin: 8px 0;">`;
             for (const [person, conj] of Object.entries(tenseData)) {
                 conjugationsHtml += `<tr style="border-bottom: 1px solid var(--border);">
                                         <td style="padding: 8px;"><strong>${person}</strong></td>
-                                        <td style="padding: 8px;">${conj}<\/td>
-                                     <\/tr>`;
+                                        <td style="padding: 8px;">${conj}</td>
+                                      </tr>`;
             }
-            conjugationsHtml += '<\/table>';
+            conjugationsHtml += `</table>`;
         }
     }
     
@@ -1025,7 +1024,7 @@ function openConjugation(verbName) {
     let exercisesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejercicios rápidos (+2 XP cada uno):</strong><br>';
     verb.exercises.forEach((ex, idx) => {
         exercisesHtml += `<div style="margin: 8px 0;">
-                            ${ex.prompt} 
+                            ${ex.prompt}
                             <input type="text" id="ex_${idx}" style="width: 100px; display: inline-block; margin-left: 8px;" placeholder="_____">
                             <button class="btn-small" onclick="checkConjugationExercise('${verb.verb}', ${idx})">✓</button>
                             <span id="ex_result_${idx}"></span>
@@ -1049,23 +1048,24 @@ function openConjugation(verbName) {
     `;
     document.body.appendChild(m);
 }
+
 function checkConjugationExercise(verbName, exerciseIndex) {
     const data = conjugationData[currentLang];
     const verb = data.find(v => v.verb === verbName);
     if (!verb) return;
     
     const userAnswer = document.getElementById(`ex_${exerciseIndex}`).value.trim().toLowerCase();
-    const correctAnswer = verb.exercises[exerciseIndex].answer;
+    const correctAnswer = verb.exercises[exerciseIndex].answer.toLowerCase();
     const resultSpan = document.getElementById(`ex_result_${exerciseIndex}`);
     
-    if (userAnswer === correctAnswer.toLowerCase()) {
+    if (userAnswer === correctAnswer) {
         resultSpan.innerHTML = ' ✅ ¡Correcto!';
         resultSpan.style.color = '#059669';
         userXP += 2;
         localStorage.setItem("maryse_xp", userXP);
         updateProfile();
     } else {
-        resultSpan.innerHTML = ` ❌ Incorrecto. La respuesta es "${correctAnswer}".`;
+        resultSpan.innerHTML = ` ❌ Incorrecto. La respuesta es "${verb.exercises[exerciseIndex].answer}".`;
         resultSpan.style.color = '#dc2626';
     }
 }
