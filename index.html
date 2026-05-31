@@ -839,117 +839,245 @@ const conjugationData = {
 };
 const dadCartas=["Tu valor no depende de lo que logras, sino de quién eres.","No necesitas ser perfecta.","Perder no es caer.","El miedo se transforma en valentía."];
 // ==================== GRAMÁTICA SEMANAL (8 semanas) ====================
+// ==================== GRAMÁTICA SEMANAL (INGLÉS Y FRANCÉS) ====================
 const weeklyGrammar = {
     0: {
-        title: "📖 Artículos · a / an / the",
-        explanation: "Usamos 'a' antes de palabras que empiezan con sonido consonante. Usamos 'an' antes de palabras que empiezan con sonido vocal. Usamos 'the' cuando hablamos de algo específico o ya mencionado.",
-        examples: [
-            { en: "I see a dog.", es: "Veo un perro." },
-            { en: "I see an apple.", es: "Veo una manzana." },
-            { en: "The dog is mine.", es: "El perro es mío." }
-        ],
-        exercises: [
-            { prompt: "I see ___ elephant.", answer: "an", hint: "elephant empieza con vocal" },
-            { prompt: "She has ___ idea.", answer: "an", hint: "idea empieza con vocal" },
-            { prompt: "___ sun is bright.", answer: "The", hint: "es algo específico" }
-        ]
+        en: {
+            title: "Articles · a / an / the",
+            explanation: "Use 'a' before consonant sounds. Use 'an' before vowel sounds. Use 'the' for something specific or already mentioned.",
+            examples: [
+                { text: "I see a dog.", translation: "Veo un perro." },
+                { text: "I see an apple.", translation: "Veo una manzana." },
+                { text: "The dog is mine.", translation: "El perro es mío." }
+            ],
+            exercises: [
+                { prompt: "I see ___ elephant.", answer: "an", hint: "elephant starts with a vowel sound" },
+                { prompt: "She has ___ idea.", answer: "an", hint: "idea starts with a vowel sound" },
+                { prompt: "___ sun is bright.", answer: "The", hint: "specific thing" }
+            ]
+        },
+        fr: {
+            title: "Les articles · un / une / des / le / la / les",
+            explanation: "En français: 'un' (masculin singulier), 'une' (féminin singulier), 'des' (pluriel). 'le' (masculin défini), 'la' (féminin défini), 'les' (pluriel défini).",
+            examples: [
+                { text: "Je vois un chien.", translation: "Veo un perro." },
+                { text: "Je vois une pomme.", translation: "Veo una manzana." },
+                { text: "Le chien est à moi.", translation: "El perro es mío." }
+            ],
+            exercises: [
+                { prompt: "Je vois ___ chat.", answer: "un", hint: "chat est masculin" },
+                { prompt: "Elle a ___ idée.", answer: "une", hint: "idée est féminin" },
+                { prompt: "___ soleil est brillant.", answer: "Le", hint: "soleil est masculin défini" }
+            ]
+        }
     },
     1: {
-        title: "📖 Pronombres personales",
-        explanation: "Los pronombres personales en inglés son: I (yo), you (tú), he (él), she (ella), it (ello), we (nosotros), they (ellos/ellas). Siempre se escriben con mayúscula inicial solo 'I'.",
-        examples: [
-            { en: "I am happy.", es: "Yo estoy feliz." },
-            { en: "She is my teacher.", es: "Ella es mi profesora." },
-            { en: "They are friends.", es: "Ellos son amigos." }
-        ],
-        exercises: [
-            { prompt: "___ am a student.", answer: "I", hint: "primera persona singular" },
-            { prompt: "___ is my sister.", answer: "She", hint: "femenino singular" },
-            { prompt: "___ are playing soccer.", answer: "They", hint: "tercera persona plural" }
-        ]
+        en: {
+            title: "Personal Pronouns",
+            explanation: "Personal pronouns: I, you, he, she, it, we, they. Only 'I' is always capitalized.",
+            examples: [
+                { text: "I am happy.", translation: "Yo estoy feliz." },
+                { text: "She is my teacher.", translation: "Ella es mi profesora." },
+                { text: "They are friends.", translation: "Ellos son amigos." }
+            ],
+            exercises: [
+                { prompt: "___ am a student.", answer: "I", hint: "first person singular" },
+                { prompt: "___ is my sister.", answer: "She", hint: "feminine singular" },
+                { prompt: "___ are playing soccer.", answer: "They", hint: "third person plural" }
+            ]
+        },
+        fr: {
+            title: "Les pronoms personnels",
+            explanation: "Pronoms personnels: je, tu, il, elle, on, nous, vous, ils, elles. En français, le sujet est toujours exprimé.",
+            examples: [
+                { text: "Je suis heureuse.", translation: "Yo estoy feliz." },
+                { text: "Elle est ma prof.", translation: "Ella es mi profesora." },
+                { text: "Ils sont amis.", translation: "Ellos son amigos." }
+            ],
+            exercises: [
+                { prompt: "___ suis étudiante.", answer: "Je", hint: "première personne singulier" },
+                { prompt: "___ est ma sœur.", answer: "Elle", hint: "féminin singulier" },
+                { prompt: "___ jouent au foot.", answer: "Ils", hint: "troisième personne pluriel masculin" }
+            ]
+        }
     },
     2: {
-        title: "📖 Preposiciones de lugar · in / on / at",
-        explanation: "Usamos 'in' para espacios cerrados o grandes (ciudades, países). Usamos 'on' para superficies. Usamos 'at' para puntos específicos o direcciones.",
-        examples: [
-            { en: "I live in Mexico.", es: "Vivo en México." },
-            { en: "The book is on the table.", es: "El libro está en la mesa." },
-            { en: "Meet me at the station.", es: "Encuéntrame en la estación." }
-        ],
-        exercises: [
-            { prompt: "I am ___ home.", answer: "at", hint: "punto específico" },
-            { prompt: "She is ___ the park.", answer: "in", hint: "espacio abierto grande" },
-            { prompt: "The pen is ___ the desk.", answer: "on", hint: "superficie" }
-        ]
+        en: {
+            title: "Prepositions of place · in / on / at",
+            explanation: "Use 'in' for enclosed or large spaces. Use 'on' for surfaces. Use 'at' for specific points.",
+            examples: [
+                { text: "I live in Mexico.", translation: "Vivo en México." },
+                { text: "The book is on the table.", translation: "El libro está en la mesa." },
+                { text: "Meet me at the station.", translation: "Encuéntrame en la estación." }
+            ],
+            exercises: [
+                { prompt: "I am ___ home.", answer: "at", hint: "specific point" },
+                { prompt: "She is ___ the park.", answer: "in", hint: "large open space" },
+                { prompt: "The pen is ___ the desk.", answer: "on", hint: "surface" }
+            ]
+        },
+        fr: {
+            title: "Les prépositions de lieu · dans / sur / à",
+            explanation: "En français: 'dans' (à l'intérieur de), 'sur' (dessus), 'à' (à un endroit précis).",
+            examples: [
+                { text: "J'habite au Mexique.", translation: "Vivo en México." },
+                { text: "Le livre est sur la table.", translation: "El libro está sobre la mesa." },
+                { text: "Retrouve-moi à la gare.", translation: "Encuéntrame en la estación." }
+            ],
+            exercises: [
+                { prompt: "Je suis ___ la maison.", answer: "à", hint: "endroit précis" },
+                { prompt: "Elle est ___ le parc.", answer: "dans", hint: "à l'intérieur du parc" },
+                { prompt: "Le stylo est ___ le bureau.", answer: "sur", hint: "surface" }
+            ]
+        }
     },
     3: {
-        title: "📖 Formación de preguntas · Do / Does / Is / Are",
-        explanation: "Para formar preguntas en presente simple usamos 'Do' (I/you/we/they) y 'Does' (he/she/it). Con el verbo 'to be' usamos 'Is/Are'.",
-        examples: [
-            { en: "Do you like pizza?", es: "¿Te gusta la pizza?" },
-            { en: "Does she speak English?", es: "¿Ella habla inglés?" },
-            { en: "Is he your brother?", es: "¿Él es tu hermano?" }
-        ],
-        exercises: [
-            { prompt: "___ you want to go?", answer: "Do", hint: "segunda persona singular" },
-            { prompt: "___ she have a car?", answer: "Does", hint: "tercera persona singular" },
-            { prompt: "___ they ready?", answer: "Are", hint: "verbo to be plural" }
-        ]
+        en: {
+            title: "Question formation · Do / Does / Is / Are",
+            explanation: "Use 'Do' with I/you/we/they. Use 'Does' with he/she/it. Use 'Is/Are' with the verb 'to be'.",
+            examples: [
+                { text: "Do you like pizza?", translation: "¿Te gusta la pizza?" },
+                { text: "Does she speak English?", translation: "¿Ella habla inglés?" },
+                { text: "Is he your brother?", translation: "¿Él es tu hermano?" }
+            ],
+            exercises: [
+                { prompt: "___ you want to go?", answer: "Do", hint: "second person singular" },
+                { prompt: "___ she have a car?", answer: "Does", hint: "third person singular" },
+                { prompt: "___ they ready?", answer: "Are", hint: "to be plural" }
+            ]
+        },
+        fr: {
+            title: "La formation des questions",
+            explanation: "En français, on peut former des questions avec 'Est-ce que', l'inversion sujet-verbe, ou simplement la montée de la voix à l'oral.",
+            examples: [
+                { text: "Est-ce que tu aimes la pizza?", translation: "¿Te gusta la pizza?" },
+                { text: "Parle-t-elle anglais?", translation: "¿Ella habla inglés?" },
+                { text: "Il est ton frère?", translation: "¿Él es tu hermano?" }
+            ],
+            exercises: [
+                { prompt: "___ tu veux y aller?", answer: "Est-ce que", hint: "forme la plus courante" },
+                { prompt: "___-t-elle une voiture?", answer: "A", hint: "inversion avec avoir" },
+                { prompt: "Ils ___ prêts?", answer: "sont", hint: "inversion avec être" }
+            ]
+        }
     },
     4: {
-        title: "📖 Adjetivos calificativos · orden correcto",
-        explanation: "En inglés, los adjetivos siguen este orden: 1. Opinión (beautiful), 2. Tamaño (big), 3. Color (red), 4. Material (wooden) + sustantivo.",
-        examples: [
-            { en: "a beautiful big house", es: "una casa grande y bonita" },
-            { en: "a small red car", es: "un coche rojo pequeño" },
-            { en: "an old wooden table", es: "una mesa de madera vieja" }
-        ],
-        exercises: [
-            { prompt: "Ordena: red / a / small / car", answer: "a small red car", hint: "tamaño antes que color" },
-            { prompt: "Ordena: wooden / an / old / table", answer: "an old wooden table", hint: "edad antes que material" }
-        ]
+        en: {
+            title: "Adjective order",
+            explanation: "Order: 1. Opinion, 2. Size, 3. Color, 4. Material + noun.",
+            examples: [
+                { text: "a beautiful big house", translation: "una casa grande y bonita" },
+                { text: "a small red car", translation: "un coche rojo pequeño" },
+                { text: "an old wooden table", translation: "una mesa de madera vieja" }
+            ],
+            exercises: [
+                { prompt: "Order: red / a / small / car", answer: "a small red car", hint: "size before color" },
+                { prompt: "Order: wooden / an / old / table", answer: "an old wooden table", hint: "age before material" }
+            ]
+        },
+        fr: {
+            title: "L'ordre des adjectifs",
+            explanation: "En français, la plupart des adjectifs vont APRÈS le nom. Certains adjectifs courts (beau, grand, petit, jeune, vieux) vont avant le nom.",
+            examples: [
+                { text: "une belle grande maison", translation: "una casa grande y bonita" },
+                { text: "une petite voiture rouge", translation: "un coche pequeño rojo" },
+                { text: "une vieille table en bois", translation: "una mesa de madera vieja" }
+            ],
+            exercises: [
+                { prompt: "Ordonne: rouge / une / petite / voiture", answer: "une petite voiture rouge", hint: "taille avant couleur, couleur après le nom" },
+                { prompt: "Ordonne: en bois / une / vieille / table", answer: "une vieille table en bois", hint: "âge avant matière" }
+            ]
+        }
     },
     5: {
-        title: "📖 Contables e incontables · some / any / a lot of",
-        explanation: "Usamos 'some' en oraciones afirmativas. Usamos 'any' en negativas y preguntas. Usamos 'a lot of' para grandes cantidades (válido para ambos).",
-        examples: [
-            { en: "I have some apples.", es: "Tengo algunas manzanas." },
-            { en: "I don't have any money.", es: "No tengo dinero." },
-            { en: "There are a lot of people.", es: "Hay mucha gente." }
-        ],
-        exercises: [
-            { prompt: "I have ___ friends.", answer: "some", hint: "oración afirmativa" },
-            { prompt: "Do you have ___ questions?", answer: "any", hint: "oración interrogativa" },
-            { prompt: "There is ___ water.", answer: "a lot of", hint: "gran cantidad" }
-        ]
+        en: {
+            title: "Countable vs Uncountable · some / any / a lot of",
+            explanation: "Use 'some' in affirmative sentences. Use 'any' in negatives and questions. Use 'a lot of' for large quantities.",
+            examples: [
+                { text: "I have some apples.", translation: "Tengo algunas manzanas." },
+                { text: "I don't have any money.", translation: "No tengo dinero." },
+                { text: "There are a lot of people.", translation: "Hay mucha gente." }
+            ],
+            exercises: [
+                { prompt: "I have ___ friends.", answer: "some", hint: "affirmative sentence" },
+                { prompt: "Do you have ___ questions?", answer: "any", hint: "interrogative" },
+                { prompt: "There is ___ water.", answer: "a lot of", hint: "large quantity" }
+            ]
+        },
+        fr: {
+            title: "Nombres comptables / incomptables · du / de la / des / de",
+            explanation: "En français: 'du' (masculin), 'de la' (féminin), 'des' (pluriel), 'de' (en négation).",
+            examples: [
+                { text: "Je veux du pain.", translation: "Quiero pan." },
+                { text: "Je ne veux pas de pain.", translation: "No quiero pan." },
+                { text: "Il y a beaucoup de monde.", translation: "Hay mucha gente." }
+            ],
+            exercises: [
+                { prompt: "Je veux ___ fromage.", answer: "du", hint: "fromage est masculin" },
+                { prompt: "Je veux ___ salade.", answer: "de la", hint: "salade est féminin" },
+                { prompt: "Je ne veux pas ___ pain.", answer: "de", hint: "négation" }
+            ]
+        }
     },
     6: {
-        title: "📖 Verbos modales · can / must / should",
-        explanation: "Usamos 'can' para habilidad o permiso. Usamos 'must' para obligación fuerte. Usamos 'should' para dar consejos o recomendaciones.",
-        examples: [
-            { en: "I can swim.", es: "Sé nadar / Puedo nadar." },
-            { en: "You must study.", es: "Debes estudiar." },
-            { en: "You should sleep early.", es: "Deberías dormir temprano." }
-        ],
-        exercises: [
-            { prompt: "I ___ speak two languages.", answer: "can", hint: "habilidad" },
-            { prompt: "You ___ wear a uniform at school.", answer: "must", hint: "obligación" },
-            { prompt: "You ___ eat more vegetables.", answer: "should", hint: "consejo" }
-        ]
+        en: {
+            title: "Modal verbs · can / must / should",
+            explanation: "Use 'can' for ability/permission. Use 'must' for strong obligation. Use 'should' for advice.",
+            examples: [
+                { text: "I can swim.", translation: "Sé nadar / Puedo nadar." },
+                { text: "You must study.", translation: "Debes estudiar." },
+                { text: "You should sleep early.", translation: "Deberías dormir temprano." }
+            ],
+            exercises: [
+                { prompt: "I ___ speak two languages.", answer: "can", hint: "ability" },
+                { prompt: "You ___ wear a uniform.", answer: "must", hint: "obligation" },
+                { prompt: "You ___ eat more vegetables.", answer: "should", hint: "advice" }
+            ]
+        },
+        fr: {
+            title: "Les verbes modaux · pouvoir / devoir / falloir",
+            explanation: "En français: 'pouvoir' (capacité/permission), 'devoir' (obligation), 'il faut' (nécessité impersonnelle).",
+            examples: [
+                { text: "Je peux nager.", translation: "Puedo nadar." },
+                { text: "Tu dois étudier.", translation: "Debes estudiar." },
+                { text: "Il faut dormir tôt.", translation: "Hay que dormir temprano." }
+            ],
+            exercises: [
+                { prompt: "Je ___ parler deux langues.", answer: "peux", hint: "capacité" },
+                { prompt: "Tu ___ porter un uniforme.", answer: "dois", hint: "obligation" },
+                { prompt: "Il ___ manger plus de légumes.", answer: "faut", hint: "conseil impersonnel" }
+            ]
+        }
     },
     7: {
-        title: "📖 Futuro con · will",
-        explanation: "Usamos 'will' + verbo para hablar de acciones futuras (decisiones espontáneas, predicciones, promesas). Es igual para todas las personas.",
-        examples: [
-            { en: "I will call you later.", es: "Te llamaré más tarde." },
-            { en: "She will be a doctor.", es: "Ella será doctora." },
-            { en: "We will help you.", es: "Te ayudaremos." }
-        ],
-        exercises: [
-            { prompt: "I ___ help you.", answer: "will", hint: "promesa" },
-            { prompt: "She ___ arrive tomorrow.", answer: "will", hint: "acción futura" },
-            { prompt: "They ___ win the game.", answer: "will", hint: "predicción" }
-        ]
+        en: {
+            title: "Future with · will",
+            explanation: "Use 'will' + verb for future actions (spontaneous decisions, predictions, promises). Same for all persons.",
+            examples: [
+                { text: "I will call you later.", translation: "Te llamaré más tarde." },
+                { text: "She will be a doctor.", translation: "Ella será doctora." },
+                { text: "We will help you.", translation: "Te ayudaremos." }
+            ],
+            exercises: [
+                { prompt: "I ___ help you.", answer: "will", hint: "promise" },
+                { prompt: "She ___ arrive tomorrow.", answer: "will", hint: "future action" },
+                { prompt: "They ___ win the game.", answer: "will", hint: "prediction" }
+            ]
+        },
+        fr: {
+            title: "Le futur proche · aller + infinitif",
+            explanation: "En français, le futur proche se forme avec le verbe 'aller' (aller) + infinitif. Exemple: 'je vais manger' (voy a comer).",
+            examples: [
+                { text: "Je vais t'appeler plus tard.", translation: "Te voy a llamar más tarde." },
+                { text: "Elle va être médecin.", translation: "Ella va a ser doctora." },
+                { text: "Nous allons t'aider.", translation: "Te vamos a ayudar." }
+            ],
+            exercises: [
+                { prompt: "Je ___ t'aider.", answer: "vais", hint: "première personne de aller" },
+                { prompt: "Elle ___ arriver demain.", answer: "va", hint: "troisième personne de aller" },
+                { prompt: "Ils ___ gagner le match.", answer: "vont", hint: "troisième personne pluriel de aller" }
+            ]
+        }
     }
 };
 const dadArticulos=[{title:"Por qué te sientes incomprendida",content:"No estás sola."},{title:"Presión de redes",content:"No te compares."},{title:"Responder cuando te lastiman",content:"Alejarse es ganar."},{title:"Pequeños hábitos",content:"Tiende tu cama, bebe agua."}];
