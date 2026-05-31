@@ -1364,35 +1364,92 @@ let grammarCompleted = JSON.parse(localStorage.getItem("maryse_grammar") || "[]"
 
 function renderGrammar() {
     const week = getCurrentWeekInfo().cycleIndex;
-    const grammar = weeklyGrammar[week];
+    const grammarData = weeklyGrammar[week];
+    
     const container = document.getElementById("grammarContainer");
-    if (!container || !grammar) return;
+    if (!container) {
+        console.log("Error: No se encontró grammarContainer");
+        return;
+    }
+    
+    if (!grammarData) {
+        console.log("Error: No hay gramática para la semana", week);
+        container.innerHTML = '<div class="grammar-card">📚 Gramática no disponible esta semana</div>';
+        return;
+    }
+    
+    const grammar = grammarData[currentLang];
+    if (!grammar) {
+        console.log("Error: No hay gramática para el idioma", currentLang);
+        container.innerHTML = '<div class="grammar-card">📚 Gramática no disponible para este idioma</div>';
+        return;
+    }
     
     const isCompleted = grammarCompleted.includes(week);
     
     container.innerHTML = `
         <div class="grammar-card" onclick="openGrammar(${week})">
             <div class="grammar-title">${grammar.title}</div>
-            <div class="grammar-preview">${grammar.explanation.substring(0, 80)}...</div>
+            <div class="grammar-preview">${grammar.explanation ? grammar.explanation.substring(0, 80) + '...' : 'Haz clic para aprender'}</div>
             ${isCompleted ? '<div style="color: #10b981; font-size: 0.7rem; margin-top: 8px;">✅ Completado (+5 XP)</div>' : ''}
         </div>
     `;
 }
 
 function openGrammar(week) {
-    const grammar = weeklyGrammar[week];
-    if (!grammar) return;
+    const grammarData = weeklyGrammar[week];
+    if (!grammarData) {
+        alert("Gramática no disponible esta semana");
+        return;
+    }
+    
+    const grammar = grammarData[currentLang];
+    if (!grammar) {
+        alert("Gramática no disponible para este idioma");
+        return;
+    }
     
     let exercisesHtml = '<div style="margin-top: 16px;"><strong>✍️ Ejercicios (+5 XP cada uno):</strong><br>';
-    grammar.exercises.forEach((ex, idx) => {
-        exercisesHtml += `<div style="margin: 8px 0;">
-                            ${ex.prompt}
-                            <input type="text" id="grammar_ex_${idx}" style="width: 120px; display: inline-block; margin-left: 8px;" placeholder="_____">
-                            <button class="btn-small" onclick="checkGrammarExercise(${week}, ${idx})">✓</button>
-                            <span id="grammar_ex_result_${idx}"></span>
-                            <span style="font-size: 0.7rem; color: #8b79c9; margin-left: 8px;">💡 ${ex.hint}</span>
-                          </div>`;
-    });
+    if (grammar.exercises && grammar.exercises.length > 0) {
+        grammar.exercises.forEach((ex, idx) => {
+            exercisesHtml += `<div style="margin: 8px 0;">
+                                ${ex.prompt}
+                                <input type="text" id="grammar_ex_${idx}" style="width: 120px; display: inline-block; margin-left: 8px;" placeholder="_____">
+                                <button class="btn-small" onclick="checkGrammarExercise(${week}, ${idx})">✓</button>
+                                <span id="grammar_ex_result_${idx}"></span>
+                                <span style="font-size: 0.7rem; color: #8b79c9; margin-left: 8px;">💡 ${ex.hint}</span>
+                              </div>`;
+        });
+    } else {
+        exercisesHtml += '<p>No hay ejercicios para esta semana.</p>';
+    }
+    exercisesHtml += '</div>';
+    
+    let examplesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejemplos:</strong><ul>';
+    if (grammar.examples && grammar.examples.length > 0) {
+        grammar.examples.forEach(ex => {
+            examplesHtml += `<li><strong>${ex.text}</strong> → ${ex.translation}</li>`;
+        });
+    } else {
+        examplesHtml += '<li>No hay ejemplos disponibles.</li>';
+    }
+    examplesHtml += '</ul></div>';
+    
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>📚 ${grammar.title || 'Gramática'}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div><strong>📖 Regla:</strong><br>${grammar.explanation || 'Explicación no disponible.'}</div>
+            ${examplesHtml}
+            ${exercisesHtml}
+        </div>
+    `;
+    document.body.appendChild(m);
+}
     exercisesHtml += '</div>';
     
     let examplesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejemplos:</strong><ul>';
