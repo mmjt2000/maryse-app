@@ -234,34 +234,48 @@
 
     <!-- ACADEMY REORGANIZADA CON CONJUGACIÓN -->
     <div id="viewAcademy" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="lang-selector">
-            <div id="lang-en" class="lang-btn active">🇬🇧 English</div>
-            <div id="lang-fr" class="lang-btn">🇫🇷 Français</div>
-        </div>
-        <div class="vocab-section" id="vocabSection"></div>
-        <div class="flashcard-section">
-            <div class="badge">📇 Flashcards</div>
-            <p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p>
-            <div class="flashcard-mode-selector" id="flashcardModes"></div>
-            <div style="display:flex;justify-content:space-between;margin-top:8px;">
-                <span id="flashScore">Score: 0/0</span>
-                <button class="back-btn" onclick="nextFlashcard()">⏭️</button>
-            </div>
-            <div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div>
-        </div>
-        <div class="pronunciation-section" id="pronunciationSection"></div>
-        <div class="podcast-section" id="podcastSection"></div>
-        <div class="conjugation-section" id="conjugationSection">
-            <div class="grammar-section" id="grammarSection">
-    <div class="badge">📚 GRAMÁTICA · Reglas semanales</div>
-    <div id="grammarContainer"></div>
-</div>
-            <div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div>
-            <div class="conjugation-grid" id="conjugationGrid"></div>
-        </div>
-        <div class="lessons-grid" id="lessonsContainer"></div>
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div class="lang-selector">
+        <div id="lang-en" class="lang-btn active">🇬🇧 English</div>
+        <div id="lang-fr" class="lang-btn">🇫🇷 Français</div>
     </div>
+    
+    <!-- 1. GRAMÁTICA -->
+    <div class="grammar-section" id="grammarSection">
+        <div class="badge">📚 GRAMÁTICA · Reglas semanales</div>
+        <div id="grammarContainer"></div>
+    </div>
+    
+    <!-- 2. VOCABULARIO -->
+    <div class="vocab-section" id="vocabSection"></div>
+    
+    <!-- 3. LECCIONES -->
+    <div class="lessons-grid" id="lessonsContainer"></div>
+    
+    <!-- 4. FLASHCARDS -->
+    <div class="flashcard-section">
+        <div class="badge">📇 FLASHCARDS · Practica</div>
+        <p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p>
+        <div class="flashcard-mode-selector" id="flashcardModes"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;">
+            <span id="flashScore">Score: 0/0</span>
+            <button class="back-btn" onclick="nextFlashcard()">⏭️</button>
+        </div>
+        <div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div>
+    </div>
+    
+    <!-- 5. RESOURCES (podcasts) -->
+    <div class="podcast-section" id="podcastSection"></div>
+    
+    <!-- 6. FONÉTICA -->
+    <div class="pronunciation-section" id="pronunciationSection"></div>
+    
+    <!-- 7. CONJUGACIÓN -->
+    <div class="conjugation-section" id="conjugationSection">
+        <div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div>
+        <div class="conjugation-grid" id="conjugationGrid"></div>
+    </div>
+</div>
 
     <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
     <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><p style="font-size:0.8rem;color:var(--subtext);margin-bottom:12px;">Elige un juego para practicar</p><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
@@ -1059,7 +1073,7 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
-    if(vn==='academy'){renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();}
+    if(vn==='academy'){renderGrammar();renderVocab();renderLessons();renderFlashcardModes();loadFlashcards();renderPodcasts();renderPronunciation();renderConjugation();}
     if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
     if(vn==='games'){switchGame(currentGame);}
     if(vn==='dad'){renderDad();updateDadClock();}
