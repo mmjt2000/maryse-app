@@ -962,28 +962,77 @@ function renderConjugation() {
     const data = conjugationData[currentLang];
     const container = document.getElementById("conjugationGrid");
     if (!container) return;
-    container.innerHTML = data.map(verb => `
-        <div class="conjugation-card" onclick="openConjugation('${verb.verb}')">
-            <div class="conjugation-title">${verb.title}</div>
-            <div class="conjugation-lang">${currentLang === 'en' ? '🇬🇧 English' : '🇫🇷 Français'}</div>
-            <div class="conjugation-preview">💡 Ej: ${verb.examples[0]}</div>
-        </div>
-    `).join('');
+    
+    container.innerHTML = data.map(verb => {
+        let previewExample = "";
+        if (verb.examples && verb.examples.present && verb.examples.present.length > 0) {
+            previewExample = verb.examples.present[0];
+        } else if (verb.tenses && verb.tenses.present) {
+            const firstPerson = Object.values(verb.tenses.present)[0];
+            const firstSubject = Object.keys(verb.tenses.present)[0];
+            previewExample = `${firstSubject} ${firstPerson}`;
+        } else {
+            previewExample = "Conjuga este verbo";
+        }
+        return `
+            <div class="conjugation-card" onclick="openConjugation('${verb.verb}')">
+                <div class="conjugation-title">${verb.title}</div>
+                <div class="conjugation-lang">${currentLang === 'en' ? '🇬🇧 English' : '🇫🇷 Français'}</div>
+                <div class="conjugation-preview">💡 Ej: ${previewExample}</div>
+            </div>
+        `;
+    }).join('');
+}
 }
 function openConjugation(verbName) {
     const data = conjugationData[currentLang];
     const verb = data.find(v => v.verb === verbName);
     if (!verb) return;
-    let conjugationsHtml = '<table style="width:100%; border-collapse: collapse; margin: 16px 0;">';
-    for (const [person, conj] of Object.entries(verb.conjugations)) {
-        conjugationsHtml += `<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;"><strong>${person}</strong></td><td style="padding: 8px;">${conj}<\/td><\/tr>`;
+    
+    const tenseNames = {
+        present: "📌 PRESENTE",
+        past: "📌 PASADO",
+        future: "📌 FUTURO"
+    };
+    
+    let conjugationsHtml = '';
+    
+    for (const [tenseKey, tenseName] of Object.entries(tenseNames)) {
+        const tenseData = verb.tenses[tenseKey];
+        if (tenseData) {
+            conjugationsHtml += `<div style="margin-top: 16px;"><strong>${tenseName}</strong></div>`;
+            conjugationsHtml += '<table style="width:100%; border-collapse: collapse; margin: 8px 0;">';
+            for (const [person, conj] of Object.entries(tenseData)) {
+                conjugationsHtml += `<tr style="border-bottom: 1px solid var(--border);">
+                                        <td style="padding: 8px;"><strong>${person}</strong></td>
+                                        <td style="padding: 8px;">${conj}<\/td>
+                                     <\/tr>`;
+            }
+            conjugationsHtml += '<\/table>';
+        }
     }
-    conjugationsHtml += '<\/table>';
-    let exercisesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejercicio rápido:</strong><br>';
+    
+    let examplesHtml = '<div style="margin-top: 16px;"><strong>📌 Ejemplos:</strong><ul>';
+    if (verb.examples) {
+        for (const [tense, examples] of Object.entries(verb.examples)) {
+            if (examples && examples.length > 0) {
+                examplesHtml += `<li><strong>${tense.toUpperCase()}:</strong> ${examples.join(', ')}</li>`;
+            }
+        }
+    }
+    examplesHtml += '</ul></div>';
+    
+    let exercisesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejercicios rápidos (+2 XP cada uno):</strong><br>';
     verb.exercises.forEach((ex, idx) => {
-        exercisesHtml += `<div style="margin: 8px 0;">${idx+1}. ${ex.prompt} <input type="text" id="ex_${idx}" style="width: 80px; display: inline-block; margin-left: 8px;" placeholder="_____"> <button class="btn-small" onclick="checkConjugationExercise('${verb.verb}', ${idx})">✓</button> <span id="ex_result_${idx}"></span></div>`;
+        exercisesHtml += `<div style="margin: 8px 0;">
+                            ${ex.prompt} 
+                            <input type="text" id="ex_${idx}" style="width: 100px; display: inline-block; margin-left: 8px;" placeholder="_____">
+                            <button class="btn-small" onclick="checkConjugationExercise('${verb.verb}', ${idx})">✓</button>
+                            <span id="ex_result_${idx}"></span>
+                          </div>`;
     });
     exercisesHtml += '</div>';
+    
     const m = document.createElement('div');
     m.className = 'modal-overlay';
     m.innerHTML = `
@@ -994,7 +1043,7 @@ function openConjugation(verbName) {
             </div>
             <div><strong>🔊 Escucha la pronunciación:</strong> <button class="btn-small" onclick="speakText('${verb.verb}','${currentLang}')">🔊 ${verb.verb}</button></div>
             ${conjugationsHtml}
-            <div><strong>📌 Ejemplos:</strong><ul>${verb.examples.map(ex => `<li>${ex}</li>`).join('')}</ul></div>
+            ${examplesHtml}
             ${exercisesHtml}
         </div>
     `;
@@ -1004,10 +1053,12 @@ function checkConjugationExercise(verbName, exerciseIndex) {
     const data = conjugationData[currentLang];
     const verb = data.find(v => v.verb === verbName);
     if (!verb) return;
+    
     const userAnswer = document.getElementById(`ex_${exerciseIndex}`).value.trim().toLowerCase();
     const correctAnswer = verb.exercises[exerciseIndex].answer;
     const resultSpan = document.getElementById(`ex_result_${exerciseIndex}`);
-    if (userAnswer === correctAnswer) {
+    
+    if (userAnswer === correctAnswer.toLowerCase()) {
         resultSpan.innerHTML = ' ✅ ¡Correcto!';
         resultSpan.style.color = '#059669';
         userXP += 2;
