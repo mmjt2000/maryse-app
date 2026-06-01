@@ -226,6 +226,61 @@
     color: white;
     border-color: var(--primary);
 }
+/* ===== COSAS DE LA VIDA ===== */
+.skills-section {
+    background: var(--card);
+    border-radius: 28px;
+    padding: 20px;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+}
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+.skill-card {
+    background: #f8f6ff;
+    border-radius: 20px;
+    padding: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+.skill-card:hover {
+    transform: translateY(-3px);
+    background: #ede7ff;
+}
+.skill-emoji {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+.skill-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--primary);
+}
+.skill-subtitle {
+    font-size: 0.7rem;
+    color: var(--subtext);
+    margin-bottom: 8px;
+}
+.skill-preview {
+    font-size: 0.7rem;
+    color: var(--text);
+    margin-top: 8px;
+}
+.skill-explanation {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 12px 0;
+    padding: 12px;
+    background: #f8f6ff;
+    border-radius: 16px;
+}
     </style>
 </head>
 <body>
@@ -253,6 +308,11 @@
             <div class="card" onclick="showView('diary')"><div class="card-icon">📸</div><div class="card-title">Diario</div><div class="card-subtitle">Con editor de fotos</div></div>
             <div class="card" onclick="showView('friends')"><div class="card-icon">👥</div><div class="card-title">Invitaciones</div><div class="card-subtitle">Control parental</div></div>
             <div class="card" onclick="showView('theme')"><div class="card-icon">🎨</div><div class="card-title">Tema</div><div class="card-subtitle">7 combinaciones</div></div>
+        <div class="card" onclick="showView('lifeskills')">
+    <div class="card-icon">💪</div>
+    <div class="card-title">Cosas de la vida</div>
+    <div class="card-subtitle">10 superpoderes para tu futuro</div>
+</div>
         </div>
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
         <div class="card mama-card" style="display:flex;justify-content:space-between;"><div><div class="card-icon">🎵</div><div class="card-title" id="mamaPlaylistTitle">Maryse</div><div class="card-subtitle">💕 Playlist de Maman (Fiona)</div></div><button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button></div>
@@ -348,6 +408,14 @@
     </div>
 
     <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title" style="margin-bottom:12px;">🔔 Recordatorios</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Recibe notificaciones diarias para no perder tu racha</p><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="font-size:0.8rem;">Activar recordatorios</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label style="font-size:0.7rem;">Hora del recordatorio:</label><input type="time" id="notifTime" value="17:00" onchange="saveNotifSettings()"><label style="font-size:0.7rem;">Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0" onclick="toggleDay(0)">Dom</div><div class="day-chip active" data-day="1" onclick="toggleDay(1)">Lun</div><div class="day-chip active" data-day="2" onclick="toggleDay(2)">Mar</div><div class="day-chip active" data-day="3" onclick="toggleDay(3)">Mié</div><div class="day-chip active" data-day="4" onclick="toggleDay(4)">Jue</div><div class="day-chip active" data-day="5" onclick="toggleDay(5)">Vie</div><div class="day-chip" data-day="6" onclick="toggleDay(6)">Sáb</div></div><label style="font-size:0.7rem;">Mensaje:</label><select id="notifMessage" onchange="saveNotifSettings()"><option value="📚 ¿Ya practicaste hoy? ¡No pierdas tu racha!">📚 ¿Ya practicaste hoy?</option><option value="🎯 ¡Hora de aprender! Te espera una nueva lección">🎯 ¡Hora de aprender!</option><option value="💜 Papá te recuerda que eres increíble">💜 Mensaje de Papá</option><option value="🔥 Sigue tu racha, ¡cada día cuenta!">🔥 Sigue tu racha</option></select><button class="btn btn-primary" onclick="testNotification()" style="width:100%;margin-top:12px;">🔔 Probar notificación</button></div></div><div class="backup-section"><div class="card-title" style="margin-bottom:12px;">💾 Copia de seguridad</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Guarda tus datos antes de actualizar.</p><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-warning" onclick="exportData()" style="flex:1;">📥 Exportar datos</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()" style="flex:1;">📤 Importar datos</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"><p id="backupStatus" style="font-size:0.65rem;color:var(--subtext);margin-top:8px;"></p></div></div>
+<div id="viewLifeskills" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div class="skills-section">
+        <div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div>
+        <p style="font-size:0.8rem; margin-bottom:16px;">No se aprenden en los libros, pero son lo más importante para tu futuro. Sin presión, solo lectura y reflexión.</p>
+        <div id="lifeSkillsContainer" class="skills-grid"></div>
+    </div>
+</div>
 </div>
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 
@@ -977,6 +1045,7 @@ function showView(vn){
     if(vn==='friends')renderAllInvites();
     if(vn==='theme')loadTheme();
     if(vn==='profile'){updateProfile();loadNotifSettings();}
+    if(vn==='lifeskills'){renderLifeSkills();}
     window.scrollTo(0,0);
 }
 
@@ -1211,6 +1280,53 @@ window.marcarActividadDad=marcarActividadDad;
 window.openConjugation=openConjugation;
 window.checkConjugationExercise=checkConjugationExercise;
 window.checkGrammarExercise=checkGrammarExercise;
+// ==================== COSAS DE LA VIDA - 10 HABILIDADES ====================
+const lifeSkills = [
+    { id: 1, emoji: "🧠", title: "Pensadora Analítica", subtitle: "Aprende a pensar como Sherlock Holmes", explanation: "No se trata de saberlo todo, sino de saber hacer las preguntas correctas. Una mente analítica desarma los problemas grandes en piezas pequeñas.", frase: "💭 \"No es que sea más inteligente, es que me quedo más tiempo con los problemas.\" — Einstein", tips: ["🧩 Antes de decidir, pregúntate: '¿Qué pasaría si hiciera lo contrario?'", "📊 Cuando algo salga mal, no preguntes '¿De quién es la culpa?' sino '¿Qué podemos aprender de esto?'", "🔍 Practica el '5 porqués': pregúntate '¿por qué?' 5 veces seguidas."], challenge: "Esta semana, cada vez que tengas un problema pequeño, anota 3 posibles causas y compártelas con papá." },
+    { id: 2, emoji: "🎨", title: "Creativa y Original", subtitle: "Tu forma de ver el mundo es única", explanation: "La creatividad no es solo dibujar o cantar. Es encontrar soluciones que nadie más ha visto, conectar ideas locas entre sí.", frase: "💡 \"La creatividad es la inteligencia divirtiéndose.\" — Albert Einstein", tips: ["💡 Cada día, pregúntate: '¿Cómo podría mejorar algo que hago siempre?'", "📝 Lleva un diario de ideas locas.", "🤝 Pide opiniones diferentes a las tuyas."], challenge: "Esta semana, inventa un nuevo uso para un objeto cotidiano (una escoba, una cuchara, una silla)." },
+    { id: 3, emoji: "🧩", title: "Resolvedora de Problemas", subtitle: "No hay rompecabezas que no puedas armar", explanation: "Los problemas complejos dan miedo, pero tú eres más grande que ellos. La clave es dividirlos en partes pequeñas.", frase: "💪 \"No hay problema grande, solo pequeñas partes esperando ser ordenadas.\"", tips: ["🗂️ Divide el problema en 3 partes: '¿Qué sé?', '¿Qué necesito saber?' y '¿Qué puedo hacer ahora?'", "⏱️ Ponte mini-metas.", "🙏 No tengas miedo de pedir ayuda."], challenge: "Identifica un problema real en casa y piensa en 3 soluciones. Habla de ellas con tu familia." },
+    { id: 4, emoji: "🔍", title: "Curiosa Aprendedora", subtitle: "La curiosidad es tu superpoder", explanation: "Las personas que más aprenden son las que más preguntan. No te quedes con 'es así porque sí'.", frase: "🌱 \"La curiosidad es la mecha de la vela del aprendizaje.\"", tips: ["❓ Cada día, pregúntate: '¿Qué aprendí hoy?'", "📚 Cuando no entiendas algo, investiga por tu cuenta.", "🌍 Explora temas fuera de la escuela."], challenge: "Elige un tema que te intrigue, investígalo y explícalo con tus palabras a papá." },
+    { id: 5, emoji: "🚀", title: "Autónoma y Organizada", subtitle: "Tú llevas el volante de tu vida", explanation: "Ser autónoma significa tomar decisiones, organizar tu tiempo y hacerte responsable de tus cosas.", frase: "⏰ \"No ahorres tiempo, inviértelo bien.\"", tips: ["📅 Usa una agenda. Anota tareas y momentos de descanso.", "🎯 Prioriza: haz primero lo importante.", "👏 Celebra tus logros, por pequeños que sean."], challenge: "Esta semana, organízate sin que papá te lo recuerde." },
+    { id: 6, emoji: "💪", title: "Resiliente y Flexible", subtitle: "Caerse está permitido. Levantarse es obligatorio.", explanation: "La resiliencia es la capacidad de seguir adelante después de los fracasos. La vida no es una línea recta.", frase: "🌈 \"No importa qué tan lento vayas, siempre y cuando no te detengas.\" — Confucio", tips: ["😤 Date 5 minutos para enojarte, luego respira y sigue.", "🔄 Cuando algo cambie, busca 3 cosas positivas.", "🤗 Rodéate de personas que te levanten el ánimo."], challenge: "Recuerda un momento difícil. ¿Qué aprendiste de esa experiencia?" },
+    { id: 7, emoji: "❤️", title: "Inteligente Emocional", subtitle: "Tus emociones te hablan, aprende a escucharlas", explanation: "Las emociones son mensajeras que te dicen lo que necesitas. La inteligencia emocional es saber reconocer qué sientes.", frase: "💖 \"No eres tus emociones, eres quien las observa.\"", tips: ["😊 Pon nombre a tus emociones.", "🌬️ Respira profundo 4 veces antes de reaccionar.", "🗣️ Comunica lo que sientes sin culpar."], challenge: "Cuando sientas una emoción fuerte, escribe qué sientes y por qué." },
+    { id: 8, emoji: "🗣️", title: "Comunicadora Clara", subtitle: "Di lo que piensas, piensa lo que dices", explanation: "Comunicar bien no es solo hablar. Es escuchar, expresar ideas con claridad, y hacerte entender sin herir.", frase: "🎙️ \"La comunicación es puente, no pared.\"", tips: ["👂 Escucha activamente: mira a los ojos, no interrumpas.", "📢 Expresa tu opinión sin miedo.", "💬 Aprende a decir 'no' cuando algo no te parece bien."], challenge: "Ten una conversación profunda con papá o mamá. Cuéntales algo que te preocupa o te emociona." },
+    { id: 9, emoji: "👥", title: "Líder y Colaboradora", subtitle: "El éxito en equipo sabe mejor", explanation: "Liderar no es mandar. Es inspirar, escuchar, y ayudar a que los demás también brillen.", frase: "🤝 \"Si quieres ir rápido, ve solo. Si quieres llegar lejos, ve acompañado.\"", tips: ["🤲 Asegúrate de que todos participen.", "🏆 Toma la iniciativa.", "🙌 Reconoce los logros de los demás."], challenge: "En tu próximo trabajo en equipo, asegúrate de que cada persona haga algo en lo que sea buena." },
+    { id: 10, emoji: "💻", title: "Maestra de la Tecnología", subtitle: "Usa la tecnología, que no te use a ti", explanation: "Entiende cómo funciona la tecnología, cómo protegerte y cómo usarla para aprender y crear, no solo para scrollear.", frase: "📱 \"La tecnología es una herramienta. El mejor uso es el que te hace más libre.\"", tips: ["🔐 Protege tus contraseñas.", "📱 Pregúntate antes de abrir redes: '¿Qué quiero hacer aquí?'", "🤖 Prueba IA como ChatGPT para estudiar."], challenge: "Prueba ChatGPT y pídele que te explique un tema difícil de la escuela." }
+];
+
+function renderLifeSkills() {
+    const container = document.getElementById("lifeSkillsContainer");
+    if (!container) return;
+    container.innerHTML = lifeSkills.map(skill => `
+        <div class="skill-card" onclick="openSkill(${skill.id})">
+            <div class="skill-emoji">${skill.emoji}</div>
+            <div class="skill-title">${skill.title}</div>
+            <div class="skill-subtitle">${skill.subtitle}</div>
+            <div class="skill-preview">💡 Ver consejos + desafío</div>
+        </div>
+    `).join('');
+}
+
+function openSkill(skillId) {
+    const skill = lifeSkills.find(s => s.id === skillId);
+    if (!skill) return;
+    let tipsHtml = '<div style="margin-top: 16px;"><strong>💡 Consejos:</strong><ul>';
+    skill.tips.forEach(tip => { tipsHtml += `<li style="margin: 8px 0;">${tip}</li>`; });
+    tipsHtml += '</ul></div>';
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><div>${skill.emoji} ${skill.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div>
+            <div class="skill-explanation">${skill.explanation}</div>
+            <div style="margin: 8px 0; padding: 8px; background: #f0ecff; border-radius: 12px; font-style: italic; text-align: center;">${skill.frase}</div>
+            ${tipsHtml}
+            <div style="margin-top: 16px; padding: 12px; background: #fef3c7; border-radius: 16px;"><strong>🎯 Desafío (si quieres intentarlo):</strong><br>${skill.challenge}</div>
+            <div style="margin-top: 16px; text-align: center; font-size: 0.7rem; color: var(--subtext);">💜 Sin presiones. Solo léelo, piensa en ello, y cuando quieras, ponlo en práctica.</div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
 </script>
 </body>
 </html>
