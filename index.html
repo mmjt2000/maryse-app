@@ -172,6 +172,60 @@
         .theme-preset:hover { background: #f8f6ff; }
         .theme-preset .preset-circle { width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 4px; }
         .theme-preset span { font-size: 0.6rem; display: block; }
+        .exam-section {
+    background: var(--card);
+    border-radius: 28px;
+    padding: 20px;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+}
+.exam-card {
+    background: #f8f6ff;
+    border-radius: 20px;
+    padding: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+.exam-card:hover {
+    transform: translateY(-3px);
+    background: #ede7ff;
+}
+.exam-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+.exam-preview {
+    font-size: 0.8rem;
+    color: var(--text);
+}
+.exam-question {
+    margin: 16px 0;
+    padding: 12px;
+    background: #f8f6ff;
+    border-radius: 16px;
+}
+.exam-option {
+    display: block;
+    margin: 6px 0;
+    padding: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.exam-option:hover {
+    background: #ede7ff;
+}
+.exam-option.selected {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
     </style>
 </head>
 <body>
@@ -250,7 +304,11 @@
             <div class="conjugation-grid" id="conjugationGrid"></div>
         </div>
     </div>
-
+<!-- 8. EXÁMENES FINALES -->
+<div class="exam-section" id="examSection">
+    <div class="badge">📝 EXAMEN FINAL · Semana actual</div>
+    <div id="examContainer"></div>
+</div>
     <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
     <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><p style="font-size:0.8rem;color:var(--subtext);margin-bottom:12px;">Elige un juego para practicar</p><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
     
@@ -415,6 +473,370 @@ const conjugationData = {
         { verb: "vouloir", title: "VOULOIR · Querer", tenses: { present: { "Je": "veux", "Tu": "veux", "Il/Elle/On": "veut", "Nous": "voulons", "Vous": "voulez", "Ils/Elles": "veulent" }, past: { "Je": "ai voulu", "Tu": "as voulu", "Il/Elle/On": "a voulu", "Nous": "avons voulu", "Vous": "avez voulu", "Ils/Elles": "ont voulu" }, future: { "Je": "voudrai", "Tu": "voudras", "Il/Elle/On": "voudra", "Nous": "voudrons", "Vous": "voudrez", "Ils/Elles": "voudront" } }, examples: ["Je veux un café", "J'ai voulu partir", "Je voudrai réussir"], exercises: [{ prompt: "Je ___ un café", answer: "veux" }, { prompt: "J'___ partir hier", answer: "ai voulu" }, { prompt: "Je ___ réussir un jour", answer: "voudrai" }] }
     ]
 };
+    // ==================== EXÁMENES FINALES (8 semanas) ====================
+let examCompleted = JSON.parse(localStorage.getItem("maryse_exam_completed") || "[]");
+let currentExamAnswers = {};
+
+const weeklyExams = {
+    0: {
+        title: "📝 Examen Final · Emociones y Sentimientos",
+        description: "25 preguntas sobre vocabulario, gramática, slang y conjugación. +30 XP si apruebas (mínimo 18 correctas).",
+        passingScore: 18,
+        xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'feliz' en inglés?", options: ["Happy", "Sad", "Angry", "Tired"], correct: 0 },
+            { text: "¿Cómo se dice 'triste' en francés?", options: ["Heureux", "Triste", "Fâché", "Calme"], correct: 1 },
+            { text: "¿Qué significa 'I'm so over it'?", options: ["Estoy muy feliz", "Ya estoy harta de esto", "Estoy sorprendida", "Estoy tranquila"], correct: 1 },
+            { text: "¿Qué significa 'Avoir le cafard'?", options: ["Tener miedo", "Estar feliz", "Estar triste", "Tener energía"], correct: 2 },
+            { text: "Traduce al inglés: 'Estoy emocionada'", options: ["I am sad", "I am excited", "I am tired", "I am calm"], correct: 1 },
+            { text: "Traduce al francés: 'Je suis fier'", options: ["Estoy triste", "Estoy enojado", "Estoy orgulloso", "Estoy cansado"], correct: 2 },
+            { text: "Completa: 'She ___ very happy yesterday.'", options: ["is", "am", "were", "was"], correct: 3 },
+            { text: "Completa: 'Nous ___ contents.'", options: ["est", "sommes", "sont", "avez"], correct: 1 },
+            { text: "¿Qué significa 'That hit me in the feels'?", options: ["Me duele", "Me llegó al corazón", "No me importa", "Estoy en shock"], correct: 1 },
+            { text: "¿Qué significa 'Ça déchire'?", options: ["Es genial", "Es terrible", "Es aburrido", "Es difícil"], correct: 0 },
+            { text: "Conjuga en presente: 'I ___ (to be) happy.'", options: ["am", "is", "are", "be"], correct: 0 },
+            { text: "Conjuga en passé composé: 'Je ___ (être) fatigué.'", options: ["suis été", "ai été", "étais", "serai"], correct: 1 },
+            { text: "¿Qué significa 'I'm shook'?", options: ["Estoy temblando", "Estoy en shock", "Estoy feliz", "Estoy tranquila"], correct: 1 },
+            { text: "¿Qué significa 'C'est la vie'?", options: ["Así es la vida", "Es la verdad", "Es difícil", "No importa"], correct: 0 },
+            { text: "Traduce: 'Ella está tranquila.'", options: ["She is calm", "She is sad", "She is happy", "She is tired"], correct: 0 },
+            { text: "Traduce: 'Il est nerveux.'", options: ["Él está nervioso", "Ella está nerviosa", "Están nerviosos", "Estoy nervioso"], correct: 0 },
+            { text: "Completa: 'They ___ proud of themselves.'", options: ["am", "is", "are", "be"], correct: 2 },
+            { text: "Completa: 'Elle ___ courageuse.'", options: ["est", "suis", "sommes", "sont"], correct: 0 },
+            { text: "¿Qué significa 'No biggie'?", options: ["No es importante", "No es para tanto", "Es grande", "Es difícil"], correct: 1 },
+            { text: "¿Qué significa 'Trop stylé'?", options: ["Muy aburrido", "Muy guay", "Muy triste", "Muy difícil"], correct: 1 },
+            { text: "Conjuga en futuro: 'I ___ (to be) there tomorrow.'", options: ["am", "was", "will be", "have been"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Nous ___ (aller) réussir.'", options: ["allons", "irons", "vont", "allez"], correct: 0 },
+            { text: "¿Qué significa 'I can't even'?", options: ["No puedo", "No tengo palabras", "Estoy cansada", "Estoy feliz"], correct: 1 },
+            { text: "¿Qué significa 'Avoir le seum'?", options: ["Tener sueño", "Estar enfadado", "Tener hambre", "Estar feliz"], correct: 1 },
+            { text: "¿Qué emoción describe 'I'm feeling some type of way'?", options: ["Felicidad", "Tristeza", "Emoción confusa", "Miedo"], correct: 2 }
+        ]
+    },
+    1: {
+        title: "📝 Examen Final · Escuela y Aprendizaje",
+        description: "25 preguntas sobre vocabulario escolar, gramática y expresiones. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'profesor' en inglés?", options: ["Teacher", "Student", "Class", "School"], correct: 0 },
+            { text: "¿Cómo se dice 'deberes' en francés?", options: ["Cahier", "Devoirs", "Examen", "Bibliothèque"], correct: 1 },
+            { text: "¿Qué significa 'Cramming'?", options: ["Estudiar a última hora", "Repasar", "Aprobar", "Suspendre"], correct: 0 },
+            { text: "¿Qué significa 'Bachoter'?", options: ["Aprobar", "Suspender", "Estudiar a última hora", "Repasar"], correct: 2 },
+            { text: "Traduce: 'Tengo un examen mañana.'", options: ["I have an exam tomorrow", "I have homework", "I have class", "I am studying"], correct: 0 },
+            { text: "Traduce: 'J'ai une tonne de devoirs.'", options: ["Tengo un examen", "Tengo mucha tarea", "Tengo clase", "Estoy estudiando"], correct: 1 },
+            { text: "Completa: 'I ___ a lot of homework yesterday.'", options: ["have", "has", "had", "having"], correct: 2 },
+            { text: "Completa: 'Nous ___ passé l'examen.'", options: ["avons", "avez", "ont", "sommes"], correct: 0 },
+            { text: "¿Qué significa 'Ace a test'?", options: ["Suspender", "Sacar 10", "Estudiar", "Repetir"], correct: 1 },
+            { text: "¿Qué significa 'Cartonner'?", options: ["Aprobar", "Suspender", "Tener éxito", "Estudiar"], correct: 2 },
+            { text: "Conjuga: 'She ___ (to study) every day.'", options: ["study", "studies", "studying", "studied"], correct: 1 },
+            { text: "Conjuga: 'Ils ___ (réussir) à l'examen.'", options: ["réussissent", "réussis", "réussit", "réussissons"], correct: 0 },
+            { text: "¿Qué significa 'Pull an all-nighter'?", options: ["Dormir temprano", "No dormir estudiando", "Estudiar un poco", "Descansar"], correct: 1 },
+            { text: "¿Qué significa 'Sécher un cours'?", options: ["Asistir a clase", "Saltarse clase", "Aprobar", "Estudiar"], correct: 1 },
+            { text: "Traduce: '¿Puedo tener una extensión?'", options: ["Can I have more time?", "Can I have an extension?", "Can I help?", "Can I study?"], correct: 1 },
+            { text: "Traduce: 'Il a séché le cours.'", options: ["Aprobó la clase", "Saltó la clase", "Estudió mucho", "Reprobó"], correct: 1 },
+            { text: "Completa: 'If you study, you ___ pass.'", options: ["will", "would", "can", "must"], correct: 0 },
+            { text: "Completa: 'Pour réussir, il ___ étudier.'", options: ["faut", "doit", "peut", "veut"], correct: 0 },
+            { text: "¿Qué significa 'Teacher's pet'?", options: ["Favorito del profe", "Mascota de la clase", "Profesor favorito", "Estudiante aplicado"], correct: 0 },
+            { text: "¿Qué significa 'Le chouchou du prof'?", options: ["El favorito del profe", "El más aplicado", "El que más estudia", "El que más habla"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to graduate) next year.'", options: ["graduate", "graduated", "will graduate", "graduating"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Je ___ (aller) réussir.'", options: ["vais", "va", "allons", "vont"], correct: 0 },
+            { text: "¿Qué significa 'I blanked out'?", options: ["Me quedé en blanco", "Estudié mucho", "Aprobé", "Reprobé"], correct: 0 },
+            { text: "¿Qué significa 'C'est du gâteau'?", options: ["Es fácil", "Es difícil", "Es aburrido", "Es delicioso"], correct: 0 },
+            { text: "¿Qué significa 'That's a freebie'?", options: ["Es regalado", "Es difícil", "Es obligatorio", "Es fácil"], correct: 0 }
+        ]
+    },
+    2: {
+        title: "📝 Examen Final · Viajes y Aventuras",
+        description: "25 preguntas sobre viajes, aeropuertos y aventuras. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'pasaporte' en inglés?", options: ["Passport", "Visa", "Ticket", "Flight"], correct: 0 },
+            { text: "¿Cómo se dice 'vuelo' en francés?", options: ["Vol", "Voyage", "Avion", "Billet"], correct: 0 },
+            { text: "¿Qué significa 'Wanderlust'?", options: ["Miedo a viajar", "Pasión por viajar", "Aeropuerto", "Equipaje"], correct: 1 },
+            { text: "¿Qué significa 'Avoir la bougeotte'?", options: ["No poder quedarse quieto", "Tener miedo", "Tener hambre", "Tener sueño"], correct: 0 },
+            { text: "Traduce: '¿Dónde está el hotel?'", options: ["Where is the hotel?", "Where is the airport?", "Where is the station?", "Where is the beach?"], correct: 0 },
+            { text: "Traduce: 'J'habite au Mexique.'", options: ["Vivo en México", "Viajo a México", "Conozco México", "Me encanta México"], correct: 0 },
+            { text: "Completa: 'I ___ to Paris last summer.'", options: ["go", "went", "gone", "going"], correct: 1 },
+            { text: "Completa: 'Nous ___ allés à la plage.'", options: ["avons", "sommes", "ont", "êtes"], correct: 1 },
+            { text: "¿Qué significa 'Catch flights, not feelings'?", options: ["Viaja, no te enamores", "Vuela sin miedo", "Disfruta el viaje", "Conoce gente"], correct: 0 },
+            { text: "¿Qué significa 'Voyager dans sa tête'?", options: ["Viajar de verdad", "Soñar despierto", "Tener miedo", "Planificar"], correct: 1 },
+            { text: "Conjuga: 'She ___ (to travel) a lot.'", options: ["travel", "travels", "traveling", "traveled"], correct: 1 },
+            { text: "Conjuga: 'Je ___ (partir) demain.'", options: ["pars", "part", "partons", "partez"], correct: 0 },
+            { text: "¿Qué significa 'Living my best life'?", options: ["Viviendo al máximo", "Sobreviviendo", "Viajando", "Descansando"], correct: 0 },
+            { text: "¿Qué significa 'Prendre la poudre d'escampette'?", options: ["Escaparse", "Prepararse", "Descansar", "Viajar"], correct: 0 },
+            { text: "Traduce: 'Necesito comprar recuerdos.'", options: ["I need to buy souvenirs", "I need a ticket", "I need a map", "I need a hotel"], correct: 0 },
+            { text: "Traduce: 'C'est le bout du monde.'", options: ["Es el fin del mundo", "Es muy lejos", "Es cerca", "Es bonito"], correct: 1 },
+            { text: "Completa: 'We ___ (to stay) in a hotel.'", options: ["stay", "stays", "staying", "stayed"], correct: 0 },
+            { text: "Completa: 'Elles ___ (visiter) le musée.'", options: ["visite", "visites", "visitent", "visitons"], correct: 2 },
+            { text: "¿Qué significa 'Main character energy'?", options: ["Energía de protagonista", "Energía positiva", "Miedo", "Tristeza"], correct: 0 },
+            { text: "¿Qué significa 'Avoir le mal du pays'?", options: ["Extrañar casa", "Tener miedo", "Estar feliz", "Estar cansado"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to fly) tomorrow.'", options: ["fly", "flew", "will fly", "have flown"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Tu ___ (aller) voyager.'", options: ["vas", "va", "allons", "vont"], correct: 0 },
+            { text: "¿Qué significa 'Take me back!'?", options: ["Llévame otra vez", "Déjame aquí", "Quiero irme", "No quiero volver"], correct: 0 },
+            { text: "¿Qué significa 'Un geste pour la planète'?", options: ["Un gesto por el planeta", "Un viaje", "Una aventura", "Un recuerdo"], correct: 0 },
+            { text: "¿Qué significa 'That's a bucket list destination'?", options: ["Es un destino soñado", "Es un destino común", "Es un destino caro", "Es un destino cercano"], correct: 0 }
+        ]
+    },
+    3: {
+        title: "📝 Examen Final · Tecnología y Futuro",
+        description: "25 preguntas sobre tecnología, redes sociales e IA. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'contraseña' en inglés?", options: ["Password", "Username", "Email", "Code"], correct: 0 },
+            { text: "¿Cómo se dice 'pantalla' en francés?", options: ["Écran", "Téléphone", "Ordinateur", "Clavier"], correct: 0 },
+            { text: "¿Qué significa 'DM me'?", options: ["Escríbeme por mensaje directo", "Llámame", "Envíame un correo", "Búscame"], correct: 0 },
+            { text: "¿Qué significa 'C'est chelou'?", options: ["Es raro", "Es normal", "Es bonito", "Es feo"], correct: 0 },
+            { text: "Traduce: 'Mi batería está a punto de morir.'", options: ["My battery is about to die", "My phone is off", "I need to charge", "My screen is broken"], correct: 0 },
+            { text: "Traduce: 'C'est relou.'", options: ["Es pesado", "Es divertido", "Es fácil", "Es difícil"], correct: 0 },
+            { text: "Completa: 'I ___ (to download) the app yesterday.'", options: ["download", "downloaded", "downloading", "will download"], correct: 1 },
+            { text: "Completa: 'Nous ___ (télécharger) le fichier.'", options: ["téléchargeons", "télécharges", "téléchargez", "téléchargent"], correct: 0 },
+            { text: "¿Qué significa 'This app is a total game changer'?", options: ["Esta app cambia las reglas", "Esta app es aburrida", "Esta app es difícil", "Esta app es cara"], correct: 0 },
+            { text: "¿Qué significa 'C'est la hess'?", options: ["Es la miseria", "Es genial", "Es fácil", "Es difícil"], correct: 0 },
+            { text: "Conjuga: 'She ___ (to try) to limit her screen time.'", options: ["try", "tries", "trying", "tried"], correct: 1 },
+            { text: "Conjuga: 'Il ___ (être) matrixé.'", options: ["est", "suis", "sommes", "sont"], correct: 0 },
+            { text: "¿Qué significa 'I got ghosted'?", options: ["Me dejaron de hablar", "Me asusté", "Me perdí", "Me bloqueó"], correct: 0 },
+            { text: "¿Qué significa 'Trop stylé'?", options: ["Muy guay", "Muy feo", "Muy caro", "Muy difícil"], correct: 0 },
+            { text: "Traduce: '¿Me envías el enlace?'", options: ["Can you send me the link?", "Can you call me?", "Can you help me?", "Can you see me?"], correct: 0 },
+            { text: "Traduce: 'Don't @ me.'", options: ["No me etiquetes", "No me hables", "No me veas", "No me gusta"], correct: 0 },
+            { text: "Completa: 'If you ___ (to click) here, you'll see.'", options: ["click", "clicks", "clicking", "clicked"], correct: 0 },
+            { text: "Completa: 'Il ___ (falloir) le faire.'", options: ["faut", "doit", "peut", "veut"], correct: 0 },
+            { text: "¿Qué significa 'That's so last season'?", options: ["Eso ya pasó de moda", "Eso está de moda", "Eso es nuevo", "Eso es viejo"], correct: 0 },
+            { text: "¿Qué significa 'Être matrixé'?", options: ["Estar obsesionado", "Estar perdido", "Estar cansado", "Estar feliz"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to use) AI more.'", options: ["use", "used", "will use", "have used"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Je ___ (aller) tester ça.'", options: ["vais", "va", "allons", "vont"], correct: 0 },
+            { text: "¿Qué significa 'Don't @ me'?", options: ["No me etiquetes", "No me llames", "No me escribas", "No me veas"], correct: 0 },
+            { text: "¿Qué significa 'Un geste pour la planète'?", options: ["Un gesto por el planeta", "Una app", "Un consejo", "Un error"], correct: 0 },
+            { text: "¿Qué significa 'I'm trying to limit my screen time'?", options: ["Intento reducir tiempo en pantalla", "Intento usar más el móvil", "Intento dormir más", "Intento comer mejor"], correct: 0 }
+        ]
+    },
+    4: {
+        title: "📝 Examen Final · Música y Arte",
+        description: "25 preguntas sobre música, instrumentos y expresiones artísticas. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'canción' en inglés?", options: ["Song", "Music", "Sound", "Voice"], correct: 0 },
+            { text: "¿Cómo se dice 'melodía' en francés?", options: ["Mélodie", "Chanson", "Musique", "Son"], correct: 0 },
+            { text: "¿Qué significa 'That song slaps'?", options: ["Esa canción es mala", "Esa canción está increíble", "Esa canción es triste", "Esa canción es larga"], correct: 1 },
+            { text: "¿Qué significa 'Ça déchire'?", options: ["Es genial", "Es terrible", "Es aburrido", "Es difícil"], correct: 0 },
+            { text: "Traduce: 'La música me hace feliz.'", options: ["Music makes me happy", "Music is loud", "Music is boring", "Music is sad"], correct: 0 },
+            { text: "Traduce: 'J'adore cette chanson.'", options: ["Amo esta canción", "Odio esta canción", "Escucho esta canción", "Canto esta canción"], correct: 0 },
+            { text: "Completa: 'She ___ (to sing) beautifully.'", options: ["sing", "sings", "singing", "sang"], correct: 1 },
+            { text: "Completa: 'Ils ___ (écouter) de la musique.'", options: ["écoutent", "écoute", "écoutons", "écoutes"], correct: 0 },
+            { text: "¿Qué significa 'It's a bop'?", options: ["Es muy pegadiza", "Es muy triste", "Es muy larga", "Es muy rápida"], correct: 0 },
+            { text: "¿Qué significa 'Avoir la musique dans la peau'?", options: ["Llevar la música dentro", "No entender la música", "Odiar la música", "Tocar mal"], correct: 0 },
+            { text: "Conjuga: 'I ___ (to play) the guitar.'", options: ["play", "plays", "playing", "played"], correct: 0 },
+            { text: "Conjuga: 'Elle ___ (chanter) comme une pro.'", options: ["chante", "chantes", "chantons", "chantent"], correct: 0 },
+            { text: "¿Qué significa 'Earworm'?", options: ["Canción pegadiza", "Gusano de oído", "Música mala", "Sonido raro"], correct: 0 },
+            { text: "¿Qué significa 'C'est de la bombe'?", options: ["Es excelente", "Es malo", "Es aburrido", "Es difícil"], correct: 0 },
+            { text: "Traduce: 'Crea una playlist con tus canciones favoritas.'", options: ["Create a playlist with your favorite songs", "Listen to music", "Sing a song", "Play an instrument"], correct: 0 },
+            { text: "Traduce: 'Un tube'?", options: ["Un éxito musical", "Un instrumento", "Un concierto", "Una canción triste"], correct: 0 },
+            { text: "Completa: 'They ___ (to perform) last night.'", options: ["perform", "performs", "performed", "will perform"], correct: 2 },
+            { text: "Completa: 'Nous ___ (jouer) du piano.'", options: ["jouons", "joues", "jouent", "jouez"], correct: 0 },
+            { text: "¿Qué significa 'She ate that performance'?", options: ["Arrasó con su presentación", "Comió en el escenario", "Fue mala", "No cantó bien"], correct: 0 },
+            { text: "¿Qué significa 'Avoir le rythme dans la peau'?", options: ["Tener ritmo natural", "No tener ritmo", "Bailar mal", "Tocar mal"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to become) a singer.'", options: ["become", "became", "will become", "have become"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Elle ___ (aller) chanter.'", options: ["va", "vais", "allons", "vont"], correct: 0 },
+            { text: "¿Qué significa 'That's my jam'?", options: ["Esa es mi canción favorita", "Esa es mi comida favorita", "Esa es mi película favorita", "Esa es mi serie favorita"], correct: 0 },
+            { text: "¿Qué significa 'Un tube'?", options: ["Un éxito musical", "Un tubo", "Una canción", "Un instrumento"], correct: 0 },
+            { text: "¿Qué significa 'I've had this on repeat'?", options: ["La he escuchado en repetición", "La he cantado", "La he bailado", "La he olvidado"], correct: 0 }
+        ]
+    },
+    5: {
+        title: "📝 Examen Final · Comida y Gastronomía",
+        description: "25 preguntas sobre alimentos, recetas y expresiones culinarias. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'receta' en inglés?", options: ["Recipe", "Food", "Meal", "Dish"], correct: 0 },
+            { text: "¿Cómo se dice 'delicioso' en francés?", options: ["Délicieux", "Bon", "Mauvais", "Salé"], correct: 0 },
+            { text: "¿Qué significa 'I'm starving'?", options: ["Me muero de hambre", "Tengo sed", "Estoy lleno", "No tengo hambre"], correct: 0 },
+            { text: "¿Qué significa 'Avoir la dalle'?", options: ["Tener mucha hambre", "Tener sed", "Tener sueño", "Tener frío"], correct: 0 },
+            { text: "Traduce: 'Quiero comer algo dulce.'", options: ["I want something sweet", "I want something salty", "I want something sour", "I want something spicy"], correct: 0 },
+            { text: "Traduce: 'C'est un régal.'", options: ["Es una delicia", "Es horrible", "Es salado", "Es amargo"], correct: 0 },
+            { text: "Completa: 'I ___ (to eat) breakfast every day.'", options: ["eat", "eats", "eating", "ate"], correct: 0 },
+            { text: "Completa: 'Nous ___ (manger) au restaurant.'", options: ["mangeons", "manges", "mangez", "mangent"], correct: 0 },
+            { text: "¿Qué significa 'It's finger-lickin' good'?", options: ["Está para chuparse los dedos", "Está malo", "Está salado", "Está dulce"], correct: 0 },
+            { text: "¿Qué significa 'Manger sur le pouce'?", options: ["Comer rápido", "Comer despacio", "Comer mucho", "Comer poco"], correct: 0 },
+            { text: "Conjuga: 'She ___ (to cook) dinner.'", options: ["cook", "cooks", "cooking", "cooked"], correct: 1 },
+            { text: "Conjuga: 'Il ___ (préparer) le petit-déjeuner.'", options: ["prépare", "prépares", "préparons", "préparez"], correct: 0 },
+            { text: "¿Qué significa 'Food coma'?", options: ["Sueño después de comer", "Comer mucho", "No comer", "Comer rápido"], correct: 0 },
+            { text: "¿Qué significa 'Avoir les crocs'?", options: ["Tener hambre", "Tener sed", "Tener sueño", "Tener frío"], correct: 0 },
+            { text: "Traduce: '¿Me lo puedo llevar?'", options: ["Can I take it?", "Can I eat it?", "Can I share it?", "Can I cook it?"], correct: 0 },
+            { text: "Traduce: 'Se régaler'?", options: ["Disfrutar comiendo", "Comer rápido", "Comer mal", "No comer"], correct: 0 },
+            { text: "Completa: 'They ___ (to order) pizza.'", options: ["order", "orders", "ordering", "ordered"], correct: 0 },
+            { text: "Completa: 'Tu ___ (boire) de l'eau.'", options: ["bois", "boit", "buvons", "buvez"], correct: 0 },
+            { text: "¿Qué significa 'This is my guilty pleasure'?", options: ["Es mi placer culpable", "Es mi comida favorita", "Es mi receta secreta", "Es mi dieta"], correct: 0 },
+            { text: "¿Qué significa 'Un tube'?", options: ["Un éxito", "Un alimento", "Una receta", "Un sabor"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to make) dinner.'", options: ["make", "made", "will make", "have made"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Nous ___ (aller) manger.'", options: ["allons", "allez", "vont", "vas"], correct: 0 },
+            { text: "¿Qué significa 'That's overpriced'?", options: ["Está muy caro", "Está barato", "Está delicioso", "Está feo"], correct: 0 },
+            { text: "¿Qué significa 'C'est un régal'?", options: ["Es una delicia", "Es caro", "Es feo", "Es difícil"], correct: 0 },
+            { text: "¿Qué significa 'Can I get a doggy bag?'?", options: ["¿Me lo puedo llevar?", "¿Puedo comer aquí?", "¿Puedo pedir más?", "¿Puedo pagar?"], correct: 0 }
+        ]
+    },
+    6: {
+        title: "📝 Examen Final · Deportes y Salud",
+        description: "25 preguntas sobre deportes, ejercicio y vida saludable. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'ejercicio' en inglés?", options: ["Exercise", "Sport", "Game", "Play"], correct: 0 },
+            { text: "¿Cómo se dice 'fuerza' en francés?", options: ["Force", "Vitesse", "Santé", "Sport"], correct: 0 },
+            { text: "¿Qué significa 'No pain, no gain'?", options: ["Sin dolor no hay ganancia", "El dolor es malo", "Gana sin esfuerzo", "Descansa y gana"], correct: 0 },
+            { text: "¿Qué significa 'Avoir la pêche'?", options: ["Tener energía", "Tener hambre", "Estar triste", "Estar cansado"], correct: 0 },
+            { text: "Traduce: 'Voy a correr mañana.'", options: ["I will run tomorrow", "I run today", "I ran yesterday", "I am running now"], correct: 0 },
+            { text: "Traduce: 'Se donner à fond'?", options: ["Darlo todo", "Descansar", "Perder tiempo", "Jugar"], correct: 0 },
+            { text: "Completa: 'She ___ (to swim) very well.'", options: ["swim", "swims", "swimming", "swam"], correct: 1 },
+            { text: "Completa: 'Ils ___ (faire) du sport.'", options: ["font", "fais", "fait", "faisons"], correct: 0 },
+            { text: "¿Qué significa 'You got this!'?", options: ["¡Tú puedes!", "Tú tienes esto", "Lo conseguiste", "Es tuyo"], correct: 0 },
+            { text: "¿Qué significa 'C'est dans la poche'?", options: ["Está ganado", "Está perdido", "Es difícil", "Es fácil"], correct: 0 },
+            { text: "Conjuga: 'They ___ (to train) every day.'", options: ["train", "trains", "training", "trained"], correct: 0 },
+            { text: "Conjuga: 'Je ___ (courir) vite.'", options: ["cours", "court", "courons", "courez"], correct: 0 },
+            { text: "¿Qué significa 'Crushing it'?", options: ["Arrasando", "Perdiendo", "Descansando", "Dudando"], correct: 0 },
+            { text: "¿Qué significa 'Avoir du souffle'?", options: ["Tener resistencia", "Tener hambre", "Tener sed", "Tener sueño"], correct: 0 },
+            { text: "Traduce: 'Necesito estirarme.'", options: ["I need to stretch", "I need to run", "I need to rest", "I need to eat"], correct: 0 },
+            { text: "Traduce: 'Être au taquet'?", options: ["Estar al máximo", "Estar cansado", "Estar triste", "Estar feliz"], correct: 0 },
+            { text: "Completa: 'I ___ (to be) sore yesterday.'", options: ["am", "was", "were", "will be"], correct: 1 },
+            { text: "Completa: 'Nous ___ (avoir) de l'énergie.'", options: ["avons", "avez", "ont", "ai"], correct: 0 },
+            { text: "¿Qué significa 'I'm in beast mode'?", options: ["Estoy imparable", "Estoy cansado", "Estoy triste", "Estoy dormido"], correct: 0 },
+            { text: "¿Qué significa 'Un geste pour la planète'?", options: ["Un gesto por el planeta", "Un deporte", "Un ejercicio", "Una dieta"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to win) the game.'", options: ["win", "won", "will win", "have won"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Tu ___ (aller) gagner.'", options: ["vas", "va", "allons", "vont"], correct: 0 },
+            { text: "¿Qué significa 'That was a good sweat'?", options: ["Eso fue un buen entrenamiento", "Eso fue aburrido", "Eso fue fácil", "Eso fue difícil"], correct: 0 },
+            { text: "¿Qué significa 'Elle déchire tout sur le terrain'?", options: ["Ella arrasa en la cancha", "Ella está cansada", "Ella está lesionada", "Ella no juega bien"], correct: 0 },
+            { text: "¿Qué significa 'Let's hit the gym'?", options: ["Vamos al gimnasio", "Vamos a casa", "Vamos a correr", "Vamos a descansar"], correct: 0 }
+        ]
+    },
+    7: {
+        title: "📝 Examen Final · Naturaleza y Planeta",
+        description: "25 preguntas sobre ecología, naturaleza y sostenibilidad. +30 XP si apruebas.",
+        passingScore: 18, xpReward: 30,
+        questions: [
+            { text: "¿Cómo se dice 'bosque' en inglés?", options: ["Forest", "Ocean", "Mountain", "River"], correct: 0 },
+            { text: "¿Cómo se dice 'reciclar' en francés?", options: ["Recycler", "Jeter", "Brûler", "Utiliser"], correct: 0 },
+            { text: "¿Qué significa 'Go green'?", options: ["Sé ecológico", "Ve rápido", "Come sano", "Viaja"], correct: 0 },
+            { text: "¿Qué significa 'Être écolo'?", options: ["Ser ecológico", "Ser rápido", "Ser fuerte", "Ser inteligente"], correct: 0 },
+            { text: "Traduce: 'Salva el planeta.'", options: ["Save the planet", "Destroy the planet", "Clean the planet", "Love the planet"], correct: 0 },
+            { text: "Traduce: 'Sauver la planète.'", options: ["Salvar el planeta", "Dañar el planeta", "Limpiar el planeta", "Amar el planeta"], correct: 0 },
+            { text: "Completa: 'We ___ (to recycle) our trash.'", options: ["recycle", "recycles", "recycling", "recycled"], correct: 0 },
+            { text: "Completa: 'Il ___ (falloir) protéger la nature.'", options: ["faut", "doit", "peut", "veut"], correct: 0 },
+            { text: "¿Qué significa 'Reduce your carbon footprint'?", options: ["Reduce tu huella de carbono", "Aumenta tu huella", "Cuida el agua", "Ahorra energía"], correct: 0 },
+            { text: "¿Qué significa 'C'est pas la mer à boire'?", options: ["No es tan difícil", "Es imposible", "Es fácil", "Es necesario"], correct: 0 },
+            { text: "Conjuga: 'She ___ (to plant) trees.'", options: ["plant", "plants", "planting", "planted"], correct: 1 },
+            { text: "Conjuga: 'Nous ___ (protéger) l'environnement.'", options: ["protégeons", "protèges", "protègent", "protégez"], correct: 0 },
+            { text: "¿Qué significa 'Leave no trace'?", options: ["No dejes rastro", "Deja huella", "Recoge basura", "Planta árboles"], correct: 0 },
+            { text: "¿Qué significa 'Avoir la main verte'?", options: ["Buena mano con plantas", "Mano verde", "Ser jardinero", "Cuidar flores"], correct: 0 },
+            { text: "Traduce: 'Necesitamos actuar ahora.'", options: ["We need to act now", "We need to wait", "We need to sleep", "We need to eat"], correct: 0 },
+            { text: "Traduce: 'Un geste pour la planète.'", options: ["Un gesto por el planeta", "Un problema", "Una solución", "Un desastre"], correct: 0 },
+            { text: "Completa: 'They ___ (to save) the planet.'", options: ["save", "saves", "saving", "saved"], correct: 0 },
+            { text: "Completa: 'Ils ___ (avoir) une idée.'", options: ["ont", "avons", "avez", "ai"], correct: 0 },
+            { text: "¿Qué significa 'It's a breath of fresh air'?", options: ["Es un respiro de aire fresco", "Es aburrido", "Es difícil", "Es fácil"], correct: 0 },
+            { text: "¿Qué significa 'Un geste pour la planète'?", options: ["Un gesto por el planeta", "Un error", "Un acierto", "Una moda"], correct: 0 },
+            { text: "Conjuga en futuro: 'I ___ (to recycle) more.'", options: ["recycle", "recycled", "will recycle", "have recycled"], correct: 2 },
+            { text: "Conjuga en futur proche: 'Nous ___ (aller) sauver la planète.'", options: ["allons", "allez", "vont", "vas"], correct: 0 },
+            { text: "¿Qué significa 'Mother Nature is angry'?", options: ["La naturaleza está enfadada", "La naturaleza está feliz", "La naturaleza está tranquila", "La naturaleza está dormida"], correct: 0 },
+            { text: "¿Qué significa 'Avoir la main verte'?", options: ["Buena mano plantas", "Mano sucia", "Mano fría", "Mano caliente"], correct: 0 },
+            { text: "¿Qué significa 'Let's go zero waste'?", options: ["Intentemos no generar basura", "Generemos más basura", "Reciclemos", "Compremos más"], correct: 0 }
+        ]
+    }
+};
+
+function renderExam() {
+    const week = getCurrentWeekInfo().cycleIndex;
+    const exam = weeklyExams[week];
+    const container = document.getElementById("examContainer");
+    if (!container) return;
+    if (!exam) {
+        container.innerHTML = '<div class="exam-card">📝 No hay examen para esta semana</div>';
+        return;
+    }
+    const isCompleted = examCompleted.includes(week);
+    if (isCompleted) {
+        container.innerHTML = `<div class="exam-card"><div class="exam-title">${exam.title}</div><div class="exam-preview">✅ Ya completaste este examen. ¡Buen trabajo!</div></div>`;
+        return;
+    }
+    container.innerHTML = `
+        <div class="exam-card" onclick="startExam(${week})">
+            <div class="exam-title">${exam.title}</div>
+            <div class="exam-preview">${exam.description}</div>
+            <div class="exam-preview">🎯 Aprobación: ${exam.passingScore}/25 · Recompensa: +${exam.xpReward} XP</div>
+        </div>
+    `;
+}
+
+function startExam(week) {
+    const exam = weeklyExams[week];
+    if (!exam) return;
+    currentExamAnswers = {};
+    
+    let questionsHtml = '';
+    exam.questions.forEach((q, idx) => {
+        questionsHtml += `
+            <div class="exam-question" data-qidx="${idx}" style="margin: 16px 0; padding: 12px; background: #f8f6ff; border-radius: 16px;">
+                <strong>${idx+1}. ${q.text}</strong>
+                <div style="margin-top: 8px;">
+                    ${q.options.map((opt, optIdx) => `
+                        <div class="exam-option" onclick="selectExamAnswer(${idx}, ${optIdx})" style="display: block; margin: 6px 0; padding: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;">
+                            ${String.fromCharCode(65+optIdx)}. ${opt}
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="exam_answer_status_${idx}" style="font-size: 0.7rem; margin-top: 4px;"></div>
+            </div>
+        `;
+    });
+    
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div>${exam.title}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div style="max-height: 60vh; overflow-y: auto;">
+                ${questionsHtml}
+            </div>
+            <button class="btn-primary" onclick="submitExam(${week})" style="margin-top: 16px;">✅ Corregir examen</button>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
+
+function selectExamAnswer(questionIdx, optionIdx) {
+    currentExamAnswers[questionIdx] = optionIdx;
+    const statusDiv = document.getElementById(`exam_answer_status_${questionIdx}`);
+    if (statusDiv) {
+        statusDiv.innerHTML = '✅ Respuesta seleccionada';
+        statusDiv.style.color = '#10b981';
+    }
+}
+
+function submitExam(week) {
+    const exam = weeklyExams[week];
+    if (!exam) return;
+    
+    let correctCount = 0;
+    exam.questions.forEach((q, idx) => {
+        if (currentExamAnswers[idx] === q.correct) {
+            correctCount++;
+        }
+    });
+    
+    const passed = correctCount >= exam.passingScore;
+    const message = passed 
+        ? `🎉 ¡Felicidades! Acertaste ${correctCount}/${exam.questions.length}. ¡Has aprobado! +${exam.xpReward} XP`
+        : `😅 Acertaste ${correctCount}/${exam.questions.length}. Necesitas ${exam.passingScore} para aprobar. ¡Revisa los temas e inténtalo de nuevo!`;
+    
+    alert(message);
+    
+    if (passed && !examCompleted.includes(week)) {
+        examCompleted.push(week);
+        localStorage.setItem("maryse_exam_completed", JSON.stringify(examCompleted));
+        userXP += exam.xpReward;
+        localStorage.setItem("maryse_xp", userXP);
+        updateProfile();
+        renderExam();
+    }
+    
+    document.querySelector('.modal-overlay')?.remove();
+}
 
 // ==================== GRAMÁTICA SEMANAL (8 semanas, bilingüe) ====================
 let grammarCompleted = JSON.parse(localStorage.getItem("maryse_grammar") || "[]");
@@ -546,7 +968,7 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
-    if(vn==='academy'){renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();}
+    if(vn==='academy'){renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderExam();renderFlashcardModes();loadFlashcards();renderLessons();}
     if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
     if(vn==='games'){switchGame(currentGame);}
     if(vn==='dad'){renderDad();updateDadClock();}
