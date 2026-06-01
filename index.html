@@ -30,22 +30,11 @@
         .mood-card.selected .mood-label { color: white; }
         .mood-emoji { font-size: 1.8rem; margin-bottom: 4px; }
         .mood-label { font-size: 0.7rem; font-weight: 500; color: var(--subtext); }
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 28px; }
-        .card { background: var(--card); border-radius: 28px; padding: 22px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; margin-bottom: 18px; }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
-        .card-icon { font-size: 2rem; margin-bottom: 14px; }
-        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
-        .card-subtitle { font-size: 0.75rem; color: var(--subtext); }
         .birthday-card { background: linear-gradient(135deg, #fff9e8, #fff3d4); border-radius: 28px; padding: 22px; margin-bottom: 28px; border: 1px solid #ffe6b3; }
         .countdown { display: flex; justify-content: center; gap: 14px; margin: 16px 0; flex-wrap: wrap; }
         .countdown-item { text-align: center; background: white; border-radius: 20px; padding: 10px 14px; min-width: 65px; }
         .countdown-number { font-size: 1.4rem; font-weight: 700; color: #d97706; }
         .countdown-label { font-size: 0.6rem; color: #92400e; }
-        .quick-access { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 12px; margin-top: 16px; }
-        .quick-btn { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .quick-btn:hover { background: #f8f6ff; transform: translateY(-3px); }
-        .quick-icon { font-size: 1.5rem; margin-bottom: 6px; }
-        .quick-label { font-size: 0.7rem; font-weight: 600; color: #5e3ab6; }
         .view { display: none; }
         .view.active { display: block; }
         .back-btn { background: #f0ecff; border: none; padding: 10px 20px; border-radius: 60px; color: #5e3ab6; font-weight: 600; cursor: pointer; font-size: 0.8rem; margin-bottom: 20px; display: inline-block; }
@@ -281,10 +270,91 @@
             background: #f8f6ff;
             border-radius: 16px;
         }
+
+        /* ===== CÍRCULOS FLOTANTES ===== */
+        .float-circle {
+            position: fixed;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+            font-size: 1.5rem;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .float-circle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        .circle-admin {
+            bottom: 110px;
+            right: 16px;
+            background: var(--primary);
+            border: 2px solid #fbbf24;
+        }
+        .circle-signout {
+            bottom: 40px;
+            right: 16px;
+            background: var(--primary);
+            border: 2px solid #10b981;
+        }
+        .circle-menu {
+            bottom: 40px;
+            left: 16px;
+            background: var(--primary-light);
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        .radial-menu {
+            position: fixed;
+            bottom: 110px;
+            left: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: var(--card);
+            border-radius: 28px;
+            padding: 16px;
+            max-width: 300px;
+            z-index: 999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        .radial-menu.hidden {
+            display: none;
+        }
+        .radial-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            background: var(--bg);
+            transition: 0.2s;
+            font-size: 0.7rem;
+            font-weight: 500;
+            min-width: 70px;
+        }
+        .radial-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        .radial-item span:first-child {
+            font-size: 1.3rem;
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- HOME LIMPIO: SIN TARJETAS -->
     <div id="viewHome" class="view active">
         <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
         <div class="hero"><h2 id="greeting">Hola, Maryse 👋</h2><div class="hero-quote" id="dailyQuote">"Cada día es una nueva página."</div></div>
@@ -299,126 +369,57 @@
         </div>
         <div class="week-theme-hero" id="weekThemeHero"></div>
         <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
-        <div class="cards-grid">
-            <div class="card" onclick="showView('academy')"><div class="card-icon">🎓</div><div class="card-title">Academy <span class="weekly-content-badge" id="academyBadge"></span></div><div class="card-subtitle">Lecciones, flashcards</div></div>
-            <div class="card" onclick="showView('discover')"><div class="card-icon">🔭</div><div class="card-title">Discover <span class="weekly-content-badge" id="discoverBadge"></span></div><div class="card-subtitle">Artículos, cultura</div></div>
-            <div class="card" onclick="showView('games')"><div class="card-icon">🎮</div><div class="card-title">Games</div><div class="card-subtitle">Memory, Speed Quiz, Word Scramble</div></div>
-            <div class="card" onclick="showView('dad')"><div class="card-icon">👨‍👧</div><div class="card-title">Rincón de Papá</div><div class="card-subtitle">Lunes a Viernes · Cartas y actividades</div></div>
-            <div class="card" onclick="showView('karaoke')"><div class="card-icon">🎤</div><div class="card-title">Karaoke</div><div class="card-subtitle">20 canciones EN/FR</div></div>
-            <div class="card" onclick="showView('diary')"><div class="card-icon">📸</div><div class="card-title">Diario</div><div class="card-subtitle">Con editor de fotos</div></div>
-            <div class="card" onclick="showView('friends')"><div class="card-icon">👥</div><div class="card-title">Invitaciones</div><div class="card-subtitle">Control parental</div></div>
-            <div class="card" onclick="showView('theme')"><div class="card-icon">🎨</div><div class="card-title">Tema</div><div class="card-subtitle">7 combinaciones</div></div>
-            <div class="card" onclick="showView('lifeskills')">
-                <div class="card-icon">💪</div>
-                <div class="card-title">Cosas de la vida</div>
-                <div class="card-subtitle">10 superpoderes para tu futuro</div>
-            </div>
-        </div>
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
         <div class="card mama-card" style="display:flex;justify-content:space-between;"><div><div class="card-icon">🎵</div><div class="card-title" id="mamaPlaylistTitle">Maryse</div><div class="card-subtitle">💕 Playlist de Maman (Fiona)</div></div><button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button></div>
-        <div class="quick-access"><div class="quick-btn" onclick="showView('academy')"><div class="quick-icon">🎓</div><div class="quick-label">Academy</div></div><div class="quick-btn" onclick="showView('games')"><div class="quick-icon">🎮</div><div class="quick-label">Games</div></div><div class="quick-btn" onclick="showView('karaoke')"><div class="quick-icon">🎤</div><div class="quick-label">Karaoke</div></div><div class="quick-btn" onclick="showView('profile')"><div class="quick-icon">👤</div><div class="quick-label">Perfil</div></div></div>
         <div class="footer">💜 Tu espacio para aprender</div>
     </div>
 
-    <!-- ACADEMY REORGANIZADA -->
+    <!-- ACADEMY -->
     <div id="viewAcademy" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
         <div class="lang-selector">
             <div id="lang-en" class="lang-btn active">🇬🇧 English</div>
             <div id="lang-fr" class="lang-btn">🇫🇷 Français</div>
         </div>
-        
-        <!-- 1. GRAMÁTICA -->
-        <div class="grammar-section" id="grammarSection">
-            <div class="badge">📚 GRAMÁTICA · Reglas semanales</div>
-            <div id="grammarContainer"></div>
-        </div>
-        
-        <!-- 2. VOCABULARIO -->
+        <div class="grammar-section" id="grammarSection"><div class="badge">📚 GRAMÁTICA · Reglas semanales</div><div id="grammarContainer"></div></div>
         <div class="vocab-section" id="vocabSection"></div>
-        
-        <!-- 3. LECCIONES -->
         <div class="lessons-grid" id="lessonsContainer"></div>
-        
-        <!-- 4. FLASHCARDS -->
-        <div class="flashcard-section">
-            <div class="badge">📇 FLASHCARDS · Practica</div>
-            <p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p>
-            <div class="flashcard-mode-selector" id="flashcardModes"></div>
-            <div style="display:flex;justify-content:space-between;margin-top:8px;">
-                <span id="flashScore">Score: 0/0</span>
-                <button class="back-btn" onclick="nextFlashcard()">⏭️</button>
-            </div>
-            <div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div>
-        </div>
-        
-        <!-- 5. RESOURCES (podcasts) -->
+        <div class="flashcard-section"><div class="badge">📇 FLASHCARDS · Practica</div><p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p><div class="flashcard-mode-selector" id="flashcardModes"></div><div style="display:flex;justify-content:space-between;margin-top:8px;"><span id="flashScore">Score: 0/0</span><button class="back-btn" onclick="nextFlashcard()">⏭️</button></div><div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div></div>
         <div class="podcast-section" id="podcastSection"></div>
-        
-        <!-- 6. FONÉTICA -->
         <div class="pronunciation-section" id="pronunciationSection"></div>
-        
-        <!-- 7. CONJUGACIÓN -->
-        <div class="conjugation-section" id="conjugationSection">
-            <div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div>
-            <div class="conjugation-grid" id="conjugationGrid"></div>
-        </div>
-        
-        <!-- 8. EXÁMENES FINALES (AHORA DENTRO DE ACADEMY) -->
-        <div class="exam-section" id="examSection">
-            <div class="badge">📝 EXAMEN FINAL · Semana actual</div>
-            <div id="examContainer"></div>
-        </div>
+        <div class="conjugation-section" id="conjugationSection"><div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div><div class="conjugation-grid" id="conjugationGrid"></div></div>
+        <div class="exam-section" id="examSection"><div class="badge">📝 EXAMEN FINAL · Semana actual</div><div id="examContainer"></div></div>
     </div>
 
     <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
     <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><p style="font-size:0.8rem;color:var(--subtext);margin-bottom:12px;">Elige un juego para practicar</p><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
-    
-    <div id="viewDad" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="card clock-card">
-            <div style="font-size: 0.8rem; opacity: 0.9;">🕐 HORA ACTUAL</div>
-            <div class="clock-time" id="dadLiveClock">--:--:--</div>
-            <div class="clock-date" id="dadLiveDate"></div>
-        </div>
-        <div id="dadContainer"></div>
-    </div>
-    
-    <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><p style="font-size:0.8rem;color:var(--subtext);">🎵 20 canciones (10 EN + 10 FR) · Elige y canta (se abre en YouTube)</p><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" id="karaokeFilterAll" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" id="karaokeFilterEN" onclick="filterKaraokeSongs('en')" style="background:var(--card);color:var(--text);">🇬🇧 English (10)</button><button class="btn" id="karaokeFilterFR" onclick="filterKaraokeSongs('fr')" style="background:var(--card);color:var(--text);">🇫🇷 Français (10)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
+    <div id="viewDad" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card clock-card"><div style="font-size: 0.8rem; opacity: 0.9;">🕐 HORA ACTUAL</div><div class="clock-time" id="dadLiveClock">--:--:--</div><div class="clock-date" id="dadLiveDate"></div></div><div id="dadContainer"></div></div>
+    <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><p style="font-size:0.8rem;color:var(--subtext);">🎵 24 canciones (12 EN + 12 FR) · Elige y canta (se abre en YouTube)</p><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" id="karaokeFilterAll" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" id="karaokeFilterEN" onclick="filterKaraokeSongs('en')" style="background:var(--card);color:var(--text);">🇬🇧 English (12)</button><button class="btn" id="karaokeFilterFR" onclick="filterKaraokeSongs('fr')" style="background:var(--card);color:var(--text);">🇫🇷 Français (12)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
     <div id="viewDiary" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📸 Diario</div><input type="text" id="diaryTitle" placeholder="Título..."><textarea id="diaryText" rows="3" placeholder="¿Qué pasó hoy?"></textarea><div id="photoEditor" style="display:none;"><p style="font-size:0.7rem;color:var(--subtext);">✂️ Edita tu foto :</p><div class="photo-canvas-container"><canvas id="photoCanvas"></canvas></div><div class="photo-editor-tools"><button class="btn" onclick="rotatePhoto(-90)">↺</button><button class="btn" onclick="rotatePhoto(90)">↻</button><button class="btn" onclick="flipPhoto('horizontal')">↔️</button><button class="btn" onclick="flipPhoto('vertical')">↕️</button><button class="btn" onclick="centerPhoto()">🎯</button><button class="btn" onclick="resetPhoto()">🔄</button><button class="btn btn-success" onclick="applyEdit()">✅ Aplicar</button></div></div><input type="file" id="diaryPhoto" accept="image/*" onchange="previewDiaryPhoto()"><img id="diaryPreview" style="display:none;width:100%;border-radius:12px;max-height:200px;object-fit:cover;"><button class="btn btn-primary" onclick="saveDiaryEntry()" style="width:100%;">💾 Guardar recuerdo</button><div id="diaryEntries" style="margin-top:16px;"></div></div></div>
     <div id="viewFriends" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">👥 Invitaciones</div><p style="font-size:0.7rem;color:var(--subtext);">Control parental · Genera, valida o rechaza invitaciones</p><button class="btn btn-primary" onclick="generateFriendCode()" style="width:100%;">🔗 Generar código de invitación</button><input type="text" id="friendCodeInput" placeholder="Pega el código de invitación..."><button class="btn btn-success" onclick="addFriend()" style="width:100%;">➕ Enviar solicitud</button><h4 style="font-size:0.8rem;margin-top:16px;">📤 Invitaciones enviadas</h4><div id="sentInvitesList"></div><h4 style="font-size:0.8rem;margin-top:16px;">📥 Invitaciones recibidas</h4><div id="receivedInvitesList"></div><h4 style="font-size:0.8rem;margin-top:16px;">✅ Amigas conectadas</h4><div id="friendsList"></div></div></div>
-
-    <div id="viewTheme" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="card">
-            <div class="card-title">🎨 Personalizar Tema</div>
-            <p style="font-size:0.7rem;color:var(--subtext);margin-bottom:16px;">Elige una combinación de colores o crea la tuya</p>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;" id="themePresets">
-                <div class="theme-preset" data-primary="#8b5cf6" data-secondary="#c084fc" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div>
-                <div class="theme-preset" data-primary="#ec4899" data-secondary="#f472b6" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div>
-                <div class="theme-preset" data-primary="#06b6d4" data-secondary="#67e8f9" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div>
-                <div class="theme-preset" data-primary="#10b981" data-secondary="#6ee7b7" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div>
-                <div class="theme-preset" data-primary="#f97316" data-secondary="#fdba74" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div>
-                <div class="theme-preset" data-primary="#6366f1" data-secondary="#a5b4fc" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div>
-                <div class="theme-preset" data-primary="#d4a574" data-secondary="#e6c9a8" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div>
-            </div>
-            <p style="font-size:0.7rem;color:var(--subtext);margin-top:12px;">O crea tu propio tema:</p>
-            <label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6">
-            <label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc">
-            <button class="btn btn-primary" onclick="saveTheme()" style="width:100%;margin-top:12px;">💾 Guardar tema</button>
-        </div>
-    </div>
-
+    <div id="viewTheme" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎨 Personalizar Tema</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:16px;">Elige una combinación de colores o crea la tuya</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;" id="themePresets"><div class="theme-preset" data-primary="#8b5cf6" data-secondary="#c084fc" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div><div class="theme-preset" data-primary="#ec4899" data-secondary="#f472b6" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div><div class="theme-preset" data-primary="#06b6d4" data-secondary="#67e8f9" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div><div class="theme-preset" data-primary="#10b981" data-secondary="#6ee7b7" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div><div class="theme-preset" data-primary="#f97316" data-secondary="#fdba74" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div><div class="theme-preset" data-primary="#6366f1" data-secondary="#a5b4fc" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div><div class="theme-preset" data-primary="#d4a574" data-secondary="#e6c9a8" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div></div><p style="font-size:0.7rem;color:var(--subtext);margin-top:12px;">O crea tu propio tema:</p><label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6"><label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc"><button class="btn btn-primary" onclick="saveTheme()" style="width:100%;margin-top:12px;">💾 Guardar tema</button></div></div>
     <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title" style="margin-bottom:12px;">🔔 Recordatorios</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Recibe notificaciones diarias para no perder tu racha</p><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="font-size:0.8rem;">Activar recordatorios</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label style="font-size:0.7rem;">Hora del recordatorio:</label><input type="time" id="notifTime" value="17:00" onchange="saveNotifSettings()"><label style="font-size:0.7rem;">Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0" onclick="toggleDay(0)">Dom</div><div class="day-chip active" data-day="1" onclick="toggleDay(1)">Lun</div><div class="day-chip active" data-day="2" onclick="toggleDay(2)">Mar</div><div class="day-chip active" data-day="3" onclick="toggleDay(3)">Mié</div><div class="day-chip active" data-day="4" onclick="toggleDay(4)">Jue</div><div class="day-chip active" data-day="5" onclick="toggleDay(5)">Vie</div><div class="day-chip" data-day="6" onclick="toggleDay(6)">Sáb</div></div><label style="font-size:0.7rem;">Mensaje:</label><select id="notifMessage" onchange="saveNotifSettings()"><option value="📚 ¿Ya practicaste hoy? ¡No pierdas tu racha!">📚 ¿Ya practicaste hoy?</option><option value="🎯 ¡Hora de aprender! Te espera una nueva lección">🎯 ¡Hora de aprender!</option><option value="💜 Papá te recuerda que eres increíble">💜 Mensaje de Papá</option><option value="🔥 Sigue tu racha, ¡cada día cuenta!">🔥 Sigue tu racha</option></select><button class="btn btn-primary" onclick="testNotification()" style="width:100%;margin-top:12px;">🔔 Probar notificación</button></div></div><div class="backup-section"><div class="card-title" style="margin-bottom:12px;">💾 Copia de seguridad</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Guarda tus datos antes de actualizar.</p><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-warning" onclick="exportData()" style="flex:1;">📥 Exportar datos</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()" style="flex:1;">📤 Importar datos</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"><p id="backupStatus" style="font-size:0.65rem;color:var(--subtext);margin-top:8px;"></p></div></div>
-    <div id="viewLifeskills" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="skills-section">
-            <div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div>
-            <p style="font-size:0.8rem; margin-bottom:16px;">No se aprenden en los libros, pero son lo más importante para tu futuro. Sin presión, solo lectura y reflexión.</p>
-            <div id="lifeSkillsContainer" class="skills-grid"></div>
-        </div>
-    </div>
+    <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><p style="font-size:0.8rem; margin-bottom:16px;">No se aprenden en los libros, pero son lo más importante para tu futuro. Sin presión, solo lectura y reflexión.</p><div id="lifeSkillsContainer" class="skills-grid"></div></div></div>
 </div>
+
+<!-- ===== CÍRCULOS FLOTANTES ===== -->
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
+<div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
+<div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
+
+<!-- ===== MENÚ RADIAL CON 9 PÁGINAS ===== -->
+<div id="radialMenu" class="radial-menu hidden">
+    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
+    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
+    <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
+    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
+    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
+    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
+    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Amigas</span></div>
+    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
+    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
+</div>
+
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 
 <script>
@@ -455,7 +456,7 @@ const weeklyVocab = {
     7: { en: [{en:"forest",es:"bosque"},{en:"ocean",es:"océano"},{en:"mountain",es:"montaña"},{en:"recycle",es:"reciclar"},{en:"planet",es:"planeta"},{en:"wildlife",es:"vida salvaje"}], fr: [{fr:"forêt",es:"bosque"},{fr:"océan",es:"océano"},{fr:"montagne",es:"montaña"},{fr:"recycler",es:"reciclar"},{fr:"planète",es:"planeta"},{fr:"faune",es:"vida salvaje"}] }
 };
 
-// ==================== SLANG (AMERICANO + FRANCÉS) ====================
+// ==================== SLANG ====================
 const weeklySlang = {
     0: { en: [{phrase:"I'm so over it",meaning:"Ya estoy harta de esto",context:"Frustración",level:"intermediate"},{phrase:"That hit me in the feels",meaning:"Me llegó al corazón",context:"Emoción",level:"intermediate"},{phrase:"No biggie",meaning:"No es para tanto",context:"Restar importancia",level:"beginner"},{phrase:"I'm shook",meaning:"Estoy en shock",context:"Sorpresa",level:"intermediate"},{phrase:"That's a mood",meaning:"Me identifico totalmente",context:"Conexión emocional",level:"intermediate"},{phrase:"I can't even",meaning:"No tengo palabras",context:"Sorpresa o frustración",level:"intermediate"},{phrase:"It's not that deep",meaning:"No es para tanto",context:"Minimizar",level:"intermediate"},{phrase:"For real",meaning:"¿En serio?",context:"Confirmar",level:"beginner"}], fr: [{phrase:"Je suis au bout de ma vie",meaning:"Estoy harto/a",context:"Frustración",level:"intermediate"},{phrase:"Avoir le seum",meaning:"Estar enfadado/a",context:"Rabia",level:"intermediate"},{phrase:"C'est la vie",meaning:"Así es la vida",context:"Aceptación",level:"beginner"},{phrase:"Être en PLS",meaning:"Estar agotado/a",context:"Fatiga",level:"intermediate"},{phrase:"Avoir le cafard",meaning:"Estar triste",context:"Melancolía",level:"beginner"}] },
     1: { en: [{phrase:"Cramming",meaning:"Estudiar a última hora",context:"Exámenes",level:"beginner"},{phrase:"Ace a test",meaning:"Sacar 10",context:"Éxito académico",level:"beginner"},{phrase:"Pull an all-nighter",meaning:"No dormir estudiando",context:"Estudio intenso",level:"intermediate"},{phrase:"I blanked out",meaning:"Me quedé en blanco",context:"Olvidar",level:"intermediate"},{phrase:"That's a freebie",meaning:"Esa pregunta es regalada",context:"Algo fácil",level:"intermediate"},{phrase:"I'm behind on homework",meaning:"Voy atrasada con la tarea",context:"Acumulación",level:"beginner"},{phrase:"The teacher called me out",meaning:"La maestra me señaló",context:"En clase",level:"intermediate"},{phrase:"It's a no-brainer",meaning:"Es obvio",context:"Decisión fácil",level:"intermediate"}], fr: [{phrase:"Bachoter",meaning:"Estudiar a última hora",context:"Exámenes",level:"beginner"},{phrase:"Cartonner",meaning:"Tener éxito",context:"Éxito",level:"beginner"},{phrase:"Sécher un cours",meaning:"Saltarse clase",context:"Novillos",level:"beginner"},{phrase:"C'est du gâteau",meaning:"Es pan comido",context:"Fácil",level:"beginner"},{phrase:"Le chouchou du prof",meaning:"Favorito del profe",context:"Compañero ejemplar",level:"beginner"}] },
@@ -520,7 +521,7 @@ const podcasts = {
     ]
 };
 
-// ==================== CONJUGACIÓN (8 VERBOS EN INGLÉS Y 8 EN FRANCÉS) ====================
+// ==================== CONJUGACIÓN ====================
 const conjugationData = {
     en: [
         { verb: "to be", title: "TO BE · Ser o estar", tenses: { present: { "I": "am", "You": "are", "He/She/It": "is", "We": "are", "You (pl)": "are", "They": "are" }, past: { "I": "was", "You": "were", "He/She/It": "was", "We": "were", "You (pl)": "were", "They": "were" }, future: { "I": "will be", "You": "will be", "He/She/It": "will be", "We": "will be", "You (pl)": "will be", "They": "will be" } }, examples: ["I am happy", "I was tired", "I will be there"], exercises: [{ prompt: "I ___ happy", answer: "am" }, { prompt: "I ___ tired yesterday", answer: "was" }, { prompt: "I ___ there tomorrow", answer: "will be" }] },
@@ -543,7 +544,8 @@ const conjugationData = {
         { verb: "vouloir", title: "VOULOIR · Querer", tenses: { present: { "Je": "veux", "Tu": "veux", "Il/Elle/On": "veut", "Nous": "voulons", "Vous": "voulez", "Ils/Elles": "veulent" }, past: { "Je": "ai voulu", "Tu": "as voulu", "Il/Elle/On": "a voulu", "Nous": "avons voulu", "Vous": "avez voulu", "Ils/Elles": "ont voulu" }, future: { "Je": "voudrai", "Tu": "voudras", "Il/Elle/On": "voudra", "Nous": "voudrons", "Vous": "voudrez", "Ils/Elles": "voudront" } }, examples: ["Je veux un café", "J'ai voulu partir", "Je voudrai réussir"], exercises: [{ prompt: "Je ___ un café", answer: "veux" }, { prompt: "J'___ partir hier", answer: "ai voulu" }, { prompt: "Je ___ réussir un jour", answer: "voudrai" }] }
     ]
 };
-    // ==================== EXÁMENES FINALES (8 semanas) ====================
+    
+// ==================== EXÁMENES FINALES ====================
 let examCompleted = JSON.parse(localStorage.getItem("maryse_exam_completed") || "[]");
 let currentExamAnswers = {};
 
@@ -908,7 +910,7 @@ function submitExam(week) {
     document.querySelector('.modal-overlay')?.remove();
 }
 
-// ==================== GRAMÁTICA SEMANAL (8 semanas, bilingüe) ====================
+// ==================== GRAMÁTICA SEMANAL ====================
 let grammarCompleted = JSON.parse(localStorage.getItem("maryse_grammar") || "[]");
 
 const weeklyGrammar = {
@@ -948,7 +950,6 @@ const weeklyGrammar = {
 
 // ==================== KARAOKE ====================
 const karaokeSongs = [
-    // 12 canciones en inglés
     {title:"Count On Me", artist:"Bruno Mars", language:"en", searchLink:"https://www.youtube.com/results?search_query=Count+On+Me+Bruno+Mars+lyrics"},
     {title:"Perfect", artist:"Ed Sheeran", language:"en", searchLink:"https://www.youtube.com/results?search_query=Perfect+Ed+Sheeran+lyrics"},
     {title:"A Thousand Years", artist:"Christina Perri", language:"en", searchLink:"https://www.youtube.com/results?search_query=A+Thousand+Years+Christina+Perri+lyrics"},
@@ -961,7 +962,6 @@ const karaokeSongs = [
     {title:"Imagine", artist:"John Lennon", language:"en", searchLink:"https://www.youtube.com/results?search_query=Imagine+John+Lennon+lyrics"},
     {title:"Happy", artist:"Pharrell Williams", language:"en", searchLink:"https://www.youtube.com/results?search_query=Happy+Pharrell+Williams+lyrics"},
     {title:"Shape of You", artist:"Ed Sheeran", language:"en", searchLink:"https://www.youtube.com/results?search_query=Shape+of+You+Ed+Sheeran+lyrics"},
-    // 12 canciones en francés
     {title:"On Ecrit Sur Les Murs", artist:"Kids United", language:"fr", searchLink:"https://www.youtube.com/results?search_query=On+Ecrit+Sur+Les+Murs+Kids+United+paroles"},
     {title:"Je Vole", artist:"Louane", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Je+Vole+Louane+paroles"},
     {title:"Dernière Danse", artist:"Indila", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Dernière+Danse+Indila+paroles"},
@@ -1252,41 +1252,54 @@ function checkGrammarExercise(week, idx) {
     }
 }
 
-// ==================== INICIALIZACIÓN ====================
-window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById("installBtn").style.display="block";});
-document.addEventListener("visibilitychange",()=>{if(document.hidden)autoBackup();});
-window.addEventListener("beforeunload",()=>{autoBackup();});
-document.getElementById("lang-en").onclick=()=>{currentLang="en";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();};
-document.getElementById("lang-fr").onclick=()=>{currentLang="fr";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();};
-updateGreeting();updateBirthdayCountdown();setInterval(updateBirthdayCountdown,1000);loadAvatar();loadThemeFromStorage();
-if(localStorage.getItem("maryse_dark_mode")==="true")document.body.classList.add("dark");
-updateWeeklyDisplay();loadNotifSettings();if(notifSettings.enabled)requestNotifPermission();
-document.querySelectorAll(".mood-card").forEach(c=>c.addEventListener("click",function(){document.querySelectorAll(".mood-card").forEach(c=>c.classList.remove("selected"));this.classList.add("selected");localStorage.setItem("maryse_last_mood",this.getAttribute("data-mood"));}));
-window.showView=showView;window.openLesson=openLesson;window.completeLesson=completeLesson;
-window.openArticle=openArticle;window.openMomActivity=openMomActivity;
-window.speakText=speakText;window.toggleDarkMode=toggleDarkMode;window.changeAvatar=changeAvatar;
-window.openMamaPlaylist=openMamaPlaylist;
-window.loadFlashcards=loadFlashcards;window.flipFlashcard=flipFlashcard;
-window.flashcardResult=flashcardResult;window.nextFlashcard=nextFlashcard;window.switchFlashMode=switchFlashMode;
-window.switchGame=switchGame;window.flipMemoryCard=flipMemoryCard;
-window.answerSpeedQuiz=answerSpeedQuiz;window.pickScrambleLetter=pickScrambleLetter;
-window.resetScrambleAnswer=resetScrambleAnswer;window.checkScrambleAnswer=checkScrambleAnswer;
-window.filterKaraokeSongs=filterKaraokeSongs;
-window.saveDiaryEntry=saveDiaryEntry;window.previewDiaryPhoto=previewDiaryPhoto;
-window.rotatePhoto=rotatePhoto;window.flipPhoto=flipPhoto;window.centerPhoto=centerPhoto;window.resetPhoto=resetPhoto;window.applyEdit=applyEdit;
-window.generateFriendCode=generateFriendCode;window.addFriend=addFriend;
-window.approveReceivedInvite=approveReceivedInvite;window.rejectReceivedInvite=rejectReceivedInvite;
-window.cancelSentInvite=cancelSentInvite;
-window.applyPreset=applyPreset;window.updateTheme=updateTheme;window.saveTheme=saveTheme;window.installPWA=installPWA;
-window.exportData=exportData;window.importData=importData;
-window.changeTestWeek=changeTestWeek;
-window.toggleNotifications=toggleNotifications;window.toggleDay=toggleDay;
-window.saveNotifSettings=saveNotifSettings;window.testNotification=testNotification;
-window.marcarActividadDad=marcarActividadDad;
-window.openConjugation=openConjugation;
-window.checkConjugationExercise=checkConjugationExercise;
-window.checkGrammarExercise=checkGrammarExercise;
-// ==================== COSAS DE LA VIDA - 10 HABILIDADES ====================
+// ==================== CÍRCULOS FLOTANTES Y NAVEGACIÓN ====================
+function toggleRadialMenu() {
+    const menu = document.getElementById('radialMenu');
+    if (menu) menu.classList.toggle('hidden');
+}
+
+function goToView(viewName) {
+    showView(viewName);
+    const menu = document.getElementById('radialMenu');
+    if (menu) menu.classList.add('hidden');
+}
+
+function openAdminPanel() {
+    const codigoAdmin = prompt("🔐 Panel de administración · Introduce el código secreto:");
+    if (codigoAdmin === "MARYSE2025") {
+        alert("👩‍👧 Bienvenida, mamá. Puedes ver estadísticas y gestionar códigos.");
+        showView('profile');
+    } else if (codigoAdmin !== null) {
+        alert("❌ Código incorrecto");
+    }
+}
+
+function signOutAndClose() {
+    if (confirm("¿Cerrar sesión y salir de la aplicación?")) {
+        localStorage.clear();
+        if (typeof window.close === 'function') {
+            window.close();
+        } else {
+            document.body.innerHTML = `<div style="text-align:center;padding:50px;font-family:'Inter',sans-serif;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()" style="padding:10px 20px;margin-top:20px;background:#8b5cf6;color:white;border:none;border-radius:60px;cursor:pointer;">Volver a entrar</button></div>`;
+        }
+    }
+}
+
+function checkSession() {
+    const loggedIn = localStorage.getItem("maryse_logged_in");
+    if (!loggedIn && window.location.hash !== "#nologin") {
+        const email = prompt("📧 Introduce tu email para continuar (solo visible para ti):");
+        if (email && email.includes("@")) {
+            localStorage.setItem("maryse_logged_in", "true");
+            localStorage.setItem("maryse_user_email", email);
+        } else if (email !== null) {
+            alert("Email no válido");
+            location.reload();
+        }
+    }
+}
+
+// ==================== COSAS DE LA VIDA ====================
 const lifeSkills = [
     { id: 1, emoji: "🧠", title: "Pensadora Analítica", subtitle: "Aprende a pensar como Sherlock Holmes", explanation: "No se trata de saberlo todo, sino de saber hacer las preguntas correctas. Una mente analítica desarma los problemas grandes en piezas pequeñas.", frase: "💭 \"No es que sea más inteligente, es que me quedo más tiempo con los problemas.\" — Einstein", tips: ["🧩 Antes de decidir, pregúntate: '¿Qué pasaría si hiciera lo contrario?'", "📊 Cuando algo salga mal, no preguntes '¿De quién es la culpa?' sino '¿Qué podemos aprender de esto?'", "🔍 Practica el '5 porqués': pregúntate '¿por qué?' 5 veces seguidas."], challenge: "Esta semana, cada vez que tengas un problema pequeño, anota 3 posibles causas y compártelas con papá." },
     { id: 2, emoji: "🎨", title: "Creativa y Original", subtitle: "Tu forma de ver el mundo es única", explanation: "La creatividad no es solo dibujar o cantar. Es encontrar soluciones que nadie más ha visto, conectar ideas locas entre sí.", frase: "💡 \"La creatividad es la inteligencia divirtiéndose.\" — Albert Einstein", tips: ["💡 Cada día, pregúntate: '¿Cómo podría mejorar algo que hago siempre?'", "📝 Lleva un diario de ideas locas.", "🤝 Pide opiniones diferentes a las tuyas."], challenge: "Esta semana, inventa un nuevo uso para un objeto cotidiano (una escoba, una cuchara, una silla)." },
@@ -1333,6 +1346,50 @@ function openSkill(skillId) {
     `;
     document.body.appendChild(m);
 }
+
+// ==================== INICIALIZACIÓN ====================
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById("installBtn").style.display = "block"; });
+document.addEventListener("visibilitychange", () => { if (document.hidden) autoBackup(); });
+window.addEventListener("beforeunload", () => { autoBackup(); });
+document.getElementById("lang-en").onclick = () => { currentLang = "en"; renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderFlashcardModes(); loadFlashcards(); renderLessons(); };
+document.getElementById("lang-fr").onclick = () => { currentLang = "fr"; renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderFlashcardModes(); loadFlashcards(); renderLessons(); };
+updateGreeting(); updateBirthdayCountdown(); setInterval(updateBirthdayCountdown, 1000); loadAvatar(); loadThemeFromStorage();
+if (localStorage.getItem("maryse_dark_mode") === "true") document.body.classList.add("dark");
+updateWeeklyDisplay(); loadNotifSettings(); if (notifSettings.enabled) requestNotifPermission();
+document.querySelectorAll(".mood-card").forEach(c => c.addEventListener("click", function () { document.querySelectorAll(".mood-card").forEach(c => c.classList.remove("selected")); this.classList.add("selected"); localStorage.setItem("maryse_last_mood", this.getAttribute("data-mood")); }));
+checkSession();
+
+// Exponer funciones globales
+window.showView = showView; window.openLesson = openLesson; window.completeLesson = completeLesson;
+window.openArticle = openArticle; window.openMomActivity = openMomActivity;
+window.speakText = speakText; window.toggleDarkMode = toggleDarkMode; window.changeAvatar = changeAvatar;
+window.openMamaPlaylist = openMamaPlaylist;
+window.loadFlashcards = loadFlashcards; window.flipFlashcard = flipFlashcard;
+window.flashcardResult = flashcardResult; window.nextFlashcard = nextFlashcard; window.switchFlashMode = switchFlashMode;
+window.switchGame = switchGame; window.flipMemoryCard = flipMemoryCard;
+window.answerSpeedQuiz = answerSpeedQuiz; window.pickScrambleLetter = pickScrambleLetter;
+window.resetScrambleAnswer = resetScrambleAnswer; window.checkScrambleAnswer = checkScrambleAnswer;
+window.filterKaraokeSongs = filterKaraokeSongs;
+window.saveDiaryEntry = saveDiaryEntry; window.previewDiaryPhoto = previewDiaryPhoto;
+window.rotatePhoto = rotatePhoto; window.flipPhoto = flipPhoto; window.centerPhoto = centerPhoto; window.resetPhoto = resetPhoto; window.applyEdit = applyEdit;
+window.generateFriendCode = generateFriendCode; window.addFriend = addFriend;
+window.approveReceivedInvite = approveReceivedInvite; window.rejectReceivedInvite = rejectReceivedInvite;
+window.cancelSentInvite = cancelSentInvite;
+window.applyPreset = applyPreset; window.updateTheme = updateTheme; window.saveTheme = saveTheme; window.installPWA = installPWA;
+window.exportData = exportData; window.importData = importData;
+window.changeTestWeek = changeTestWeek;
+window.toggleNotifications = toggleNotifications; window.toggleDay = toggleDay;
+window.saveNotifSettings = saveNotifSettings; window.testNotification = testNotification;
+window.marcarActividadDad = marcarActividadDad;
+window.openConjugation = openConjugation;
+window.checkConjugationExercise = checkConjugationExercise;
+window.checkGrammarExercise = checkGrammarExercise;
+window.toggleRadialMenu = toggleRadialMenu;
+window.goToView = goToView;
+window.openAdminPanel = openAdminPanel;
+window.signOutAndClose = signOutAndClose;
+window.renderLifeSkills = renderLifeSkills;
+window.openSkill = openSkill;
 </script>
 </body>
 </html>
