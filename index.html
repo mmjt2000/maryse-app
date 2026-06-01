@@ -70,37 +70,7 @@
         .lesson-card { background: var(--card); border-radius: 24px; padding: 18px; cursor: pointer; border: 1px solid var(--border); }
         .lesson-card:hover { transform: translateY(-3px); }
         .lesson-level { font-size: 0.65rem; font-weight: 600; padding: 3px 10px; border-radius: 60px; display: inline-block; margin-bottom: 12px; background: #fff3e3; color: #f59e0b; }
-        .vocab-section, .flashcard-section, .pronunciation-section, .podcast-section, .conjugation-section { .grammar-section {
-    background: var(--card);
-    border-radius: 28px;
-    padding: 20px;
-    margin: 24px 0;
-    border: 1px solid var(--border);
-}
-.grammar-card {
-    background: #f8f6ff;
-    border-radius: 20px;
-    padding: 16px;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid var(--border);
-    margin-bottom: 16px;
-}
-.grammar-card:hover {
-    transform: translateY(-3px);
-    background: #ede7ff;
-}
-.grammar-title {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--primary);
-}
-.grammar-preview {
-    font-size: 0.8rem;
-    color: var(--text);
-    margin-top: 4px;
-}background: var(--card); border-radius: 28px; padding: 20px; margin: 24px 0; border: 1px solid var(--border); }
+        .vocab-section, .flashcard-section, .pronunciation-section, .podcast-section, .conjugation-section, .grammar-section { background: var(--card); border-radius: 28px; padding: 20px; margin: 24px 0; border: 1px solid var(--border); }
         .sound-card { background: #f8f6ff; border-radius: 20px; padding: 16px; margin-bottom: 16px; }
         .podcast-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f8f6ff; border-radius: 20px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; }
         .podcast-item:hover { background: #ede7ff; transform: translateX(5px); }
@@ -124,6 +94,10 @@
         .conjugation-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
         .conjugation-lang { font-size: 0.7rem; color: var(--subtext); margin-bottom: 8px; }
         .conjugation-preview { font-size: 0.8rem; color: var(--text); }
+        .grammar-card { background: #f8f6ff; border-radius: 20px; padding: 16px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); margin-bottom: 16px; }
+        .grammar-card:hover { transform: translateY(-3px); background: #ede7ff; }
+        .grammar-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        .grammar-preview { font-size: 0.8rem; color: var(--text); margin-top: 4px; }
         .discover-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         .filter-chip { padding: 8px 20px; border-radius: 60px; font-size: 0.8rem; background: var(--card); border: 1px solid var(--border); cursor: pointer; }
         .filter-chip.active { background: var(--primary); color: white; }
@@ -232,50 +206,50 @@
         <div class="footer">💜 Tu espacio para aprender</div>
     </div>
 
-    <!-- ACADEMY REORGANIZADA CON CONJUGACIÓN -->
+    <!-- ACADEMY REORGANIZADA -->
     <div id="viewAcademy" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    <div class="lang-selector">
-        <div id="lang-en" class="lang-btn active">🇬🇧 English</div>
-        <div id="lang-fr" class="lang-btn">🇫🇷 Français</div>
-    </div>
-    
-    <!-- 1. GRAMÁTICA -->
-    <div class="grammar-section" id="grammarSection">
-        <div class="badge">📚 GRAMÁTICA · Reglas semanales</div>
-        <div id="grammarContainer"></div>
-    </div>
-    
-    <!-- 2. VOCABULARIO -->
-    <div class="vocab-section" id="vocabSection"></div>
-    
-    <!-- 3. LECCIONES -->
-    <div class="lessons-grid" id="lessonsContainer"></div>
-    
-    <!-- 4. FLASHCARDS -->
-    <div class="flashcard-section">
-        <div class="badge">📇 FLASHCARDS · Practica</div>
-        <p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p>
-        <div class="flashcard-mode-selector" id="flashcardModes"></div>
-        <div style="display:flex;justify-content:space-between;margin-top:8px;">
-            <span id="flashScore">Score: 0/0</span>
-            <button class="back-btn" onclick="nextFlashcard()">⏭️</button>
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="lang-selector">
+            <div id="lang-en" class="lang-btn active">🇬🇧 English</div>
+            <div id="lang-fr" class="lang-btn">🇫🇷 Français</div>
         </div>
-        <div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div>
+        
+        <!-- 1. GRAMÁTICA -->
+        <div class="grammar-section" id="grammarSection">
+            <div class="badge">📚 GRAMÁTICA · Reglas semanales</div>
+            <div id="grammarContainer"></div>
+        </div>
+        
+        <!-- 2. VOCABULARIO -->
+        <div class="vocab-section" id="vocabSection"></div>
+        
+        <!-- 3. LECCIONES -->
+        <div class="lessons-grid" id="lessonsContainer"></div>
+        
+        <!-- 4. FLASHCARDS -->
+        <div class="flashcard-section">
+            <div class="badge">📇 FLASHCARDS · Practica</div>
+            <p style="font-size:0.7rem;color:var(--subtext);">🎯 Elige tu modo:</p>
+            <div class="flashcard-mode-selector" id="flashcardModes"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;">
+                <span id="flashScore">Score: 0/0</span>
+                <button class="back-btn" onclick="nextFlashcard()">⏭️</button>
+            </div>
+            <div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div>
+        </div>
+        
+        <!-- 5. RESOURCES (podcasts) -->
+        <div class="podcast-section" id="podcastSection"></div>
+        
+        <!-- 6. FONÉTICA -->
+        <div class="pronunciation-section" id="pronunciationSection"></div>
+        
+        <!-- 7. CONJUGACIÓN -->
+        <div class="conjugation-section" id="conjugationSection">
+            <div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div>
+            <div class="conjugation-grid" id="conjugationGrid"></div>
+        </div>
     </div>
-    
-    <!-- 5. RESOURCES (podcasts) -->
-    <div class="podcast-section" id="podcastSection"></div>
-    
-    <!-- 6. FONÉTICA -->
-    <div class="pronunciation-section" id="pronunciationSection"></div>
-    
-    <!-- 7. CONJUGACIÓN -->
-    <div class="conjugation-section" id="conjugationSection">
-        <div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div>
-        <div class="conjugation-grid" id="conjugationGrid"></div>
-    </div>
-</div>
 
     <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
     <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><p style="font-size:0.8rem;color:var(--subtext);margin-bottom:12px;">Elige un juego para practicar</p><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
@@ -340,6 +314,8 @@ const weeklyThemes = [
     { name: "Deportes y Salud", emoji: "⚽", color: "#d1fae5", desc: "Mantente activa mientras aprendes idiomas" },
     { name: "Naturaleza y Planeta", emoji: "🌍", color: "#e0e7ff", desc: "Cuida el planeta mientras aprendes" }
 ];
+
+// ==================== VOCABULARIO ====================
 const weeklyVocab = {
     0: { en: [{en:"happy",es:"feliz"},{en:"sad",es:"triste"},{en:"angry",es:"enfadado/a"},{en:"excited",es:"emocionado/a"},{en:"calm",es:"tranquilo/a"},{en:"proud",es:"orgulloso/a"},{en:"nervous",es:"nervioso/a"},{en:"brave",es:"valiente"}], fr: [{fr:"heureux",es:"feliz"},{fr:"triste",es:"triste"},{fr:"fâché",es:"enfadado/a"},{fr:"excité",es:"emocionado/a"},{fr:"calme",es:"tranquilo/a"},{fr:"fier",es:"orgulloso/a"},{fr:"nerveux",es:"nervioso/a"},{fr:"courageux",es:"valiente"}] },
     1: { en: [{en:"teacher",es:"profesor/a"},{en:"homework",es:"deberes"},{en:"exam",es:"examen"},{en:"notebook",es:"cuaderno"},{en:"pencil",es:"lápiz"},{en:"library",es:"biblioteca"}], fr: [{fr:"professeur",es:"profesor/a"},{fr:"devoir",es:"deberes"},{fr:"examen",es:"examen"},{fr:"cahier",es:"cuaderno"},{fr:"crayon",es:"lápiz"},{fr:"bibliothèque",es:"biblioteca"}] },
@@ -350,139 +326,29 @@ const weeklyVocab = {
     6: { en: [{en:"exercise",es:"ejercicio"},{en:"strength",es:"fuerza"},{en:"healthy",es:"saludable"},{en:"team",es:"equipo"},{en:"victory",es:"victoria"},{en:"training",es:"entrenamiento"}], fr: [{fr:"exercice",es:"ejercicio"},{fr:"force",es:"fuerza"},{fr:"sain",es:"saludable"},{fr:"équipe",es:"equipo"},{fr:"victoire",es:"victoria"},{fr:"entraînement",es:"entrenamiento"}] },
     7: { en: [{en:"forest",es:"bosque"},{en:"ocean",es:"océano"},{en:"mountain",es:"montaña"},{en:"recycle",es:"reciclar"},{en:"planet",es:"planeta"},{en:"wildlife",es:"vida salvaje"}], fr: [{fr:"forêt",es:"bosque"},{fr:"océan",es:"océano"},{fr:"montagne",es:"montaña"},{fr:"recycler",es:"reciclar"},{fr:"planète",es:"planeta"},{fr:"faune",es:"vida salvaje"}] }
 };
+
+// ==================== SLANG (AMERICANO + FRANCÉS) ====================
 const weeklySlang = {
-    0: { en: [
-        { phrase: "I'm so over it", meaning: "Ya estoy harta de esto", context: "Frustración", level: "intermediate" },
-        { phrase: "That hit me in the feels", meaning: "Me llegó al corazón", context: "Emoción", level: "intermediate" },
-        { phrase: "No biggie", meaning: "No es para tanto", context: "Restar importancia", level: "beginner" },
-        { phrase: "I'm shook", meaning: "Estoy en shock", context: "Sorpresa", level: "intermediate" },
-        { phrase: "That's a mood", meaning: "Me identifico totalmente", context: "Conexión emocional", level: "intermediate" },
-        { phrase: "I can't even", meaning: "No tengo palabras", context: "Sorpresa o frustración", level: "intermediate" },
-        { phrase: "It's not that deep", meaning: "No es para tanto", context: "Minimizar", level: "intermediate" },
-        { phrase: "For real", meaning: "¿En serio?", context: "Confirmar", level: "beginner" }
-    ], fr: [
-        { phrase: "Je suis au bout de ma vie", meaning: "Estoy harto/a", context: "Frustración", level: "intermediate" },
-        { phrase: "Avoir le seum", meaning: "Estar enfadado/a", context: "Rabia", level: "intermediate" },
-        { phrase: "C'est la vie", meaning: "Así es la vida", context: "Aceptación", level: "beginner" },
-        { phrase: "Être en PLS", meaning: "Estar agotado/a", context: "Fatiga", level: "intermediate" },
-        { phrase: "Avoir le cafard", meaning: "Estar triste", context: "Melancolía", level: "beginner" }
-    ] },
-    1: { en: [
-        { phrase: "Cramming", meaning: "Estudiar a última hora", context: "Exámenes", level: "beginner" },
-        { phrase: "Ace a test", meaning: "Sacar 10", context: "Éxito académico", level: "beginner" },
-        { phrase: "Pull an all-nighter", meaning: "No dormir estudiando", context: "Estudio intenso", level: "intermediate" },
-        { phrase: "I blanked out", meaning: "Me quedé en blanco", context: "Olvidar", level: "intermediate" },
-        { phrase: "That's a freebie", meaning: "Esa pregunta es regalada", context: "Algo fácil", level: "intermediate" },
-        { phrase: "I'm behind on homework", meaning: "Voy atrasada con la tarea", context: "Acumulación", level: "beginner" },
-        { phrase: "The teacher called me out", meaning: "La maestra me señaló", context: "En clase", level: "intermediate" },
-        { phrase: "It's a no-brainer", meaning: "Es obvio", context: "Decisión fácil", level: "intermediate" }
-    ], fr: [
-        { phrase: "Bachoter", meaning: "Estudiar a última hora", context: "Exámenes", level: "beginner" },
-        { phrase: "Cartonner", meaning: "Tener éxito", context: "Éxito", level: "beginner" },
-        { phrase: "Sécher un cours", meaning: "Saltarse clase", context: "Novillos", level: "beginner" },
-        { phrase: "C'est du gâteau", meaning: "Es pan comido", context: "Fácil", level: "beginner" },
-        { phrase: "Le chouchou du prof", meaning: "Favorito del profe", context: "Compañero ejemplar", level: "beginner" }
-    ] },
-    2: { en: [
-        { phrase: "Wanderlust", meaning: "Pasión por viajar", context: "Viajes", level: "beginner" },
-        { phrase: "Catch flights, not feelings", meaning: "Viaja, no te enamores", context: "Filosofía viajera", level: "intermediate" },
-        { phrase: "Living my best life", meaning: "Viviendo al máximo", context: "Felicidad", level: "beginner" },
-        { phrase: "Main character energy", meaning: "Energía de protagonista", context: "Actitud segura", level: "intermediate" },
-        { phrase: "Let's hit the road", meaning: "Vámonos ya", context: "Iniciar viaje", level: "beginner" },
-        { phrase: "I'm totally jet-lagged", meaning: "Estoy muy desvelada", context: "Efecto del viaje", level: "intermediate" },
-        { phrase: "Take me back", meaning: "Llévame otra vez", context: "Extrañar un lugar", level: "beginner" },
-        { phrase: "That's a bucket list destination", meaning: "Es un destino soñado", context: "Lugar por conocer", level: "intermediate" }
-    ], fr: [
-        { phrase: "Avoir la bougeotte", meaning: "No poder quedarse quieto", context: "Movimiento", level: "beginner" },
-        { phrase: "Voyager dans sa tête", meaning: "Soñar despierto", context: "Imaginación", level: "beginner" },
-        { phrase: "Prendre la poudre d'escampette", meaning: "Escaparse", context: "Huir", level: "intermediate" },
-        { phrase: "C'est le bout du monde", meaning: "Está lejísimos", context: "Distancia", level: "beginner" },
-        { phrase: "Avoir le mal du pays", meaning: "Extrañar casa", context: "Nostalgia", level: "beginner" }
-    ] },
-    3: { en: [
-        { phrase: "My battery is about to die", meaning: "Mi batería está a punto de acabarse", context: "Tecnología", level: "beginner" },
-        { phrase: "DM me", meaning: "Escríbeme por mensaje directo", context: "Redes sociales", level: "beginner" },
-        { phrase: "This app is a total game changer", meaning: "Esta app cambia las reglas", context: "Innovación", level: "intermediate" },
-        { phrase: "I'm trying to limit my screen time", meaning: "Intento reducir tiempo en pantalla", context: "Salud digital", level: "intermediate" },
-        { phrase: "You're blowing up my phone", meaning: "No dejas de escribirme", context: "Muchas notificaciones", level: "intermediate" },
-        { phrase: "I got ghosted", meaning: "Me dejaron de hablar", context: "Desaparecer sin aviso", level: "intermediate" },
-        { phrase: "That's so last season", meaning: "Eso ya pasó de moda", context: "Obsoleto", level: "intermediate" },
-        { phrase: "Don't @ me", meaning: "No me etiquetes", context: "Evitar polémica", level: "advanced" }
-    ], fr: [
-        { phrase: "C'est chelou", meaning: "Es raro", context: "Sospecha", level: "intermediate" },
-        { phrase: "C'est relou", meaning: "Es pesado", context: "Molestia", level: "intermediate" },
-        { phrase: "C'est la hess", meaning: "Es la miseria", context: "Dificultad", level: "intermediate" },
-        { phrase: "Trop stylé", meaning: "¡Muy guay!", context: "Elogio", level: "beginner" },
-        { phrase: "Être matrixé(e)", meaning: "Estar obsesionado", context: "Obsesión", level: "intermediate" }
-    ] },
-    4: { en: [
-        { phrase: "That song slaps", meaning: "Esa canción está increíble", context: "Música", level: "intermediate" },
-        { phrase: "It's a bop", meaning: "Es muy pegadiza", context: "Canción", level: "beginner" },
-        { phrase: "Drop the beat", meaning: "Que suene la música", context: "Fiesta", level: "beginner" },
-        { phrase: "This is fire", meaning: "Está súper bueno", context: "Algo excelente", level: "beginner" },
-        { phrase: "Earworm", meaning: "Canción pegadiza", context: "Melodía mental", level: "intermediate" },
-        { phrase: "She ate that performance", meaning: "Arrasó con su presentación", context: "Elogio", level: "intermediate" },
-        { phrase: "That's my jam", meaning: "Esa es mi canción favorita", context: "Tema que te representa", level: "beginner" },
-        { phrase: "I've had this on repeat", meaning: "La he tenido en repetición", context: "Obsesión musical", level: "intermediate" }
-    ], fr: [
-        { phrase: "Ça déchire", meaning: "Es genial", context: "Impresionante", level: "intermediate" },
-        { phrase: "Avoir la musique dans la peau", meaning: "Llevar la música dentro", context: "Pasión", level: "beginner" },
-        { phrase: "C'est de la bombe", meaning: "Es excelente", context: "Calidad", level: "beginner" },
-        { phrase: "Un tube", meaning: "Un hit musical", context: "Éxito", level: "beginner" },
-        { phrase: "Avoir le rythme dans la peau", meaning: "Tener ritmo natural", context: "Baile", level: "beginner" }
-    ] },
-    5: { en: [
-        { phrase: "I'm starving", meaning: "Me muero de hambre", context: "Hambre", level: "beginner" },
-        { phrase: "It's finger-lickin' good", meaning: "Para chuparse los dedos", context: "Comida deliciosa", level: "intermediate" },
-        { phrase: "Let's grab a bite", meaning: "Vamos a comer algo rápido", context: "Plan informal", level: "beginner" },
-        { phrase: "Food coma", meaning: "Sueño después de comer", context: "Modorra", level: "beginner" },
-        { phrase: "This is my guilty pleasure", meaning: "Es mi placer culpable", context: "Algo que te gusta", level: "intermediate" },
-        { phrase: "I'm craving something sweet", meaning: "Se me antoja algo dulce", context: "Antojo", level: "beginner" },
-        { phrase: "That's overpriced", meaning: "Está muy caro", context: "Queja por precio", level: "intermediate" },
-        { phrase: "Can I get a doggy bag?", meaning: "¿Me lo puedo llevar?", context: "Comida que sobra", level: "beginner" }
-    ], fr: [
-        { phrase: "Avoir la dalle", meaning: "Tener mucha hambre", context: "Hambre", level: "intermediate" },
-        { phrase: "C'est un régal", meaning: "Es una delicia", context: "Excelente", level: "beginner" },
-        { phrase: "Manger sur le pouce", meaning: "Comer rápido", context: "Informal", level: "intermediate" },
-        { phrase: "Avoir les crocs", meaning: "Tener hambre", context: "Hambre", level: "beginner" },
-        { phrase: "Se régaler", meaning: "Disfrutar comiendo", context: "Placer", level: "beginner" }
-    ] },
-    6: { en: [
-        { phrase: "No pain, no gain", meaning: "Sin esfuerzo no hay resultado", context: "Motivación", level: "beginner" },
-        { phrase: "Let's hit the gym", meaning: "Vamos al gimnasio", context: "Ejercicio", level: "beginner" },
-        { phrase: "You got this", meaning: "Tú puedes", context: "Ánimo", level: "beginner" },
-        { phrase: "I'm sore but worth it", meaning: "Adolorida pero valió la pena", context: "Después de entrenar", level: "intermediate" },
-        { phrase: "Crushing it", meaning: "Arrasando", context: "Rendimiento excelente", level: "intermediate" },
-        { phrase: "I need to stretch", meaning: "Necesito estirarme", context: "Antes o después del ejercicio", level: "beginner" },
-        { phrase: "I'm in beast mode", meaning: "Estoy a tope", context: "Energía máxima", level: "intermediate" },
-        { phrase: "That was a good sweat", meaning: "Eso fue un buen entrenamiento", context: "Esfuerzo físico", level: "beginner" }
-    ], fr: [
-        { phrase: "Avoir la pêche", meaning: "Tener energía", context: "Vitalidad", level: "beginner" },
-        { phrase: "Se donner à fond", meaning: "Darlo todo", context: "Esfuerzo", level: "intermediate" },
-        { phrase: "C'est dans la poche", meaning: "Está ganado", context: "Victoria", level: "beginner" },
-        { phrase: "Avoir du souffle", meaning: "Tener resistencia", context: "Físico", level: "beginner" },
-        { phrase: "Être au taquet", meaning: "Estar al máximo", context: "Motivación", level: "intermediate" }
-    ] },
-    7: { en: [
-        { phrase: "Go green", meaning: "Sé ecológico", context: "Ecología", level: "beginner" },
-        { phrase: "Reduce your carbon footprint", meaning: "Reduce tu huella de carbono", context: "Ambiente", level: "intermediate" },
-        { phrase: "Save the planet", meaning: "Salva el planeta", context: "Activismo", level: "beginner" },
-        { phrase: "Leave no trace", meaning: "No dejes rastro", context: "Respeto por la naturaleza", level: "intermediate" },
-        { phrase: "It's a breath of fresh air", meaning: "Es un respiro de aire fresco", context: "Algo que te renueva", level: "intermediate" },
-        { phrase: "I'm an outdoor person", meaning: "Soy de estar al aire libre", context: "Personalidad", level: "beginner" },
-        { phrase: "Let's go zero waste", meaning: "Intentemos no generar basura", context: "Sostenible", level: "intermediate" },
-        { phrase: "Mother Nature is angry", meaning: "La naturaleza está enfadada", context: "Cambio climático", level: "intermediate" }
-    ], fr: [
-        { phrase: "Être écolo", meaning: "Ser ecológico", context: "Ecología", level: "beginner" },
-        { phrase: "Sauver la planète", meaning: "Salvar el planeta", context: "Activismo", level: "beginner" },
-        { phrase: "C'est pas la mer à boire", meaning: "No es tan difícil", context: "Minimizar", level: "intermediate" },
-        { phrase: "Avoir la main verte", meaning: "Buena mano plantas", context: "Jardinería", level: "beginner" },
-        { phrase: "Un geste pour la planète", meaning: "Un gesto por el planeta", context: "Acción", level: "beginner" }
-    ] }
+    0: { en: [{phrase:"I'm so over it",meaning:"Ya estoy harta de esto",context:"Frustración",level:"intermediate"},{phrase:"That hit me in the feels",meaning:"Me llegó al corazón",context:"Emoción",level:"intermediate"},{phrase:"No biggie",meaning:"No es para tanto",context:"Restar importancia",level:"beginner"},{phrase:"I'm shook",meaning:"Estoy en shock",context:"Sorpresa",level:"intermediate"},{phrase:"That's a mood",meaning:"Me identifico totalmente",context:"Conexión emocional",level:"intermediate"},{phrase:"I can't even",meaning:"No tengo palabras",context:"Sorpresa o frustración",level:"intermediate"},{phrase:"It's not that deep",meaning:"No es para tanto",context:"Minimizar",level:"intermediate"},{phrase:"For real",meaning:"¿En serio?",context:"Confirmar",level:"beginner"}], fr: [{phrase:"Je suis au bout de ma vie",meaning:"Estoy harto/a",context:"Frustración",level:"intermediate"},{phrase:"Avoir le seum",meaning:"Estar enfadado/a",context:"Rabia",level:"intermediate"},{phrase:"C'est la vie",meaning:"Así es la vida",context:"Aceptación",level:"beginner"},{phrase:"Être en PLS",meaning:"Estar agotado/a",context:"Fatiga",level:"intermediate"},{phrase:"Avoir le cafard",meaning:"Estar triste",context:"Melancolía",level:"beginner"}] },
+    1: { en: [{phrase:"Cramming",meaning:"Estudiar a última hora",context:"Exámenes",level:"beginner"},{phrase:"Ace a test",meaning:"Sacar 10",context:"Éxito académico",level:"beginner"},{phrase:"Pull an all-nighter",meaning:"No dormir estudiando",context:"Estudio intenso",level:"intermediate"},{phrase:"I blanked out",meaning:"Me quedé en blanco",context:"Olvidar",level:"intermediate"},{phrase:"That's a freebie",meaning:"Esa pregunta es regalada",context:"Algo fácil",level:"intermediate"},{phrase:"I'm behind on homework",meaning:"Voy atrasada con la tarea",context:"Acumulación",level:"beginner"},{phrase:"The teacher called me out",meaning:"La maestra me señaló",context:"En clase",level:"intermediate"},{phrase:"It's a no-brainer",meaning:"Es obvio",context:"Decisión fácil",level:"intermediate"}], fr: [{phrase:"Bachoter",meaning:"Estudiar a última hora",context:"Exámenes",level:"beginner"},{phrase:"Cartonner",meaning:"Tener éxito",context:"Éxito",level:"beginner"},{phrase:"Sécher un cours",meaning:"Saltarse clase",context:"Novillos",level:"beginner"},{phrase:"C'est du gâteau",meaning:"Es pan comido",context:"Fácil",level:"beginner"},{phrase:"Le chouchou du prof",meaning:"Favorito del profe",context:"Compañero ejemplar",level:"beginner"}] },
+    2: { en: [{phrase:"Wanderlust",meaning:"Pasión por viajar",context:"Viajes",level:"beginner"},{phrase:"Catch flights, not feelings",meaning:"Viaja, no te enamores",context:"Filosofía viajera",level:"intermediate"},{phrase:"Living my best life",meaning:"Viviendo al máximo",context:"Felicidad",level:"beginner"},{phrase:"Main character energy",meaning:"Energía de protagonista",context:"Actitud segura",level:"intermediate"},{phrase:"Let's hit the road",meaning:"Vámonos ya",context:"Iniciar viaje",level:"beginner"},{phrase:"I'm totally jet-lagged",meaning:"Estoy muy desvelada",context:"Efecto del viaje",level:"intermediate"},{phrase:"Take me back",meaning:"Llévame otra vez",context:"Extrañar un lugar",level:"beginner"},{phrase:"That's a bucket list destination",meaning:"Es un destino soñado",context:"Lugar por conocer",level:"intermediate"}], fr: [{phrase:"Avoir la bougeotte",meaning:"No poder quedarse quieto",context:"Movimiento",level:"beginner"},{phrase:"Voyager dans sa tête",meaning:"Soñar despierto",context:"Imaginación",level:"beginner"},{phrase:"Prendre la poudre d'escampette",meaning:"Escaparse",context:"Huir",level:"intermediate"},{phrase:"C'est le bout du monde",meaning:"Está lejísimos",context:"Distancia",level:"beginner"},{phrase:"Avoir le mal du pays",meaning:"Extrañar casa",context:"Nostalgia",level:"beginner"}] },
+    3: { en: [{phrase:"My battery is about to die",meaning:"Mi batería está a punto de acabarse",context:"Tecnología",level:"beginner"},{phrase:"DM me",meaning:"Escríbeme por mensaje directo",context:"Redes sociales",level:"beginner"},{phrase:"This app is a total game changer",meaning:"Esta app cambia las reglas",context:"Innovación",level:"intermediate"},{phrase:"I'm trying to limit my screen time",meaning:"Intento reducir tiempo en pantalla",context:"Salud digital",level:"intermediate"},{phrase:"You're blowing up my phone",meaning:"No dejas de escribirme",context:"Muchas notificaciones",level:"intermediate"},{phrase:"I got ghosted",meaning:"Me dejaron de hablar",context:"Desaparecer sin aviso",level:"intermediate"},{phrase:"That's so last season",meaning:"Eso ya pasó de moda",context:"Obsoleto",level:"intermediate"},{phrase:"Don't @ me",meaning:"No me etiquetes",context:"Evitar polémica",level:"advanced"}], fr: [{phrase:"C'est chelou",meaning:"Es raro",context:"Sospecha",level:"intermediate"},{phrase:"C'est relou",meaning:"Es pesado",context:"Molestia",level:"intermediate"},{phrase:"C'est la hess",meaning:"Es la miseria",context:"Dificultad",level:"intermediate"},{phrase:"Trop stylé",meaning:"¡Muy guay!",context:"Elogio",level:"beginner"},{phrase:"Être matrixé(e)",meaning:"Estar obsesionado",context:"Obsesión",level:"intermediate"}] },
+    4: { en: [{phrase:"That song slaps",meaning:"Esa canción está increíble",context:"Música",level:"intermediate"},{phrase:"It's a bop",meaning:"Es muy pegadiza",context:"Canción",level:"beginner"},{phrase:"Drop the beat",meaning:"Que suene la música",context:"Fiesta",level:"beginner"},{phrase:"This is fire",meaning:"Está súper bueno",context:"Algo excelente",level:"beginner"},{phrase:"Earworm",meaning:"Canción pegadiza",context:"Melodía mental",level:"intermediate"},{phrase:"She ate that performance",meaning:"Arrasó con su presentación",context:"Elogio",level:"intermediate"},{phrase:"That's my jam",meaning:"Esa es mi canción favorita",context:"Tema que te representa",level:"beginner"},{phrase:"I've had this on repeat",meaning:"La he tenido en repetición",context:"Obsesión musical",level:"intermediate"}], fr: [{phrase:"Ça déchire",meaning:"Es genial",context:"Impresionante",level:"intermediate"},{phrase:"Avoir la musique dans la peau",meaning:"Llevar la música dentro",context:"Pasión",level:"beginner"},{phrase:"C'est de la bombe",meaning:"Es excelente",context:"Calidad",level:"beginner"},{phrase:"Un tube",meaning:"Un hit musical",context:"Éxito",level:"beginner"},{phrase:"Avoir le rythme dans la peau",meaning:"Tener ritmo natural",context:"Baile",level:"beginner"}] },
+    5: { en: [{phrase:"I'm starving",meaning:"Me muero de hambre",context:"Hambre",level:"beginner"},{phrase:"It's finger-lickin' good",meaning:"Para chuparse los dedos",context:"Comida deliciosa",level:"intermediate"},{phrase:"Let's grab a bite",meaning:"Vamos a comer algo rápido",context:"Plan informal",level:"beginner"},{phrase:"Food coma",meaning:"Sueño después de comer",context:"Modorra",level:"beginner"},{phrase:"This is my guilty pleasure",meaning:"Es mi placer culpable",context:"Algo que te gusta",level:"intermediate"},{phrase:"I'm craving something sweet",meaning:"Se me antoja algo dulce",context:"Antojo",level:"beginner"},{phrase:"That's overpriced",meaning:"Está muy caro",context:"Queja por precio",level:"intermediate"},{phrase:"Can I get a doggy bag?",meaning:"¿Me lo puedo llevar?",context:"Comida que sobra",level:"beginner"}], fr: [{phrase:"Avoir la dalle",meaning:"Tener mucha hambre",context:"Hambre",level:"intermediate"},{phrase:"C'est un régal",meaning:"Es una delicia",context:"Excelente",level:"beginner"},{phrase:"Manger sur le pouce",meaning:"Comer rápido",context:"Informal",level:"intermediate"},{phrase:"Avoir les crocs",meaning:"Tener hambre",context:"Hambre",level:"beginner"},{phrase:"Se régaler",meaning:"Disfrutar comiendo",context:"Placer",level:"beginner"}] },
+    6: { en: [{phrase:"No pain, no gain",meaning:"Sin esfuerzo no hay resultado",context:"Motivación",level:"beginner"},{phrase:"Let's hit the gym",meaning:"Vamos al gimnasio",context:"Ejercicio",level:"beginner"},{phrase:"You got this",meaning:"Tú puedes",context:"Ánimo",level:"beginner"},{phrase:"I'm sore but worth it",meaning:"Adolorida pero valió la pena",context:"Después de entrenar",level:"intermediate"},{phrase:"Crushing it",meaning:"Arrasando",context:"Rendimiento excelente",level:"intermediate"},{phrase:"I need to stretch",meaning:"Necesito estirarme",context:"Antes o después del ejercicio",level:"beginner"},{phrase:"I'm in beast mode",meaning:"Estoy a tope",context:"Energía máxima",level:"intermediate"},{phrase:"That was a good sweat",meaning:"Eso fue un buen entrenamiento",context:"Esfuerzo físico",level:"beginner"}], fr: [{phrase:"Avoir la pêche",meaning:"Tener energía",context:"Vitalidad",level:"beginner"},{phrase:"Se donner à fond",meaning:"Darlo todo",context:"Esfuerzo",level:"intermediate"},{phrase:"C'est dans la poche",meaning:"Está ganado",context:"Victoria",level:"beginner"},{phrase:"Avoir du souffle",meaning:"Tener resistencia",context:"Físico",level:"beginner"},{phrase:"Être au taquet",meaning:"Estar al máximo",context:"Motivación",level:"intermediate"}] },
+    7: { en: [{phrase:"Go green",meaning:"Sé ecológico",context:"Ecología",level:"beginner"},{phrase:"Reduce your carbon footprint",meaning:"Reduce tu huella de carbono",context:"Ambiente",level:"intermediate"},{phrase:"Save the planet",meaning:"Salva el planeta",context:"Activismo",level:"beginner"},{phrase:"Leave no trace",meaning:"No dejes rastro",context:"Respeto por la naturaleza",level:"intermediate"},{phrase:"It's a breath of fresh air",meaning:"Es un respiro de aire fresco",context:"Algo que te renueva",level:"intermediate"},{phrase:"I'm an outdoor person",meaning:"Soy de estar al aire libre",context:"Personalidad",level:"beginner"},{phrase:"Let's go zero waste",meaning:"Intentemos no generar basura",context:"Sostenible",level:"intermediate"},{phrase:"Mother Nature is angry",meaning:"La naturaleza está enfadada",context:"Cambio climático",level:"intermediate"}], fr: [{phrase:"Être écolo",meaning:"Ser ecológico",context:"Ecología",level:"beginner"},{phrase:"Sauver la planète",meaning:"Salvar el planeta",context:"Activismo",level:"beginner"},{phrase:"C'est pas la mer à boire",meaning:"No es tan difícil",context:"Minimizar",level:"intermediate"},{phrase:"Avoir la main verte",meaning:"Buena mano plantas",context:"Jardinería",level:"beginner"},{phrase:"Un geste pour la planète",meaning:"Un gesto por el planeta",context:"Acción",level:"beginner"}] }
 };
+
+// ==================== LECCIONES ====================
 const weeklyLessons = {0:{en:[{id:"en1",title:"Expressing your feelings like a pro",level:"A2",duration:15,phrases:["I feel a bit overwhelmed today","That made me really happy!","I'm going through a rough patch","Honestly, I'm feeling mixed emotions","It is what it is, I'll get over it"],trans:["Me siento un poco abrumada hoy","¡Eso me hizo muy feliz!","Estoy pasando por un momento difícil","Honestamente, tengo emociones encontradas","Es lo que hay, lo superaré"],taskEs:"Describe cómo te sientes hoy usando 3 frases"}],fr:[{id:"fr1",title:"Exprimer tes sentiments comme une pro",level:"A2",duration:15,phrases:["Je me sens un peu dépassée aujourd'hui","Ça m'a rendue vraiment heureuse!","Je traverse une période difficile","Honnêtement, j'ai des émotions mitigées","C'est comme ça, je vais m'en remettre"],trans:["Me siento un poco abrumada hoy","¡Eso me hizo muy feliz!","Estoy pasando por un momento difícil","Honestamente, tengo emociones encontradas","Es lo que hay, lo superaré"],taskEs:"Décris comment tu te sens aujourd'hui avec 3 phrases"}]},1:{en:[{id:"en1",title:"Surviving school like a boss",level:"A2",duration:15,phrases:["I have a ton of homework due tomorrow","Can I get an extension on this assignment?","I totally spaced out during class","This subject is actually growing on me","Let's team up for the group project"],trans:["Tengo un montón de tarea para mañana","¿Puedo tener una extensión en esta tarea?","Me distraje completamente en clase","Esta materia me está gustando cada vez más","Hagamos equipo para el proyecto grupal"],taskEs:"Describe tu día escolar con 3 frases"}],fr:[{id:"fr1",title:"Survivre à l'école comme un chef",level:"A2",duration:15,phrases:["J'ai une tonne de devoirs pour demain","Je peux avoir un délai pour ce devoir?","J'étais complètement ailleurs en cours","Cette matière commence à me plaire","On fait équipe pour le projet de groupe?"],trans:["Tengo un montón de tarea para mañana","¿Puedo tener una extensión en esta tarea?","Me distraje completamente en clase","Esta materia me está gustando cada vez más","Hagamos equipo para el proyecto grupal"],taskEs:"Décris ta journée scolaire avec 3 phrases"}]},2:{en:[{id:"en1",title:"Travel like an influencer",level:"A2",duration:15,phrases:["I'm so excited for my trip next week!","What's the best way to get around here?","This view is absolutely breathtaking","I need to pick up some souvenirs","Do you know any cool spots off the beaten path?"],trans:["¡Estoy tan emocionada por mi viaje!","¿Cuál es la mejor forma de moverse?","Esta vista es absolutamente impresionante","Necesito comprar algunos recuerdos","¿Conoces lugares geniales fuera de lo turístico?"],taskEs:"Describe un viaje que te gustaría hacer"}],fr:[{id:"fr1",title:"Voyager comme un influenceur",level:"A2",duration:15,phrases:["Je suis trop excitée pour mon voyage!","Quel est le meilleur moyen de se déplacer?","Cette vue est à couper le souffle","Je dois acheter quelques souvenirs","Tu connais des endroits hors des sentiers battus?"],trans:["¡Estoy tan emocionada por mi viaje!","¿Cuál es la mejor forma de moverse?","Esta vista es absolutamente impresionante","Necesito comprar algunos recuerdos","¿Conoces lugares geniales fuera de lo turístico?"],taskEs:"Décris un voyage que tu aimerais faire"}]},3:{en:[{id:"en1",title:"Tech talk for teens",level:"A2",duration:15,phrases:["My phone battery is about to die","Can you send me the link via DM?","This app is a total game changer","I'm trying to limit my screen time","Have you checked out that new AI tool?"],trans:["Mi batería está a punto de morir","¿Me envías el enlace por DM?","Esta app cambia totalmente las reglas","Estoy tratando de limitar mi tiempo en pantalla","¿Ya probaste esa nueva herramienta de IA?"],taskEs:"Describe cómo usas la tecnología en tu día"}],fr:[{id:"fr1",title:"Parler tech pour ados",level:"A2",duration:15,phrases:["Ma batterie va bientôt mourir","Tu peux m'envoyer le lien en DM?","Cette appli change complètement la donne","J'essaie de limiter mon temps d'écran","T'as déjà testé ce nouvel outil IA?"],trans:["Mi batería está a punto de morir","¿Me envías el enlace por DM?","Esta app cambia totalmente las reglas","Estoy tratando de limitar mi tiempo en pantalla","¿Ya probaste esa nueva herramienta de IA?"],taskEs:"Décris comment tu utilises la technologie"}]},4:{en:[{id:"en1",title:"Music vibes & conversations",level:"A2",duration:15,phrases:["This song hits different at night","I've had this track on repeat all week","The lyrics speak to my soul","She absolutely killed that performance","What's your go-to playlist for studying?"],trans:["Esta canción se siente diferente de noche","He tenido esta canción en repetición toda la semana","La letra le habla a mi alma","Ella arrasó con esa presentación","¿Cuál es tu playlist para estudiar?"],taskEs:"Describe tu canción favorita y por qué te gusta"}],fr:[{id:"fr1",title:"Vibes musicales et conversations",level:"A2",duration:15,phrases:["Cette chanson fait un effet différent la nuit","J'ai ce morceau en boucle depuis une semaine","Les paroles parlent à mon âme","Elle a complètement déchiré sa performance","C'est quoi ta playlist pour étudier?"],trans:["Esta canción se siente diferente de noche","He tenido esta canción en repetición toda la semana","La letra le habla a mi alma","Ella arrasó con esa presentación","¿Cuál es tu playlist para estudiar?"],taskEs:"Décris ta chanson préférée"}]},5:{en:[{id:"en1",title:"Foodie conversations",level:"A2",duration:15,phrases:["I'm totally craving tacos right now","This dish is to die for!","I could eat this every single day","I'm not a picky eater at all","Let's grab a bite somewhere new"],trans:["Se me antojan unos tacos ahora mismo","¡Este platillo está para morirse!","Podría comer esto todos los días","No soy nada quisquillosa con la comida","Vamos a comer algo a un lugar nuevo"],taskEs:"Describe tu comida favorita"}],fr:[{id:"fr1",title:"Conversations de foodie",level:"A2",duration:15,phrases:["J'ai trop envie de tacos là tout de suite","Ce plat est à tomber par terre!","Je pourrais manger ça tous les jours","Je ne suis pas du tout difficile","On va manger un bout dans un nouvel endroit?"],trans:["Se me antojan unos tacos ahora mismo","¡Este platillo está para morirse!","Podría comer esto todos los días","No soy nada quisquillosa con la comida","Vamos a comer algo a un lugar nuevo"],taskEs:"Décris ton plat préféré"}]},6:{en:[{id:"en1",title:"Sports talk & motivation",level:"A2",duration:15,phrases:["I'm really into yoga lately","Let's go for a run, it'll clear your mind","No pain, no gain, right?","She's absolutely crushing it on the field!","I need to stretch before this workout"],trans:["Últimamente me está gustando mucho el yoga","Vamos a correr, te despejará la mente","Sin dolor no hay ganancia, ¿no?","¡La está rompiendo en la cancha!","Necesito estirar antes de este entrenamiento"],taskEs:"Describe tu deporte favorito"}],fr:[{id:"fr1",title:"Sport & motivation",level:"A2",duration:15,phrases:["Je suis à fond dans le yoga en ce moment","On va courir? Ça va te vider la tête","Pas de douleur, pas de gain, non?","Elle déchire tout sur le terrain!","Je dois m'étirer avant cette séance"],trans:["Últimamente me está gustando mucho el yoga","Vamos a correr, te despejará la mente","Sin dolor no hay ganancia, ¿no?","¡La está rompiendo en la cancha!","Necesito estirar antes de este entrenamiento"],taskEs:"Décris ton sport préféré"}]},7:{en:[{id:"en1",title:"Eco-friendly & nature convos",level:"A2",duration:15,phrases:["I'm trying to reduce my plastic waste","Nature is honestly the best therapy","Let's go hiking this weekend!","We should all do our part for the planet","This beach cleanup is so rewarding"],trans:["Estoy tratando de reducir mis residuos plásticos","La naturaleza es la mejor terapia","¡Vamos de excursión este fin de semana!","Todos deberíamos hacer nuestra parte","Esta limpieza de playa es tan gratificante"],taskEs:"Describe 3 cosas que haces para ayudar al planeta"}],fr:[{id:"fr1",title:"Écolo & nature",level:"A2",duration:15,phrases:["J'essaie de réduire mes déchets plastiques","La nature est franchement la meilleure thérapie","On part en rando ce week-end!","On devrait tous faire notre part","Ce nettoyage de plage est tellement gratifiant"],trans:["Estoy tratando de reducir mis residuos plásticos","La naturaleza es la mejor terapia","¡Vamos de excursión este fin de semana!","Todos deberíamos hacer nuestra parte","Esta limpieza de playa es tan gratificante"],taskEs:"Décris 3 choses que tu fais pour la planète"}]}};
+
+// ==================== ARTÍCULOS ====================
 const weeklyArticles = {0:[{id:1,category:"🧠 Psicología",title:"¿Por qué lloramos? La ciencia detrás de las lágrimas",icon:"💧",excerpt:"Llorar no es debilidad: es una función biológica que nos ayuda a regular el estrés.",content:`<h4>3 tipos de lágrimas</h4><p>No todas las lágrimas son iguales. Los científicos identifican tres tipos: basales, reflejas y emocionales.</p><p>Las lágrimas emocionales contienen hormonas del estrés como el cortisol. Llorar es una forma de liberar estas sustancias.</p><p><strong>Para reflexionar:</strong> La próxima vez que sientas ganas de llorar, recuerda: tu cuerpo está haciendo algo inteligente para protegerte.</p>`},{id:2,category:"🧠 Psicología",title:"El poder de nombrar tus emociones",icon:"🎭",excerpt:"Decir 'estoy ansiosa' reduce la actividad de la amígdala en un 40%.",content:`<h4>Name it to tame it</h4><p>Cuando pones nombre a una emoción, su intensidad disminuye. La amígdala se calma.</p><p><strong>Ejercicio:</strong> Durante una semana, nombra tus emociones en voz alta.</p>`}],1:[{id:1,category:"📚 Educación",title:"Cómo aprende realmente tu cerebro",icon:"🧠",excerpt:"La repetición espaciada y el sueño son 3x más efectivos que estudiar sin parar.",content:`<h4>Técnica Pomodoro</h4><p>25 minutos de estudio + 5 de descanso. Después de 4 ciclos, descansa 15-30 min.</p><h4>El poder del sueño</h4><p>Durante el sueño, tu cerebro consolida lo aprendido.</p>`}],2:[{id:1,category:"✈️ Viajes",title:"Los destinos más fascinantes del mundo",icon:"🗺️",excerpt:"Viajar literalmente cambia la estructura de tu cerebro.",content:`<h4>Destinos que transforman</h4><p>Japón, Islandia, Perú, Nueva Zelanda.</p><p><strong>Para soñar:</strong> ¿A qué país viajarías primero?</p>`}],3:[{id:1,category:"🤖 Tecnología",title:"Inteligencia Artificial: lo que debes saber",icon:"🤖",excerpt:"La IA ya está en TikTok, Netflix, Instagram. Entenderla es poder.",content:`<h4>¿Cómo aprende una IA?</h4><p>Con millones de ejemplos. No "piensa": calcula probabilidades.</p><p><strong>Para reflexionar:</strong> ¿Qué pasaría si buscaras contenido diferente al que normalmente ves?</p>`}],4:[{id:1,category:"🎵 Música",title:"Cómo la música transforma tu cerebro",icon:"🧠",excerpt:"La música libera dopamina y mejora memoria, concentración y empatía.",content:`<h4>Beneficios</h4><p>Mejora la memoria, reduce la ansiedad, aumenta la empatía.</p><p><strong>Experimento:</strong> Crea una playlist de 5 canciones que te hagan sentir diferente.</p>`}],5:[{id:1,category:"🍽️ Gastronomía",title:"La ciencia del sabor",icon:"👅",excerpt:"El 80% del sabor viene del olfato. La vista y los recuerdos también influyen.",content:`<h4>Los 5 sabores básicos</h4><p>Dulce, salado, ácido, amargo y umami.</p><p><strong>Actividad:</strong> Investiga la receta de un plato típico de otro país.</p>`}],6:[{id:1,category:"⚽ Deportes",title:"Lo que el deporte le hace a tu cerebro",icon:"🏃‍♀️",excerpt:"30 minutos de ejercicio mejoran la memoria y el estado de ánimo.",content:`<h4>Beneficios</h4><p>Concentración, reduce ansiedad, libera endorfinas.</p><p><strong>Desafío:</strong> Hoy, muévete 15 minutos.</p>`}],7:[{id:1,category:"🌍 Ecología",title:"Pequeños gestos, gran impacto",icon:"🌱",excerpt:"No necesitas ser adulta para cambiar el mundo.",content:`<h4>10 gestos</h4><p>Botella reutilizable, apagar luces, ducha corta, bolsa propia, menos carne, plantar, donar ropa, papel reciclado, bici, hablar del tema.</p><p><strong>Compromiso:</strong> Elige 3 y hazlos una semana.</p>`}]};
+
+// ==================== ACTIVIDADES CON MAMÁ ====================
 const weeklyMomActivities = {0:[{id:"m1",title:"🫙 Bocal des émotions",type:"manualidad",description:"Écris une émotion par jour.",steps:"1. Bocal.\n2. Papiers.\n3. Ouvre.",talkQuestions:"Quelle émotion?"}],1:[{id:"m1",title:"📋 Planning coloré",type:"taller",description:"Créez un planning.",steps:"1. Feuille.\n2. Matières.\n3. Couleurs.",talkQuestions:"Matière préférée?"}],2:[{id:"m1",title:"🗺️ Carte de rêve",type:"manualidad",description:"Créez une carte de voyage.",steps:"1. Carte.\n2. Photos.\n3. Accroche.",talkQuestions:"Quel pays?"}],3:[{id:"m1",title:"📱 Digital detox",type:"taller",description:"Journée sans téléphone.",steps:"1. Jour.\n2. Rangez.\n3. Activité.",talkQuestions:"Comment te sens-tu?"}],4:[{id:"m1",title:"🎵 Playlist duo",type:"manualidad",description:"5 chansons.",steps:"1. Choisissez.\n2. Écrivez.\n3. Écoutez.",talkQuestions:"Quelle chanson?"}],5:[{id:"m1",title:"🍳 Recette du monde",type:"manualidad",description:"Cuisinez un plat.",steps:"1. Pays.\n2. Recette.\n3. Cuisinez.",talkQuestions:"Quel pays?"}],6:[{id:"m1",title:"🧘 Session yoga",type:"taller",description:"15 min d'étirements.",steps:"1. Vidéo.\n2. Suivez.\n3. Partagez.",talkQuestions:"Comment te sens-tu?"}],7:[{id:"m1",title:"🌱 Planter une graine",type:"manualidad",description:"Plantez et regardez pousser.",steps:"1. Pot.\n2. Graine.\n3. Arrosez.",talkQuestions:"Que voir pousser?"}]};
+
+// ==================== DATOS BASE ====================
 const baseVocabData = {en:{"Básico":[{en:"happy",es:"feliz"},{en:"sad",es:"triste"}]},fr:{"Básico":[{fr:"heureux",es:"feliz"},{fr:"triste",es:"triste"}]}};
 const baseSlangData = {en:[{phrase:"What's up?",meaning:"¿Qué tal?",level:"beginner"}],fr:[{phrase:"Ça va ?",meaning:"¿Qué tal?",level:"beginner"}]};
 const baseEnglishLessons = [{id:"en1",title:"How to give your opinion",level:"B1",duration:10,phrases:["I think that…"],trans:["Yo pienso que…"],taskEs:"Da tu opinión"}];
@@ -490,19 +356,19 @@ const baseFrenchLessons = [{id:"fr1",title:"Exprimer son avis",level:"B1",durati
 const baseArticles = [{id:1,category:"🔬 Ciencia",title:"Mujeres que cambiaron la ciencia",icon:"🔬",excerpt:"Marie Curie.",content:"<p>Primera persona en ganar dos Premios Nobel.</p>"}];
 const baseMomActivities = [{id:"m1",title:"🎨 Tarjeta de emociones",type:"manualidad",description:"Escribe emociones.",steps:"1. Dobla.\n2. Escriban.",talkQuestions:"¿Qué emoción?"}];
 
-// ==================== PRONUNCIACIÓN (6 sonidos por idioma) ====================
+// ==================== PRONUNCIACIÓN ====================
 const pronData = {
     en: [
         { sound: "TH (θ) - sorda", desc: "Lengua entre los dientes, sin vibración", words: ["think", "thank you", "three", "thumb", "thunder", "healthy"] },
         { sound: "TH (ð) - sonora", desc: "Lengua entre los dientes, con vibración", words: ["the", "this", "that", "mother", "father", "brother"] },
-        { sound: "R inglesa", desc: "La lengua NO toca el paladar. Se redondean los labios", words: ["red", "right", "car", "very", "sorry", "around"] },
-        { sound: "Schwa (ə)", desc: "El sonido más común del inglés. Vocal relajada", words: ["banana", "problem", "about", "today", "support", "family"] },
+        { sound: "R inglesa", desc: "La lengua NO toca el paladar", words: ["red", "right", "car", "very", "sorry", "around"] },
+        { sound: "Schwa (ə)", desc: "El sonido más común del inglés", words: ["banana", "problem", "about", "today", "support", "family"] },
         { sound: "Short i (ɪ)", desc: "Vocal corta, lengua relajada", words: ["sit", "hit", "miss", "different", "minute", "english"] },
         { sound: "Long e (iː)", desc: "Vocal larga, sonrisa", words: ["see", "tree", "happy", "easy", "teacher", "complete"] }
     ],
     fr: [
-        { sound: "R gutural francés", desc: "La garganta vibra. Suena como una 'j' suave", words: ["rouge", "paris", "merci", "regarder", "triste", "fromage"] },
-        { sound: "U français (y)", desc: "Labios redondeados y hacia adelante", words: ["tu", "lune", "sur", "usine", "nuage", "future"] },
+        { sound: "R gutural francés", desc: "La garganta vibra", words: ["rouge", "paris", "merci", "regarder", "triste", "fromage"] },
+        { sound: "U français (y)", desc: "Labios redondeados hacia adelante", words: ["tu", "lune", "sur", "usine", "nuage", "future"] },
         { sound: "E fermé (e)", desc: "Boca casi cerrada, como 'e' de 'bebé'", words: ["été", "parler", "café", "aimer", "télé", "vélo"] },
         { sound: "E ouvert (ɛ)", desc: "Boca más abierta", words: ["père", "mère", "frère", "terre", "fête", "bête"] },
         { sound: "AN / EN nasal", desc: "El aire sale por la nariz", words: ["enfant", "maman", "argent", "vent", "temps", "ensemble"] },
@@ -510,582 +376,87 @@ const pronData = {
     ]
 };
 
-// ==================== PODCASTS (4 por idioma) ====================
+// ==================== PODCASTS ====================
 const podcasts = {
     en: [
         { title: "6 Minute English", desc: "BBC · Inglés británico en 6 minutos", level: "B1", link: "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english" },
         { title: "VOA Learning English", desc: "Noticias en inglés americano, más lento", level: "A2-B1", link: "https://learningenglish.voanews.com/" },
-        { title: "English Learning for Curious Minds", desc: "Historias interesantes narradas en inglés claro", level: "B1-B2", link: "https://podcast.leonardoenglish.com/" },
+        { title: "English Learning for Curious Minds", desc: "Historias interesantes en inglés claro", level: "B1-B2", link: "https://podcast.leonardoenglish.com/" },
         { title: "Luke's English Podcast", desc: "Inglés británico con humor y cultura", level: "B1-C1", link: "https://teacherluke.co.uk/" }
     ],
     fr: [
         { title: "Français Authentique", desc: "Francés natural, para hispanohablantes", level: "A2-B1", link: "https://francaisauthentique.com/podcast/" },
-        { title: "InnerFrench", desc: "Francés claro y pausado, temas interesantes", level: "A2-B1", link: "https://innerfrench.com/podcast/" },
+        { title: "InnerFrench", desc: "Francés claro y pausado", level: "A2-B1", link: "https://innerfrench.com/podcast/" },
         { title: "Coffee Break French", desc: "Lecciones cortas de francés", level: "A1-B1", link: "https://coffeebreaklanguages.com/french/" },
-        { title: "France Culture", desc: "Podcast de radio francesa (más avanzado)", level: "B2-C1", link: "https://www.radiofrance.fr/franceculture/podcasts" }
+        { title: "France Culture", desc: "Podcast de radio francesa (avanzado)", level: "B2-C1", link: "https://www.radiofrance.fr/franceculture/podcasts" }
     ]
 };
 
-// ==================== CONJUGACIÓN (verbos esenciales) ====================
+// ==================== CONJUGACIÓN (8 VERBOS EN INGLÉS Y 8 EN FRANCÉS) ====================
 const conjugationData = {
     en: [
-        {
-            verb: "to be",
-            title: "TO BE · Ser o estar",
-            tenses: {
-                present: { "I": "am", "You": "are", "He/She/It": "is", "We": "are", "You (pl)": "are", "They": "are" },
-                past: { "I": "was", "You": "were", "He/She/It": "was", "We": "were", "You (pl)": "were", "They": "were" },
-                future: { "I": "will be", "You": "will be", "He/She/It": "will be", "We": "will be", "You (pl)": "will be", "They": "will be" }
-            },
-            examples: {
-                present: ["I am happy today.", "She is a teacher.", "We are friends."],
-                past: ["I was tired yesterday.", "She was a student.", "We were at home."],
-                future: ["I will be there.", "She will be happy.", "We will be ready."]
-            },
-            exercises: [
-                { prompt: "I ___ happy today.", answer: "am", tense: "present" },
-                { prompt: "She ___ tired yesterday.", answer: "was", tense: "past" },
-                { prompt: "They ___ at home tomorrow.", answer: "will be", tense: "future" }
-            ]
-        },
-        {
-            verb: "to have",
-            title: "TO HAVE · Tener / Haber",
-            tenses: {
-                present: { "I": "have", "You": "have", "He/She/It": "has", "We": "have", "You (pl)": "have", "They": "have" },
-                past: { "I": "had", "You": "had", "He/She/It": "had", "We": "had", "You (pl)": "had", "They": "had" },
-                future: { "I": "will have", "You": "will have", "He/She/It": "will have", "We": "will have", "You (pl)": "will have", "They": "will have" }
-            },
-            examples: {
-                present: ["I have a dog.", "He has a car.", "We have time."],
-                past: ["I had breakfast.", "She had a dream.", "They had fun."],
-                future: ["I will have a party.", "She will have children.", "We will have dinner."]
-            },
-            exercises: [
-                { prompt: "I ___ a dog.", answer: "have", tense: "present" },
-                { prompt: "She ___ a dream last night.", answer: "had", tense: "past" },
-                { prompt: "They ___ a party tomorrow.", answer: "will have", tense: "future" }
-            ]
-        },
-        {
-            verb: "to do",
-            title: "TO DO · Hacer",
-            tenses: {
-                present: { "I": "do", "You": "do", "He/She/It": "does", "We": "do", "You (pl)": "do", "They": "do" },
-                past: { "I": "did", "You": "did", "He/She/It": "did", "We": "did", "You (pl)": "did", "They": "did" },
-                future: { "I": "will do", "You": "will do", "He/She/It": "will do", "We": "will do", "You (pl)": "will do", "They": "will do" }
-            },
-            examples: {
-                present: ["I do my homework.", "She does yoga.", "We do the shopping."],
-                past: ["I did my best.", "He did a great job.", "They did the dishes."],
-                future: ["I will do it later.", "She will do the laundry.", "We will do our part."]
-            },
-            exercises: [
-                { prompt: "I ___ my homework every day.", answer: "do", tense: "present" },
-                { prompt: "She ___ her best yesterday.", answer: "did", tense: "past" },
-                { prompt: "They ___ it tomorrow.", answer: "will do", tense: "future" }
-            ]
-        },
-        {
-            verb: "to say",
-            title: "TO SAY · Decir",
-            tenses: {
-                present: { "I": "say", "You": "say", "He/She/It": "says", "We": "say", "You (pl)": "say", "They": "say" },
-                past: { "I": "said", "You": "said", "He/She/It": "said", "We": "said", "You (pl)": "said", "They": "said" },
-                future: { "I": "will say", "You": "will say", "He/She/It": "will say", "We": "will say", "You (pl)": "will say", "They": "will say" }
-            },
-            examples: {
-                present: ["I say hello.", "She says thank you.", "They say it's true."],
-                past: ["I said sorry.", "He said goodbye.", "They said yes."],
-                future: ["I will say something.", "She will say no.", "We will say nothing."]
-            },
-            exercises: [
-                { prompt: "I always ___ hello.", answer: "say", tense: "present" },
-                { prompt: "She ___ sorry yesterday.", answer: "said", tense: "past" },
-                { prompt: "They ___ something tomorrow.", answer: "will say", tense: "future" }
-            ]
-        },
-        {
-            verb: "to go",
-            title: "TO GO · Ir",
-            tenses: {
-                present: { "I": "go", "You": "go", "He/She/It": "goes", "We": "go", "You (pl)": "go", "They": "go" },
-                past: { "I": "went", "You": "went", "He/She/It": "went", "We": "went", "You (pl)": "went", "They": "went" },
-                future: { "I": "will go", "You": "will go", "He/She/It": "will go", "We": "will go", "You (pl)": "will go", "They": "will go" }
-            },
-            examples: {
-                present: ["I go to school.", "She goes to the gym.", "We go to the park."],
-                past: ["I went to Paris.", "He went home.", "They went to bed."],
-                future: ["I will go to the cinema.", "She will go shopping.", "We will go on vacation."]
-            },
-            exercises: [
-                { prompt: "I ___ to school every day.", answer: "go", tense: "present" },
-                { prompt: "She ___ to Paris last year.", answer: "went", tense: "past" },
-                { prompt: "They ___ to the cinema tomorrow.", answer: "will go", tense: "future" }
-            ]
-        },
-        {
-            verb: "to get",
-            title: "TO GET · Obtener / Llegar / Volverse",
-            tenses: {
-                present: { "I": "get", "You": "get", "He/She/It": "gets", "We": "get", "You (pl)": "get", "They": "get" },
-                past: { "I": "got", "You": "got", "He/She/It": "got", "We": "got", "You (pl)": "got", "They": "got" },
-                future: { "I": "will get", "You": "will get", "He/She/It": "will get", "We": "will get", "You (pl)": "will get", "They": "will get" }
-            },
-            examples: {
-                present: ["I get up at 7.", "She gets good grades.", "They get together."],
-                past: ["I got a present.", "He got home late.", "They got married."],
-                future: ["I will get a job.", "She will get better.", "We will get there soon."]
-            },
-            exercises: [
-                { prompt: "I ___ up at 7 am.", answer: "get", tense: "present" },
-                { prompt: "She ___ a present yesterday.", answer: "got", tense: "past" },
-                { prompt: "They ___ a job next year.", answer: "will get", tense: "future" }
-            ]
-        },
-        {
-            verb: "to make",
-            title: "TO MAKE · Hacer / Fabricar",
-            tenses: {
-                present: { "I": "make", "You": "make", "He/She/It": "makes", "We": "make", "You (pl)": "make", "They": "make" },
-                past: { "I": "made", "You": "made", "He/She/It": "made", "We": "made", "You (pl)": "made", "They": "made" },
-                future: { "I": "will make", "You": "will make", "He/She/It": "will make", "We": "will make", "You (pl)": "will make", "They": "will make" }
-            },
-            examples: {
-                present: ["I make breakfast.", "She makes art.", "We make plans."],
-                past: ["I made a cake.", "He made a mistake.", "They made a decision."],
-                future: ["I will make dinner.", "She will make a call.", "We will make history."]
-            },
-            exercises: [
-                { prompt: "I ___ breakfast every morning.", answer: "make", tense: "present" },
-                { prompt: "She ___ a cake yesterday.", answer: "made", tense: "past" },
-                { prompt: "They ___ dinner tonight.", answer: "will make", tense: "future" }
-            ]
-        },
-        {
-            verb: "to know",
-            title: "TO KNOW · Saber / Conocer",
-            tenses: {
-                present: { "I": "know", "You": "know", "He/She/It": "knows", "We": "know", "You (pl)": "know", "They": "know" },
-                past: { "I": "knew", "You": "knew", "He/She/It": "knew", "We": "knew", "You (pl)": "knew", "They": "knew" },
-                future: { "I": "will know", "You": "will know", "He/She/It": "will know", "We": "will know", "You (pl)": "will know", "They": "will know" }
-            },
-            examples: {
-                present: ["I know the answer.", "She knows French.", "They know the city."],
-                past: ["I knew him well.", "He knew the truth.", "They knew the way."],
-                future: ["I will know soon.", "She will know later.", "We will know tomorrow."]
-            },
-            exercises: [
-                { prompt: "I ___ the answer.", answer: "know", tense: "present" },
-                { prompt: "She ___ the truth yesterday.", answer: "knew", tense: "past" },
-                { prompt: "They ___ the results tomorrow.", answer: "will know", tense: "future" }
-            ]
-        }
+        { verb: "to be", title: "TO BE · Ser o estar", tenses: { present: { "I": "am", "You": "are", "He/She/It": "is", "We": "are", "You (pl)": "are", "They": "are" }, past: { "I": "was", "You": "were", "He/She/It": "was", "We": "were", "You (pl)": "were", "They": "were" }, future: { "I": "will be", "You": "will be", "He/She/It": "will be", "We": "will be", "You (pl)": "will be", "They": "will be" } }, examples: ["I am happy", "I was tired", "I will be there"], exercises: [{ prompt: "I ___ happy", answer: "am" }, { prompt: "I ___ tired yesterday", answer: "was" }, { prompt: "I ___ there tomorrow", answer: "will be" }] },
+        { verb: "to have", title: "TO HAVE · Tener / Haber", tenses: { present: { "I": "have", "You": "have", "He/She/It": "has", "We": "have", "You (pl)": "have", "They": "have" }, past: { "I": "had", "You": "had", "He/She/It": "had", "We": "had", "You (pl)": "had", "They": "had" }, future: { "I": "will have", "You": "will have", "He/She/It": "will have", "We": "will have", "You (pl)": "will have", "They": "will have" } }, examples: ["I have a dog", "I had breakfast", "I will have time"], exercises: [{ prompt: "I ___ a dog", answer: "have" }, { prompt: "I ___ breakfast yesterday", answer: "had" }, { prompt: "I ___ time later", answer: "will have" }] },
+        { verb: "to do", title: "TO DO · Hacer", tenses: { present: { "I": "do", "You": "do", "He/She/It": "does", "We": "do", "You (pl)": "do", "They": "do" }, past: { "I": "did", "You": "did", "He/She/It": "did", "We": "did", "You (pl)": "did", "They": "did" }, future: { "I": "will do", "You": "will do", "He/She/It": "will do", "We": "will do", "You (pl)": "will do", "They": "will do" } }, examples: ["I do my homework", "I did my best", "I will do it"], exercises: [{ prompt: "I ___ my homework", answer: "do" }, { prompt: "I ___ my best yesterday", answer: "did" }, { prompt: "I ___ it tomorrow", answer: "will do" }] },
+        { verb: "to say", title: "TO SAY · Decir", tenses: { present: { "I": "say", "You": "say", "He/She/It": "says", "We": "say", "You (pl)": "say", "They": "say" }, past: { "I": "said", "You": "said", "He/She/It": "said", "We": "said", "You (pl)": "said", "They": "said" }, future: { "I": "will say", "You": "will say", "He/She/It": "will say", "We": "will say", "You (pl)": "will say", "They": "will say" } }, examples: ["I say hello", "I said sorry", "I will say yes"], exercises: [{ prompt: "I ___ hello", answer: "say" }, { prompt: "I ___ sorry yesterday", answer: "said" }, { prompt: "I ___ yes tomorrow", answer: "will say" }] },
+        { verb: "to go", title: "TO GO · Ir", tenses: { present: { "I": "go", "You": "go", "He/She/It": "goes", "We": "go", "You (pl)": "go", "They": "go" }, past: { "I": "went", "You": "went", "He/She/It": "went", "We": "went", "You (pl)": "went", "They": "went" }, future: { "I": "will go", "You": "will go", "He/She/It": "will go", "We": "will go", "You (pl)": "will go", "They": "will go" } }, examples: ["I go to school", "I went home", "I will go out"], exercises: [{ prompt: "I ___ to school", answer: "go" }, { prompt: "I ___ home yesterday", answer: "went" }, { prompt: "I ___ out later", answer: "will go" }] },
+        { verb: "to get", title: "TO GET · Obtener / Llegar", tenses: { present: { "I": "get", "You": "get", "He/She/It": "gets", "We": "get", "You (pl)": "get", "They": "get" }, past: { "I": "got", "You": "got", "He/She/It": "got", "We": "got", "You (pl)": "got", "They": "got" }, future: { "I": "will get", "You": "will get", "He/She/It": "will get", "We": "will get", "You (pl)": "will get", "They": "will get" } }, examples: ["I get up early", "I got a present", "I will get there"], exercises: [{ prompt: "I ___ up early", answer: "get" }, { prompt: "I ___ a present yesterday", answer: "got" }, { prompt: "I ___ there soon", answer: "will get" }] },
+        { verb: "to make", title: "TO MAKE · Hacer / Fabricar", tenses: { present: { "I": "make", "You": "make", "He/She/It": "makes", "We": "make", "You (pl)": "make", "They": "make" }, past: { "I": "made", "You": "made", "He/She/It": "made", "We": "made", "You (pl)": "made", "They": "made" }, future: { "I": "will make", "You": "will make", "He/She/It": "will make", "We": "will make", "You (pl)": "will make", "They": "will make" } }, examples: ["I make breakfast", "I made a cake", "I will make dinner"], exercises: [{ prompt: "I ___ breakfast", answer: "make" }, { prompt: "I ___ a cake yesterday", answer: "made" }, { prompt: "I ___ dinner tonight", answer: "will make" }] },
+        { verb: "to know", title: "TO KNOW · Saber / Conocer", tenses: { present: { "I": "know", "You": "know", "He/She/It": "knows", "We": "know", "You (pl)": "know", "They": "know" }, past: { "I": "knew", "You": "knew", "He/She/It": "knew", "We": "knew", "You (pl)": "knew", "They": "knew" }, future: { "I": "will know", "You": "will know", "He/She/It": "will know", "We": "will know", "You (pl)": "will know", "They": "will know" } }, examples: ["I know the answer", "I knew the truth", "I will know soon"], exercises: [{ prompt: "I ___ the answer", answer: "know" }, { prompt: "I ___ the truth yesterday", answer: "knew" }, { prompt: "I ___ soon", answer: "will know" }] }
     ],
     fr: [
-        {
-            verb: "être",
-            title: "ÊTRE · Ser o estar",
-            tenses: {
-                present: { "Je": "suis", "Tu": "es", "Il/Elle/On": "est", "Nous": "sommes", "Vous": "êtes", "Ils/Elles": "sont" },
-                past: { "Je": "ai été", "Tu": "as été", "Il/Elle/On": "a été", "Nous": "avons été", "Vous": "avez été", "Ils/Elles": "ont été" },
-                future: { "Je": "serai", "Tu": "seras", "Il/Elle/On": "sera", "Nous": "serons", "Vous": "serez", "Ils/Elles": "seront" }
-            },
-            examples: {
-                present: ["Je suis étudiante.", "Elle est gentille.", "Nous sommes en classe."],
-                past: ["J'ai été fatiguée.", "Elle a été malade.", "Ils ont été contents."],
-                future: ["Je serai médecin.", "Elle sera là.", "Nous serons en retard."]
-            },
-            exercises: [
-                { prompt: "Je ___ heureuse.", answer: "suis", tense: "present" },
-                { prompt: "Elle ___ fatiguée hier.", answer: "a été", tense: "past" },
-                { prompt: "Je ___ là demain.", answer: "serai", tense: "future" }
-            ]
-        },
-        {
-            verb: "avoir",
-            title: "AVOIR · Tener / Haber",
-            tenses: {
-                present: { "Je": "ai", "Tu": "as", "Il/Elle/On": "a", "Nous": "avons", "Vous": "avez", "Ils/Elles": "ont" },
-                past: { "Je": "ai eu", "Tu": "as eu", "Il/Elle/On": "a eu", "Nous": "avons eu", "Vous": "avez eu", "Ils/Elles": "ont eu" },
-                future: { "Je": "aurai", "Tu": "auras", "Il/Elle/On": "aura", "Nous": "aurons", "Vous": "aurez", "Ils/Elles": "auront" }
-            },
-            examples: {
-                present: ["J'ai 14 ans.", "Tu as raison.", "Ils ont faim."],
-                past: ["J'ai eu de la chance.", "Elle a eu un chien.", "Nous avons eu des problèmes."],
-                future: ["J'aurai une maison.", "Tu auras du temps.", "Ils auront des enfants."]
-            },
-            exercises: [
-                { prompt: "J'___ un frère.", answer: "ai", tense: "present" },
-                { prompt: "Elle ___ un chien l'année dernière.", answer: "a eu", tense: "past" },
-                { prompt: "J'___ 20 ans demain.", answer: "aurai", tense: "future" }
-            ]
-        },
-        {
-            verb: "faire",
-            title: "FAIRE · Hacer",
-            tenses: {
-                present: { "Je": "fais", "Tu": "fais", "Il/Elle/On": "fait", "Nous": "faisons", "Vous": "faites", "Ils/Elles": "font" },
-                past: { "Je": "ai fait", "Tu": "as fait", "Il/Elle/On": "a fait", "Nous": "avons fait", "Vous": "avez fait", "Ils/Elles": "ont fait" },
-                future: { "Je": "ferai", "Tu": "feras", "Il/Elle/On": "fera", "Nous": "ferons", "Vous": "ferez", "Ils/Elles": "feront" }
-            },
-            examples: {
-                present: ["Je fais du sport.", "Elle fait la cuisine.", "Nous faisons nos devoirs."],
-                past: ["J'ai fait du vélo.", "Il a fait un gâteau.", "Ils ont fait une erreur."],
-                future: ["Je ferai mes devoirs.", "Elle fera un gâteau.", "Nous ferons la fête."]
-            },
-            exercises: [
-                { prompt: "Je ___ du sport.", answer: "fais", tense: "present" },
-                { prompt: "Elle ___ un gâteau hier.", answer: "a fait", tense: "past" },
-                { prompt: "Je ___ mes devoirs demain.", answer: "ferai", tense: "future" }
-            ]
-        },
-        {
-            verb: "dire",
-            title: "DIRE · Decir",
-            tenses: {
-                present: { "Je": "dis", "Tu": "dis", "Il/Elle/On": "dit", "Nous": "disons", "Vous": "dites", "Ils/Elles": "disent" },
-                past: { "Je": "ai dit", "Tu": "as dit", "Il/Elle/On": "a dit", "Nous": "avons dit", "Vous": "avez dit", "Ils/Elles": "ont dit" },
-                future: { "Je": "dirai", "Tu": "diras", "Il/Elle/On": "dira", "Nous": "dirons", "Vous": "direz", "Ils/Elles": "diront" }
-            },
-            examples: {
-                present: ["Je dis la vérité.", "Elle dit bonjour.", "Nous disons merci."],
-                past: ["J'ai dit oui.", "Il a dit non.", "Ils ont dit la vérité."],
-                future: ["Je dirai tout.", "Elle dira quelque chose.", "Nous dirons au revoir."]
-            },
-            exercises: [
-                { prompt: "Je ___ toujours oui.", answer: "dis", tense: "present" },
-                { prompt: "Elle ___ non hier.", answer: "a dit", tense: "past" },
-                { prompt: "Je ___ la vérité demain.", answer: "dirai", tense: "future" }
-            ]
-        },
-        {
-            verb: "aller",
-            title: "ALLER · Ir",
-            tenses: {
-                present: { "Je": "vais", "Tu": "vas", "Il/Elle/On": "va", "Nous": "allons", "Vous": "allez", "Ils/Elles": "vont" },
-                past: { "Je": "suis allé(e)", "Tu": "es allé(e)", "Il/Elle/On": "est allé(e)", "Nous": "sommes allé(e)s", "Vous": "êtes allé(e)(s)", "Ils/Elles": "sont allé(e)s" },
-                future: { "Je": "irai", "Tu": "iras", "Il/Elle/On": "ira", "Nous": "irons", "Vous": "irez", "Ils/Elles": "iront" }
-            },
-            examples: {
-                present: ["Je vais à l'école.", "Elle va au cinéma.", "Nous allons au parc."],
-                past: ["Je suis allé à Paris.", "Elle est allée à la plage.", "Ils sont allés au marché."],
-                future: ["J'irai au musée.", "Elle ira à la fête.", "Nous irons en vacances."]
-            },
-            exercises: [
-                { prompt: "Je ___ à l'école.", answer: "vais", tense: "present" },
-                { prompt: "Elle ___ à Paris l'année dernière.", answer: "est allée", tense: "past" },
-                { prompt: "Nous ___ au cinéma demain.", answer: "irons", tense: "future" }
-            ]
-        },
-        {
-            verb: "voir",
-            title: "VOIR · Ver",
-            tenses: {
-                present: { "Je": "vois", "Tu": "vois", "Il/Elle/On": "voit", "Nous": "voyons", "Vous": "voyez", "Ils/Elles": "voient" },
-                past: { "Je": "ai vu", "Tu": "as vu", "Il/Elle/On": "a vu", "Nous": "avons vu", "Vous": "avez vu", "Ils/Elles": "ont vu" },
-                future: { "Je": "verrai", "Tu": "verras", "Il/Elle/On": "verra", "Nous": "verrons", "Vous": "verrez", "Ils/Elles": "verront" }
-            },
-            examples: {
-                present: ["Je vois le soleil.", "Elle voit ses amis.", "Nous voyons un film."],
-                past: ["J'ai vu un oiseau.", "Elle a vu la mer.", "Ils ont vu un accident."],
-                future: ["Je verrai le résultat.", "Elle verra le médecin.", "Nous verrons demain."]
-            },
-            exercises: [
-                { prompt: "Je ___ la lune.", answer: "vois", tense: "present" },
-                { prompt: "Elle ___ un oiseau hier.", answer: "a vu", tense: "past" },
-                { prompt: "Je ___ le médecin demain.", answer: "verrai", tense: "future" }
-            ]
-        },
-        {
-            verb: "pouvoir",
-            title: "POUVOIR · Poder",
-            tenses: {
-                present: { "Je": "peux", "Tu": "peux", "Il/Elle/On": "peut", "Nous": "pouvons", "Vous": "pouvez", "Ils/Elles": "peuvent" },
-                past: { "Je": "ai pu", "Tu": "as pu", "Il/Elle/On": "a pu", "Nous": "avons pu", "Vous": "avez pu", "Ils/Elles": "ont pu" },
-                future: { "Je": "pourrai", "Tu": "pourras", "Il/Elle/On": "pourra", "Nous": "pourrons", "Vous": "pourrez", "Ils/Elles": "pourront" }
-            },
-            examples: {
-                present: ["Je peux t'aider.", "Elle peut venir.", "Nous pouvons sortir."],
-                past: ["J'ai pu parler.", "Elle a pu finir.", "Ils ont pu gagner."],
-                future: ["Je pourrai venir.", "Elle pourra t'appeler.", "Nous pourrons voyager."]
-            },
-            exercises: [
-                { prompt: "Je ___ t'aider.", answer: "peux", tense: "present" },
-                { prompt: "Elle ___ venir hier.", answer: "a pu", tense: "past" },
-                { prompt: "Je ___ venir demain.", answer: "pourrai", tense: "future" }
-            ]
-        },
-        {
-            verb: "vouloir",
-            title: "VOULOIR · Querer",
-            tenses: {
-                present: { "Je": "veux", "Tu": "veux", "Il/Elle/On": "veut", "Nous": "voulons", "Vous": "voulez", "Ils/Elles": "veulent" },
-                past: { "Je": "ai voulu", "Tu": "as voulu", "Il/Elle/On": "a voulu", "Nous": "avons voulu", "Vous": "avez voulu", "Ils/Elles": "ont voulu" },
-                future: { "Je": "voudrai", "Tu": "voudras", "Il/Elle/On": "voudra", "Nous": "voudrons", "Vous": "voudrez", "Ils/Elles": "voudront" }
-            },
-            examples: {
-                present: ["Je veux un café.", "Elle veut dormir.", "Nous voulons voyager."],
-                past: ["J'ai voulu partir.", "Elle a voulu aider.", "Ils ont voulu gagner."],
-                future: ["Je voudrai un jour.", "Elle voudra savoir.", "Nous voudrons plus."]
-            },
-            exercises: [
-                { prompt: "Je ___ un café.", answer: "veux", tense: "present" },
-                { prompt: "Elle ___ partir hier.", answer: "a voulu", tense: "past" },
-                { prompt: "Je ___ un jour réussir.", answer: "voudrai", tense: "future" }
-            ]
-        }
+        { verb: "être", title: "ÊTRE · Ser o estar", tenses: { present: { "Je": "suis", "Tu": "es", "Il/Elle/On": "est", "Nous": "sommes", "Vous": "êtes", "Ils/Elles": "sont" }, past: { "Je": "ai été", "Tu": "as été", "Il/Elle/On": "a été", "Nous": "avons été", "Vous": "avez été", "Ils/Elles": "ont été" }, future: { "Je": "serai", "Tu": "seras", "Il/Elle/On": "sera", "Nous": "serons", "Vous": "serez", "Ils/Elles": "seront" } }, examples: ["Je suis heureuse", "J'ai été fatiguée", "Je serai là"], exercises: [{ prompt: "Je ___ heureuse", answer: "suis" }, { prompt: "J'___ fatiguée hier", answer: "ai été" }, { prompt: "Je ___ là demain", answer: "serai" }] },
+        { verb: "avoir", title: "AVOIR · Tener / Haber", tenses: { present: { "Je": "ai", "Tu": "as", "Il/Elle/On": "a", "Nous": "avons", "Vous": "avez", "Ils/Elles": "ont" }, past: { "Je": "ai eu", "Tu": "as eu", "Il/Elle/On": "a eu", "Nous": "avons eu", "Vous": "avez eu", "Ils/Elles": "ont eu" }, future: { "Je": "aurai", "Tu": "auras", "Il/Elle/On": "aura", "Nous": "aurons", "Vous": "aurez", "Ils/Elles": "auront" } }, examples: ["J'ai 14 ans", "J'ai eu de la chance", "J'aurai du temps"], exercises: [{ prompt: "J'___ 14 ans", answer: "ai" }, { prompt: "J'___ de la chance hier", answer: "ai eu" }, { prompt: "J'___ du temps demain", answer: "aurai" }] },
+        { verb: "faire", title: "FAIRE · Hacer", tenses: { present: { "Je": "fais", "Tu": "fais", "Il/Elle/On": "fait", "Nous": "faisons", "Vous": "faites", "Ils/Elles": "font" }, past: { "Je": "ai fait", "Tu": "as fait", "Il/Elle/On": "a fait", "Nous": "avons fait", "Vous": "avez fait", "Ils/Elles": "ont fait" }, future: { "Je": "ferai", "Tu": "feras", "Il/Elle/On": "fera", "Nous": "ferons", "Vous": "ferez", "Ils/Elles": "feront" } }, examples: ["Je fais du sport", "J'ai fait un gâteau", "Je ferai mes devoirs"], exercises: [{ prompt: "Je ___ du sport", answer: "fais" }, { prompt: "J'___ un gâteau hier", answer: "ai fait" }, { prompt: "Je ___ mes devoirs demain", answer: "ferai" }] },
+        { verb: "dire", title: "DIRE · Decir", tenses: { present: { "Je": "dis", "Tu": "dis", "Il/Elle/On": "dit", "Nous": "disons", "Vous": "dites", "Ils/Elles": "disent" }, past: { "Je": "ai dit", "Tu": "as dit", "Il/Elle/On": "a dit", "Nous": "avons dit", "Vous": "avez dit", "Ils/Elles": "ont dit" }, future: { "Je": "dirai", "Tu": "diras", "Il/Elle/On": "dira", "Nous": "dirons", "Vous": "direz", "Ils/Elles": "diront" } }, examples: ["Je dis la vérité", "J'ai dit oui", "Je dirai tout"], exercises: [{ prompt: "Je ___ la vérité", answer: "dis" }, { prompt: "J'___ oui hier", answer: "ai dit" }, { prompt: "Je ___ tout demain", answer: "dirai" }] },
+        { verb: "aller", title: "ALLER · Ir", tenses: { present: { "Je": "vais", "Tu": "vas", "Il/Elle/On": "va", "Nous": "allons", "Vous": "allez", "Ils/Elles": "vont" }, past: { "Je": "suis allé(e)", "Tu": "es allé(e)", "Il/Elle/On": "est allé(e)", "Nous": "sommes allé(e)s", "Vous": "êtes allé(e)(s)", "Ils/Elles": "sont allé(e)s" }, future: { "Je": "irai", "Tu": "iras", "Il/Elle/On": "ira", "Nous": "irons", "Vous": "irez", "Ils/Elles": "iront" } }, examples: ["Je vais à l'école", "Je suis allée à Paris", "J'irai au cinéma"], exercises: [{ prompt: "Je ___ à l'école", answer: "vais" }, { prompt: "Je ___ à Paris hier", answer: "suis allée" }, { prompt: "J'___ au cinéma demain", answer: "irai" }] },
+        { verb: "voir", title: "VOIR · Ver", tenses: { present: { "Je": "vois", "Tu": "vois", "Il/Elle/On": "voit", "Nous": "voyons", "Vous": "voyez", "Ils/Elles": "voient" }, past: { "Je": "ai vu", "Tu": "as vu", "Il/Elle/On": "a vu", "Nous": "avons vu", "Vous": "avez vu", "Ils/Elles": "ont vu" }, future: { "Je": "verrai", "Tu": "verras", "Il/Elle/On": "verra", "Nous": "verrons", "Vous": "verrez", "Ils/Elles": "verront" } }, examples: ["Je vois le soleil", "J'ai vu un oiseau", "Je verrai demain"], exercises: [{ prompt: "Je ___ le soleil", answer: "vois" }, { prompt: "J'___ un oiseau hier", answer: "ai vu" }, { prompt: "Je ___ demain", answer: "verrai" }] },
+        { verb: "pouvoir", title: "POUVOIR · Poder", tenses: { present: { "Je": "peux", "Tu": "peux", "Il/Elle/On": "peut", "Nous": "pouvons", "Vous": "pouvez", "Ils/Elles": "peuvent" }, past: { "Je": "ai pu", "Tu": "as pu", "Il/Elle/On": "a pu", "Nous": "avons pu", "Vous": "avez pu", "Ils/Elles": "ont pu" }, future: { "Je": "pourrai", "Tu": "pourras", "Il/Elle/On": "pourra", "Nous": "pourrons", "Vous": "pourrez", "Ils/Elles": "pourront" } }, examples: ["Je peux t'aider", "J'ai pu venir", "Je pourrai demain"], exercises: [{ prompt: "Je ___ t'aider", answer: "peux" }, { prompt: "J'___ venir hier", answer: "ai pu" }, { prompt: "Je ___ demain", answer: "pourrai" }] },
+        { verb: "vouloir", title: "VOULOIR · Querer", tenses: { present: { "Je": "veux", "Tu": "veux", "Il/Elle/On": "veut", "Nous": "voulons", "Vous": "voulez", "Ils/Elles": "veulent" }, past: { "Je": "ai voulu", "Tu": "as voulu", "Il/Elle/On": "a voulu", "Nous": "avons voulu", "Vous": "avez voulu", "Ils/Elles": "ont voulu" }, future: { "Je": "voudrai", "Tu": "voudras", "Il/Elle/On": "voudra", "Nous": "voudrons", "Vous": "voudrez", "Ils/Elles": "voudront" } }, examples: ["Je veux un café", "J'ai voulu partir", "Je voudrai réussir"], exercises: [{ prompt: "Je ___ un café", answer: "veux" }, { prompt: "J'___ partir hier", answer: "ai voulu" }, { prompt: "Je ___ réussir un jour", answer: "voudrai" }] }
     ]
 };
-const dadCartas=["Tu valor no depende de lo que logras, sino de quién eres.","No necesitas ser perfecta.","Perder no es caer.","El miedo se transforma en valentía."];
-// ==================== GRAMÁTICA SEMANAL (8 semanas) ====================
-// ==================== GRAMÁTICA SEMANAL (INGLÉS Y FRANCÉS) ====================
+
+// ==================== GRAMÁTICA SEMANAL (8 semanas, bilingüe) ====================
+let grammarCompleted = JSON.parse(localStorage.getItem("maryse_grammar") || "[]");
+
 const weeklyGrammar = {
     0: {
-        en: {
-            title: "Articles · a / an / the",
-            explanation: "Use 'a' before consonant sounds. Use 'an' before vowel sounds. Use 'the' for something specific or already mentioned.",
-            examples: [
-                { text: "I see a dog.", translation: "Veo un perro." },
-                { text: "I see an apple.", translation: "Veo una manzana." },
-                { text: "The dog is mine.", translation: "El perro es mío." }
-            ],
-            exercises: [
-                { prompt: "I see ___ elephant.", answer: "an", hint: "elephant starts with a vowel sound" },
-                { prompt: "She has ___ idea.", answer: "an", hint: "idea starts with a vowel sound" },
-                { prompt: "___ sun is bright.", answer: "The", hint: "specific thing" }
-            ]
-        },
-        fr: {
-            title: "Les articles · un / une / des / le / la / les",
-            explanation: "En français: 'un' (masculin singulier), 'une' (féminin singulier), 'des' (pluriel). 'le' (masculin défini), 'la' (féminin défini), 'les' (pluriel défini).",
-            examples: [
-                { text: "Je vois un chien.", translation: "Veo un perro." },
-                { text: "Je vois une pomme.", translation: "Veo una manzana." },
-                { text: "Le chien est à moi.", translation: "El perro es mío." }
-            ],
-            exercises: [
-                { prompt: "Je vois ___ chat.", answer: "un", hint: "chat est masculin" },
-                { prompt: "Elle a ___ idée.", answer: "une", hint: "idée est féminin" },
-                { prompt: "___ soleil est brillant.", answer: "Le", hint: "soleil est masculin défini" }
-            ]
-        }
+        en: { title: "Articles · a / an / the", explanation: "Use 'a' before consonant sounds. Use 'an' before vowel sounds. Use 'the' for something specific.", examples: [{ text: "I see a dog.", translation: "Veo un perro." }, { text: "I see an apple.", translation: "Veo una manzana." }, { text: "The dog is mine.", translation: "El perro es mío." }], exercises: [{ prompt: "I see ___ elephant.", answer: "an", hint: "elephant starts with vowel" }, { prompt: "She has ___ idea.", answer: "an", hint: "idea starts with vowel" }, { prompt: "___ sun is bright.", answer: "The", hint: "specific thing" }] },
+        fr: { title: "Les articles · un / une / des / le / la / les", explanation: "En français: 'un' (masculin), 'une' (féminin), 'des' (pluriel), 'le/la/les' (définis).", examples: [{ text: "Je vois un chien.", translation: "Veo un perro." }, { text: "Je vois une pomme.", translation: "Veo una manzana." }, { text: "Le chien est à moi.", translation: "El perro es mío." }], exercises: [{ prompt: "Je vois ___ chat.", answer: "un", hint: "chat est masculin" }, { prompt: "Elle a ___ idée.", answer: "une", hint: "idée est féminin" }, { prompt: "___ soleil est brillant.", answer: "Le", hint: "soleil est masculin défini" }] }
     },
     1: {
-        en: {
-            title: "Personal Pronouns",
-            explanation: "Personal pronouns: I, you, he, she, it, we, they. Only 'I' is always capitalized.",
-            examples: [
-                { text: "I am happy.", translation: "Yo estoy feliz." },
-                { text: "She is my teacher.", translation: "Ella es mi profesora." },
-                { text: "They are friends.", translation: "Ellos son amigos." }
-            ],
-            exercises: [
-                { prompt: "___ am a student.", answer: "I", hint: "first person singular" },
-                { prompt: "___ is my sister.", answer: "She", hint: "feminine singular" },
-                { prompt: "___ are playing soccer.", answer: "They", hint: "third person plural" }
-            ]
-        },
-        fr: {
-            title: "Les pronoms personnels",
-            explanation: "Pronoms personnels: je, tu, il, elle, on, nous, vous, ils, elles. En français, le sujet est toujours exprimé.",
-            examples: [
-                { text: "Je suis heureuse.", translation: "Yo estoy feliz." },
-                { text: "Elle est ma prof.", translation: "Ella es mi profesora." },
-                { text: "Ils sont amis.", translation: "Ellos son amigos." }
-            ],
-            exercises: [
-                { prompt: "___ suis étudiante.", answer: "Je", hint: "première personne singulier" },
-                { prompt: "___ est ma sœur.", answer: "Elle", hint: "féminin singulier" },
-                { prompt: "___ jouent au foot.", answer: "Ils", hint: "troisième personne pluriel masculin" }
-            ]
-        }
+        en: { title: "Personal Pronouns", explanation: "Personal pronouns: I, you, he, she, it, we, they. Only 'I' is always capitalized.", examples: [{ text: "I am happy.", translation: "Yo estoy feliz." }, { text: "She is my teacher.", translation: "Ella es mi profesora." }, { text: "They are friends.", translation: "Ellos son amigos." }], exercises: [{ prompt: "___ am a student.", answer: "I", hint: "first person singular" }, { prompt: "___ is my sister.", answer: "She", hint: "feminine singular" }, { prompt: "___ are playing soccer.", answer: "They", hint: "third person plural" }] },
+        fr: { title: "Les pronoms personnels", explanation: "Pronoms personnels: je, tu, il, elle, on, nous, vous, ils, elles.", examples: [{ text: "Je suis heureuse.", translation: "Yo estoy feliz." }, { text: "Elle est ma prof.", translation: "Ella es mi profesora." }, { text: "Ils sont amis.", translation: "Ellos son amigos." }], exercises: [{ prompt: "___ suis étudiante.", answer: "Je", hint: "première personne" }, { prompt: "___ est ma sœur.", answer: "Elle", hint: "féminin singulier" }, { prompt: "___ jouent au foot.", answer: "Ils", hint: "troisième personne pluriel" }] }
     },
     2: {
-        en: {
-            title: "Prepositions of place · in / on / at",
-            explanation: "Use 'in' for enclosed or large spaces. Use 'on' for surfaces. Use 'at' for specific points.",
-            examples: [
-                { text: "I live in Mexico.", translation: "Vivo en México." },
-                { text: "The book is on the table.", translation: "El libro está en la mesa." },
-                { text: "Meet me at the station.", translation: "Encuéntrame en la estación." }
-            ],
-            exercises: [
-                { prompt: "I am ___ home.", answer: "at", hint: "specific point" },
-                { prompt: "She is ___ the park.", answer: "in", hint: "large open space" },
-                { prompt: "The pen is ___ the desk.", answer: "on", hint: "surface" }
-            ]
-        },
-        fr: {
-            title: "Les prépositions de lieu · dans / sur / à",
-            explanation: "En français: 'dans' (à l'intérieur de), 'sur' (dessus), 'à' (à un endroit précis).",
-            examples: [
-                { text: "J'habite au Mexique.", translation: "Vivo en México." },
-                { text: "Le livre est sur la table.", translation: "El libro está sobre la mesa." },
-                { text: "Retrouve-moi à la gare.", translation: "Encuéntrame en la estación." }
-            ],
-            exercises: [
-                { prompt: "Je suis ___ la maison.", answer: "à", hint: "endroit précis" },
-                { prompt: "Elle est ___ le parc.", answer: "dans", hint: "à l'intérieur du parc" },
-                { prompt: "Le stylo est ___ le bureau.", answer: "sur", hint: "surface" }
-            ]
-        }
+        en: { title: "Prepositions of place · in / on / at", explanation: "Use 'in' for enclosed spaces, 'on' for surfaces, 'at' for specific points.", examples: [{ text: "I live in Mexico.", translation: "Vivo en México." }, { text: "The book is on the table.", translation: "El libro está en la mesa." }, { text: "Meet me at the station.", translation: "Encuéntrame en la estación." }], exercises: [{ prompt: "I am ___ home.", answer: "at", hint: "specific point" }, { prompt: "She is ___ the park.", answer: "in", hint: "enclosed space" }, { prompt: "The pen is ___ the desk.", answer: "on", hint: "surface" }] },
+        fr: { title: "Les prépositions de lieu · dans / sur / à", explanation: "En français: 'dans' (dentro), 'sur' (sobre), 'à' (en un punto).", examples: [{ text: "J'habite au Mexique.", translation: "Vivo en México." }, { text: "Le livre est sur la table.", translation: "El libro está sobre la mesa." }, { text: "Retrouve-moi à la gare.", translation: "Encuéntrame en la estación." }], exercises: [{ prompt: "Je suis ___ la maison.", answer: "à", hint: "punto específico" }, { prompt: "Elle est ___ le parc.", answer: "dans", hint: "dentro del parque" }, { prompt: "Le stylo est ___ le bureau.", answer: "sur", hint: "superficie" }] }
     },
     3: {
-        en: {
-            title: "Question formation · Do / Does / Is / Are",
-            explanation: "Use 'Do' with I/you/we/they. Use 'Does' with he/she/it. Use 'Is/Are' with the verb 'to be'.",
-            examples: [
-                { text: "Do you like pizza?", translation: "¿Te gusta la pizza?" },
-                { text: "Does she speak English?", translation: "¿Ella habla inglés?" },
-                { text: "Is he your brother?", translation: "¿Él es tu hermano?" }
-            ],
-            exercises: [
-                { prompt: "___ you want to go?", answer: "Do", hint: "second person singular" },
-                { prompt: "___ she have a car?", answer: "Does", hint: "third person singular" },
-                { prompt: "___ they ready?", answer: "Are", hint: "to be plural" }
-            ]
-        },
-        fr: {
-            title: "La formation des questions",
-            explanation: "En français, on peut former des questions avec 'Est-ce que', l'inversion sujet-verbe, ou simplement la montée de la voix à l'oral.",
-            examples: [
-                { text: "Est-ce que tu aimes la pizza?", translation: "¿Te gusta la pizza?" },
-                { text: "Parle-t-elle anglais?", translation: "¿Ella habla inglés?" },
-                { text: "Il est ton frère?", translation: "¿Él es tu hermano?" }
-            ],
-            exercises: [
-                { prompt: "___ tu veux y aller?", answer: "Est-ce que", hint: "forme la plus courante" },
-                { prompt: "___-t-elle une voiture?", answer: "A", hint: "inversion avec avoir" },
-                { prompt: "Ils ___ prêts?", answer: "sont", hint: "inversion avec être" }
-            ]
-        }
+        en: { title: "Question formation · Do / Does / Is / Are", explanation: "Use 'Do' with I/you/we/they, 'Does' with he/she/it, 'Is/Are' with 'to be'.", examples: [{ text: "Do you like pizza?", translation: "¿Te gusta la pizza?" }, { text: "Does she speak English?", translation: "¿Ella habla inglés?" }, { text: "Is he your brother?", translation: "¿Él es tu hermano?" }], exercises: [{ prompt: "___ you want to go?", answer: "Do", hint: "second person" }, { prompt: "___ she have a car?", answer: "Does", hint: "third person singular" }, { prompt: "___ they ready?", answer: "Are", hint: "to be plural" }] },
+        fr: { title: "La formation des questions", explanation: "En français: 'Est-ce que', inversion sujet-verbe, ou intonation.", examples: [{ text: "Est-ce que tu aimes la pizza?", translation: "¿Te gusta la pizza?" }, { text: "Parle-t-elle anglais?", translation: "¿Ella habla inglés?" }, { text: "Il est ton frère?", translation: "¿Él es tu hermano?" }], exercises: [{ prompt: "___ tu veux y aller?", answer: "Est-ce que", hint: "forme la plus courante" }, { prompt: "___-t-elle une voiture?", answer: "A", hint: "inversion avec avoir" }, { prompt: "Ils ___ prêts?", answer: "sont", hint: "inversion avec être" }] }
     },
     4: {
-        en: {
-            title: "Adjective order",
-            explanation: "Order: 1. Opinion, 2. Size, 3. Color, 4. Material + noun.",
-            examples: [
-                { text: "a beautiful big house", translation: "una casa grande y bonita" },
-                { text: "a small red car", translation: "un coche rojo pequeño" },
-                { text: "an old wooden table", translation: "una mesa de madera vieja" }
-            ],
-            exercises: [
-                { prompt: "Order: red / a / small / car", answer: "a small red car", hint: "size before color" },
-                { prompt: "Order: wooden / an / old / table", answer: "an old wooden table", hint: "age before material" }
-            ]
-        },
-        fr: {
-            title: "L'ordre des adjectifs",
-            explanation: "En français, la plupart des adjectifs vont APRÈS le nom. Certains adjectifs courts (beau, grand, petit, jeune, vieux) vont avant le nom.",
-            examples: [
-                { text: "une belle grande maison", translation: "una casa grande y bonita" },
-                { text: "une petite voiture rouge", translation: "un coche pequeño rojo" },
-                { text: "une vieille table en bois", translation: "una mesa de madera vieja" }
-            ],
-            exercises: [
-                { prompt: "Ordonne: rouge / une / petite / voiture", answer: "une petite voiture rouge", hint: "taille avant couleur, couleur après le nom" },
-                { prompt: "Ordonne: en bois / une / vieille / table", answer: "une vieille table en bois", hint: "âge avant matière" }
-            ]
-        }
+        en: { title: "Adjective order", explanation: "Order: 1. Opinion, 2. Size, 3. Color, 4. Material + noun.", examples: [{ text: "a beautiful big house", translation: "una casa grande y bonita" }, { text: "a small red car", translation: "un coche rojo pequeño" }, { text: "an old wooden table", translation: "una mesa de madera vieja" }], exercises: [{ prompt: "Order: red / a / small / car", answer: "a small red car", hint: "size before color" }, { prompt: "Order: wooden / an / old / table", answer: "an old wooden table", hint: "age before material" }] },
+        fr: { title: "L'ordre des adjectifs", explanation: "En français, la plupart des adjectifs vont APRÈS le nom.", examples: [{ text: "une belle grande maison", translation: "una casa grande y bonita" }, { text: "une petite voiture rouge", translation: "un coche pequeño rojo" }, { text: "une vieille table en bois", translation: "una mesa de madera vieja" }], exercises: [{ prompt: "Ordonne: rouge / une / petite / voiture", answer: "une petite voiture rouge", hint: "taille avant couleur" }, { prompt: "Ordonne: en bois / une / vieille / table", answer: "une vieille table en bois", hint: "âge avant matière" }] }
     },
     5: {
-        en: {
-            title: "Countable vs Uncountable · some / any / a lot of",
-            explanation: "Use 'some' in affirmative sentences. Use 'any' in negatives and questions. Use 'a lot of' for large quantities.",
-            examples: [
-                { text: "I have some apples.", translation: "Tengo algunas manzanas." },
-                { text: "I don't have any money.", translation: "No tengo dinero." },
-                { text: "There are a lot of people.", translation: "Hay mucha gente." }
-            ],
-            exercises: [
-                { prompt: "I have ___ friends.", answer: "some", hint: "affirmative sentence" },
-                { prompt: "Do you have ___ questions?", answer: "any", hint: "interrogative" },
-                { prompt: "There is ___ water.", answer: "a lot of", hint: "large quantity" }
-            ]
-        },
-        fr: {
-            title: "Nombres comptables / incomptables · du / de la / des / de",
-            explanation: "En français: 'du' (masculin), 'de la' (féminin), 'des' (pluriel), 'de' (en négation).",
-            examples: [
-                { text: "Je veux du pain.", translation: "Quiero pan." },
-                { text: "Je ne veux pas de pain.", translation: "No quiero pan." },
-                { text: "Il y a beaucoup de monde.", translation: "Hay mucha gente." }
-            ],
-            exercises: [
-                { prompt: "Je veux ___ fromage.", answer: "du", hint: "fromage est masculin" },
-                { prompt: "Je veux ___ salade.", answer: "de la", hint: "salade est féminin" },
-                { prompt: "Je ne veux pas ___ pain.", answer: "de", hint: "négation" }
-            ]
-        }
+        en: { title: "Countable vs Uncountable · some / any / a lot of", explanation: "Use 'some' in affirmatives, 'any' in negatives/questions, 'a lot of' for large quantities.", examples: [{ text: "I have some apples.", translation: "Tengo algunas manzanas." }, { text: "I don't have any money.", translation: "No tengo dinero." }, { text: "There are a lot of people.", translation: "Hay mucha gente." }], exercises: [{ prompt: "I have ___ friends.", answer: "some", hint: "affirmative" }, { prompt: "Do you have ___ questions?", answer: "any", hint: "interrogative" }, { prompt: "There is ___ water.", answer: "a lot of", hint: "large quantity" }] },
+        fr: { title: "Nombres comptables / incomptables · du / de la / des / de", explanation: "En français: 'du' (masculin), 'de la' (féminin), 'des' (pluriel), 'de' (négation).", examples: [{ text: "Je veux du pain.", translation: "Quiero pan." }, { text: "Je ne veux pas de pain.", translation: "No quiero pan." }, { text: "Il y a beaucoup de monde.", translation: "Hay mucha gente." }], exercises: [{ prompt: "Je veux ___ fromage.", answer: "du", hint: "fromage masculin" }, { prompt: "Je veux ___ salade.", answer: "de la", hint: "salade féminin" }, { prompt: "Je ne veux pas ___ pain.", answer: "de", hint: "négation" }] }
     },
     6: {
-        en: {
-            title: "Modal verbs · can / must / should",
-            explanation: "Use 'can' for ability/permission. Use 'must' for strong obligation. Use 'should' for advice.",
-            examples: [
-                { text: "I can swim.", translation: "Sé nadar / Puedo nadar." },
-                { text: "You must study.", translation: "Debes estudiar." },
-                { text: "You should sleep early.", translation: "Deberías dormir temprano." }
-            ],
-            exercises: [
-                { prompt: "I ___ speak two languages.", answer: "can", hint: "ability" },
-                { prompt: "You ___ wear a uniform.", answer: "must", hint: "obligation" },
-                { prompt: "You ___ eat more vegetables.", answer: "should", hint: "advice" }
-            ]
-        },
-        fr: {
-            title: "Les verbes modaux · pouvoir / devoir / falloir",
-            explanation: "En français: 'pouvoir' (capacité/permission), 'devoir' (obligation), 'il faut' (nécessité impersonnelle).",
-            examples: [
-                { text: "Je peux nager.", translation: "Puedo nadar." },
-                { text: "Tu dois étudier.", translation: "Debes estudiar." },
-                { text: "Il faut dormir tôt.", translation: "Hay que dormir temprano." }
-            ],
-            exercises: [
-                { prompt: "Je ___ parler deux langues.", answer: "peux", hint: "capacité" },
-                { prompt: "Tu ___ porter un uniforme.", answer: "dois", hint: "obligation" },
-                { prompt: "Il ___ manger plus de légumes.", answer: "faut", hint: "conseil impersonnel" }
-            ]
-        }
+        en: { title: "Modal verbs · can / must / should", explanation: "Use 'can' for ability/permission, 'must' for obligation, 'should' for advice.", examples: [{ text: "I can swim.", translation: "Puedo nadar." }, { text: "You must study.", translation: "Debes estudiar." }, { text: "You should sleep early.", translation: "Deberías dormir temprano." }], exercises: [{ prompt: "I ___ speak two languages.", answer: "can", hint: "ability" }, { prompt: "You ___ wear a uniform.", answer: "must", hint: "obligation" }, { prompt: "You ___ eat more vegetables.", answer: "should", hint: "advice" }] },
+        fr: { title: "Les verbes modaux · pouvoir / devoir / falloir", explanation: "En français: 'pouvoir' (capacité), 'devoir' (obligation), 'il faut' (nécessité).", examples: [{ text: "Je peux nager.", translation: "Puedo nadar." }, { text: "Tu dois étudier.", translation: "Debes estudiar." }, { text: "Il faut dormir tôt.", translation: "Hay que dormir temprano." }], exercises: [{ prompt: "Je ___ parler deux langues.", answer: "peux", hint: "capacité" }, { prompt: "Tu ___ porter un uniforme.", answer: "dois", hint: "obligation" }, { prompt: "Il ___ manger plus de légumes.", answer: "faut", hint: "conseil impersonnel" }] }
     },
     7: {
-        en: {
-            title: "Future with · will",
-            explanation: "Use 'will' + verb for future actions (spontaneous decisions, predictions, promises). Same for all persons.",
-            examples: [
-                { text: "I will call you later.", translation: "Te llamaré más tarde." },
-                { text: "She will be a doctor.", translation: "Ella será doctora." },
-                { text: "We will help you.", translation: "Te ayudaremos." }
-            ],
-            exercises: [
-                { prompt: "I ___ help you.", answer: "will", hint: "promise" },
-                { prompt: "She ___ arrive tomorrow.", answer: "will", hint: "future action" },
-                { prompt: "They ___ win the game.", answer: "will", hint: "prediction" }
-            ]
-        },
-        fr: {
-            title: "Le futur proche · aller + infinitif",
-            explanation: "En français, le futur proche se forme avec le verbe 'aller' (aller) + infinitif. Exemple: 'je vais manger' (voy a comer).",
-            examples: [
-                { text: "Je vais t'appeler plus tard.", translation: "Te voy a llamar más tarde." },
-                { text: "Elle va être médecin.", translation: "Ella va a ser doctora." },
-                { text: "Nous allons t'aider.", translation: "Te vamos a ayudar." }
-            ],
-            exercises: [
-                { prompt: "Je ___ t'aider.", answer: "vais", hint: "première personne de aller" },
-                { prompt: "Elle ___ arriver demain.", answer: "va", hint: "troisième personne de aller" },
-                { prompt: "Ils ___ gagner le match.", answer: "vont", hint: "troisième personne pluriel de aller" }
-            ]
-        }
+        en: { title: "Future with · will", explanation: "Use 'will' + verb for future actions, predictions, promises.", examples: [{ text: "I will call you later.", translation: "Te llamaré más tarde." }, { text: "She will be a doctor.", translation: "Ella será doctora." }, { text: "We will help you.", translation: "Te ayudaremos." }], exercises: [{ prompt: "I ___ help you.", answer: "will", hint: "promise" }, { prompt: "She ___ arrive tomorrow.", answer: "will", hint: "future action" }, { prompt: "They ___ win the game.", answer: "will", hint: "prediction" }] },
+        fr: { title: "Le futur proche · aller + infinitif", explanation: "En français: 'aller' + infinitif pour le futur proche.", examples: [{ text: "Je vais t'appeler plus tard.", translation: "Te voy a llamar más tarde." }, { text: "Elle va être médecin.", translation: "Ella va a ser doctora." }, { text: "Nous allons t'aider.", translation: "Te vamos a ayudar." }], exercises: [{ prompt: "Je ___ t'aider.", answer: "vais", hint: "première personne de aller" }, { prompt: "Elle ___ arriver demain.", answer: "va", hint: "troisième personne de aller" }, { prompt: "Ils ___ gagner le match.", answer: "vont", hint: "troisième personne pluriel" }] }
     }
 };
-const dadArticulos=[{title:"Por qué te sientes incomprendida",content:"No estás sola."},{title:"Presión de redes",content:"No te compares."},{title:"Responder cuando te lastiman",content:"Alejarse es ganar."},{title:"Pequeños hábitos",content:"Tiende tu cama, bebe agua."}];
-const dadConsejos=["1️⃣ Escribe 3 cosas buenas.<br>2️⃣ Sin pantallas.<br>3️⃣ Muévete.","💬 Aprende a decir 'no'.","🧘 Respiración 4-7-8.","📝 'Esto también pasará'."];
-const dadPodcasts=[{title:"Entiende tu mente",link:"https://open.spotify.com/"},{title:"Historias para crecer",link:"https://www.ivoox.com/"},{title:"Chicas increíbles",link:"https://podcasts.apple.com/"},{title:"Respira y avanza",link:"https://open.spotify.com/"}];
-const dadAlientos=["Eres más fuerte","Confía en ti","Los días malos no duran","Cada paso es un triunfo"];
-const dadActividades=[{title:"🎵 Playlist",desc:"3 canciones."},{title:"📸 Fotos",desc:"Una foto cada día."},{title:"💌 Audio",desc:"2-3 minutos."},{title:"📖 Leer juntos",desc:"Un artículo."}];
+
+// ==================== KARAOKE ====================
 const karaokeSongs = [
+    // 10 canciones en inglés
     {title:"Let It Be",artist:"The Beatles",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=The+Beatles+Let+It+Be+karaoke+lyrics"},
     {title:"Perfect",artist:"Ed Sheeran",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Ed+Sheeran+Perfect+karaoke+lyrics"},
     {title:"Shallow",artist:"Lady Gaga & Bradley Cooper",language:"en",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Lady+Gaga+Shallow+karaoke+lyrics"},
@@ -1096,6 +467,7 @@ const karaokeSongs = [
     {title:"Shape of You",artist:"Ed Sheeran",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Ed+Sheeran+Shape+of+You+karaoke+lyrics"},
     {title:"Roar",artist:"Katy Perry",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Katy+Perry+Roar+karaoke+lyrics"},
     {title:"Fight Song",artist:"Rachel Platten",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Rachel+Platten+Fight+Song+karaoke+lyrics"},
+    // 10 canciones en francés
     {title:"Je veux",artist:"Zaz",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Zaz+Je+veux+karaoke+lyrics"},
     {title:"Champs Élysées",artist:"Joe Dassin",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Joe+Dassin+Champs+Élysées+karaoke+lyrics"},
     {title:"Papaoutai",artist:"Stromae",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Stromae+Papaoutai+karaoke+lyrics"},
@@ -1126,40 +498,21 @@ let scrambleWords=[],scrambleIndex=0,scrambleScore=0,scrambleAnswer=[];
 let diaryPhotoData=null, originalPhotoData=null, photoRotation=0, photoFlipH=false, photoFlipV=false;
 let deferredPrompt;
 let notifSettings=JSON.parse(localStorage.getItem("maryse_notif_settings")||'{"enabled":false,"time":"17:00","days":[1,2,3,4,5],"message":"📚 ¿Ya practicaste hoy?"}');
-const BACKUP_KEYS=["maryse_completed","maryse_xp","maryse_level","maryse_streak","maryse_diary","maryse_sent_invites","maryse_received_invites","maryse_friends","maryse_theme","maryse_dark_mode","maryse_avatar","maryse_last_mood","maryse_mama_playlist","maryse_notif_settings","maryse_dad_completadas"];
+const BACKUP_KEYS=["maryse_completed","maryse_xp","maryse_level","maryse_streak","maryse_diary","maryse_sent_invites","maryse_received_invites","maryse_friends","maryse_theme","maryse_dark_mode","maryse_avatar","maryse_last_mood","maryse_mama_playlist","maryse_notif_settings","maryse_dad_completadas","maryse_grammar"];
 const TOTAL_LESSONS=16;
 
-// ==================== NUEVO RINCÓN DE PAPÁ ====================
+// ==================== RINCÓN DE PAPÁ ====================
 const dadWeek = [
-    { dia: "Lunes", emoji: "💌", carta: "Eres mucho más de lo que crees. Comienza la semana con valentía. Confío en ti.", articulo: "El poder de comenzar la semana con 3 objetivos claros. Los pequeños logros construyen grandes cambios.", consejo: "Escribe 3 objetivos realistas para hoy.", actividad: "Misión del lunes: Cumple un objetivo y compártelo con papá." },
-    { dia: "Martes", emoji: "😢", carta: "Todas las emociones son válidas. No las escondas, escúchalas.", articulo: "Entendiendo las emociones: nombrar una emoción la reduce.", consejo: "Escribe cómo te sientes ahora mismo sin juzgarlo.", actividad: "Diario emocional: Dibuja 3 emociones del día y comparte una con papá." },
-    { dia: "Miércoles", emoji: "👭", carta: "Las amigas que suman te ven brillar. Rodéate de personas que te impulsen.", articulo: "Amistades que suman: cómo identificar relaciones saludables.", consejo: "Regala un cumplido sincero a una amiga.", actividad: "Mensaje a una amiga: Envía un audio o nota bonita." },
-    { dia: "Jueves", emoji: "🪞", carta: "Mírate al espejo: 'Soy suficiente'. No necesitas ser perfecta.", articulo: "Construir confianza: el ejercicio del espejo.", consejo: "Repite frente al espejo: 'Soy suficiente, soy valiosa'.", actividad: "Ejercicio del espejo: Con papá, díganse algo positivo." },
-    { dia: "Viernes", emoji: "🌟", carta: "Tus sueños importan. Visualiza, cree, actúa.", articulo: "Perseguir sueños: la visualización activa el cerebro.", consejo: "Cierra los ojos 2 minutos e imagina tu sueño cumplido.", actividad: "Mapa de sueños: Dibuja o pega imágenes de tus metas." }
+    { dia: "Lunes", emoji: "💌", carta: "Eres mucho más de lo que crees. Comienza la semana con valentía. Confío en ti.", articulo: "El poder de comenzar la semana con 3 objetivos claros.", consejo: "Escribe 3 objetivos realistas para hoy.", actividad: "Misión del lunes: Cumple un objetivo y compártelo con papá." },
+    { dia: "Martes", emoji: "😢", carta: "Todas las emociones son válidas. No las escondas, escúchalas.", articulo: "Entendiendo las emociones: nombrar una emoción la reduce.", consejo: "Escribe cómo te sientes ahora mismo.", actividad: "Diario emocional: Dibuja 3 emociones del día." },
+    { dia: "Miércoles", emoji: "👭", carta: "Las amigas que suman te ven brillar. Rodéate de personas que te impulsen.", articulo: "Amistades saludables: cómo identificarlas.", consejo: "Regala un cumplido sincero a una amiga.", actividad: "Mensaje bonito a una amiga." },
+    { dia: "Jueves", emoji: "🪞", carta: "Mírate al espejo: 'Soy suficiente'. No necesitas ser perfecta.", articulo: "Construir confianza: el ejercicio del espejo.", consejo: "Repite frente al espejo: 'Soy suficiente, soy valiosa'.", actividad: "Ejercicio del espejo con papá." },
+    { dia: "Viernes", emoji: "🌟", carta: "Tus sueños importan. Visualiza, cree, actúa.", articulo: "Perseguir sueños: la visualización activa el cerebro.", consejo: "Cierra los ojos 2 minutos e imagina tu sueño.", actividad: "Mapa de sueños: Dibuja tus metas." }
 ];
 
 function renderDad() {
     let completadas = JSON.parse(localStorage.getItem('maryse_dad_completadas') || '[]');
-    document.getElementById("dadContainer").innerHTML = `
-        <div class="card">
-            <div class="card-title">👨‍👧 Rincón de Papá · Semana de crecimiento</div>
-            <p style="margin-bottom:16px;">📅 Cada día: una carta, un artículo, un consejo y una actividad para compartir.</p>
-            <div class="dad-week-grid">
-                ${dadWeek.map(day => `
-                    <div class="dad-day-card">
-                        <div class="dad-day-header"><span>${day.emoji}</span><span>${day.dia}</span></div>
-                        <div class="dad-section"><strong>💌 Carta</strong><br>“${day.carta}”</div>
-                        <div class="dad-section"><strong>📖 Artículo</strong><br>${day.articulo}</div>
-                        <div class="dad-section"><strong>💡 Consejo</strong><br>${day.consejo}</div>
-                        <div class="dad-section">
-                            <strong>🎯 Actividad</strong><br>${day.actividad}<br>
-                            <button class="btn-small" onclick="marcarActividadDad('${day.dia}')">${completadas.includes(day.dia) ? '✅ Ya completada' : '✅ Marcar hecha (+10 XP)'}</button>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
+    document.getElementById("dadContainer").innerHTML = `<div class="card"><div class="card-title">👨‍👧 Rincón de Papá · Semana de crecimiento</div><div class="dad-week-grid">${dadWeek.map(day => `<div class="dad-day-card"><div class="dad-day-header"><span>${day.emoji}</span><span>${day.dia}</span></div><div class="dad-section"><strong>💌 Carta</strong><br>“${day.carta}”</div><div class="dad-section"><strong>📖 Artículo</strong><br>${day.articulo}</div><div class="dad-section"><strong>💡 Consejo</strong><br>${day.consejo}</div><div class="dad-section"><strong>🎯 Actividad</strong><br>${day.actividad}<br><button class="btn-small" onclick="marcarActividadDad('${day.dia}')">${completadas.includes(day.dia) ? '✅ Ya completada' : '✅ Marcar hecha (+10 XP)'}</button></div></div>`).join('')}</div></div>`;
 }
 
 function marcarActividadDad(dia) {
@@ -1172,26 +525,18 @@ function marcarActividadDad(dia) {
         localStorage.setItem("maryse_xp", userXP);
         updateProfile();
         renderDad();
-        alert(`🎉 ¡Actividad del ${dia} completada! +10 XP`);
-    } else {
-        alert(`Ya completaste la actividad del ${dia}. ¡Sigue así!`);
+        alert(`🎉 +10 XP! Actividad del ${dia} completada`);
     }
 }
 
-// ==================== RELOJ EN VIVO ====================
+// ==================== RELOJ ====================
 function updateDadClock() {
     const clockEl = document.getElementById('dadLiveClock');
     const dateEl = document.getElementById('dadLiveDate');
     if (clockEl) {
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const seconds = now.getSeconds().toString().padStart(2, '0');
-        clockEl.textContent = `${hours}:${minutes}:${seconds}`;
-        if (dateEl) {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            dateEl.textContent = now.toLocaleDateString('es-ES', options);
-        }
+        clockEl.textContent = now.toLocaleTimeString('es-ES');
+        if (dateEl) dateEl.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 }
 setInterval(updateDadClock, 1000);
@@ -1201,7 +546,7 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
-    if(vn==='academy'){renderGrammar();renderVocab();renderLessons();renderFlashcardModes();loadFlashcards();renderPodcasts();renderPronunciation();renderConjugation();}
+    if(vn==='academy'){renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();}
     if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
     if(vn==='games'){switchGame(currentGame);}
     if(vn==='dad'){renderDad();updateDadClock();}
@@ -1220,293 +565,16 @@ function getVocabData(){try{const ci=getCurrentWeekInfo().cycleIndex;const wv=we
 function getSlangData(){try{const ci=getCurrentWeekInfo().cycleIndex;const ws=weeklySlang[ci];if(ws&&ws[currentLang])return ws[currentLang];}catch(e){}return baseSlangData[currentLang]||baseSlangData["en"];}
 function getLessons(){try{const ci=getCurrentWeekInfo().cycleIndex;const wl=weeklyLessons[ci];if(wl&&wl[currentLang])return wl[currentLang];}catch(e){}return currentLang==="en"?baseEnglishLessons:baseFrenchLessons;}
 function renderVocab(){const d=getVocabData();const packs=Object.keys(d);document.getElementById("vocabSection").innerHTML=`<div class="badge">📖 Vocabulario</div><div id="vocabPacks">${packs.map(p=>`<span class="vocab-pack" data-pack="${p}">📦 ${p}</span>`).join('')}</div><div id="vocabWords" class="vocab-words"></div>`;if(packs.length){document.getElementById("vocabWords").innerHTML=d[packs[0]].map(item=>{const word=item.en||item.fr;return`<span class="word-card">${word} → ${item.es}</span>`;}).join('');}document.querySelectorAll(".vocab-pack").forEach(el=>el.addEventListener("click",()=>{const pack=el.getAttribute("data-pack");document.getElementById("vocabWords").innerHTML=d[pack].map(item=>{const word=item.en||item.fr;return`<span class="word-card">${word} → ${item.es}</span>`;}).join('');}));}
-function renderPronunciation() {
-    document.getElementById("pronunciationSection").innerHTML = `
-        <div class="badge">🗣️ FONÉTICA · 6 sonidos esenciales</div>
-        ${pronData[currentLang].map(s => `
-            <div class="sound-card">
-                <div class="sound-word">🔊 ${s.sound}</div>
-                <div style="font-size:0.8rem; margin: 4px 0;">${s.desc}</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
-                    ${s.words.map(w => `<button class="btn" style="display:inline-block;width:auto;padding:4px 12px;" onclick="speakText('${w}','${currentLang}')">${w}</button>`).join('')}
-                </div>
-            </div>
-        `).join('')}
-    `;
-}
-function renderPodcasts() {
-    document.getElementById("podcastSection").innerHTML = `
-        <div class="badge">📚 RESOURCES · Podcasts recomendados</div>
-        ${podcasts[currentLang].map(p => `
-            <div class="podcast-item" onclick="window.open('${p.link}','_blank')">
-                <div>
-                    <strong>🎙️ ${p.title}</strong>
-                    <br><small style="color:var(--subtext);">${p.desc} · Nivel ${p.level}</small>
-                </div>
-                <div>▶</div>
-            </div>
-        `).join('')}
-    `;
-}
-function renderConjugation() {
-    const data = conjugationData[currentLang];
-    const container = document.getElementById("conjugationGrid");
-    if (!container) return;
-    
-    container.innerHTML = data.map(verb => {
-        let previewExample = "¡Practica este verbo!";
-        if (verb.examples && verb.examples.present && verb.examples.present.length > 0) {
-            previewExample = verb.examples.present[0];
-        } else if (verb.examples && verb.examples.length > 0) {
-            previewExample = verb.examples[0];
-        } else if (verb.tenses && verb.tenses.present) {
-            const firstPerson = Object.values(verb.tenses.present)[0];
-            const firstSubject = Object.keys(verb.tenses.present)[0];
-            previewExample = `${firstSubject} ${firstPerson}`;
-        }
-        return `
-            <div class="conjugation-card" onclick="openConjugation('${verb.verb}')">
-                <div class="conjugation-title">${verb.title}</div>
-                <div class="conjugation-lang">${currentLang === 'en' ? '🇬🇧 English' : '🇫🇷 Français'}</div>
-                <div class="conjugation-preview">💡 Ej: ${previewExample}</div>
-            </div>
-        `;
-    }).join('');
-}
-
-function openConjugation(verbName) {
-    const data = conjugationData[currentLang];
-    const verb = data.find(v => v.verb === verbName);
-    if (!verb) return;
-    
-    const tenseNames = {
-        present: "📌 PRESENTE",
-        past: "📌 PASADO (PAST)",
-        future: "📌 FUTURO (FUTURE)"
-    };
-    
-    let conjugationsHtml = '';
-    for (const [tenseKey, tenseName] of Object.entries(tenseNames)) {
-        const tenseData = verb.tenses[tenseKey];
-        if (tenseData && Object.keys(tenseData).length > 0) {
-            conjugationsHtml += `<div style="margin-top: 16px;"><strong>${tenseName}</strong></div>`;
-            conjugationsHtml += `<table style="width:100%; border-collapse: collapse; margin: 8px 0;">`;
-            for (const [person, conj] of Object.entries(tenseData)) {
-                conjugationsHtml += `<tr style="border-bottom: 1px solid var(--border);">
-                                        <td style="padding: 8px;"><strong>${person}</strong></td>
-                                        <td style="padding: 8px;">${conj}</td>
-                                      </tr>`;
-            }
-            conjugationsHtml += `</table>`;
-        }
-    }
-    
-    let examplesHtml = '<div style="margin-top: 16px;"><strong>📌 Ejemplos:</strong><ul>';
-    if (verb.examples) {
-        for (const [tense, examples] of Object.entries(verb.examples)) {
-            if (examples && examples.length > 0) {
-                examplesHtml += `<li><strong>${tense.toUpperCase()}:</strong> ${examples.join(', ')}</li>`;
-            }
-        }
-    }
-    examplesHtml += '</ul></div>';
-    
-    let exercisesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejercicios rápidos (+2 XP cada uno):</strong><br>';
-    verb.exercises.forEach((ex, idx) => {
-        exercisesHtml += `<div style="margin: 8px 0;">
-                            ${ex.prompt}
-                            <input type="text" id="ex_${idx}" style="width: 100px; display: inline-block; margin-left: 8px;" placeholder="_____">
-                            <button class="btn-small" onclick="checkConjugationExercise('${verb.verb}', ${idx})">✓</button>
-                            <span id="ex_result_${idx}"></span>
-                          </div>`;
-    });
-    exercisesHtml += '</div>';
-    
-    const m = document.createElement('div');
-    m.className = 'modal-overlay';
-    m.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>📖 ${verb.title}</div>
-                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
-            </div>
-            <div><strong>🔊 Escucha la pronunciación:</strong> <button class="btn-small" onclick="speakText('${verb.verb}','${currentLang}')">🔊 ${verb.verb}</button></div>
-            ${conjugationsHtml}
-            ${examplesHtml}
-            ${exercisesHtml}
-        </div>
-    `;
-    document.body.appendChild(m);
-}
-
-function checkConjugationExercise(verbName, exerciseIndex) {
-    const data = conjugationData[currentLang];
-    const verb = data.find(v => v.verb === verbName);
-    if (!verb) return;
-    
-    const userAnswer = document.getElementById(`ex_${exerciseIndex}`).value.trim().toLowerCase();
-    const correctAnswer = verb.exercises[exerciseIndex].answer.toLowerCase();
-    const resultSpan = document.getElementById(`ex_result_${exerciseIndex}`);
-    
-    if (userAnswer === correctAnswer) {
-        resultSpan.innerHTML = ' ✅ ¡Correcto!';
-        resultSpan.style.color = '#059669';
-        userXP += 2;
-        localStorage.setItem("maryse_xp", userXP);
-        updateProfile();
-    } else {
-        resultSpan.innerHTML = ` ❌ Incorrecto. La respuesta es "${verb.exercises[exerciseIndex].answer}".`;
-        resultSpan.style.color = '#dc2626';
-    }
-}
-// ==================== GRAMÁTICA SEMANAL ====================
-let grammarCompleted = JSON.parse(localStorage.getItem("maryse_grammar") || "[]");
-
-function renderGrammar() {
-    const week = getCurrentWeekInfo().cycleIndex;
-    const grammarData = weeklyGrammar[week];
-    
-    const container = document.getElementById("grammarContainer");
-    if (!container) {
-        console.log("Error: No se encontró grammarContainer");
-        return;
-    }
-    
-    if (!grammarData) {
-        console.log("Error: No hay gramática para la semana", week);
-        container.innerHTML = '<div class="grammar-card">📚 Gramática no disponible esta semana</div>';
-        return;
-    }
-    
-    const grammar = grammarData[currentLang];
-    if (!grammar) {
-        console.log("Error: No hay gramática para el idioma", currentLang);
-        container.innerHTML = '<div class="grammar-card">📚 Gramática no disponible para este idioma</div>';
-        return;
-    }
-    
-    const isCompleted = grammarCompleted.includes(week);
-    
-    container.innerHTML = `
-        <div class="grammar-card" onclick="openGrammar(${week})">
-            <div class="grammar-title">${grammar.title}</div>
-            <div class="grammar-preview">${grammar.explanation ? grammar.explanation.substring(0, 80) + '...' : 'Haz clic para aprender'}</div>
-            ${isCompleted ? '<div style="color: #10b981; font-size: 0.7rem; margin-top: 8px;">✅ Completado (+5 XP)</div>' : ''}
-        </div>
-    `;
-}
-
-function openGrammar(week) {
-    const grammarData = weeklyGrammar[week];
-    if (!grammarData) {
-        alert("Gramática no disponible esta semana");
-        return;
-    }
-    
-    const grammar = grammarData[currentLang];
-    if (!grammar) {
-        alert("Gramática no disponible para este idioma");
-        return;
-    }
-    
-    let exercisesHtml = '<div style="margin-top: 16px;"><strong>✍️ Ejercicios (+5 XP cada uno):</strong><br>';
-    if (grammar.exercises && grammar.exercises.length > 0) {
-        grammar.exercises.forEach((ex, idx) => {
-            exercisesHtml += `<div style="margin: 8px 0;">
-                                ${ex.prompt}
-                                <input type="text" id="grammar_ex_${idx}" style="width: 120px; display: inline-block; margin-left: 8px;" placeholder="_____">
-                                <button class="btn-small" onclick="checkGrammarExercise(${week}, ${idx})">✓</button>
-                                <span id="grammar_ex_result_${idx}"></span>
-                                <span style="font-size: 0.7rem; color: #8b79c9; margin-left: 8px;">💡 ${ex.hint}</span>
-                              </div>`;
-        });
-    } else {
-        exercisesHtml += '<p>No hay ejercicios para esta semana.</p>';
-    }
-    exercisesHtml += '</div>';
-    
-    let examplesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejemplos:</strong><ul>';
-    if (grammar.examples && grammar.examples.length > 0) {
-        grammar.examples.forEach(ex => {
-            examplesHtml += `<li><strong>${ex.text}</strong> → ${ex.translation}</li>`;
-        });
-    } else {
-        examplesHtml += '<li>No hay ejemplos disponibles.</li>';
-    }
-    examplesHtml += '</ul></div>';
-    
-    const m = document.createElement('div');
-    m.className = 'modal-overlay';
-    m.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>📚 ${grammar.title || 'Gramática'}</div>
-                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
-            </div>
-            <div><strong>📖 Regla:</strong><br>${grammar.explanation || 'Explicación no disponible.'}</div>
-            ${examplesHtml}
-            ${exercisesHtml}
-        </div>
-    `;
-    document.body.appendChild(m);
-}
-    exercisesHtml += '</div>';
-    
-    let examplesHtml = '<div style="margin-top: 16px;"><strong>📝 Ejemplos:</strong><ul>';
-    grammar.examples.forEach(ex => {
-        examplesHtml += `<li><strong>${ex.en}</strong> → ${ex.es}</li>`;
-    });
-    examplesHtml += '</ul></div>';
-    
-    const m = document.createElement('div');
-    m.className = 'modal-overlay';
-    m.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>📚 ${grammar.title}</div>
-                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
-            </div>
-            <div><strong>📖 Regla:</strong><br>${grammar.explanation}</div>
-            ${examplesHtml}
-            ${exercisesHtml}
-        </div>
-    `;
-    document.body.appendChild(m);
-}
-
-function checkGrammarExercise(week, exerciseIndex) {
-    const grammar = weeklyGrammar[week];
-    if (!grammar) return;
-    
-    const userAnswer = document.getElementById(`grammar_ex_${exerciseIndex}`).value.trim().toLowerCase();
-    const correctAnswer = grammar.exercises[exerciseIndex].answer.toLowerCase();
-    const resultSpan = document.getElementById(`grammar_ex_result_${exerciseIndex}`);
-    
-    if (userAnswer === correctAnswer) {
-        resultSpan.innerHTML = ' ✅ ¡Correcto! +5 XP';
-        resultSpan.style.color = '#059669';
-        
-        if (!grammarCompleted.includes(week)) {
-            grammarCompleted.push(week);
-            localStorage.setItem("maryse_grammar", JSON.stringify(grammarCompleted));
-            userXP += 5;
-            localStorage.setItem("maryse_xp", userXP);
-            updateProfile();
-            renderGrammar();
-        }
-    } else {
-        resultSpan.innerHTML = ` ❌ Incorrecto. La respuesta es "${grammar.exercises[exerciseIndex].answer}".`;
-        resultSpan.style.color = '#dc2626';
-    }
-}
+function renderPronunciation(){document.getElementById("pronunciationSection").innerHTML=`<div class="badge">🗣️ FONÉTICA · 6 sonidos esenciales</div>${pronData[currentLang].map(s=>`<div class="sound-card"><div>🔊 ${s.sound}</div><div>${s.desc}</div><div>${s.words.map(w=>`<button class="btn-small" onclick="speakText('${w}','${currentLang}')">${w}</button>`).join('')}</div></div>`).join('')}`;}
+function renderPodcasts(){document.getElementById("podcastSection").innerHTML=`<div class="badge">📚 RESOURCES · Podcasts recomendados</div>${podcasts[currentLang].map(p=>`<div class="podcast-item" onclick="window.open('${p.link}','_blank')"><div><strong>🎙️ ${p.title}</strong><br><small>${p.desc} · Nivel ${p.level}</small></div><div>▶</div></div>`).join('')}`;}
 function renderLessons(){const lessons=getLessons();document.getElementById("lessonsContainer").innerHTML=lessons.map(l=>`<div class="lesson-card" onclick="openLesson('${l.id}')"><div class="lesson-level">${l.level} · ${l.duration}min</div><div class="card-title">${l.title}</div><div>${completedLessons.includes(l.id)?"✅":"📖"}</div></div>`).join('');document.querySelectorAll(".lang-btn").forEach(b=>b.classList.remove("active"));document.getElementById(`lang-${currentLang}`).classList.add("active");}
-function openLesson(id){const lessons=getLessons();const l=lessons.find(l=>l.id===id);if(!l)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📚 Lección</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${l.title}</div><div style="background:#f8f6ff;padding:12px;border-radius:16px;">📌 ${l.taskEs}</div><ul>${l.phrases.map((p,i)=>`<li><strong>${p}</strong> → ${l.trans[i]} <button class="btn" onclick="speakText('${p}','${currentLang}')">🔊</button></li>`).join('')}</ul><button class="btn btn-primary" onclick="completeLesson('${l.id}')" style="width:100%;">✅ Marcar (+20 XP)</button></div>`;document.body.appendChild(m);}
-function completeLesson(id){if(!completedLessons.includes(id)){completedLessons.push(id);localStorage.setItem("maryse_completed",JSON.stringify(completedLessons));userXP+=20;if(userXP>=userLevel*100){userLevel++;localStorage.setItem("maryse_level",userLevel);}localStorage.setItem("maryse_xp",userXP);autoBackup();if(completedLessons.length>=TOTAL_LESSONS){setTimeout(()=>{alert("🎉🏆 ¡FELICIDADES!");},600);}alert("🎉 +20 XP!");renderLessons();updateProfile();}document.querySelector('.modal-overlay')?.remove();}
-function renderFlashcardModes(){document.getElementById("flashcardModes").innerHTML=`<button class="flashcard-mode-btn ${flashcardMode==='vocab'?'active':''}" onclick="switchFlashMode('vocab')">📖 Vocabulaire</button><button class="flashcard-mode-btn ${flashcardMode==='slang'?'active':''}" onclick="switchFlashMode('slang')">🗣️ Slang</button>`;}
+function openLesson(id){const lessons=getLessons();const l=lessons.find(l=>l.id===id);if(!l)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📚 Lección</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${l.title}</div><div>📌 ${l.taskEs}</div><ul>${l.phrases.map((p,i)=>`<li><strong>${p}</strong> → ${l.trans[i]} <button class="btn-small" onclick="speakText('${p}','${currentLang}')">🔊</button></li>`).join('')}</ul><button class="btn-primary" onclick="completeLesson('${l.id}')">✅ Marcar (+20 XP)</button></div>`;document.body.appendChild(m);}
+function completeLesson(id){if(!completedLessons.includes(id)){completedLessons.push(id);localStorage.setItem("maryse_completed",JSON.stringify(completedLessons));userXP+=20;if(userXP>=userLevel*100){userLevel++;localStorage.setItem("maryse_level",userLevel);}localStorage.setItem("maryse_xp",userXP);autoBackup();alert("🎉 +20 XP!");renderLessons();updateProfile();}document.querySelector('.modal-overlay')?.remove();}
+function renderFlashcardModes(){document.getElementById("flashcardModes").innerHTML=`<button class="flashcard-mode-btn ${flashcardMode==='vocab'?'active':''}" onclick="switchFlashMode('vocab')">📖 Vocabulario</button><button class="flashcard-mode-btn ${flashcardMode==='slang'?'active':''}" onclick="switchFlashMode('slang')">🗣️ Slang</button>`;}
 function switchFlashMode(mode){flashcardMode=mode;renderFlashcardModes();loadFlashcards();}
 function loadFlashcards(){const allCards=[];if(flashcardMode==="vocab"){const data=getVocabData();Object.keys(data).forEach(pack=>{data[pack].forEach(item=>{const word=item.en||item.fr;allCards.push({front:word,back:item.es,type:"vocab",pack:pack});});});}else{getSlangData().forEach(item=>{allCards.push({front:item.phrase,back:item.meaning,context:item.context,type:"slang",level:item.level});});}flashcardDeck=allCards.sort(()=>Math.random()-0.5);flashcardIndex=0;flashcardCorrect=0;flashcardTotal=0;flashcardFlipped=false;updateFlashScore();showFlashcard();}
-function showFlashcard(){const container=document.getElementById("flashcardContainer");if(flashcardIndex>=flashcardDeck.length){container.innerHTML=`<div class="flashcard"><div>🎉<br>Score: ${flashcardCorrect}/${flashcardTotal}</div></div><div class="flashcard-actions"><button class="flashcard-btn info" onclick="loadFlashcards()">🔁</button></div>`;return;}const card=flashcardDeck[flashcardIndex];flashcardFlipped=false;const flag=currentLang==="en"?"🇬🇧":"🇫🇷";container.innerHTML=`<div class="flashcard" id="flashcard" onclick="flipFlashcard()"><button class="audio-btn" onclick="event.stopPropagation();speakText('${card.front.replace(/'/g,"\\'")}','${currentLang}')">🔊</button><div><div style="font-size:2rem;">${flag}</div><div>${card.front}</div>${card.context?`<div style="font-size:0.7rem;">"${card.context}"</div>`:''}</div></div><div class="flashcard-actions"><button class="flashcard-btn success" onclick="flashcardResult(true)">✅</button><button class="flashcard-btn danger" onclick="flashcardResult(false)">❌</button></div>`;}
-function flipFlashcard(){if(flashcardFlipped)return;flashcardFlipped=true;const card=flashcardDeck[flashcardIndex];const fc=document.getElementById("flashcard");if(fc)fc.innerHTML=`<button class="audio-btn" onclick="speakText('${card.front.replace(/'/g,"\\'")}','${currentLang}')">🔊</button><div><div style="font-size:2rem;">🇪🇸</div><div>→ ${card.back}</div></div>`;}
+function showFlashcard(){const container=document.getElementById("flashcardContainer");if(flashcardIndex>=flashcardDeck.length){container.innerHTML=`<div class="flashcard">🎉 Score: ${flashcardCorrect}/${flashcardTotal}</div><div class="flashcard-actions"><button class="flashcard-btn" onclick="loadFlashcards()">🔁</button></div>`;return;}const card=flashcardDeck[flashcardIndex];flashcardFlipped=false;container.innerHTML=`<div class="flashcard" id="flashcard" onclick="flipFlashcard()"><button class="audio-btn" onclick="speakText('${card.front}','${currentLang}')">🔊</button><div>${card.front}</div></div><div class="flashcard-actions"><button class="flashcard-btn success" onclick="flashcardResult(true)">✅</button><button class="flashcard-btn danger" onclick="flashcardResult(false)">❌</button></div>`;}
+function flipFlashcard(){if(flashcardFlipped)return;flashcardFlipped=true;const card=flashcardDeck[flashcardIndex];const fc=document.getElementById("flashcard");if(fc)fc.innerHTML=`<div>${card.front}<br><strong>→ ${card.back}</strong></div>`;}
 function flashcardResult(correct){flashcardTotal++;if(correct)flashcardCorrect++;updateFlashScore();flashcardIndex++;setTimeout(showFlashcard,300);}
 function nextFlashcard(){flashcardIndex++;flashcardFlipped=false;showFlashcard();}
 function updateFlashScore(){const el=document.getElementById("flashScore");if(el)el.textContent=`Score: ${flashcardCorrect}/${flashcardTotal}`;}
@@ -1518,89 +586,181 @@ function renderArticles(){const articles=getArticlesData();let f=currentFilter==
 function openArticle(id){const a=getArticlesData().find(a=>a.id===id);if(!a)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>${a.category}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${a.title}</div><div>${a.content}</div></div>`;document.body.appendChild(m);}
 function renderMomActivities(){const activities=getMomActivitiesData();document.getElementById("momSection").innerHTML=`<div class="badge">👩‍👧 Actividad de la semana</div>${activities.map(act=>`<div class="mom-card" onclick="openMomActivity('${act.id}')"><h3>${act.title}</h3><p>${act.description}</p></div>`).join('')}`;}
 function openMomActivity(id){const act=getMomActivitiesData().find(a=>a.id===id);if(!act)return;const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>👩‍👧 ${act.type}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${act.title}</div><div>${act.steps.replace(/\n/g,'<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div></div>`;document.body.appendChild(m);}
-function getCycleDay(){return Math.floor((new Date()-new Date(2025,0,1))/(1000*60*60*24))%4;}
-function getGameWords(){const words=[];const ci=getCurrentWeekInfo().cycleIndex;const wv=weeklyVocab[ci];if(wv&&wv[currentLang]){wv[currentLang].forEach(item=>{words.push({front:item.en||item.fr,back:item.es});});}if(words.length===0){words.push({front:"hello",back:"hola"},{front:"friend",back:"amigo"},{front:"love",back:"amor"},{front:"dream",back:"sueño"});}return words;}
+function getGameWords(){const words=[];const ci=getCurrentWeekInfo().cycleIndex;const wv=weeklyVocab[ci];if(wv&&wv[currentLang]){wv[currentLang].forEach(item=>{words.push({front:item.en||item.fr,back:item.es});});}if(words.length===0){words.push({front:"hello",back:"hola"},{front:"friend",back:"amigo"});}return words;}
 function switchGame(game){currentGame=game;document.querySelectorAll(".game-btn").forEach(b=>b.classList.remove("active"));document.querySelector(`.game-btn[onclick="switchGame('${game}')"]`).classList.add("active");if(game==="memory")initMemoryGame();if(game==="quiz")initSpeedQuiz();if(game==="scramble")initWordScramble();}
-function initMemoryGame(){const words=getGameWords();const pairs=words.slice(0,8);memoryCards=[...pairs.flatMap(p=>[{text:p.front,pair:p.front,type:'word'},{text:p.back,pair:p.front,type:'trans'}])].sort(()=>Math.random()-0.5);memoryFlipped=[];memoryMatched=[];memoryLocked=false;renderMemoryGame();}
-function renderMemoryGame(){document.getElementById("gameContainer").innerHTML=`<div class="memory-grid" id="memoryGrid"></div><div style="text-align:center;margin-top:8px;"><span id="memoryScore">Pares: ${memoryMatched.length}/${memoryCards.length/2}</span></div><button class="btn btn-primary" onclick="initMemoryGame()" style="width:100%;margin-top:12px;">🔄 Nuevo juego</button>`;document.getElementById("memoryGrid").innerHTML=memoryCards.map((c,i)=>{const isFlipped=memoryFlipped.includes(i)||memoryMatched.includes(c.pair);const isMatched=memoryMatched.includes(c.pair);return`<div class="memory-card ${isFlipped?'flipped':''} ${isMatched?'matched':''}" onclick="flipMemoryCard(${i})">${isFlipped?c.text:'?'}</div>`;}).join('');}
-function flipMemoryCard(i){if(memoryLocked||memoryFlipped.includes(i)||memoryMatched.includes(memoryCards[i].pair))return;memoryFlipped.push(i);renderMemoryGame();if(memoryFlipped.length===2){memoryLocked=true;const[a,b]=memoryFlipped;if(memoryCards[a].pair===memoryCards[b].pair&&memoryCards[a].type!==memoryCards[b].type){memoryMatched.push(memoryCards[a].pair);memoryFlipped=[];memoryLocked=false;renderMemoryGame();if(memoryMatched.length===memoryCards.length/2){userXP+=15;localStorage.setItem("maryse_xp",userXP);setTimeout(()=>alert("🎉 +15 XP!"),300);}}else{setTimeout(()=>{memoryFlipped=[];memoryLocked=false;renderMemoryGame();},800);}}}
+function initMemoryGame(){const words=getGameWords();const pairs=words.slice(0,6);memoryCards=[...pairs.flatMap(p=>[{text:p.front,pair:p.front,type:'word'},{text:p.back,pair:p.front,type:'trans'}])].sort(()=>Math.random()-0.5);memoryFlipped=[];memoryMatched=[];memoryLocked=false;renderMemoryGame();}
+function renderMemoryGame(){document.getElementById("gameContainer").innerHTML=`<div class="memory-grid" id="memoryGrid"></div><div>Pares: ${memoryMatched.length}/${memoryCards.length/2}</div><button class="btn-primary" onclick="initMemoryGame()">🔄 Nuevo juego</button>`;document.getElementById("memoryGrid").innerHTML=memoryCards.map((c,i)=>{const isFlipped=memoryFlipped.includes(i)||memoryMatched.includes(c.pair);const isMatched=memoryMatched.includes(c.pair);return`<div class="memory-card ${isFlipped?'flipped':''} ${isMatched?'matched':''}" onclick="flipMemoryCard(${i})">${isFlipped?c.text:'?'}</div>`;}).join('');}
+function flipMemoryCard(i){if(memoryLocked||memoryFlipped.includes(i)||memoryMatched.includes(memoryCards[i].pair))return;memoryFlipped.push(i);renderMemoryGame();if(memoryFlipped.length===2){memoryLocked=true;const[a,b]=memoryFlipped;if(memoryCards[a].pair===memoryCards[b].pair&&memoryCards[a].text!==memoryCards[b].text){memoryMatched.push(memoryCards[a].pair);memoryFlipped=[];memoryLocked=false;renderMemoryGame();if(memoryMatched.length===memoryCards.length/2){userXP+=15;localStorage.setItem("maryse_xp",userXP);updateProfile();alert("🎉 +15 XP!");}}else{setTimeout(()=>{memoryFlipped=[];memoryLocked=false;renderMemoryGame();},800);}}}
 function initSpeedQuiz(){quizWords=getGameWords().sort(()=>Math.random()-0.5);quizIndex=0;quizScore=0;quizTotal=0;renderSpeedQuiz();}
-function renderSpeedQuiz(){if(quizIndex>=quizWords.length){document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:3rem;">🎉</div><div>Score: ${quizScore}/${quizTotal}</div><button class="btn btn-primary" onclick="initSpeedQuiz()" style="width:100%;margin-top:16px;">🔄 Nuevo quiz</button></div>`;return;}const word=quizWords[quizIndex];const options=[word.back];while(options.length<4){const rw=quizWords[Math.floor(Math.random()*quizWords.length)].back;if(!options.includes(rw))options.push(rw);}options.sort(()=>Math.random()-0.5);quizTimeLeft=10;document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;"><div style="font-size:2rem;font-weight:700;margin:12px 0;">${word.front}</div><div class="quiz-timer"><div class="quiz-timer-fill" id="quizTimerFill" style="width:100%;"></div></div><div id="quizOptions">${options.map(o=>`<div class="quiz-option" onclick="answerSpeedQuiz('${o.replace(/'/g,"\\'")}')">${o}</div>`).join('')}</div><div style="margin-top:8px;">Score: ${quizScore}/${quizTotal}</div></div>`;startQuizTimer();}
+function renderSpeedQuiz(){if(quizIndex>=quizWords.length){document.getElementById("gameContainer").innerHTML=`<div>🎉 Score: ${quizScore}/${quizTotal}</div><button class="btn-primary" onclick="initSpeedQuiz()">🔄 Nuevo quiz</button>`;return;}const word=quizWords[quizIndex];const options=[word.back];while(options.length<4){const rw=quizWords[Math.floor(Math.random()*quizWords.length)].back;if(!options.includes(rw))options.push(rw);}options.sort(()=>Math.random()-0.5);quizTimeLeft=10;document.getElementById("gameContainer").innerHTML=`<div><div style="font-size:2rem;">${word.front}</div><div class="quiz-timer"><div class="quiz-timer-fill" id="quizTimerFill" style="width:100%;"></div></div><div>${options.map(o=>`<div class="quiz-option" onclick="answerSpeedQuiz('${o}')">${o}</div>`).join('')}</div><div>Score: ${quizScore}/${quizTotal}</div></div>`;startQuizTimer();}
 function startQuizTimer(){if(quizTimer)clearInterval(quizTimer);quizTimer=setInterval(()=>{quizTimeLeft--;document.getElementById("quizTimerFill").style.width=(quizTimeLeft/10*100)+"%";if(quizTimeLeft<=0){clearInterval(quizTimer);quizTotal++;document.querySelectorAll(".quiz-option").forEach(o=>{if(o.textContent===quizWords[quizIndex].back)o.classList.add("correct");});setTimeout(()=>{quizIndex++;renderSpeedQuiz();},1000);}},1000);}
-function answerSpeedQuiz(answer){if(quizTimer)clearInterval(quizTimer);quizTotal++;const correct=quizWords[quizIndex].back;document.querySelectorAll(".quiz-option").forEach(o=>{o.style.pointerEvents="none";if(o.textContent===correct)o.classList.add("correct");if(o.textContent===answer&&answer!==correct)o.classList.add("wrong");});if(answer===correct){quizScore++;userXP+=5;localStorage.setItem("maryse_xp",userXP);}setTimeout(()=>{quizIndex++;renderSpeedQuiz();},800);}
+function answerSpeedQuiz(answer){if(quizTimer)clearInterval(quizTimer);quizTotal++;const correct=quizWords[quizIndex].back;document.querySelectorAll(".quiz-option").forEach(o=>{o.style.pointerEvents="none";if(o.textContent===correct)o.classList.add("correct");if(o.textContent===answer&&answer!==correct)o.classList.add("wrong");});if(answer===correct){quizScore++;userXP+=5;localStorage.setItem("maryse_xp",userXP);updateProfile();}setTimeout(()=>{quizIndex++;renderSpeedQuiz();},800);}
 function initWordScramble(){scrambleWords=getGameWords().sort(()=>Math.random()-0.5);scrambleIndex=0;scrambleScore=0;renderWordScramble();}
-function renderWordScramble(){if(scrambleIndex>=scrambleWords.length){document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:3rem;">🎉</div><div>Score: ${scrambleScore}/${scrambleWords.length}</div><button class="btn btn-primary" onclick="initWordScramble()" style="width:100%;margin-top:16px;">🔄 Nuevo juego</button></div>`;return;}const word=scrambleWords[scrambleIndex];const letters=word.front.split('').sort(()=>Math.random()-0.5);scrambleAnswer=[];document.getElementById("gameContainer").innerHTML=`<div style="text-align:center;"><div style="font-size:0.9rem;">Ordena: <strong>${word.back}</strong></div><div class="scramble-letters" id="scrambleLetters">${letters.map((l,i)=>`<div class="scramble-letter" onclick="pickScrambleLetter('${l}',${i})">${l}</div>`).join('')}</div><div class="scramble-answer" id="scrambleAnswer"></div><div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-success" onclick="checkScrambleAnswer()" style="flex:1;">✅</button><button class="btn btn-danger" onclick="resetScrambleAnswer()" style="flex:1;">🔄</button></div></div>`;}
+function renderWordScramble(){if(scrambleIndex>=scrambleWords.length){document.getElementById("gameContainer").innerHTML=`<div>🎉 Score: ${scrambleScore}/${scrambleWords.length}</div><button class="btn-primary" onclick="initWordScramble()">🔄 Nuevo juego</button>`;return;}const word=scrambleWords[scrambleIndex];const letters=word.front.split('').sort(()=>Math.random()-0.5);scrambleAnswer=[];document.getElementById("gameContainer").innerHTML=`<div><div>Significado: <strong>${word.back}</strong></div><div class="scramble-letters">${letters.map((l,i)=>`<div class="scramble-letter" onclick="pickScrambleLetter('${l}',${i})">${l}</div>`).join('')}</div><div class="scramble-answer" id="scrambleAnswer"></div><div><button class="btn-primary" onclick="checkScrambleAnswer()">✅</button> <button onclick="resetScrambleAnswer()">🔄</button></div></div>`;}
 function pickScrambleLetter(letter,index){scrambleAnswer.push(letter);document.querySelectorAll(".scramble-letter")[index].classList.add("used");document.getElementById("scrambleAnswer").innerHTML=scrambleAnswer.map(l=>`<div class="scramble-answer-letter">${l}</div>`).join('');}
 function resetScrambleAnswer(){scrambleAnswer=[];document.querySelectorAll(".scramble-letter").forEach(el=>el.classList.remove("used"));document.getElementById("scrambleAnswer").innerHTML='';}
-function checkScrambleAnswer(){const correct=scrambleWords[scrambleIndex].front;const answer=scrambleAnswer.join('');if(answer.toLowerCase()===correct.toLowerCase()){scrambleScore++;userXP+=10;localStorage.setItem("maryse_xp",userXP);alert("✅ ¡Correcto! +10 XP");scrambleIndex++;renderWordScramble();}else{alert("❌ Incorrecto. Era: "+correct);scrambleIndex++;renderWordScramble();}}
+function checkScrambleAnswer(){const correct=scrambleWords[scrambleIndex].front;if(scrambleAnswer.join('')===correct){scrambleScore++;userXP+=10;localStorage.setItem("maryse_xp",userXP);updateProfile();alert("✅ Correcto! +10 XP");scrambleIndex++;renderWordScramble();}else{alert("❌ Era: "+correct);scrambleIndex++;renderWordScramble();}}
 function previewDiaryPhoto(){const file=document.getElementById("diaryPhoto").files[0];if(!file)return;const reader=new FileReader();reader.onload=(e)=>{originalPhotoData=e.target.result;photoRotation=0;photoFlipH=false;photoFlipV=false;document.getElementById("photoEditor").style.display="block";document.getElementById("diaryPreview").style.display="none";loadImageToCanvas(originalPhotoData);};reader.readAsDataURL(file);}
 function loadImageToCanvas(dataUrl){const canvas=document.getElementById("photoCanvas");const ctx=canvas.getContext("2d");const img=new Image();img.onload=()=>{let w=img.width,h=img.height;const maxW=500,maxH=400;if(w>maxW){h=h*(maxW/w);w=maxW;}if(h>maxH){w=w*(maxH/h);h=maxH;}canvas.width=w;canvas.height=h;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(photoRotation*Math.PI/180);if(photoFlipH)ctx.scale(-1,1);if(photoFlipV)ctx.scale(1,-1);ctx.drawImage(img,-w/2,-h/2,w,h);ctx.restore();};img.src=dataUrl;}
 function rotatePhoto(degrees){photoRotation+=degrees;loadImageToCanvas(originalPhotoData);}
 function flipPhoto(direction){if(direction==='horizontal')photoFlipH=!photoFlipH;if(direction==='vertical')photoFlipV=!photoFlipV;loadImageToCanvas(originalPhotoData);}
 function centerPhoto(){photoRotation=0;photoFlipH=false;photoFlipV=false;loadImageToCanvas(originalPhotoData);}
-function resetPhoto(){photoRotation=0;photoFlipH=false;photoFlipV=false;loadImageToCanvas(originalPhotoData);}
+function resetPhoto(){centerPhoto();}
 function applyEdit(){const canvas=document.getElementById("photoCanvas");diaryPhotoData=canvas.toDataURL("image/jpeg",0.9);document.getElementById("photoEditor").style.display="none";document.getElementById("diaryPreview").src=diaryPhotoData;document.getElementById("diaryPreview").style.display="block";}
 function saveDiaryEntry(){const title=document.getElementById("diaryTitle").value||"Sin título";const text=document.getElementById("diaryText").value;if(!text&&!diaryPhotoData)return alert("Escribe algo o sube una foto");diaryEntries.unshift({title,text,photo:diaryPhotoData,date:new Date().toISOString()});localStorage.setItem("maryse_diary",JSON.stringify(diaryEntries));document.getElementById("diaryTitle").value="";document.getElementById("diaryText").value="";document.getElementById("diaryPhoto").value="";document.getElementById("diaryPreview").style.display="none";document.getElementById("photoEditor").style.display="none";diaryPhotoData=null;originalPhotoData=null;renderDiary();}
-function renderDiary(){document.getElementById("diaryEntries").innerHTML=diaryEntries.length===0?"<p style='text-align:center;'>No hay recuerdos aún</p>":diaryEntries.map(e=>`<div class="diary-entry"><strong>${e.title}</strong><br><small>${new Date(e.date).toLocaleDateString()}</small>${e.text?'<p>'+e.text+'</p>':''}${e.photo?'<img src="'+e.photo+'">':''}</div>`).join('');}
+function renderDiary(){document.getElementById("diaryEntries").innerHTML=diaryEntries.length===0?"<p>No hay recuerdos aún</p>":diaryEntries.map(e=>`<div class="diary-entry"><strong>${e.title}</strong><br><small>${new Date(e.date).toLocaleDateString()}</small>${e.text?'<p>'+e.text+'</p>':''}${e.photo?'<img src="'+e.photo+'">':''}</div>`).join('');}
 function generateFriendCode(){const code="MARYSE-"+Math.random().toString(36).substring(2,8).toUpperCase();sentInvites.unshift({code,createdAt:new Date().toISOString(),status:"pending"});localStorage.setItem("maryse_sent_invites",JSON.stringify(sentInvites));renderAllInvites();alert("✅ Código: "+code);}
 function addFriend(){const code=document.getElementById("friendCodeInput").value.trim();if(!code)return alert("Pega un código");if(receivedInvites.find(i=>i.code===code))return alert("Ya enviaste una solicitud");if(friends.find(f=>f.code===code))return alert("Ya está conectada");receivedInvites.unshift({code,createdAt:new Date().toISOString(),status:"pending"});localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites));document.getElementById("friendCodeInput").value="";renderAllInvites();alert("✅ Solicitud enviada");}
 function approveReceivedInvite(code){const invite=receivedInvites.find(i=>i.code===code);if(invite){invite.status="accepted";friends.push({code,name:"Amiga "+(friends.length+1),addedAt:new Date().toISOString()});localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites));localStorage.setItem("maryse_friends",JSON.stringify(friends));renderAllInvites();alert("✅ Aceptada!");}}
 function rejectReceivedInvite(code){const invite=receivedInvites.find(i=>i.code===code);if(invite){invite.status="rejected";localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites));renderAllInvites();alert("❌ Rechazada");}}
 function cancelSentInvite(code){sentInvites=sentInvites.filter(i=>i.code!==code);localStorage.setItem("maryse_sent_invites",JSON.stringify(sentInvites));renderAllInvites();}
-function removeFriend(code){friends=friends.filter(f=>f.code!==code);localStorage.setItem("maryse_friends",JSON.stringify(friends));renderAllInvites();}
 function renderAllInvites(){
-    document.getElementById("sentInvitesList").innerHTML=sentInvites.length===0?"<p style='font-size:0.65rem;'>No has enviado invitaciones</p>":sentInvites.map(i=>`<div class="friend-card" style="justify-content:space-between;"><div><strong>📤 ${i.code}</strong><br><small>${new Date(i.createdAt).toLocaleDateString()} · <span style="color:${i.status==='pending'?'#d97706':'#059669'}">${i.status==='pending'?'⏳':'✅'}</span></small></div>${i.status==='pending'?`<button class="btn btn-danger" onclick="cancelSentInvite('${i.code}')" style="font-size:0.6rem;padding:4px 10px;">Cancelar</button>`:''}</div>`).join('');
-    document.getElementById("receivedInvitesList").innerHTML=receivedInvites.length===0?"<p style='font-size:0.65rem;'>No has recibido invitaciones</p>":receivedInvites.map(i=>`<div class="friend-card" style="justify-content:space-between;"><div><strong>📥 ${i.code}</strong><br><small>${new Date(i.createdAt).toLocaleDateString()} · <span style="color:${i.status==='pending'?'#d97706':'#059669'}">${i.status==='pending'?'⏳':'✅'}</span></small></div>${i.status==='pending'?`<div style="display:flex;gap:4px;"><button class="btn btn-success" onclick="approveReceivedInvite('${i.code}')" style="font-size:0.6rem;padding:4px 10px;">✅</button><button class="btn btn-danger" onclick="rejectReceivedInvite('${i.code}')" style="font-size:0.6rem;padding:4px 10px;">❌</button></div>`:''}</div>`).join('');
-    document.getElementById("friendsList").innerHTML=friends.length===0?"<p style='font-size:0.65rem;'>No tienes amigas conectadas</p>":friends.map(f=>`<div class="friend-card"><div class="card-icon">👤</div><div><strong>${f.name}</strong><br><small>${f.code}</small></div></div>`).join('');
+    document.getElementById("sentInvitesList").innerHTML=sentInvites.length===0?"<p>No has enviado invitaciones</p>":sentInvites.map(i=>`<div class="friend-card"><div><strong>📤 ${i.code}</strong><br><small>${new Date(i.createdAt).toLocaleDateString()}</small></div><button class="btn-danger" onclick="cancelSentInvite('${i.code}')">Cancelar</button></div>`).join('');
+    document.getElementById("receivedInvitesList").innerHTML=receivedInvites.length===0?"<p>No hay invitaciones pendientes</p>":receivedInvites.filter(i=>i.status==="pending").map(i=>`<div class="friend-card"><div><strong>📥 ${i.code}</strong><br><small>${new Date(i.createdAt).toLocaleDateString()}</small></div><div><button class="btn-success" onclick="approveReceivedInvite('${i.code}')">✅ Aceptar</button><button class="btn-danger" onclick="rejectReceivedInvite('${i.code}')">❌ Rechazar</button></div></div>`).join('');
+    document.getElementById("friendsList").innerHTML=friends.length===0?"<p>No tienes amigas conectadas</p>":friends.map(f=>`<div class="friend-card"><div class="card-icon">👤</div><div><strong>${f.name}</strong><br><small>${f.code}</small></div></div>`).join('');
 }
-function applyPreset(emoji, primary, secondary) {
-    document.getElementById("themeColor").value = primary;
-    document.getElementById("themeColor2").value = secondary;
-    updateThemeColors(primary, secondary);
-    document.querySelectorAll(".theme-preset").forEach(el => { el.style.border = "2px solid transparent"; });
-    const activePreset = document.querySelector(`.theme-preset[data-primary="${primary}"]`);
-    if (activePreset) activePreset.style.border = `2px solid ${primary}`;
-    localStorage.setItem("maryse_theme", JSON.stringify({primary, secondary}));
-}
-function loadTheme() {
-    const saved = JSON.parse(localStorage.getItem("maryse_theme") || '{}');
-    const primary = saved.primary || "#8b5cf6";
-    const secondary = saved.secondary || "#c084fc";
-    document.getElementById("themeColor").value = primary;
-    document.getElementById("themeColor2").value = secondary;
-    updateThemeColors(primary, secondary);
-    document.querySelectorAll(".theme-preset").forEach(el => { el.style.border = "2px solid transparent"; if (el.getAttribute("data-primary") === primary) { el.style.border = `2px solid ${primary}`; } });
-}
+function applyPreset(emoji, primary, secondary){document.getElementById("themeColor").value=primary;document.getElementById("themeColor2").value=secondary;updateThemeColors(primary,secondary);localStorage.setItem("maryse_theme",JSON.stringify({primary,secondary}));}
+function loadTheme(){const saved=JSON.parse(localStorage.getItem("maryse_theme")||'{}');const primary=saved.primary||"#8b5cf6";const secondary=saved.secondary||"#c084fc";document.getElementById("themeColor").value=primary;document.getElementById("themeColor2").value=secondary;updateThemeColors(primary,secondary);}
 function updateThemeColors(p,s){document.documentElement.style.setProperty('--primary',p);document.documentElement.style.setProperty('--primary-light',s);}
 function updateTheme(){updateThemeColors(document.getElementById("themeColor").value,document.getElementById("themeColor2").value);}
 function saveTheme(){const p=document.getElementById("themeColor").value;const s=document.getElementById("themeColor2").value;localStorage.setItem("maryse_theme",JSON.stringify({primary:p,secondary:s}));updateThemeColors(p,s);alert("✅ Tema guardado!");}
-function updateProfile(){document.getElementById("profileStats").innerHTML=`<p>🏆 Nivel: ${userLevel}</p><p>⭐ XP: ${userXP}</p><p>🔥 Racha: ${userStreak}</p><p>📚 Lecciones: ${completedLessons.length}/${TOTAL_LESSONS}</p>`;const badges=[];if(completedLessons.length>=1)badges.push("🎓 Primer paso");if(completedLessons.length>=4)badges.push("📚 Estudiosa");if(completedLessons.length>=8)badges.push("🏆 Avanzada");if(completedLessons.length>=TOTAL_LESSONS)badges.push("👑 Corona completa");let dadCompletadas=JSON.parse(localStorage.getItem('maryse_dad_completadas')||'[]').length;if(dadCompletadas>=1)badges.push("💌 Primer día con papá");if(dadCompletadas>=3)badges.push("💖 Hija increíble");if(dadCompletadas>=5)badges.push("👑 Rincón de Papá completo");document.getElementById("badgesList").innerHTML=badges.length?badges.map(b=>`<div class="badge">${b}</div>`).join(''):"<div>🔒 Completa lecciones y actividades de papá</div>";}
-function speakText(t,l){const u=new SpeechSynthesisUtterance(t);u.lang=l==='es'?'es-ES':l==='fr'?'fr-FR':'en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
-function toggleDarkMode(){const d=document.body.classList.toggle("dark");localStorage.setItem("maryse_dark_mode",d);}
+function updateProfile(){let dadCompletadas=JSON.parse(localStorage.getItem('maryse_dad_completadas')||'[]').length;let grammarDone=grammarCompleted.length;document.getElementById("profileStats").innerHTML=`<p>⭐ XP: ${userXP}</p><p>🏆 Nivel: ${userLevel}</p><p>📚 Lecciones: ${completedLessons.length}/${TOTAL_LESSONS}</p><p>👨‍👧 Papá: ${dadCompletadas}/5</p><p>📖 Gramática: ${grammarDone}/8</p>`;let badges=[];if(completedLessons.length>=1)badges.push("🎓 Primer paso");if(completedLessons.length>=4)badges.push("📚 Estudiosa");if(completedLessons.length>=8)badges.push("🏆 Avanzada");if(dadCompletadas>=3)badges.push("💖 Hija increíble");if(dadCompletadas>=5)badges.push("👑 Rincón de Papá completo");if(grammarDone>=3)badges.push("📚 Gramática en marcha");if(grammarDone>=8)badges.push("🏅 Maestra de la gramática");document.getElementById("badgesList").innerHTML=badges.length?badges.map(b=>`<span class="badge">${b}</span>`).join(''):"<div>🔒 Completa actividades para ganar logros</div>";}
+function speakText(t,l){const u=new SpeechSynthesisUtterance(t);u.lang=l==='en'?'en-US':'fr-FR';window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
+function toggleDarkMode(){document.body.classList.toggle("dark");localStorage.setItem("maryse_dark_mode",document.body.classList.contains("dark"));}
 function updateBirthdayCountdown(){const t=new Date();const b=new Date(t.getFullYear(),11,12);if(t>b)b.setFullYear(t.getFullYear()+1);const d=b-t;document.getElementById("days").innerText=Math.floor(d/86400000);document.getElementById("hours").innerText=Math.floor((d%86400000)/3600000);document.getElementById("minutes").innerText=Math.floor((d%3600000)/60000);document.getElementById("seconds").innerText=Math.floor((d%60000)/1000);}
 function updateGreeting(){const h=new Date().getHours();document.getElementById("greeting").innerHTML=`${h<12?"🌞 Buenos días":h<18?"🌤️ Buenas tardes":"🌙 Buenas noches"}, Maryse 👋`;}
 function loadAvatar(){const s=localStorage.getItem("maryse_avatar");const a=document.getElementById("avatarContent");if(s)a.innerHTML=`<img src="${s}" style="width:100%;height:100%;object-fit:cover;">`;else a.innerHTML="👧";}
-function changeAvatar(){const i=document.createElement("input");i.type="file";i.accept="image/*";i.onchange=(e)=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=(ev)=>{localStorage.setItem("maryse_avatar",ev.target.result);loadAvatar();};r.readAsDataURL(f);}};i.click();}
+function changeAvatar(){const i=document.createElement("input");i.type="file";i.accept="image/*";i.onchange=e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=ev=>{localStorage.setItem("maryse_avatar",ev.target.result);loadAvatar();};r.readAsDataURL(f);}};i.click();}
 function openMamaPlaylist(){window.open(mamaPlaylist.url,"_blank");}
-function loadThemeFromStorage(){const saved=JSON.parse(localStorage.getItem("maryse_theme")||'{}');if(saved.primary){updateThemeColors(saved.primary,saved.secondary||saved.primary);}}
-function autoBackup(){const b={};BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){try{b[k]=JSON.parse(v);}catch(e){b[k]=v;}}});b._lastAutoBackup=new Date().toISOString();localStorage.setItem("maryse_auto_backup",JSON.stringify(b));}
-function exportData(){const b={};BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){try{b[k]=JSON.parse(v);}catch(e){b[k]=v;}}});b._lastAutoBackup=new Date().toISOString();const blob=new Blob([JSON.stringify(b,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`maryse_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);document.getElementById("backupStatus").textContent="✅ Exportado: "+new Date().toLocaleString();}
-function importData(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const b=JSON.parse(e.target.result);let c=0;BACKUP_KEYS.forEach(k=>{if(b[k]!==undefined){const v=typeof b[k]==="object"?JSON.stringify(b[k]):b[k];localStorage.setItem(k,v);c++;}});document.getElementById("backupStatus").textContent=`✅ ${c} datos restaurados. Recarga.`;completedLessons=JSON.parse(localStorage.getItem("maryse_completed")||"[]");userXP=parseInt(localStorage.getItem("maryse_xp")||"0");userLevel=parseInt(localStorage.getItem("maryse_level")||"1");userStreak=parseInt(localStorage.getItem("maryse_streak")||"0");diaryEntries=JSON.parse(localStorage.getItem("maryse_diary")||"[]");sentInvites=JSON.parse(localStorage.getItem("maryse_sent_invites")||"[]");receivedInvites=JSON.parse(localStorage.getItem("maryse_received_invites")||"[]");friends=JSON.parse(localStorage.getItem("maryse_friends")||"[]");notifSettings=JSON.parse(localStorage.getItem("maryse_notif_settings")||'{"enabled":false}');loadAvatar();updateProfile();loadNotifSettings();renderDad();}catch(err){document.getElementById("backupStatus").textContent="❌ Error";}};reader.readAsText(file);input.value="";}
-function loadNotifSettings(){document.getElementById("notifEnabled").checked=notifSettings.enabled;document.getElementById("notifTime").value=notifSettings.time;document.getElementById("notifMessage").value=notifSettings.message;document.getElementById("notifSettings").style.display=notifSettings.enabled?"block":"none";document.querySelectorAll(".day-chip").forEach(chip=>{const day=parseInt(chip.getAttribute("data-day"));if(notifSettings.days.includes(day))chip.classList.add("active");else chip.classList.remove("active");});}
+function loadThemeFromStorage(){const saved=JSON.parse(localStorage.getItem("maryse_theme")||'{}');if(saved.primary)updateThemeColors(saved.primary,saved.secondary||saved.primary);}
+function autoBackup(){const b={};BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){try{b[k]=JSON.parse(v);}catch(e){b[k]=v;}}});localStorage.setItem("maryse_auto_backup",JSON.stringify(b));}
+function exportData(){const b={};BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){try{b[k]=JSON.parse(v);}catch(e){b[k]=v;}}});const blob=new Blob([JSON.stringify(b,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`maryse_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();}
+function importData(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const b=JSON.parse(e.target.result);BACKUP_KEYS.forEach(k=>{if(b[k]!==undefined)localStorage.setItem(k,typeof b[k]==="object"?JSON.stringify(b[k]):b[k]);});location.reload();}catch(err){alert("Error al importar");}};reader.readAsText(file);}
+function loadNotifSettings(){document.getElementById("notifEnabled").checked=notifSettings.enabled;document.getElementById("notifTime").value=notifSettings.time;document.getElementById("notifMessage").value=notifSettings.message;document.getElementById("notifSettings").style.display=notifSettings.enabled?"block":"none";document.querySelectorAll(".day-chip").forEach(chip=>{if(notifSettings.days.includes(parseInt(chip.dataset.day)))chip.classList.add("active");else chip.classList.remove("active");});}
 function toggleNotifications(){notifSettings.enabled=document.getElementById("notifEnabled").checked;document.getElementById("notifSettings").style.display=notifSettings.enabled?"block":"none";if(notifSettings.enabled)requestNotifPermission();saveNotifSettings();}
-function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default'){Notification.requestPermission().then(perm=>{if(perm==='granted')scheduleAllNotifications();});}else if('Notification' in window&&Notification.permission==='granted'){scheduleAllNotifications();}}
-function toggleDay(day){if(notifSettings.days.includes(day))notifSettings.days=notifSettings.days.filter(d=>d!==day);else notifSettings.days.push(day);saveNotifSettings();loadNotifSettings();if(notifSettings.enabled)scheduleAllNotifications();}
-function saveNotifSettings(){notifSettings.time=document.getElementById("notifTime").value;notifSettings.message=document.getElementById("notifMessage").value;notifSettings.enabled=document.getElementById("notifEnabled").checked;localStorage.setItem("maryse_notif_settings",JSON.stringify(notifSettings));if(notifSettings.enabled)scheduleAllNotifications();}
-function scheduleAllNotifications(){if(!('serviceWorker' in navigator)||Notification.permission!=='granted'||!notifSettings.enabled)return;const[h,m]=notifSettings.time.split(':').map(Number);const today=new Date().getDay();if(notifSettings.days.includes(today)){navigator.serviceWorker.ready.then(reg=>{reg.active.postMessage({type:'schedule-notification',title:'Maryse ✨',message:notifSettings.message,hour:h,minute:m});});}}
-function testNotification(){if('Notification' in window&&Notification.permission==='granted'){new Notification('Maryse ✨',{body:notifSettings.message,vibrate:[200,100,200]});alert("✅ Notificación enviada!");}else if('Notification' in window&&Notification.permission==='default'){Notification.requestPermission().then(perm=>{if(perm==='granted')testNotification();});}else{alert("❌ Notificaciones bloqueadas.");}}
-function renderKaraokeSongs(){const f=karaokeFilter==="all"?karaokeSongs:karaokeSongs.filter(s=>s.language===karaokeFilter);document.getElementById("karaokeSongList").innerHTML=f.map(s=>`<div class="karaoke-song-item" onclick="window.open('${s.searchLink}','_blank')"><div><strong>${s.language==="en"?"🇬🇧":"🇫🇷"} ${s.title}</strong><br><small>${s.artist}</small></div></div>`).join('');document.getElementById("karaokeFilterAll").style.background=karaokeFilter==="all"?"var(--primary)":"var(--card)";document.getElementById("karaokeFilterEN").style.background=karaokeFilter==="en"?"var(--primary)":"var(--card)";document.getElementById("karaokeFilterFR").style.background=karaokeFilter==="fr"?"var(--primary)":"var(--card)";}
+function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();}
+function toggleDay(day){if(notifSettings.days.includes(day))notifSettings.days=notifSettings.days.filter(d=>d!==day);else notifSettings.days.push(day);saveNotifSettings();loadNotifSettings();}
+function saveNotifSettings(){notifSettings.time=document.getElementById("notifTime").value;notifSettings.message=document.getElementById("notifMessage").value;notifSettings.enabled=document.getElementById("notifEnabled").checked;localStorage.setItem("maryse_notif_settings",JSON.stringify(notifSettings));}
+function scheduleAllNotifications(){}
+function testNotification(){if('Notification' in window&&Notification.permission==='granted')new Notification("Maryse ✨",{body:notifSettings.message});else if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();}
+function renderKaraokeSongs(){const f=karaokeFilter==="all"?karaokeSongs:karaokeSongs.filter(s=>s.language===karaokeFilter);document.getElementById("karaokeSongList").innerHTML=f.map(s=>`<div class="karaoke-song-item" onclick="window.open('${s.searchLink}','_blank')"><div><strong>${s.language==="en"?"🇬🇧":"🇫🇷"} ${s.title}</strong><br><small>${s.artist}</small></div></div>`).join('');}
 function filterKaraokeSongs(lang){karaokeFilter=lang;renderKaraokeSongs();}
 function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById("installBtn").style.display="none";});}}
+function renderConjugation() {
+    const data = conjugationData[currentLang];
+    const container = document.getElementById("conjugationGrid");
+    if (!container) return;
+    container.innerHTML = data.map(verb => `
+        <div class="conjugation-card" onclick="openConjugation('${verb.verb}')">
+            <div class="conjugation-title">${verb.title}</div>
+            <div class="conjugation-lang">${currentLang === 'en' ? '🇬🇧 English' : '🇫🇷 Français'}</div>
+            <div class="conjugation-preview">💡 Ej: ${verb.examples[0]}</div>
+        </div>
+    `).join('');
+}
+function openConjugation(verbName) {
+    const data = conjugationData[currentLang];
+    const verb = data.find(v => v.verb === verbName);
+    if (!verb) return;
+    const tenseNames = { present: "📌 PRESENTE", past: "📌 PASADO", future: "📌 FUTURO" };
+    let conjugationsHtml = '';
+    for (const [tenseKey, tenseName] of Object.entries(tenseNames)) {
+        const tenseData = verb.tenses[tenseKey];
+        if (tenseData) {
+            conjugationsHtml += `<div style="margin-top:16px;"><strong>${tenseName}</strong></div><table style="width:100%; border-collapse:collapse;">`;
+            for (const [person, conj] of Object.entries(tenseData)) {
+                conjugationsHtml += `<tr><td style="padding:8px;"><strong>${person}</strong></td><td style="padding:8px;">${conj}<\/td><\/tr>`;
+            }
+            conjugationsHtml += `<\/table>`;
+        }
+    }
+    let exercisesHtml = '<div style="margin-top:16px;"><strong>📝 Ejercicios (+2 XP):</strong><br>';
+    verb.exercises.forEach((ex, idx) => {
+        exercisesHtml += `<div style="margin:8px 0;">${ex.prompt} <input type="text" id="conj_ex_${idx}" style="width:100px;"> <button class="btn-small" onclick="checkConjugationExercise('${verb.verb}', ${idx})">✓</button> <span id="conj_ex_result_${idx}"></span></div>`;
+    });
+    exercisesHtml += '</div>';
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `<div class="modal-content"><div class="modal-header"><div>📖 ${verb.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div><strong>🔊 Pronunciación:</strong> <button class="btn-small" onclick="speakText('${verb.verb}','${currentLang}')">🔊 ${verb.verb}</button></div>${conjugationsHtml}<div><strong>📌 Ejemplos:</strong><ul>${verb.examples.map(ex => `<li>${ex}</li>`).join('')}</ul></div>${exercisesHtml}</div>`;
+    document.body.appendChild(m);
+}
+function checkConjugationExercise(verbName, exerciseIndex) {
+    const data = conjugationData[currentLang];
+    const verb = data.find(v => v.verb === verbName);
+    if (!verb) return;
+    const userAnswer = document.getElementById(`conj_ex_${exerciseIndex}`).value.trim().toLowerCase();
+    const correctAnswer = verb.exercises[exerciseIndex].answer.toLowerCase();
+    const resultSpan = document.getElementById(`conj_ex_result_${exerciseIndex}`);
+    if (userAnswer === correctAnswer) {
+        resultSpan.innerHTML = ' ✅ +2 XP';
+        resultSpan.style.color = '#059669';
+        userXP += 2;
+        localStorage.setItem("maryse_xp", userXP);
+        updateProfile();
+    } else {
+        resultSpan.innerHTML = ` ❌ La respuesta es "${verb.exercises[exerciseIndex].answer}"`;
+        resultSpan.style.color = '#dc2626';
+    }
+}
+function renderGrammar() {
+    const week = getCurrentWeekInfo().cycleIndex;
+    const grammarData = weeklyGrammar[week];
+    const container = document.getElementById("grammarContainer");
+    if (!container) return;
+    if (!grammarData) {
+        container.innerHTML = '<div class="grammar-card">📚 Gramática no disponible esta semana</div>';
+        return;
+    }
+    const grammar = grammarData[currentLang];
+    if (!grammar) return;
+    const isCompleted = grammarCompleted.includes(week);
+    container.innerHTML = `<div class="grammar-card" onclick="openGrammar(${week})"><div class="grammar-title">${grammar.title}</div><div class="grammar-preview">${grammar.explanation.substring(0, 80)}...</div>${isCompleted ? '<div style="color:#10b981;">✅ Completado (+5 XP)</div>' : ''}</div>`;
+}
+function openGrammar(week) {
+    const grammarData = weeklyGrammar[week];
+    if (!grammarData) return;
+    const grammar = grammarData[currentLang];
+    if (!grammar) return;
+    let exercisesHtml = '<div style="margin-top:16px;"><strong>✍️ Ejercicios (+5 XP):</strong><br>';
+    grammar.exercises.forEach((ex, idx) => {
+        exercisesHtml += `<div style="margin:8px 0;">${ex.prompt} <input type="text" id="grammar_ex_${idx}" style="width:120px;"> <button class="btn-small" onclick="checkGrammarExercise(${week}, ${idx})">✓</button> <span id="grammar_ex_result_${idx}"></span> <span style="font-size:0.7rem;">💡 ${ex.hint}</span></div>`;
+    });
+    exercisesHtml += '</div>';
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `<div class="modal-content"><div class="modal-header"><div>📚 ${grammar.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div><strong>📖 Regla:</strong><br>${grammar.explanation}</div><div><strong>📝 Ejemplos:</strong><ul>${grammar.examples.map(ex => `<li>${ex.text} → ${ex.translation}</li>`).join('')}</ul></div>${exercisesHtml}</div>`;
+    document.body.appendChild(m);
+}
+function checkGrammarExercise(week, idx) {
+    const grammarData = weeklyGrammar[week];
+    if (!grammarData) return;
+    const grammar = grammarData[currentLang];
+    if (!grammar) return;
+    const userAnswer = document.getElementById(`grammar_ex_${idx}`).value.trim().toLowerCase();
+    const resultSpan = document.getElementById(`grammar_ex_result_${idx}`);
+    if (userAnswer === grammar.exercises[idx].answer.toLowerCase()) {
+        resultSpan.innerHTML = ' ✅ +5 XP';
+        resultSpan.style.color = '#059669';
+        if (!grammarCompleted.includes(week)) {
+            grammarCompleted.push(week);
+            localStorage.setItem("maryse_grammar", JSON.stringify(grammarCompleted));
+            userXP += 5;
+            localStorage.setItem("maryse_xp", userXP);
+            updateProfile();
+            renderGrammar();
+        }
+    } else {
+        resultSpan.innerHTML = ` ❌ La respuesta es "${grammar.exercises[idx].answer}"`;
+        resultSpan.style.color = '#dc2626';
+    }
+}
+
+// ==================== INICIALIZACIÓN ====================
 window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById("installBtn").style.display="block";});
-document.addEventListener("visibilitychange",function(){if(document.hidden)autoBackup();});
-window.addEventListener("beforeunload",function(){autoBackup();});
-document.getElementById("lang-en").onclick=()=>{currentLang="en";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderFlashcardModes();loadFlashcards();renderLessons();};
-document.getElementById("lang-fr").onclick=()=>{currentLang="fr";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderFlashcardModes();loadFlashcards();renderLessons();};
+document.addEventListener("visibilitychange",()=>{if(document.hidden)autoBackup();});
+window.addEventListener("beforeunload",()=>{autoBackup();});
+document.getElementById("lang-en").onclick=()=>{currentLang="en";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();};
+document.getElementById("lang-fr").onclick=()=>{currentLang="fr";renderVocab();renderPronunciation();renderPodcasts();renderConjugation();renderGrammar();renderFlashcardModes();loadFlashcards();renderLessons();};
 updateGreeting();updateBirthdayCountdown();setInterval(updateBirthdayCountdown,1000);loadAvatar();loadThemeFromStorage();
 if(localStorage.getItem("maryse_dark_mode")==="true")document.body.classList.add("dark");
 updateWeeklyDisplay();loadNotifSettings();if(notifSettings.enabled)requestNotifPermission();
@@ -1619,16 +779,16 @@ window.saveDiaryEntry=saveDiaryEntry;window.previewDiaryPhoto=previewDiaryPhoto;
 window.rotatePhoto=rotatePhoto;window.flipPhoto=flipPhoto;window.centerPhoto=centerPhoto;window.resetPhoto=resetPhoto;window.applyEdit=applyEdit;
 window.generateFriendCode=generateFriendCode;window.addFriend=addFriend;
 window.approveReceivedInvite=approveReceivedInvite;window.rejectReceivedInvite=rejectReceivedInvite;
-window.cancelSentInvite=cancelSentInvite;window.removeFriend=removeFriend;
+window.cancelSentInvite=cancelSentInvite;
 window.applyPreset=applyPreset;window.updateTheme=updateTheme;window.saveTheme=saveTheme;window.installPWA=installPWA;
 window.exportData=exportData;window.importData=importData;
 window.changeTestWeek=changeTestWeek;
 window.toggleNotifications=toggleNotifications;window.toggleDay=toggleDay;
 window.saveNotifSettings=saveNotifSettings;window.testNotification=testNotification;
 window.marcarActividadDad=marcarActividadDad;
-window.renderConjugation=renderConjugation;
 window.openConjugation=openConjugation;
 window.checkConjugationExercise=checkConjugationExercise;
+window.checkGrammarExercise=checkGrammarExercise;
 </script>
 </body>
 </html>
