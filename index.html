@@ -948,28 +948,32 @@ const weeklyGrammar = {
 
 // ==================== KARAOKE ====================
 const karaokeSongs = [
-    // 10 canciones en inglés
-    {title:"Let It Be",artist:"The Beatles",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=The+Beatles+Let+It+Be+karaoke+lyrics"},
-    {title:"Perfect",artist:"Ed Sheeran",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Ed+Sheeran+Perfect+karaoke+lyrics"},
-    {title:"Shallow",artist:"Lady Gaga & Bradley Cooper",language:"en",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Lady+Gaga+Shallow+karaoke+lyrics"},
-    {title:"Someone Like You",artist:"Adele",language:"en",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Adele+Someone+Like+You+karaoke+lyrics"},
-    {title:"Counting Stars",artist:"OneRepublic",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=OneRepublic+Counting+Stars+karaoke+lyrics"},
-    {title:"Happy",artist:"Pharrell Williams",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Pharrell+Williams+Happy+karaoke+lyrics"},
-    {title:"Firework",artist:"Katy Perry",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Katy+Perry+Firework+karaoke+lyrics"},
-    {title:"Shape of You",artist:"Ed Sheeran",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Ed+Sheeran+Shape+of+You+karaoke+lyrics"},
-    {title:"Roar",artist:"Katy Perry",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Katy+Perry+Roar+karaoke+lyrics"},
-    {title:"Fight Song",artist:"Rachel Platten",language:"en",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Rachel+Platten+Fight+Song+karaoke+lyrics"},
-    // 10 canciones en francés
-    {title:"Je veux",artist:"Zaz",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Zaz+Je+veux+karaoke+lyrics"},
-    {title:"Champs Élysées",artist:"Joe Dassin",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Joe+Dassin+Champs+Élysées+karaoke+lyrics"},
-    {title:"Papaoutai",artist:"Stromae",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Stromae+Papaoutai+karaoke+lyrics"},
-    {title:"Alors on danse",artist:"Stromae",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Stromae+Alors+on+danse+karaoke+lyrics"},
-    {title:"Dernière Danse",artist:"Indila",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Indila+Dernière+Danse+karaoke+lyrics"},
-    {title:"Formidable",artist:"Stromae",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Stromae+Formidable+karaoke+lyrics"},
-    {title:"Tous les mêmes",artist:"Stromae",language:"fr",difficulty:"medium",searchLink:"https://www.youtube.com/results?search_query=Stromae+Tous+les+mêmes+karaoke+lyrics"},
-    {title:"Balance ton quoi",artist:"Angèle",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Angèle+Balance+ton+quoi+karaoke+lyrics"},
-    {title:"Sur ma route",artist:"Black M",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Black+M+Sur+ma+route+karaoke+lyrics"},
-    {title:"Bella",artist:"Maître Gims",language:"fr",difficulty:"easy",searchLink:"https://www.youtube.com/results?search_query=Maître+Gims+Bella+karaoke+lyrics"}
+    // 12 canciones en inglés
+    {title:"Count On Me", artist:"Bruno Mars", language:"en", searchLink:"https://www.youtube.com/results?search_query=Count+On+Me+Bruno+Mars+lyrics"},
+    {title:"Perfect", artist:"Ed Sheeran", language:"en", searchLink:"https://www.youtube.com/results?search_query=Perfect+Ed+Sheeran+lyrics"},
+    {title:"A Thousand Years", artist:"Christina Perri", language:"en", searchLink:"https://www.youtube.com/results?search_query=A+Thousand+Years+Christina+Perri+lyrics"},
+    {title:"You Belong With Me", artist:"Taylor Swift", language:"en", searchLink:"https://www.youtube.com/results?search_query=You+Belong+With+Me+Taylor+Swift+lyrics"},
+    {title:"Firework", artist:"Katy Perry", language:"en", searchLink:"https://www.youtube.com/results?search_query=Firework+Katy+Perry+lyrics"},
+    {title:"Someone Like You", artist:"Adele", language:"en", searchLink:"https://www.youtube.com/results?search_query=Someone+Like+You+Adele+lyrics"},
+    {title:"Photograph", artist:"Ed Sheeran", language:"en", searchLink:"https://www.youtube.com/results?search_query=Photograph+Ed+Sheeran+lyrics"},
+    {title:"Roar", artist:"Katy Perry", language:"en", searchLink:"https://www.youtube.com/results?search_query=Roar+Katy+Perry+lyrics"},
+    {title:"Hello", artist:"Adele", language:"en", searchLink:"https://www.youtube.com/results?search_query=Hello+Adele+lyrics"},
+    {title:"Imagine", artist:"John Lennon", language:"en", searchLink:"https://www.youtube.com/results?search_query=Imagine+John+Lennon+lyrics"},
+    {title:"Happy", artist:"Pharrell Williams", language:"en", searchLink:"https://www.youtube.com/results?search_query=Happy+Pharrell+Williams+lyrics"},
+    {title:"Shape of You", artist:"Ed Sheeran", language:"en", searchLink:"https://www.youtube.com/results?search_query=Shape+of+You+Ed+Sheeran+lyrics"},
+    // 12 canciones en francés
+    {title:"On Ecrit Sur Les Murs", artist:"Kids United", language:"fr", searchLink:"https://www.youtube.com/results?search_query=On+Ecrit+Sur+Les+Murs+Kids+United+paroles"},
+    {title:"Je Vole", artist:"Louane", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Je+Vole+Louane+paroles"},
+    {title:"Dernière Danse", artist:"Indila", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Dernière+Danse+Indila+paroles"},
+    {title:"Papaoutai", artist:"Stromae", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Papaoutai+Stromae+paroles"},
+    {title:"Je Te Promets", artist:"Johnny Hallyday", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Je+Te+Promets+Johnny+Hallyday+paroles"},
+    {title:"La Vie En Rose", artist:"Édith Piaf", language:"fr", searchLink:"https://www.youtube.com/results?search_query=La+Vie+En+Rose+Edith+Piaf+paroles"},
+    {title:"Si Jamais J'oublie", artist:"Zaz", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Si+Jamais+J%27oublie+Zaz+paroles"},
+    {title:"Sous Le Vent", artist:"Garou & Céline Dion", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Sous+Le+Vent+Garou+Celine+Dion+paroles"},
+    {title:"Belle", artist:"Garou / Daniel Lavoie / Patrick Fiori", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Belle+Notre+Dame+de+Paris+paroles"},
+    {title:"Formidable", artist:"Stromae", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Formidable+Stromae+paroles"},
+    {title:"Bella", artist:"Maître Gims", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Bella+Maître+Gims+paroles"},
+    {title:"Champs Élysées", artist:"Joe Dassin", language:"fr", searchLink:"https://www.youtube.com/results?search_query=Champs+Elysees+Joe+Dassin+paroles"}
 ];
 
 // ==================== VARIABLES ====================
