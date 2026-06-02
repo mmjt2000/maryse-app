@@ -1505,6 +1505,12 @@ if (localStorage.getItem("maryse_dark_mode") === "true") document.body.classList
 updateWeeklyDisplay(); loadNotifSettings(); if (notifSettings.enabled) requestNotifPermission();
 document.querySelectorAll(".mood-card").forEach(c => c.addEventListener("click", function () { document.querySelectorAll(".mood-card").forEach(c => c.classList.remove("selected")); this.classList.add("selected"); localStorage.setItem("maryse_last_mood", this.getAttribute("data-mood")); }));
 checkSession();
+    // Initialiser le coin de mamá
+if (typeof updateMamaProgress === 'function') {
+    updateMamaProgress();
+} else {
+    console.log("Fonctions manquantes");
+}
 
 // Exponer funciones globales
 window.showView = showView; window.openLesson = openLesson; window.completeLesson = completeLesson;
