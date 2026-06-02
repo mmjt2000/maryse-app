@@ -434,6 +434,7 @@
 .song-lang { font-size: 1rem; }
 .play-icon { font-size: 1.2rem; }
  /* ===== RINCÓN DE MAMÁ ===== */
+/* ===== RINCÓN DE MAMÁ ===== */
 .mama-corner {
     background: linear-gradient(135deg, #fdf2f8, #fce7f3);
     border-radius: 32px;
@@ -551,18 +552,20 @@
 .month-badge.completed {
     background: #ec4899;
     color: white;
-}   
+}
     </style>
 
 </head>
 <body>
 <div class="container">
+
 <!-- RINCÓN DE MAMÁ -->
 <div id="viewMama" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div id="mamaCornerContainer" class="mama-corner">
-        <!-- Se llena con JavaScript -->
+        <div style="text-align:center; padding:40px;">Cargando...</div>
     </div>
+</div>
 </div>
     <!-- HOME LIMPIO: SIN TARJETAS -->
     <div id="viewHome" class="view active">
@@ -649,12 +652,13 @@
     <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
     <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
     <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
+    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
     <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Amigas</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
-    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
+    
 </div>
 
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
@@ -1283,6 +1287,7 @@ function showView(vn){
     if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
     if(vn==='games'){switchGame(currentGame);}
     if(vn==='dad'){renderDad();updateDadClock();}
+    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner();
     if(vn==='karaoke')renderKaraokeSongs();
     if(vn==='diary')renderDiary();
     if(vn==='friends')renderAllInvites();
