@@ -433,31 +433,6 @@
 .song-artist { font-size: 0.7rem; opacity: 0.8; }
 .song-lang { font-size: 1rem; }
 .play-icon { font-size: 1.2rem; }
-/* ===== RINCÓN DE MAMÁ ===== */
-.mama-corner {
-    background: linear-gradient(135deg, #fdf2f8, #fce7f3);
-    border-radius: 32px;
-    padding: 24px;
-    margin-bottom: 24px;
-    border: 2px solid #f9a8d4;
-}
-.current-guardian { text-align: center; margin-bottom: 24px; }
-.guardian-emoji { font-size: 4rem; display: block; margin-bottom: 8px; }
-.guardian-name { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #ec4899, #be185d); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.guardian-animal { font-size: 1rem; color: #be185d; margin-top: 4px; }
-.guardian-quote { background: white; border-radius: 24px; padding: 16px; margin: 16px 0; font-style: italic; color: #4c1d95; border-left: 6px solid #ec4899; }
-.progress-bar-container { background: #e5e7eb; border-radius: 20px; height: 12px; overflow: hidden; margin: 16px 0; }
-.progress-bar-fill { background: linear-gradient(90deg, #ec4899, #f472b6); width: 0%; height: 100%; border-radius: 20px; transition: width 0.3s; }
-.reflection-section { background: white; border-radius: 24px; padding: 16px; margin: 16px 0; }
-.reflection-section textarea { width: 100%; border-radius: 16px; border: 1px solid #f9a8d4; padding: 12px; font-family: inherit; resize: vertical; }
-.challenge-section { background: white; border-radius: 24px; padding: 16px; margin: 16px 0; }
-.challenge-progress { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-.challenge-step { background: #fce7f3; border-radius: 30px; padding: 8px 16px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-.challenge-step.completed { background: #ec4899; color: white; text-decoration: line-through; }
-.letter-card { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 24px; padding: 16px; margin: 16px 0; text-align: center; border: 2px solid #fbbf24; }
-.badge-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-.month-badge { background: #fce7f3; border-radius: 30px; padding: 8px 12px; font-size: 0.7rem; display: flex; align-items: center; gap: 6px; }
-.month-badge.completed { background: #ec4899; color: white; }
     </style>
 
 </head>
@@ -535,13 +510,6 @@
     <div id="viewTheme" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎨 Personalizar Tema</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:16px;">Elige una combinación de colores o crea la tuya</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;" id="themePresets"><div class="theme-preset" data-primary="#8b5cf6" data-secondary="#c084fc" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div><div class="theme-preset" data-primary="#ec4899" data-secondary="#f472b6" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div><div class="theme-preset" data-primary="#06b6d4" data-secondary="#67e8f9" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div><div class="theme-preset" data-primary="#10b981" data-secondary="#6ee7b7" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div><div class="theme-preset" data-primary="#f97316" data-secondary="#fdba74" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div><div class="theme-preset" data-primary="#6366f1" data-secondary="#a5b4fc" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div><div class="theme-preset" data-primary="#d4a574" data-secondary="#e6c9a8" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div></div><p style="font-size:0.7rem;color:var(--subtext);margin-top:12px;">O crea tu propio tema:</p><label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6"><label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc"><button class="btn btn-primary" onclick="saveTheme()" style="width:100%;margin-top:12px;">💾 Guardar tema</button></div></div>
     <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title" style="margin-bottom:12px;">🔔 Recordatorios</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Recibe notificaciones diarias para no perder tu racha</p><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="font-size:0.8rem;">Activar recordatorios</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label style="font-size:0.7rem;">Hora del recordatorio:</label><input type="time" id="notifTime" value="17:00" onchange="saveNotifSettings()"><label style="font-size:0.7rem;">Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0" onclick="toggleDay(0)">Dom</div><div class="day-chip active" data-day="1" onclick="toggleDay(1)">Lun</div><div class="day-chip active" data-day="2" onclick="toggleDay(2)">Mar</div><div class="day-chip active" data-day="3" onclick="toggleDay(3)">Mié</div><div class="day-chip active" data-day="4" onclick="toggleDay(4)">Jue</div><div class="day-chip active" data-day="5" onclick="toggleDay(5)">Vie</div><div class="day-chip" data-day="6" onclick="toggleDay(6)">Sáb</div></div><label style="font-size:0.7rem;">Mensaje:</label><select id="notifMessage" onchange="saveNotifSettings()"><option value="📚 ¿Ya practicaste hoy? ¡No pierdas tu racha!">📚 ¿Ya practicaste hoy?</option><option value="🎯 ¡Hora de aprender! Te espera una nueva lección">🎯 ¡Hora de aprender!</option><option value="💜 Papá te recuerda que eres increíble">💜 Mensaje de Papá</option><option value="🔥 Sigue tu racha, ¡cada día cuenta!">🔥 Sigue tu racha</option></select><button class="btn btn-primary" onclick="testNotification()" style="width:100%;margin-top:12px;">🔔 Probar notificación</button></div></div><div class="backup-section"><div class="card-title" style="margin-bottom:12px;">💾 Copia de seguridad</div><p style="font-size:0.7rem;color:var(--subtext);margin-bottom:12px;">Guarda tus datos antes de actualizar.</p><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-warning" onclick="exportData()" style="flex:1;">📥 Exportar datos</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()" style="flex:1;">📤 Importar datos</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"><p id="backupStatus" style="font-size:0.65rem;color:var(--subtext);margin-top:8px;"></p></div></div>
     <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><p style="font-size:0.8rem; margin-bottom:16px;">No se aprenden en los libros, pero son lo más importante para tu futuro. Sin presión, solo lectura y reflexión.</p><div id="lifeSkillsContainer" class="skills-grid"></div></div></div>
-<!-- RINCÓN DE MAMÁ -->
-<div id="viewMama" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    <div id="mamaCornerContainer" class="mama-corner">
-        <div style="text-align:center; padding:40px;">Cargando...</div>
-    </div>
-</div>
 </div>
 
 <!-- ===== CÍRCULOS FLOTANTES ===== -->
@@ -549,13 +517,12 @@
 <div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
-<!-- ===== MENÚ RADIAL CON 10 PÁGINAS ===== -->
+<!-- ===== MENÚ RADIAL CON 9 PÁGINAS ===== -->
 <div id="radialMenu" class="radial-menu hidden">
     <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
     <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
     <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
     <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
-    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
     <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Amigas</span></div>
@@ -1189,7 +1156,6 @@ function showView(vn){
     if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
     if(vn==='games'){switchGame(currentGame);}
     if(vn==='dad'){renderDad();updateDadClock();}
-    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
     if(vn==='karaoke')renderKaraokeSongs();
     if(vn==='diary')renderDiary();
     if(vn==='friends')renderAllInvites();
@@ -1505,12 +1471,6 @@ if (localStorage.getItem("maryse_dark_mode") === "true") document.body.classList
 updateWeeklyDisplay(); loadNotifSettings(); if (notifSettings.enabled) requestNotifPermission();
 document.querySelectorAll(".mood-card").forEach(c => c.addEventListener("click", function () { document.querySelectorAll(".mood-card").forEach(c => c.classList.remove("selected")); this.classList.add("selected"); localStorage.setItem("maryse_last_mood", this.getAttribute("data-mood")); }));
 checkSession();
-    // Initialiser le coin de mamá
-if (typeof updateMamaProgress === 'function') {
-    updateMamaProgress();
-} else {
-    console.log("Fonctions manquantes");
-}
 
 // Exponer funciones globales
 window.showView = showView; window.openLesson = openLesson; window.completeLesson = completeLesson;
@@ -1615,8 +1575,8 @@ function togglePlayPause() {
     if (maryseFavSongs[currentSongIndex]) {
         window.open(maryseFavSongs[currentSongIndex].url, '_blank');
     }
-}
-// ==================== RINCÓN DE MAMÁ - DATOS ====================
+} 
+// ==================== RINCÓN DE MAMÁ ====================
 const guardianes = [
     { mes: 0, nombre: "Enero", guardian: "Guardián del Respeto", animal: "🕊️ Paloma de la Paz", emoji: "🕊️", poder: "Crear paz entre las personas.", cita: "El respeto es la base de toda relación duradera.", reflexion: "¿Cómo mostré respeto hoy?", desafio: "Respetar opiniones diferentes a la mía en al menos 3 situaciones.", pasosDesafio: 3 },
     { mes: 1, nombre: "Febrero", guardian: "Guardián de la Honestidad", animal: "🦊 Zorro de Cristal", emoji: "🦊", poder: "La verdad construye la confianza.", cita: "La verdad construye la confianza.", reflexion: "¿Fui honesta hoy, incluso cuando fue difícil?", desafio: "Decir siempre la verdad durante el mes, incluso en situaciones incómodas.", pasosDesafio: 30 },
@@ -1631,7 +1591,8 @@ const guardianes = [
     { mes: 10, nombre: "Noviembre", guardian: "Guardián del Valor (Coraje)", animal: "🦁 León de Fuego", emoji: "🦁", poder: "El coraje es avanzar a pesar del miedo.", cita: "El coraje es avanzar a pesar del miedo.", reflexion: "¿Qué miedo enfrenté hoy?", desafio: "Hacer algo que me da miedo al menos una vez por semana.", pasosDesafio: 4 },
     { mes: 11, nombre: "Diciembre", guardian: "Guardián de la Curiosidad", animal: "🦉 Búho Estelar", emoji: "🦉", poder: "Cada pregunta abre una nueva puerta.", cita: "Cada pregunta abre una nueva puerta.", reflexion: "¿Qué aprendí hoy?", desafio: "Descubrir algo nuevo cada semana.", pasosDesafio: 4 }
 ];
-    let mamaProgress = JSON.parse(localStorage.getItem("maryse_mama_progress") || "{}");
+
+let mamaProgress = JSON.parse(localStorage.getItem("maryse_mama_progress") || "{}");
 let mamaReflections = JSON.parse(localStorage.getItem("maryse_mama_reflections") || "{}");
 let mamaCompletedMonths = JSON.parse(localStorage.getItem("maryse_mama_completed") || "[]");
 
@@ -1675,7 +1636,7 @@ function updateChallengeStep(monthIndex, stepIndex) {
         renderMamaCorner();
         
         if (progress.challengeSteps >= guardian.pasosDesafio) {
-            alert(`🎉 ¡Completaste el desafío! Sigue reflexionando hasta terminar el mes.`);
+            alert("🎉 ¡Completaste el desafío! Sigue reflexionando hasta terminar el mes.");
         }
     }
 }
@@ -1775,10 +1736,12 @@ function renderMamaCorner() {
         </div>
     `;
 }
-window.updateMamaProgress = updateMamaProgress;
-window.renderMamaCorner = renderMamaCorner;
-window.updateChallengeStep = updateChallengeStep;
-window.saveReflection = saveReflection;
+
+// Inicializar cuando se carga la página
+if (document.getElementById("mamaCornerContainer")) {
+    console.log("Inicializando Rincón de Mamá");
+    updateMamaProgress();
+}
 </script>
 </body>
 </html>
