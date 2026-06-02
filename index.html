@@ -433,140 +433,11 @@
 .song-artist { font-size: 0.7rem; opacity: 0.8; }
 .song-lang { font-size: 1rem; }
 .play-icon { font-size: 1.2rem; }
- /* ===== RINCÓN DE MAMÁ ===== */
-/* ===== RINCÓN DE MAMÁ ===== */
-.mama-corner {
-    background: linear-gradient(135deg, #fdf2f8, #fce7f3);
-    border-radius: 32px;
-    padding: 24px;
-    margin-bottom: 24px;
-    border: 2px solid #f9a8d4;
-}
-.current-guardian {
-    text-align: center;
-    margin-bottom: 24px;
-}
-.guardian-emoji {
-    font-size: 4rem;
-    display: block;
-    margin-bottom: 8px;
-}
-.guardian-name {
-    font-size: 1.6rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #ec4899, #be185d);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-.guardian-animal {
-    font-size: 1rem;
-    color: #be185d;
-    margin-top: 4px;
-}
-.guardian-quote {
-    background: white;
-    border-radius: 24px;
-    padding: 16px;
-    margin: 16px 0;
-    font-style: italic;
-    color: #4c1d95;
-    border-left: 6px solid #ec4899;
-}
-.progress-bar-container {
-    background: #e5e7eb;
-    border-radius: 20px;
-    height: 12px;
-    overflow: hidden;
-    margin: 16px 0;
-}
-.progress-bar-fill {
-    background: linear-gradient(90deg, #ec4899, #f472b6);
-    width: 0%;
-    height: 100%;
-    border-radius: 20px;
-    transition: width 0.3s;
-}
-.reflection-section {
-    background: white;
-    border-radius: 24px;
-    padding: 16px;
-    margin: 16px 0;
-}
-.reflection-section textarea {
-    width: 100%;
-    border-radius: 16px;
-    border: 1px solid #f9a8d4;
-    padding: 12px;
-    font-family: inherit;
-    resize: vertical;
-}
-.challenge-section {
-    background: white;
-    border-radius: 24px;
-    padding: 16px;
-    margin: 16px 0;
-}
-.challenge-progress {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-}
-.challenge-step {
-    background: #fce7f3;
-    border-radius: 30px;
-    padding: 8px 16px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.challenge-step.completed {
-    background: #ec4899;
-    color: white;
-    text-decoration: line-through;
-}
-.letter-card {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    border-radius: 24px;
-    padding: 16px;
-    margin: 16px 0;
-    text-align: center;
-    border: 2px solid #fbbf24;
-}
-.badge-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 16px;
-}
-.month-badge {
-    background: #fce7f3;
-    border-radius: 30px;
-    padding: 8px 12px;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.month-badge.completed {
-    background: #ec4899;
-    color: white;
-}
     </style>
 
 </head>
 <body>
 <div class="container">
-
-<!-- RINCÓN DE MAMÁ -->
-<div id="viewMama" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    <div id="mamaCornerContainer" class="mama-corner">
-        <div style="text-align:center; padding:40px;">Cargando...</div>
-    </div>
-</div>
-</div>
     <!-- HOME LIMPIO: SIN TARJETAS -->
     <div id="viewHome" class="view active">
         <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
@@ -652,13 +523,11 @@
     <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
     <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
     <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
-    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
     <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Amigas</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
-    
 </div>
 
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
@@ -1287,7 +1156,6 @@ function showView(vn){
     if(vn==='discover'){renderDiscoverFilters();renderArticles();renderMomActivities();}
     if(vn==='games'){switchGame(currentGame);}
     if(vn==='dad'){renderDad();updateDadClock();}
-    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner();
     if(vn==='karaoke')renderKaraokeSongs();
     if(vn==='diary')renderDiary();
     if(vn==='friends')renderAllInvites();
@@ -1707,224 +1575,7 @@ function togglePlayPause() {
     if (maryseFavSongs[currentSongIndex]) {
         window.open(maryseFavSongs[currentSongIndex].url, '_blank');
     }
-}
-// ==================== RINCÓN DE MAMÁ ====================
-const guardianes = [
-    { mes: 0, nombre: "Enero", guardian: "Guardián del Respeto", animal: "🕊️ Paloma de la Paz", emoji: "🕊️", poder: "Crear paz entre las personas.", cita: "El respeto es la base de toda relación duradera.", reflexion: "¿Cómo mostré respeto hoy?", desafio: "Respetar opiniones diferentes a la mía en al menos 3 situaciones.", pasosDesafio: 3 },
-    { mes: 1, nombre: "Febrero", guardian: "Guardián de la Honestidad", animal: "🦊 Zorro de Cristal", emoji: "🦊", poder: "La verdad construye la confianza.", cita: "La verdad construye la confianza.", reflexion: "¿Fui honesta hoy, incluso cuando fue difícil?", desafio: "Decir siempre la verdad durante el mes, incluso en situaciones incómodas.", pasosDesafio: 30 },
-    { mes: 2, nombre: "Marzo", guardian: "Guardián de la Responsabilidad", animal: "🐘 Elefante Sabio", emoji: "🐘", poder: "Mis decisiones construyen mi futuro.", cita: "Mis decisiones construyen mi futuro.", reflexion: "¿Qué responsabilidad cumplí hoy?", desafio: "Completar mis tareas sin que me lo recuerden.", pasosDesafio: 30 },
-    { mes: 3, nombre: "Abril", guardian: "Guardián de la Perseverancia", animal: "🐜 Hormiga Dorada", emoji: "🐜", poder: "Cada pequeño paso cuenta.", cita: "Cada pequeño paso cuenta.", reflexion: "¿Me rendí demasiado rápido hoy?", desafio: "Continuar una actividad difícil durante 30 días.", pasosDesafio: 30 },
-    { mes: 4, nombre: "Mayo", guardian: "Guardián de la Empatía", animal: "🐬 Delfín Azul", emoji: "🐬", poder: "Comprender a los demás acerca los corazones.", cita: "Comprender a los demás acerca los corazones.", reflexion: "¿A quién ayudé hoy?", desafio: "Realizar una buena acción cada semana.", pasosDesafio: 4 },
-    { mes: 5, nombre: "Junio", guardian: "Guardián de la Amabilidad", animal: "🦋 Mariposa de Luz", emoji: "🦋", poder: "Un pequeño gesto puede cambiar un día entero.", cita: "Un pequeño gesto puede cambiar un día entero.", reflexion: "¿Qué acto amable hice hoy?", desafio: "Realizar 10 actos de bondad durante el mes.", pasosDesafio: 10 },
-    { mes: 6, nombre: "Julio", guardian: "Guardián de la Confianza en Uno Mismo", animal: "🦅 Águila Real", emoji: "🦅", poder: "Soy capaz de aprender y crecer.", cita: "Soy capaz de aprender y crecer.", reflexion: "¿De qué estoy orgullosa hoy?", desafio: "Probar una actividad nueva sin miedo.", pasosDesafio: 1 },
-    { mes: 7, nombre: "Agosto", guardian: "Guardián de la Humildad", animal: "🦌 Ciervo de la Montaña", emoji: "🦌", poder: "Se puede ser fuerte y humilde al mismo tiempo.", cita: "Se puede ser fuerte y humilde al mismo tiempo.", reflexion: "¿Agradecí la ayuda de alguien hoy?", desafio: "Dar las gracias a las personas que me ayudan.", pasosDesafio: 30 },
-    { mes: 8, nombre: "Septiembre", guardian: "Guardián de la Autodisciplina", animal: "🐺 Lobo Plateado", emoji: "🐺", poder: "La disciplina abre la puerta a los sueños.", cita: "La disciplina abre la puerta a los sueños.", reflexion: "¿Cumplí mis objetivos hoy?", desafio: "Seguir una rutina diaria durante todo el mes.", pasosDesafio: 30 },
-    { mes: 9, nombre: "Octubre", guardian: "Guardián de la Gratitud", animal: "🦜 Loro del Sol", emoji: "🦜", poder: "La gratitud convierte lo que tenemos en abundancia.", cita: "La gratitud convierte lo que tenemos en abundancia.", reflexion: "¿Qué me hizo feliz hoy?", desafio: "Escribir una cosa por la que estoy agradecida cada día.", pasosDesafio: 30 },
-    { mes: 10, nombre: "Noviembre", guardian: "Guardián del Valor (Coraje)", animal: "🦁 León de Fuego", emoji: "🦁", poder: "El coraje es avanzar a pesar del miedo.", cita: "El coraje es avanzar a pesar del miedo.", reflexion: "¿Qué miedo enfrenté hoy?", desafio: "Hacer algo que me da miedo al menos una vez por semana.", pasosDesafio: 4 },
-    { mes: 11, nombre: "Diciembre", guardian: "Guardián de la Curiosidad", animal: "🦉 Búho Estelar", emoji: "🦉", poder: "Cada pregunta abre una nueva puerta.", cita: "Cada pregunta abre una nueva puerta.", reflexion: "¿Qué aprendí hoy?", desafio: "Descubrir algo nuevo cada semana.", pasosDesafio: 4 }
-];
-
-// Cargar datos guardados
-let mamaProgress = JSON.parse(localStorage.getItem("maryse_mama_progress") || "{}");
-let mamaReflections = JSON.parse(localStorage.getItem("maryse_mama_reflections") || "{}");
-let mamaCompletedMonths = JSON.parse(localStorage.getItem("maryse_mama_completed") || "[]");
-
-function getCurrentMonthIndex() {
-    const now = new Date();
-    return now.getMonth(); // 0 = Enero, 11 = Diciembre
-}
-
-function getMamaMonthData(monthIndex) {
-    if (!mamaProgress[monthIndex]) {
-        mamaProgress[monthIndex] = {
-            days: 0,
-            challengeSteps: 0,
-            lastUpdated: null
-        };
-    }
-    return mamaProgress[monthIndex];
-}
-
-function updateMamaProgress() {
-    const currentMonth = getCurrentMonthIndex();
-    const guardian = guardianes[currentMonth];
-    const progress = getMamaMonthData(currentMonth);
-    
-    // Actualizar días del mes (si no se ha actualizado hoy)
-    const today = new Date().toDateString();
-    if (progress.lastUpdated !== today && !mamaCompletedMonths.includes(currentMonth)) {
-        progress.days++;
-        progress.lastUpdated = today;
-        mamaProgress[currentMonth] = progress;
-        localStorage.setItem("maryse_mama_progress", JSON.stringify(mamaProgress));
-        
-        // Si completó el mes (30 días o lo que corresponda)
-        const daysInMonth = new Date(new Date().getFullYear(), currentMonth + 1, 0).getDate();
-        if (progress.days >= daysInMonth && !mamaCompletedMonths.includes(currentMonth)) {
-            completeMonth(currentMonth);
-        }
-    }
-    
-    renderMamaCorner();
-}
-
-function updateChallengeStep(monthIndex, stepIndex) {
-    if (mamaCompletedMonths.includes(monthIndex)) return;
-    const progress = getMamaMonthData(monthIndex);
-    const guardian = guardianes[monthIndex];
-    
-    // Incrementar paso del desafío
-    if (progress.challengeSteps < guardian.pasosDesafio) {
-        progress.challengeSteps++;
-        mamaProgress[monthIndex] = progress;
-        localStorage.setItem("maryse_mama_progress", JSON.stringify(mamaProgress));
-        
-        // Si completó el desafío
-        if (progress.challengeSteps >= guardian.pasosDesafio) {
-            const daysInMonth = new Date(new Date().getFullYear(), monthIndex + 1, 0).getDate();
-            if (progress.days >= daysInMonth) {
-                completeMonth(monthIndex);
-            } else {
-                alert(`🎉 ¡Completaste el desafío del mes! Sigue reflexionando hasta completar los ${daysInMonth} días.`);
-            }
-        }
-    }
-    renderMamaCorner();
-}
-
-function saveReflection(monthIndex) {
-    const textarea = document.getElementById(`reflection_${monthIndex}`);
-    if (textarea) {
-        mamaReflections[monthIndex] = {
-            text: textarea.value,
-            date: new Date().toISOString()
-        };
-        localStorage.setItem("maryse_mama_reflections", JSON.stringify(mamaReflections));
-        alert("💾 Reflexión guardada. ¡Sigue así!");
-    }
-}
-
-function completeMonth(monthIndex) {
-    if (mamaCompletedMonths.includes(monthIndex)) return;
-    
-    mamaCompletedMonths.push(monthIndex);
-    localStorage.setItem("maryse_mama_completed", JSON.stringify(mamaCompletedMonths));
-    
-    // Recompensa: preguntar qué quiere Maryse
-    const reward = prompt(`🎉 ¡FELICIDADES! Has completado el mes de ${guardianes[monthIndex].nombre} - ${guardianes[monthIndex].guardian}\n\nElige tu recompensa:\n1. +50 XP\n2. Una frase motivadora extra\n3. Un corazón especial (se guarda en el perfil)\n\nEscribe 1, 2 o 3:`);
-    
-    if (reward === "1") {
-        userXP += 50;
-        localStorage.setItem("maryse_xp", userXP);
-        if (userXP >= userLevel * 100) {
-            userLevel++;
-            localStorage.setItem("maryse_level", userLevel);
-        }
-        alert("🎁 ¡Recibiste 50 XP extra!");
-        updateProfile();
-    } else if (reward === "2") {
-        localStorage.setItem("maryse_extra_quote", "✨ " + guardianes[monthIndex].cita + " ✨");
-        alert("📜 Frase guardada. La verás en el Home.");
-    } else if (reward === "3") {
-        let hearts = JSON.parse(localStorage.getItem("maryse_special_hearts") || "[]");
-        hearts.push({ month: guardianes[monthIndex].nombre, guardian: guardianes[monthIndex].guardian, date: new Date().toISOString() });
-        localStorage.setItem("maryse_special_hearts", JSON.stringify(hearts));
-        alert("💖 ¡Recibiste un corazón especial! Lo verás en tu perfil.");
-    } else {
-        alert("❌ Opción no válida. Puedes reclamar tu recompensa más tarde desde el perfil.");
-    }
-    
-    renderMamaCorner();
-}
-
-function renderMamaCorner() {
-    const container = document.getElementById("mamaCornerContainer");
-    if (!container) return;
-    
-    const currentMonth = getCurrentMonthIndex();
-    const guardian = guardianes[currentMonth];
-    const progress = getMamaMonthData(currentMonth);
-    const daysInMonth = new Date(new Date().getFullYear(), currentMonth + 1, 0).getDate();
-    const percentDays = (progress.days / daysInMonth) * 100;
-    const percentChallenge = (progress.challengeSteps / guardian.pasosDesafio) * 100;
-    const isCompleted = mamaCompletedMonths.includes(currentMonth);
-    const reflection = mamaReflections[currentMonth];
-    
-    let desafioStepsHtml = '';
-    if (guardian.pasosDesafio <= 10) {
-        desafioStepsHtml = `<div class="challenge-progress">`;
-        for (let i = 0; i < guardian.pasosDesafio; i++) {
-            const isDone = i < progress.challengeSteps;
-            desafioStepsHtml += `<div class="challenge-step ${isDone ? 'completed' : ''}" onclick="updateChallengeStep(${currentMonth}, ${i})">${isDone ? '✅' : '⬜'} Paso ${i+1}</div>`;
-        }
-        desafioStepsHtml += `</div>`;
-    } else {
-        desafioStepsHtml = `<div class="progress-bar-container"><div class="progress-bar-fill" style="width: ${percentChallenge}%;"></div></div><div>${progress.challengeSteps}/${guardian.pasosDesafio} completados</div>`;
-    }
-    
-    container.innerHTML = `
-        <div class="current-guardian">
-            <span class="guardian-emoji">${guardian.emoji}</span>
-            <div class="guardian-name">${guardian.guardian}</div>
-            <div class="guardian-animal">${guardian.animal}</div>
-        </div>
-        
-        <div class="guardian-quote">
-            💬 "${guardian.cita}"
-        </div>
-        
-        ${isCompleted ? '<div style="background: #d1fae5; padding: 12px; border-radius: 20px; text-align: center; color: #065f46; margin-bottom: 16px;">✅ ¡Mes completado! Ganaste tu recompensa.</div>' : `
-            <div>
-                <strong>📅 Progreso del mes (${progress.days}/${daysInMonth} días)</strong>
-                <div class="progress-bar-container"><div class="progress-bar-fill" style="width: ${percentDays}%;"></div></div>
-            </div>
-        `}
-        
-        <div class="reflection-section">
-            <strong>📝 ${guardian.reflexion}</strong>
-            <textarea id="reflection_${currentMonth}" rows="2" placeholder="Escribe tu reflexión aquí...">${reflection ? reflection.text : ''}</textarea>
-            <button class="btn btn-pink" onclick="saveReflection(${currentMonth})" style="margin-top: 8px;">💾 Guardar reflexión</button>
-        </div>
-        
-        <div class="challenge-section">
-            <strong>🎯 Desafío del mes:</strong>
-            <p>${guardian.desafio}</p>
-            ${desafioStepsHtml}
-        </div>
-        
-        <div class="letter-card">
-            <strong>📜 Carta Legendaria</strong><br>
-            <span style="font-size: 1.2rem;">✨ ${guardian.poder} ✨</span>
-        </div>
-        
-        <div>
-            <strong>🏆 Guardianes completados:</strong>
-            <div class="badge-list">
-                ${guardianes.map((g, idx) => `
-                    <div class="month-badge ${mamaCompletedMonths.includes(idx) ? 'completed' : ''}">
-                        ${g.emoji} ${g.nombre}
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
-}
-
-// Añadir al menú radial
-// Actualizar showView para incluir mama
-function updateShowViewForMama() {
-    const originalShowView = window.showView;
-    window.showView = function(vn) {
-        originalShowView(vn);
-        if (vn === 'mama') {
-            updateMamaProgress();
-            renderMamaCorner();
-        }
-    };
-}
-
-// Llamar después de definir todo
-updateShowViewForMama();
+}    
 </script>
 </body>
 </html>
