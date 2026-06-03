@@ -408,6 +408,16 @@
             </div>
         </div>
     </div>
+        <!-- GALERÍA DE FOTOS -->
+    <div id="viewFotos" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="card">
+            <div class="card-title">🖼️ Mis Fotos</div>
+            <div id="fotosContainer">
+                <p style="text-align:center; padding:40px;">🖼️ Tus fotos aparecerán aquí pronto...</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -428,6 +438,7 @@
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
     <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
+    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
 </div>
 
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
@@ -1963,6 +1974,9 @@ function showView(vn){
     if(vn==='lifeskills') renderLifeSkills();
     if(vn==='agenda'){ 
     // La vue est déjà affichée, pas de render pour l'instant
+}
+    if(vn==='fotos'){ 
+    // Rien pour l'instant
 }
     window.scrollTo(0,0);
 }
