@@ -548,9 +548,273 @@ const conjugationData = {
 let examCompleted = JSON.parse(localStorage.getItem("maryse_exam_completed") || "[]");
 let currentExamAnswers = {};
 
+// ==================== EXÁMENES COMPLETOS DE 25 PREGUNTAS POR SEMANA ====================
 const weeklyExams = {
-    0: { title: "📝 Examen Final · Emociones y Sentimientos", description: "25 preguntas...", passingScore: 18, xpReward: 30, questions: [{ text: "¿Cómo se dice 'feliz' en inglés?", options: ["Happy", "Sad", "Angry", "Tired"], correct: 0 }] }
-    // Las demás semanas existen en tu código original
+    0: {  // Semana 1: Emociones
+        title: "📝 Examen Final · Semana 1: Emociones y Sentimientos",
+        description: "25 preguntas para evaluar tu conocimiento sobre emociones en inglés y francés",
+        passingScore: 18,
+        xpReward: 50,
+        timeLimit: 600, // 10 minutos en segundos
+        questions: [
+            { text: "¿Cómo se dice 'feliz' en inglés?", options: ["Happy", "Sad", "Angry", "Tired"], correct: 0 },
+            { text: "¿Cómo se dice 'triste' en inglés?", options: ["Happy", "Sad", "Excited", "Calm"], correct: 1 },
+            { text: "¿Cómo se dice 'enojado/a' en inglés?", options: ["Happy", "Sad", "Angry", "Calm"], correct: 2 },
+            { text: "¿Cómo se dice 'emocionado/a' en inglés?", options: ["Sad", "Angry", "Tired", "Excited"], correct: 3 },
+            { text: "¿Cómo se dice 'tranquilo/a' en inglés?", options: ["Nervous", "Calm", "Angry", "Sad"], correct: 1 },
+            { text: "¿Cómo se dice 'orgulloso/a' en inglés?", options: ["Ashamed", "Proud", "Sad", "Angry"], correct: 1 },
+            { text: "¿Cómo se dice 'nervioso/a' en inglés?", options: ["Calm", "Happy", "Nervous", "Excited"], correct: 2 },
+            { text: "¿Cómo se dice 'valiente' en inglés?", options: ["Scared", "Brave", "Sad", "Tired"], correct: 1 },
+            { text: "¿Cómo se dice 'heureux' en español?", options: ["Triste", "Feliz", "Enojado", "Cansado"], correct: 1 },
+            { text: "¿Cómo se dice 'triste' en francés?", options: ["Heureux", "Triste", "Fâché", "Calme"], correct: 1 },
+            { text: "¿Cómo se dice 'fâché' en español?", options: ["Feliz", "Triste", "Enojado", "Tranquilo"], correct: 2 },
+            { text: "¿Cómo se dice 'excité' en español?", options: ["Triste", "Enojado", "Emocionado", "Cansado"], correct: 2 },
+            { text: "¿Cómo se dice 'calme' en español?", options: ["Nervioso", "Tranquilo", "Enojado", "Triste"], correct: 1 },
+            { text: "¿Cómo se dice 'fier' en español?", options: ["Orgulloso", "Triste", "Enojado", "Asustado"], correct: 0 },
+            { text: "¿Cómo se dice 'nerveux' en español?", options: ["Tranquilo", "Feliz", "Nervioso", "Valiente"], correct: 2 },
+            { text: "¿Cómo se dice 'courageux' en español?", options: ["Miedoso", "Valiente", "Triste", "Enojado"], correct: 1 },
+            { text: "Frases: 'I feel overwhelmed' significa...", options: ["Me siento genial", "Me siento abrumada", "Estoy feliz", "Estoy enojada"], correct: 1 },
+            { text: "Frases: 'That made me really happy' significa...", options: ["Eso me entristeció", "Eso me hizo muy feliz", "Estoy enojada", "Estoy cansada"], correct: 1 },
+            { text: "Frases: 'I'm going through a rough patch' significa...", options: ["Estoy de fiesta", "Estoy pasando un mal momento", "Estoy feliz", "Estoy emocionada"], correct: 1 },
+            { text: "Frases: 'Je me sens dépassée' significa...", options: ["Me siento genial", "Me siento abrumada", "Estoy feliz", "Estoy tranquila"], correct: 1 },
+            { text: "Frases: 'Ça m'a rendue heureuse' significa...", options: ["Me entristeció", "Me hizo feliz", "Me enojó", "Me cansó"], correct: 1 },
+            { text: "Slang: 'I'm so over it' significa...", options: ["Ya estoy harta", "Estoy feliz", "Me encanta", "Es genial"], correct: 0 },
+            { text: "Slang: 'That hit me in the feels' significa...", options: ["Me dio risa", "Me llegó al corazón", "Me enojó", "Me dio igual"], correct: 1 },
+            { text: "Slang: 'Avoir le cafard' significa...", options: ["Estar feliz", "Estar triste", "Estar emocionada", "Estar cansada"], correct: 1 },
+            { text: "Slang: 'Être en PLS' significa...", options: ["Estar con energía", "Estar agotada", "Estar feliz", "Estar emocionada"], correct: 1 }
+        ]
+    },
+    1: {  // Semana 2: Escuela
+        title: "📝 Examen Final · Semana 2: Escuela y Aprendizaje",
+        description: "25 preguntas sobre vocabulario escolar y expresiones de clase",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'profesor/a' en inglés?", options: ["Student", "Teacher", "Doctor", "Lawyer"], correct: 1 },
+            { text: "¿Cómo se dice 'deberes' en inglés?", options: ["Homework", "Exam", "Class", "Book"], correct: 0 },
+            { text: "¿Cómo se dice 'examen' en inglés?", options: ["Homework", "Class", "Exam", "Notebook"], correct: 2 },
+            { text: "¿Cómo se dice 'cuaderno' en inglés?", options: ["Pencil", "Notebook", "Book", "Pen"], correct: 1 },
+            { text: "¿Cómo se dice 'lápiz' en inglés?", options: ["Pen", "Pencil", "Eraser", "Ruler"], correct: 1 },
+            { text: "¿Cómo se dice 'biblioteca' en inglés?", options: ["School", "Classroom", "Library", "Office"], correct: 2 },
+            { text: "¿Cómo se dice 'professeur' en español?", options: ["Estudiante", "Profesor", "Director", "Conserje"], correct: 1 },
+            { text: "¿Cómo se dice 'devoir' en español?", options: ["Examen", "Tarea/Deberes", "Clase", "Libro"], correct: 1 },
+            { text: "¿Cómo se dice 'examen' en francés?", options: ["Devoir", "Cahier", "Examen", "Crayon"], correct: 2 },
+            { text: "¿Cómo se dice 'cahier' en español?", options: ["Lápiz", "Cuaderno", "Libro", "Mochila"], correct: 1 },
+            { text: "Frases: 'I have a ton of homework' significa...", options: ["No tengo tarea", "Tengo mucha tarea", "La tarea es fácil", "Odio la tarea"], correct: 1 },
+            { text: "Frases: 'Can I get an extension?' significa...", options: ["¿Puedo copiar?", "¿Puedo tener más tiempo?", "¿Puedo salir?", "¿Puedo pasar?"], correct: 1 },
+            { text: "Frases: 'I totally spaced out' significa...", options: ["Presté atención", "Me distraje completamente", "Salí volando", "Me fui a casa"], correct: 1 },
+            { text: "Slang: 'Cramming' significa...", options: ["Estudiar con tiempo", "Estudiar a última hora", "No estudiar", "Copiar"], correct: 1 },
+            { text: "Slang: 'Ace a test' significa...", options: ["Reprobar", "Sacar 10/Sobresalir", "Copiar", "Saltarse el examen"], correct: 1 },
+            { text: "Slang: 'Pull an all-nighter' significa...", options: ["Dormir bien", "No dormir estudiando", "Salir de fiesta", "Ver TV"], correct: 1 },
+            { text: "Slang: 'Bachoter' en francés significa...", options: ["Descansar", "Estudiar intensamente", "Copiar", "Saltarse clase"], correct: 1 },
+            { text: "Slang: 'Cartonner' significa...", options: ["Reprobar", "Tener éxito", "Dibujar", "Comer"], correct: 1 },
+            { text: "Slang: 'C'est du gâteau' significa...", options: ["Es difícil", "Es pan comido", "Es delicioso", "Es un pastel"], correct: 1 },
+            { text: "Frases: 'This subject is growing on me' significa...", options: ["Lo odio", "Me está gustando cada vez más", "Es muy difícil", "No lo entiendo"], correct: 1 },
+            { text: "Frases: 'Let's team up for the project' significa...", options: ["Hagamos equipo", "Compitamos", "Hagámoslo solos", "Canselemos"], correct: 0 },
+            { text: "Slang: 'I blanked out' significa...", options: ["Respondí bien", "Me quedé en blanco", "Estudié mucho", "Aprobé"], correct: 1 },
+            { text: "Slang: 'That's a freebie' significa...", options: ["Es gratis", "Es una pregunta regalada", "Es difícil", "Es un regalo"], correct: 1 },
+            { text: "Slang: 'The teacher called me out' significa...", options: ["Me llamó", "Me felicitó", "Me señaló/llamó la atención", "Me ignoró"], correct: 2 },
+            { text: "Slang: 'Le chouchou du prof' significa...", options: ["El que copia", "El favorito del profe", "El que llega tarde", "El que no estudia"], correct: 1 }
+        ]
+    },
+    2: {  // Semana 3: Viajes
+        title: "📝 Examen Final · Semana 3: Viajes y Aventuras",
+        description: "25 preguntas sobre vocabulario de viajes en inglés y francés",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'pasaporte' en inglés?", options: ["Visa", "Passport", "Ticket", "ID"], correct: 1 },
+            { text: "¿Cómo se dice 'vuelo' en inglés?", options: ["Trip", "Flight", "Travel", "Journey"], correct: 1 },
+            { text: "¿Cómo se dice 'hotel' en inglés?", options: ["Hostel", "Hotel", "Motel", "Inn"], correct: 1 },
+            { text: "¿Cómo se dice 'mapa' en inglés?", options: ["Map", "Globe", "Compass", "Guide"], correct: 0 },
+            { text: "¿Cómo se dice 'aventura' en inglés?", options: ["Trip", "Adventure", "Journey", "Experience"], correct: 1 },
+            { text: "¿Cómo se dice 'destino' en inglés?", options: ["Direction", "Destination", "Place", "Location"], correct: 1 },
+            { text: "¿Cómo se dice 'passeport' en español?", options: ["Pasaje", "Pasaporte", "Visa", "Boleto"], correct: 1 },
+            { text: "¿Cómo se dice 'vol' en español?", options: ["Viaje", "Vuelo", "Avión", "Aeropuerto"], correct: 1 },
+            { text: "¿Cómo se dice 'hôtel' en español?", options: ["Hospedaje", "Hotel", "Motel", "Hostal"], correct: 1 },
+            { text: "¿Cómo se dice 'carte' en español?", options: ["Mapa", "Tarjeta", "Carta", "Papel"], correct: 0 },
+            { text: "Frases: 'I'm so excited for my trip' significa...", options: ["Tengo miedo del viaje", "Estoy emocionada por el viaje", "El viaje es aburrido", "No quiero viajar"], correct: 1 },
+            { text: "Frases: 'This view is breathtaking' significa...", options: ["La vista es fea", "La vista es increíble", "No hay vista", "Está nublado"], correct: 1 },
+            { text: "Frases: 'Off the beaten path' significa...", options: ["Lugar turístico", "Fuera de lo común", "Lugar peligroso", "Camino cerrado"], correct: 1 },
+            { text: "Slang: 'Wanderlust' significa...", options: ["Miedo a viajar", "Pasión por viajar", "Odio viajar", "Aburrimiento"], correct: 1 },
+            { text: "Slang: 'Catch flights, not feelings' significa...", options: ["Quédate en casa", "Viaja, no te enamores", "Toma el tren", "Haz ejercicio"], correct: 1 },
+            { text: "Slang: 'Living my best life' significa...", options: ["Estoy triste", "Viviendo al máximo", "Estoy aburrida", "No hago nada"], correct: 1 },
+            { text: "Slang: 'Main character energy' significa...", options: ["Timidez", "Energía de protagonista", "Mal humor", "Falta de energía"], correct: 1 },
+            { text: "Frases: 'Let's hit the road' significa...", options: ["Vámonos ya", "Golpeemos la carretera", "Construyamos un camino", "Esperemos"], correct: 0 },
+            { text: "Frases: 'I'm jet-lagged' significa...", options: ["Estoy feliz", "Estoy desvelada por el viaje", "Tengo hambre", "Tengo frío"], correct: 1 },
+            { text: "Frases: 'Take me back' significa...", options: ["Quiero irme", "Llévame otra vez", "No quiero volver", "Estoy en casa"], correct: 1 },
+            { text: "Slang: 'Avoir la bougeotte' significa...", options: ["Estar quieta", "No poder quedarse quieta", "Tener sueño", "Tener hambre"], correct: 1 },
+            { text: "Slang: 'Voyager dans sa tête' significa...", options: ["Viajar de verdad", "Soñar despierta", "Perderse", "Hacer turismo"], correct: 1 },
+            { text: "Frases: 'That's a bucket list destination' significa...", options: ["Un destino feo", "Un destino soñado", "Un destino común", "Un destino barato"], correct: 1 },
+            { text: "Slang: 'Avoir le mal du pays' significa...", options: ["Extrañar casa", "Amar el país", "Odiar viajar", "Estar perdida"], correct: 0 },
+            { text: "Frases: 'What's the best way to get around?' significa...", options: ["¿Dónde comer?", "¿Cuál es la mejor forma de moverse?", "¿Cómo llegar?", "¿Dónde dormir?"], correct: 1 }
+        ]
+    },
+    3: {  // Semana 4: Tecnología
+        title: "📝 Examen Final · Semana 4: Tecnología y Futuro",
+        description: "25 preguntas sobre vocabulario tecnológico",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'contraseña' en inglés?", options: ["Username", "Password", "Email", "Code"], correct: 1 },
+            { text: "¿Cómo se dice 'descargar' en inglés?", options: ["Upload", "Download", "Install", "Save"], correct: 1 },
+            { text: "¿Cómo se dice 'pantalla' en inglés?", options: ["Keyboard", "Mouse", "Screen", "Monitor"], correct: 2 },
+            { text: "¿Cómo se dice 'red' en inglés?", options: ["Network", "Web", "Internet", "Connection"], correct: 0 },
+            { text: "¿Cómo se dice 'datos' en inglés?", options: ["Information", "Data", "Files", "Storage"], correct: 1 },
+            { text: "¿Cómo se dice 'código' en inglés?", options: ["Password", "Code", "Key", "Pin"], correct: 1 },
+            { text: "¿Cómo se dice 'mot de passe' en español?", options: ["Usuario", "Contraseña", "Correo", "Código"], correct: 1 },
+            { text: "¿Cómo se dice 'télécharger' en español?", options: ["Subir", "Descargar", "Instalar", "Guardar"], correct: 1 },
+            { text: "¿Cómo se dice 'écran' en español?", options: ["Teclado", "Pantalla", "Ratón", "Monitor"], correct: 1 },
+            { text: "¿Cómo se dice 'code' en español?", options: ["Clave", "Código", "Pin", "Contraseña"], correct: 1 },
+            { text: "Frases: 'My battery is about to die' significa...", options: ["Mi batería está cargada", "Mi batería se va a acabar", "Compré una batería nueva", "La batería explotó"], correct: 1 },
+            { text: "Frases: 'DM me' significa...", options: ["Llámame", "Escríbeme por mensaje directo", "Envíame un correo", "Búscame"], correct: 1 },
+            { text: "Frases: 'This app is a game changer' significa...", options: ["Es un juego", "Cambia las reglas", "Es aburrida", "Es difícil"], correct: 1 },
+            { text: "Slang: 'I'm trying to limit my screen time' significa...", options: ["Quiero más pantalla", "Intento reducir tiempo en pantalla", "La pantalla está rota", "Compré una pantalla nueva"], correct: 1 },
+            { text: "Slang: 'You're blowing up my phone' significa...", options: ["Rompiste mi teléfono", "No dejas de escribirme", "Llamaste una vez", "El teléfono explotó"], correct: 1 },
+            { text: "Slang: 'I got ghosted' significa...", options: ["Vi un fantasma", "Me dejaron de hablar", "Me asusté", "Salí corriendo"], correct: 1 },
+            { text: "Slang: 'That's so last season' significa...", options: ["Es moderno", "Ya pasó de moda", "Es de temporada", "Es nuevo"], correct: 1 },
+            { text: "Frases: 'Can you send me the link via DM?' significa...", options: ["¿Me llamas?", "¿Me envías el enlace?", "¿Me escribes?", "¿Me visitas?"], correct: 1 },
+            { text: "Frases: 'Have you checked out that new AI tool?' significa...", options: ["¿Compraste la nueva IA?", "¿Probaste la nueva IA?", "¿Viste la IA?", "¿Tienes IA?"], correct: 1 },
+            { text: "Slang: 'Don't @ me' significa...", options: ["No me hables", "No me etiquetes", "No me llames", "No me escribas"], correct: 1 },
+            { text: "Slang: 'C'est chelou' en francés significa...", options: ["Es genial", "Es raro", "Es fácil", "Es difícil"], correct: 1 },
+            { text: "Slang: 'C'est relou' significa...", options: ["Es divertido", "Es pesado/molesto", "Es rápido", "Es lento"], correct: 1 },
+            { text: "Slang: 'Trop stylé' significa...", options: ["Muy feo", "Muy guay", "Muy caro", "Muy barato"], correct: 1 },
+            { text: "Frases: 'I'm trying to reduce my screen time' es una frase sobre...", options: ["Salud digital", "Compras", "Deportes", "Comida"], correct: 0 },
+            { text: "Slang: 'Être matrixé(e)' significa...", options: ["Estar confundida", "Estar obsesionada", "Estar feliz", "Estar triste"], correct: 1 }
+        ]
+    },
+    4: {  // Semana 5: Música
+        title: "📝 Examen Final · Semana 5: Música y Arte",
+        description: "25 preguntas sobre vocabulario musical y artístico",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'canción' en inglés?", options: ["Music", "Song", "Melody", "Rhythm"], correct: 1 },
+            { text: "¿Cómo se dice 'melodía' en inglés?", options: ["Song", "Melody", "Harmony", "Tune"], correct: 1 },
+            { text: "¿Cómo se dice 'pintura' en inglés?", options: ["Drawing", "Art", "Painting", "Sketch"], correct: 2 },
+            { text: "¿Cómo se dice 'galería' en inglés?", options: ["Museum", "Gallery", "Exhibition", "Art"], correct: 1 },
+            { text: "¿Cómo se dice 'creatividad' en inglés?", options: ["Art", "Imagination", "Creativity", "Innovation"], correct: 2 },
+            { text: "¿Cómo se dice 'chanson' en español?", options: ["Música", "Canción", "Melodía", "Ritmo"], correct: 1 },
+            { text: "¿Cómo se dice 'peinture' en español?", options: ["Dibujo", "Pintura", "Arte", "Cuadro"], correct: 1 },
+            { text: "¿Cómo se dice 'créativité' en español?", options: ["Arte", "Creatividad", "Imaginación", "Innovación"], correct: 1 },
+            { text: "Slang: 'That song slaps' significa...", options: ["La canción es mala", "La canción está increíble", "La canción da miedo", "La canción es triste"], correct: 1 },
+            { text: "Slang: 'It's a bop' significa...", options: ["Es aburrido", "Es muy pegadizo", "Es triste", "Es ruidoso"], correct: 1 },
+            { text: "Slang: 'Drop the beat' significa...", options: ["Para la música", "Que suene la música", "Baja el volumen", "Sube el volumen"], correct: 1 },
+            { text: "Slang: 'This is fire' significa...", options: ["Está quemado", "Está súper bueno", "Está frío", "Está mojado"], correct: 1 },
+            { text: "Slang: 'Earworm' significa...", options: ["Canción olvidada", "Canción pegadiza", "Canción triste", "Canción feliz"], correct: 1 },
+            { text: "Slang: 'She ate that performance' significa...", options: ["Comió en el escenario", "Arrasó con su presentación", "Se fue temprano", "Olvidó la letra"], correct: 1 },
+            { text: "Slang: 'That's my jam' significa...", options: ["Esa es mi mermelada", "Esa es mi canción favorita", "Esa canción no me gusta", "Esa canción es nueva"], correct: 1 },
+            { text: "Frases: 'I've had this on repeat' significa...", options: ["La odio", "La he escuchado en repetición", "La escuché una vez", "La borré"], correct: 1 },
+            { text: "Slang: 'Ça déchire' en francés significa...", options: ["Es malo", "Es genial", "Es triste", "Es aburrido"], correct: 1 },
+            { text: "Slang: 'Avoir la musique dans la peau' significa...", options: ["Odio la música", "Llevo la música dentro", "No sé cantar", "Toco mal"], correct: 1 },
+            { text: "Slang: 'C'est de la bombe' significa...", options: ["Es explosivo", "Es excelente", "Es peligroso", "Es feo"], correct: 1 },
+            { text: "Frases: 'What's your go-to playlist?' significa...", options: ["¿Cuál es tu playlist para estudiar?", "¿Dónde está tu playlist?", "¿Borraste tu playlist?", "¿Compartes tu playlist?"], correct: 0 },
+            { text: "Frases: 'The lyrics speak to my soul' significa...", options: ["La letra es mala", "La letra le habla a mi alma", "No entiendo la letra", "La letra es larga"], correct: 1 },
+            { text: "Slang: 'Un tube' en francés significa...", options: ["Una canción mala", "Un hit musical", "Un tubo", "Un instrumento"], correct: 1 },
+            { text: "Frases: 'She absolutely killed that performance' significa...", options: ["La mataron", "Arrasó con su actuación", "Salió del escenario", "Olvidó todo"], correct: 1 },
+            { text: "Slang: 'Avoir le rythme dans la peau' significa...", options: ["No tener ritmo", "Tener ritmo natural", "Bailar mal", "No bailar"], correct: 1 },
+            { text: "Frases: 'This song hits different at night' significa...", options: ["La canción es igual", "La canción se siente diferente de noche", "La canción es mala", "La canción no se escucha"], correct: 1 }
+        ]
+    },
+    5: {  // Semana 6: Comida
+        title: "📝 Examen Final · Semana 6: Comida y Gastronomía",
+        description: "25 preguntas sobre vocabulario de comida",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'receta' en inglés?", options: ["Receipt", "Recipe", "Menu", "Dish"], correct: 1 },
+            { text: "¿Cómo se dice 'delicioso/a' en inglés?", options: ["Delicious", "Tasty", "Yummy", "All of the above"], correct: 3 },
+            { text: "¿Cómo se dice 'picante' en inglés?", options: ["Sweet", "Salty", "Spicy", "Sour"], correct: 2 },
+            { text: "¿Cómo se dice 'desayuno' en inglés?", options: ["Lunch", "Dinner", "Breakfast", "Supper"], correct: 2 },
+            { text: "¿Cómo se dice 'cena' en inglés?", options: ["Breakfast", "Lunch", "Dinner", "Snack"], correct: 2 },
+            { text: "¿Cómo se dice 'postre' en inglés?", options: ["Dessert", "Desert", "Sweet", "Candy"], correct: 0 },
+            { text: "¿Cómo se dice 'recette' en español?", options: ["Recibo", "Receta", "Menú", "Plato"], correct: 1 },
+            { text: "¿Cómo se dice 'délicieux' en español?", options: ["Delicioso", "Aburrido", "Feo", "Malo"], correct: 0 },
+            { text: "¿Cómo se dice 'épicé' en español?", options: ["Dulce", "Salado", "Picante", "Ácido"], correct: 2 },
+            { text: "¿Cómo se dice 'dîner' en español?", options: ["Desayuno", "Almuerzo", "Cena", "Merienda"], correct: 2 },
+            { text: "Slang: 'I'm starving' significa...", options: ["Tengo sed", "Me muero de hambre", "Tengo frío", "Tengo calor"], correct: 1 },
+            { text: "Slang: 'Finger-lickin' good' significa...", options: ["Sabe feo", "Para chuparse los dedos", "Está sucio", "Es pequeño"], correct: 1 },
+            { text: "Slang: 'Let's grab a bite' significa...", options: ["Vamos a morder", "Vamos a comer algo rápido", "Vamos a cocinar", "Vamos al supermercado"], correct: 1 },
+            { text: "Slang: 'Food coma' significa...", options: ["Coma por comida", "Sueño después de comer", "Dolor de estómago", "Alergia"], correct: 1 },
+            { text: "Slang: 'This is my guilty pleasure' significa...", options: ["Es un crimen", "Es mi placer culpable", "Me da vergüenza", "No me gusta"], correct: 1 },
+            { text: "Frases: 'I'm craving something sweet' significa...", options: ["Quiero algo salado", "Se me antoja algo dulce", "No quiero comer", "Estoy llena"], correct: 1 },
+            { text: "Slang: 'Avoir la dalle' en francés significa...", options: ["Tener sed", "Tener mucha hambre", "Tener frío", "Tener calor"], correct: 1 },
+            { text: "Slang: 'C'est un régal' significa...", options: ["Es feo", "Es una delicia", "Es caro", "Es barato"], correct: 1 },
+            { text: "Slang: 'Manger sur le pouce' significa...", options: ["Comer con los dedos", "Comer rápido", "Comer despacio", "No comer"], correct: 1 },
+            { text: "Frases: 'This dish is to die for' significa...", options: ["Es peligroso", "Está delicioso", "Está feo", "Es venenoso"], correct: 1 },
+            { text: "Frases: 'I could eat this every day' significa...", options: ["Lo odio", "Podría comer esto todos los días", "Solo como esto", "Es aburrido"], correct: 1 },
+            { text: "Slang: 'Se régaler' significa...", options: ["Disfrutar comiendo", "Enfermarse", "Comer rápido", "Comer poco"], correct: 0 },
+            { text: "Frases: 'That's overpriced' significa...", options: ["Está barato", "Está muy caro", "Está en oferta", "Es gratis"], correct: 1 },
+            { text: "Slang: 'Avoir les crocs' significa...", options: ["Tener dientes largos", "Tener hambre", "Tener miedo", "Tener sueño"], correct: 1 },
+            { text: "Frases: 'Can I get a doggy bag?' significa...", options: ["¿Puedo llevarme la comida?", "¿Tienes un perro?", "¿Dónde está mi perro?", "¿Me das una bolsa?"], correct: 0 }
+        ]
+    },
+    6: {  // Semana 7: Deportes
+        title: "📝 Examen Final · Semana 7: Deportes y Salud",
+        description: "25 preguntas sobre vocabulario deportivo",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'ejercicio' en inglés?", options: ["Sport", "Exercise", "Workout", "Training"], correct: 1 },
+            { text: "¿Cómo se dice 'fuerza' en inglés?", options: ["Power", "Strength", "Energy", "Force"], correct: 1 },
+            { text: "¿Cómo se dice 'saludable' en inglés?", options: ["Healthy", "Fit", "Strong", "Good"], correct: 0 },
+            { text: "¿Cómo se dice 'equipo' en inglés?", options: ["Group", "Team", "Crew", "Squad"], correct: 1 },
+            { text: "¿Cómo se dice 'victoria' en inglés?", options: ["Win", "Victory", "Triumph", "All of the above"], correct: 3 },
+            { text: "¿Cómo se dice 'entrenamiento' en inglés?", options: ["Practice", "Training", "Workout", "All of the above"], correct: 3 },
+            { text: "¿Cómo se dice 'exercice' en español?", options: ["Deporte", "Ejercicio", "Entrenamiento", "Actividad"], correct: 1 },
+            { text: "¿Cómo se dice 'force' en español?", options: ["Poder", "Fuerza", "Energía", "Potencia"], correct: 1 },
+            { text: "¿Cómo se dice 'sain' en español?", options: ["Saludable", "Enfermo", "Fuerte", "Débil"], correct: 0 },
+            { text: "¿Cómo se dice 'équipe' en español?", options: ["Grupo", "Equipo", "Club", "Asociación"], correct: 1 },
+            { text: "Slang: 'No pain, no gain' significa...", options: ["Sin dolor no hay ganancia", "El dolor es malo", "No te esfuerces", "Descansa mucho"], correct: 0 },
+            { text: "Slang: 'Let's hit the gym' significa...", options: ["Vamos al cine", "Vamos al gimnasio", "Vamos a casa", "Vamos a la playa"], correct: 1 },
+            { text: "Slang: 'You got this' significa...", options: ["Tú puedes", "Tú perdiste", "Tú ganaste", "Tú fallaste"], correct: 0 },
+            { text: "Slang: 'I'm sore but worth it' significa...", options: ["Adolorida pero valió la pena", "Estoy feliz", "Estoy enojada", "Estoy cansada"], correct: 0 },
+            { text: "Slang: 'Crushing it' significa...", options: ["Arrasando/Excelente", "Destruyendo", "Perdiendo", "Descansando"], correct: 0 },
+            { text: "Slang: 'I'm in beast mode' significa...", options: ["Estoy cansada", "Estoy a tope/en modo bestia", "Estoy enferma", "Estoy triste"], correct: 1 },
+            { text: "Frases: 'I need to stretch' significa...", options: ["Necesito comer", "Necesito estirarme", "Necesito dormir", "Necesito correr"], correct: 1 },
+            { text: "Frases: 'That was a good sweat' significa...", options: ["Hacía calor", "Fue un buen entrenamiento", "Sudé mucho", "Estaba cansada"], correct: 1 },
+            { text: "Slang: 'Avoir la pêche' en francés significa...", options: ["Comer fruta", "Tener energía", "Estar cansada", "Tener hambre"], correct: 1 },
+            { text: "Slang: 'Se donner à fond' significa...", options: ["Darlo todo/Esforzarse", "Descansar", "Dormir", "Comer"], correct: 0 },
+            { text: "Slang: 'C'est dans la poche' significa...", options: ["Está en el bolsillo", "Está ganado", "Está perdido", "Está lejos"], correct: 1 },
+            { text: "Frases: 'I'm really into yoga lately' significa...", options: ["Odio el yoga", "Me está gustando el yoga últimamente", "Nunca hago yoga", "El yoga es aburrido"], correct: 1 },
+            { text: "Frases: 'Let's go for a run' significa...", options: ["Vamos a caminar", "Vamos a correr", "Vamos a nadar", "Vamos a bailar"], correct: 1 },
+            { text: "Slang: 'Être au taquet' significa...", options: ["Estar al máximo", "Estar abajo", "Estar cansada", "Estar enferma"], correct: 0 },
+            { text: "Frases: 'She's crushing it on the field' significa...", options: ["Está perdiendo", "La está rompiendo en la cancha", "Está lesionada", "Está descansando"], correct: 1 }
+        ]
+    },
+    7: {  // Semana 8: Naturaleza
+        title: "📝 Examen Final · Semana 8: Naturaleza y Planeta",
+        description: "25 preguntas sobre vocabulario ecológico y naturaleza",
+        passingScore: 18,
+        xpReward: 50,
+        questions: [
+            { text: "¿Cómo se dice 'bosque' en inglés?", options: ["Forest", "Jungle", "Woods", "All of the above"], correct: 3 },
+            { text: "¿Cómo se dice 'océano' en inglés?", options: ["Sea", "Ocean", "Lake", "River"], correct: 1 },
+            { text: "¿Cómo se dice 'montaña' en inglés?", options: ["Hill", "Mountain", "Peak", "Mount"], correct: 1 },
+            { text: "¿Cómo se dice 'reciclar' en inglés?", options: ["Reuse", "Reduce", "Recycle", "Renew"], correct: 2 },
+            { text: "¿Cómo se dice 'planeta' en inglés?", options: ["Earth", "Planet", "World", "Globe"], correct: 1 },
+            { text: "¿Cómo se dice 'vida salvaje' en inglés?", options: ["Wild nature", "Wildlife", "Wild animals", "Jungle"], correct: 1 },
+            { text: "¿Cómo se dice 'forêt' en español?", options: ["Selva", "Bosque", "Madera", "Árbol"], correct: 1 },
+            { text: "¿Cómo se dice 'océan' en español?", options: ["Mar", "Océano", "Lago", "Río"], correct: 1 },
+            { text: "¿Cómo se dice 'planète' en español?", options: ["Tierra", "Planeta", "Mundo", "Globo"], correct: 1 },
+            { text: "¿Cómo se dice 'faune' en español?", options: ["Flora", "Fauna/Vida salvaje", "Naturaleza", "Animales"], correct: 1 },
+            { text: "Slang: 'Go green' significa...", options: ["Pintar de verde", "Sé ecológico/a", "Tener envidia", "Estar enfermo"], correct: 1 },
+            { text: "Slang: 'Reduce your carbon footprint' significa...", options: ["Reduce tu huella de carbono", "Camina más", "Usa el coche", "Vuela más"], correct: 0 },
+            { text: "Slang: 'Save the planet' significa...", options: ["Salva el planeta", "Destruye el planeta", "Ignora el planeta", "Compra el planeta"], correct: 0 },
+            { text: "Slang: 'Leave no trace' significa...", options: ["Deja rastro", "No dejes rastro", "Limpia el rastro", "Sigue el rastro"], correct: 1 },
+            { text: "Slang: 'Breath of fresh air' significa...", options: ["Algo malo", "Algo que te renueva", "Aire contaminado", "Viento fuerte"], correct: 1 },
+            { text: "Frases: 'I'm an outdoor person' significa...", options: ["Soy de estar al aire libre", "Me gusta estar en casa", "Odio la naturaleza", "Tengo miedo al aire libre"], correct: 0 },
+            { text: "Slang: 'Let's go zero waste' significa...", options: ["Cero basura", "Mucha basura", "Reciclemos", "Compremos"], correct: 0 },
+            { text: "Slang: 'Mother Nature is angry' significa...", options: ["La naturaleza está feliz", "La naturaleza está enfadada", "La naturaleza está cansada", "La naturaleza duerme"], correct: 1 },
+            { text: "Slang: 'Être écolo' en francés significa...", options: ["Ser ecológico/a", "Ser estudioso/a", "Ser deportista", "Ser artista"], correct: 0 },
+            { text: "Frases: 'I'm trying to reduce my plastic waste' significa...", options: ["Compro más plástico", "Intento reducir plástico", "Reciclo plástico", "Reúso plástico"], correct: 1 },
+            { text: "Frases: 'Nature is the best therapy' significa...", options: ["La terapia es mala", "La naturaleza es la mejor terapia", "No necesito terapia", "La terapia es cara"], correct: 1 },
+            { text: "Frases: 'Let's go hiking this weekend' significa...", options: ["Vamos de compras", "Vamos de excursión/montaña", "Vamos al cine", "Vamos a dormir"], correct: 1 },
+            { text: "Slang: 'Avoir la main verte' significa...", options: ["Tener mano verde", "Ser buen jardinero/a", "Estar enfermo/a", "Tener alergia"], correct: 1 },
+            { text: "Frases: 'This beach cleanup is rewarding' significa...", options: ["La playa está sucia", "La limpieza de playa es gratificante", "No hay playa", "La playa es peligrosa"], correct: 1 },
+            { text: "Slang: 'Un geste pour la planète' significa...", options: ["Un gesto feo", "Un gesto por el planeta", "Un gesto malo", "Un gesto rápido"], correct: 1 }
+        ]
+    }
 };
 
 // ==================== GRAMÁTICA ====================
@@ -872,8 +1136,207 @@ function checkConjugationExercise(vn,idx){ const v=conjugationData[currentLang].
 function renderGrammar(){ const w=getCurrentWeekInfo().cycleIndex; const g=weeklyGrammar[w]; const c=document.getElementById("grammarContainer"); if(!c)return; if(!g){ c.innerHTML='<div>📚 Gramática no disponible</div>'; return; } const gr=g[currentLang]; if(!gr)return; const done=grammarCompleted.includes(w); c.innerHTML=`<div class="grammar-card" onclick="openGrammar(${w})"><div class="grammar-title">${gr.title}</div><div class="grammar-preview">${gr.explanation.substring(0,80)}...</div>${done?'<div style="color:#10b981;">✅ Completado</div>':''}</div>`; }
 function openGrammar(w){ const g=weeklyGrammar[w]; if(!g)return; const gr=g[currentLang]; if(!gr)return; let exHtml='<div><strong>✍️ Ejercicios:</strong><br>'; gr.exercises.forEach((ex,idx)=>{ exHtml+=`<div>${ex.prompt} <input type="text" id="grammar_ex_${idx}"> <button onclick="checkGrammarExercise(${w},${idx})">✓</button> <span id="grammar_ex_result_${idx}"></span></div>`; }); exHtml+='</div>'; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📚 ${gr.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div><strong>📖 Regla:</strong><br>${gr.explanation}</div><div><strong>📝 Ejemplos:</strong><ul>${gr.examples.map(ex=>`<li>${ex.text} → ${ex.translation}</li>`).join('')}</ul></div>${exHtml}</div>`; document.body.appendChild(m); }
 function checkGrammarExercise(w,idx){ const g=weeklyGrammar[w]; if(!g)return; const gr=g[currentLang]; if(!gr)return; const ua=document.getElementById(`grammar_ex_${idx}`).value.trim().toLowerCase(); const rs=document.getElementById(`grammar_ex_result_${idx}`); if(ua===gr.exercises[idx].answer.toLowerCase()){ rs.innerHTML='✅ +5 XP'; rs.style.color='#059669'; if(!grammarCompleted.includes(w)){ grammarCompleted.push(w); localStorage.setItem("maryse_grammar",JSON.stringify(grammarCompleted)); userXP+=5; localStorage.setItem("maryse_xp",userXP); updateProfile(); renderGrammar(); } }else{ rs.innerHTML=`❌ ${gr.exercises[idx].answer}`; rs.style.color='#dc2626'; } }
-function renderExam(){ const w=getCurrentWeekInfo().cycleIndex; const ex=weeklyExams[0]; const c=document.getElementById("examContainer"); if(!c)return; c.innerHTML=`<div class="exam-card" onclick="startExam(0)"><div class="exam-title">${ex.title}</div><div class="exam-preview">${ex.description}</div></div>`; }
-function startExam(w){ alert("Examen en desarrollo"); }
+function renderExam() {
+    const w = getCurrentWeekInfo().cycleIndex;
+    const ex = weeklyExams[w];
+    const c = document.getElementById("examContainer");
+    if (!c || !ex) return;
+    
+    const isCompleted = examCompleted.includes(w);
+    
+    c.innerHTML = `
+        <div class="exam-card" onclick="startExam(${w})">
+            <div class="exam-title">${ex.title}</div>
+            <div class="exam-preview">${ex.description}</div>
+            <div style="margin-top: 8px;">
+                <span class="badge">⭐ ${ex.xpReward} XP</span>
+                <span class="badge">✅ Mínimo ${ex.passingScore}/25</span>
+                ${isCompleted ? '<span class="badge">🏆 COMPLETADO</span>' : ''}
+            </div>
+        </div>
+    `;
+}
+function startExam(weekIndex) {
+    const exam = weeklyExams[weekIndex];
+    if (!exam) {
+        alert("❌ Examen no disponible para esta semana");
+        return;
+    }
+    
+    // Verificar si ya lo completó
+    if (examCompleted.includes(weekIndex)) {
+        alert("🏆 ¡Ya completaste este examen! No puedes repetirlo.");
+        return;
+    }
+    
+    let currentQuestion = 0;
+    let userAnswers = new Array(exam.questions.length).fill(null);
+    let timer = null;
+    let timeLeft = exam.timeLimit || 600;
+    
+    // Crear modal del examen
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.style.padding = "10px";
+    
+    function renderQuestion() {
+        const q = exam.questions[currentQuestion];
+        const selected = userAnswers[currentQuestion];
+        
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 700px;">
+                <div class="modal-header">
+                    <div>
+                        <div>📝 ${exam.title}</div>
+                        <div style="font-size: 0.7rem; color: var(--subtext);">Pregunta ${currentQuestion + 1}/${exam.questions.length}</div>
+                    </div>
+                    <button class="modal-close" onclick="closeExam()">✕</button>
+                </div>
+                <div style="margin-top: 16px;">
+                    <div style="font-size: 0.8rem; margin-bottom: 8px;">⏱️ Tiempo restante: <span id="examTimer">${formatTime(timeLeft)}</span></div>
+                    <div class="progress-bar-container" style="margin: 8px 0;">
+                        <div class="progress-bar-fill" style="width: ${((currentQuestion)/exam.questions.length)*100}%; background: var(--primary);"></div>
+                    </div>
+                    <div class="exam-question">
+                        <strong>📌 ${q.text}</strong>
+                    </div>
+                    <div id="examOptions">
+                        ${q.options.map((opt, idx) => `
+                            <div class="exam-option ${selected === idx ? 'selected' : ''}" onclick="selectExamOption(${idx})">
+                                ${String.fromCharCode(65+idx)}. ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+                        <button class="btn" onclick="prevExamQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>◀ Anterior</button>
+                        <div>
+                            <span style="font-size: 0.7rem;">Respondidas: ${userAnswers.filter(a => a !== null).length}/${exam.questions.length}</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="nextExamQuestion()">${currentQuestion === exam.questions.length - 1 ? '✅ Finalizar' : 'Siguiente ▶'}</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function startTimer() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--;
+            const timerSpan = document.getElementById("examTimer");
+            if (timerSpan) timerSpan.textContent = formatTime(timeLeft);
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                finishExam(true); // timeout = true
+            }
+        }, 1000);
+    }
+    
+    window.selectExamOption = (idx) => {
+        userAnswers[currentQuestion] = idx;
+        renderQuestion();
+    };
+    
+    window.nextExamQuestion = () => {
+        if (userAnswers[currentQuestion] === null) {
+            alert("⚠️ Por favor selecciona una respuesta antes de continuar");
+            return;
+        }
+        
+        if (currentQuestion < exam.questions.length - 1) {
+            currentQuestion++;
+            renderQuestion();
+        } else {
+            finishExam(false);
+        }
+    };
+    
+    window.prevExamQuestion = () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            renderQuestion();
+        }
+    };
+    
+    function calculateScore() {
+        let correct = 0;
+        for (let i = 0; i < exam.questions.length; i++) {
+            if (userAnswers[i] === exam.questions[i].correct) {
+                correct++;
+            }
+        }
+        return correct;
+    }
+    
+    function finishExam(isTimeout) {
+        clearInterval(timer);
+        
+        const score = calculateScore();
+        const passed = score >= exam.passingScore;
+        
+        let resultHtml = `
+            <div class="modal-content" style="max-width: 600px; text-align: center;">
+                <div class="modal-header">
+                    <div>📊 Resultado del Examen</div>
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                </div>
+                <div style="padding: 20px;">
+                    ${isTimeout ? '<div style="color: #dc2626;">⏰ ¡TIEMPO AGOTADO!</div>' : ''}
+                    <div style="font-size: 2rem; margin: 16px 0;">📝</div>
+                    <div><strong>Puntuación:</strong> ${score}/${exam.questions.length}</div>
+                    <div><strong>Necesitabas:</strong> ${exam.passingScore}/${exam.questions.length}</div>
+                    <div style="margin: 16px 0;">
+                        ${passed ? '🎉 <strong style="color: #10b981;">¡FELICIDADES! ¡APROBASTE! 🎉</strong>' : '😢 <strong style="color: #dc2626;">No alcanzaste la puntuación mínima. ¡Puedes intentarlo de nuevo!</strong>'}
+                    </div>
+        `;
+        
+        if (passed && !examCompleted.includes(weekIndex)) {
+            examCompleted.push(weekIndex);
+            localStorage.setItem("maryse_exam_completed", JSON.stringify(examCompleted));
+            userXP += exam.xpReward;
+            if (userXP >= userLevel * 100) {
+                userLevel++;
+            }
+            localStorage.setItem("maryse_xp", userXP);
+            localStorage.setItem("maryse_level", userLevel);
+            updateProfile();
+            resultHtml += `<div style="margin: 16px 0; padding: 12px; background: #d1fae5; border-radius: 16px;">⭐ +${exam.xpReward} XP ⭐</div>`;
+            renderExam(); // Actualizar para mostrar completado
+        }
+        
+        resultHtml += `
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove(); ${passed ? '' : 'startExam(' + weekIndex + ')'}">
+                            ${passed ? '✅ Cerrar' : '🔄 Intentar de nuevo'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        modal.innerHTML = resultHtml;
+    }
+    
+    document.body.appendChild(modal);
+    renderQuestion();
+    startTimer();
+    
+    window.closeExam = () => {
+        if (timer) clearInterval(timer);
+        modal.remove();
+    };
+    window.closeExam = () => {
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) modal.remove();
+};
+}
 
 // ==================== CÍRCULOS FLOTANTES ====================
 function toggleRadialMenu() { const m=document.getElementById('radialMenu'); if(m) m.classList.toggle('hidden'); }
