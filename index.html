@@ -817,9 +817,282 @@ const weeklyExams = {
     }
 };
 
-// ==================== GRAMÁTICA ====================
+
+// ==================== GRAMÁTICA COMPLETA PARA 8 SEMANAS ====================
 let grammarCompleted = JSON.parse(localStorage.getItem("maryse_grammar") || "[]");
-const weeklyGrammar = {0:{en:{title:"Articles a/an/the",explanation:"Use 'a' before consonant",examples:[{text:"I see a dog",translation:"Veo un perro"}],exercises:[{prompt:"I see ___ elephant",answer:"an"}]},fr:{title:"Articles un/une",explanation:"'un' masculin, 'une' féminin",examples:[{text:"Je vois un chien",translation:"Veo un perro"}],exercises:[{prompt:"Je vois ___ chat",answer:"un"}]}}};
+
+const weeklyGrammar = {
+    0: { // Semana 1: Emociones
+        en: {
+            title: "Adjetivos de emoción + 'to be'",
+            explanation: "En inglés, usamos el verbo 'to be' (am/is/are) + adjetivos para expresar cómo nos sentimos. Los adjetivos en inglés no cambian según el género (no hay femenino/masculino).",
+            examples: [
+                { text: "I am happy", translation: "Estoy feliz" },
+                { text: "She is sad", translation: "Ella está triste" },
+                { text: "They are excited", translation: "Ellos están emocionados" },
+                { text: "He is nervous", translation: "Él está nervioso" }
+            ],
+            exercises: [
+                { prompt: "I ___ happy", answer: "am" },
+                { prompt: "She ___ sad", answer: "is" },
+                { prompt: "They ___ excited", answer: "are" },
+                { prompt: "He ___ nervous", answer: "is" },
+                { prompt: "We ___ proud", answer: "are" }
+            ]
+        },
+        fr: {
+            title: "Adjectifs d'émotion + 'être'",
+            explanation: "En français, on utilise le verbe 'être' (suis/es/est/sommes/êtes/sont) + adjectifs. Attention : les adjectifs s'accordent en genre et en nombre !",
+            examples: [
+                { text: "Je suis heureuse", translation: "Estoy feliz (femenino)" },
+                { text: "Il est triste", translation: "Él está triste" },
+                { text: "Elles sont excitées", translation: "Ellas están emocionadas" },
+                { text: "Il est nerveux", translation: "Él está nervioso" }
+            ],
+            exercises: [
+                { prompt: "Je ___ heureuse", answer: "suis" },
+                { prompt: "Elle ___ triste", answer: "est" },
+                { prompt: "Ils ___ excités", answer: "sont" },
+                { prompt: "Tu ___ nerveux", answer: "es" },
+                { prompt: "Nous ___ fiers", answer: "sommes" }
+            ]
+        }
+    },
+    1: { // Semana 2: Escuela
+        en: {
+            title: "Present Simple vs. Present Continuous",
+            explanation: "El Present Simple se usa para hábitos y rutinas (siempre, nunca, a veces). El Present Continuous se usa para acciones que están pasando AHORA mismo o planes cercanos.",
+            examples: [
+                { text: "I study English every day (hábito)", translation: "Estudio inglés todos los días" },
+                { text: "I am studying right now (ahora)", translation: "Estoy estudiando ahora mismo" },
+                { text: "She usually does homework (normalmente)", translation: "Ella normalmente hace la tarea" },
+                { text: "She is doing homework at the moment", translation: "Ella está haciendo la tarea en este momento" }
+            ],
+            exercises: [
+                { prompt: "I ___ (study) every day", answer: "study" },
+                { prompt: "I ___ (study) right now", answer: "am studying" },
+                { prompt: "She usually ___ (do) homework", answer: "does" },
+                { prompt: "She ___ (do) homework at the moment", answer: "is doing" },
+                { prompt: "We ___ (have) class now", answer: "are having" }
+            ]
+        },
+        fr: {
+            title: "Présent simple vs. Présent progressif (être en train de)",
+            explanation: "En français, on utilise le présent simple pour les actions habituelles. Pour une action en cours, on peut utiliser 'être en train de' + infinitif.",
+            examples: [
+                { text: "Je fais mes devoirs tous les jours", translation: "Hago mis deberes todos los días" },
+                { text: "Je suis en train de faire mes devoirs", translation: "Estoy haciendo mis deberes (ahora mismo)" }
+            ],
+            exercises: [
+                { prompt: "Je ___ mes devoirs tous les jours (faire)", answer: "fais" },
+                { prompt: "Je suis en ___ de faire mes devoirs", answer: "train" },
+                { prompt: "Elle ___ à l'école chaque jour (aller)", answer: "va" },
+                { prompt: "Il ___ en train de manger", answer: "est" },
+                { prompt: "Nous ___ nos leçons (étudier)", answer: "étudions" }
+            ]
+        }
+    },
+    2: { // Semana 3: Viajes
+        en: {
+            title: "Future: 'will' vs 'going to'",
+            explanation: "'Will' se usa para predicciones, promesas o decisiones espontáneas. 'Going to' se usa para planes ya hechos o cuando hay evidencia de que algo va a pasar.",
+            examples: [
+                { text: "I think it will rain tomorrow (predicción)", translation: "Creo que lloverá mañana" },
+                { text: "I'm going to visit Paris next month (plan)", translation: "Voy a visitar París el mes que viene" },
+                { text: "I'll help you! (decisión espontánea)", translation: "¡Te ayudaré!" }
+            ],
+            exercises: [
+                { prompt: "I think it ___ rain tomorrow", answer: "will" },
+                { prompt: "I ___ to visit Paris next month (go)", answer: "am going" },
+                { prompt: "Look at those clouds! It ___ rain", answer: "is going to" },
+                { prompt: "I promise I ___ call you", answer: "will" },
+                { prompt: "We ___ travel to Japan someday", answer: "will" }
+            ]
+        },
+        fr: {
+            title: "Futur proche vs. Futur simple",
+            explanation: "Le futur proche (aller + infinitif) pour des actions proches dans le temps. Le futur simple pour des actions plus lointaines ou hypothèses.",
+            examples: [
+                { text: "Je vais partir demain (futur proche)", translation: "Voy a salir mañana" },
+                { text: "Je partirai un jour (futur simple)", translation: "Me iré algún día" }
+            ],
+            exercises: [
+                { prompt: "Je ___ partir demain (aller)", answer: "vais" },
+                { prompt: "Je ___ un jour (partir)", answer: "partirai" },
+                { prompt: "Nous ___ visiter Paris (futur proche)", answer: "allons" },
+                { prompt: "Elle ___ voyager autour du monde (futur simple)", answer: "voyagera" },
+                { prompt: "Ils ___ arriver bientôt (futur proche)", answer: "vont" }
+            ]
+        }
+    },
+    3: { // Semana 4: Tecnología
+        en: {
+            title: "Passive Voice (Voz Pasiva)",
+            explanation: "La voz pasiva se usa cuando la acción es más importante que quién la hace. Se forma con 'to be' + participio pasado. Muy común en contextos tecnológicos.",
+            examples: [
+                { text: "The app is downloaded by millions", translation: "La app es descargada por millones" },
+                { text: "Data is stored in the cloud", translation: "Los datos se almacenan en la nube" },
+                { text: "The password was hacked", translation: "La contraseña fue hackeada" }
+            ],
+            exercises: [
+                { prompt: "The app ___ by millions (download)", answer: "is downloaded" },
+                { prompt: "Data ___ in the cloud (store)", answer: "is stored" },
+                { prompt: "The password ___ yesterday (hack)", answer: "was hacked" },
+                { prompt: "Updates ___ regularly (release)", answer: "are released" },
+                { prompt: "The screen ___ (break)", answer: "is broken" }
+            ]
+        },
+        fr: {
+            title: "Voix passive",
+            explanation: "La voix passive en français se forme avec 'être' + participe passé. Le participe s'accorde avec le sujet.",
+            examples: [
+                { text: "L'application est téléchargée", translation: "La aplicación es descargada" },
+                { text: "Les données sont stockées", translation: "Los datos son almacenados" }
+            ],
+            exercises: [
+                { prompt: "L'application ___ téléchargée (être)", answer: "est" },
+                { prompt: "Les données ___ stockées (être)", answer: "sont" },
+                { prompt: "Le mot de passe ___ hacké (être, passé composé)", answer: "a été" },
+                { prompt: "La photo ___ supprimée (être)", answer: "est" },
+                { prompt: "Les messages ___ envoyés (être)", answer: "sont" }
+            ]
+        }
+    },
+    4: { // Semana 5: Música
+        en: {
+            title: "Comparative and Superlative Adjectives",
+            explanation: "Comparativos para comparar dos cosas (er/more...than). Superlativos para decir que algo es lo máximo (est/most).",
+            examples: [
+                { text: "This song is better than that one (comparativo)", translation: "Esta canción es mejor que esa" },
+                { text: "This is the best song ever (superlativo)", translation: "Esta es la mejor canción de todas" },
+                { text: "She sings more beautifully than me", translation: "Ella canta más bonito que yo" }
+            ],
+            exercises: [
+                { prompt: "This song is ___ (good) than that one", answer: "better" },
+                { prompt: "This is the ___ (good) song ever", answer: "best" },
+                { prompt: "She is the ___ (talented) singer", answer: "most talented" },
+                { prompt: "This melody is ___ (beautiful) than the other", answer: "more beautiful" },
+                { prompt: "That's the ___ (bad) performance I've seen", answer: "worst" }
+            ]
+        },
+        fr: {
+            title: "Comparatif et superlatif",
+            explanation: "Comparatif: plus/moins/aussi...que. Superlatif: le/la/les plus/moins...",
+            examples: [
+                { text: "Cette chanson est meilleure que l'autre", translation: "Esta canción es mejor que la otra" },
+                { text: "C'est la meilleure chanson", translation: "Es la mejor canción" }
+            ],
+            exercises: [
+                { prompt: "Cette chanson est ___ bonne que l'autre (plus)", answer: "plus" },
+                { prompt: "C'est ___ meilleure chanson (la)", answer: "la" },
+                { prompt: "Il chante ___ bien que toi (aussi)", answer: "aussi" },
+                { prompt: "Elle est ___ talentueuse (la plus)", answer: "la plus" },
+                { prompt: "Ce concert est ___ intéressant que l'autre (moins)", answer: "moins" }
+            ]
+        }
+    },
+    5: { // Semana 6: Comida
+        en: {
+            title: "Countable vs Uncountable Nouns",
+            explanation: "Los sustantivos contables se pueden contar (apples, eggs). Los incontables no (water, rice, sugar). Usamos 'a/an' o números con contables, y 'some/any' con incontables.",
+            examples: [
+                { text: "I have an apple (contable)", translation: "Tengo una manzana" },
+                { text: "I need some water (incontable)", translation: "Necesito agua" },
+                { text: "There aren't any eggs", translation: "No hay huevos" },
+                { text: "How much sugar? (incontable)", translation: "¿Cuánta azúcar?" },
+                { text: "How many apples? (contable)", translation: "¿Cuántas manzanas?" }
+            ],
+            exercises: [
+                { prompt: "I have ___ apple", answer: "an" },
+                { prompt: "I need some ___ (water)", answer: "water" },
+                { prompt: "How ___ sugar do you want? (much/many)", answer: "much" },
+                { prompt: "How ___ apples are there? (much/many)", answer: "many" },
+                { prompt: "There isn't ___ milk left (some/any)", answer: "any" }
+            ]
+        },
+        fr: {
+            title: "Articles partitifs (du, de la, des, de l')",
+            explanation: "Les articles partitifs expriment une quantité indéterminée. Du (masculin), de la (féminin), de l' (voyelle), des (pluriel).",
+            examples: [
+                { text: "Je veux du pain", translation: "Quiero pan" },
+                { text: "Je bois de l'eau", translation: "Bebo agua" },
+                { text: "Je mange de la salade", translation: "Como ensalada" }
+            ],
+            exercises: [
+                { prompt: "Je veux ___ pain", answer: "du" },
+                { prompt: "Je bois ___ eau", answer: "de l'" },
+                { prompt: "Je mange ___ salade", answer: "de la" },
+                { prompt: "J'achète ___ légumes", answer: "des" },
+                { prompt: "Il prend ___ fromage", answer: "du" }
+            ]
+        }
+    },
+    6: { // Semana 7: Deportes
+        en: {
+            title: "Modal Verbs: can, could, should, must",
+            explanation: "Los verbos modales expresan capacidad (can), permiso (can/could), obligación (must), consejo (should). Nunca cambian y van seguidos de verbo en infinitivo sin 'to'.",
+            examples: [
+                { text: "I can run fast (capacidad)", translation: "Puedo correr rápido" },
+                { text: "You should exercise more (consejo)", translation: "Deberías hacer más ejercicio" },
+                { text: "You must warm up (obligación)", translation: "Debes calentar" }
+            ],
+            exercises: [
+                { prompt: "I ___ run fast (capacidad)", answer: "can" },
+                { prompt: "You ___ exercise more (consejo)", answer: "should" },
+                { prompt: "You ___ warm up before playing (obligación)", answer: "must" },
+                { prompt: "___ I join the team? (permiso)", answer: "Can" },
+                { prompt: "She ___ be tired after the match (posibilidad)", answer: "could" }
+            ]
+        },
+        fr: {
+            title: "Verbes modaux: pouvoir, devoir, savoir",
+            explanation: "En français : pouvoir (can), devoir (must/should), savoir (know how to). Se conjugan y van seguidos de infinitivo.",
+            examples: [
+                { text: "Je peux courir vite", translation: "Puedo correr rápido" },
+                { text: "Tu devrais faire du sport", translation: "Deberías hacer deporte" }
+            ],
+            exercises: [
+                { prompt: "Je ___ courir vite (pouvoir)", answer: "peux" },
+                { prompt: "Tu ___ faire du sport (devoir - consejo)", answer: "devrais" },
+                { prompt: "Nous ___ nous entraîner (devoir - obligación)", answer: "devons" },
+                { prompt: "Elle ___ nager (savoir)", answer: "sait" },
+                { prompt: "Vous ___ vous reposer (devoir - consejo)", answer: "devriez" }
+            ]
+        }
+    },
+    7: { // Semana 8: Naturaleza
+        en: {
+            title: "Conditional Sentences (If clauses) - Type 0 and 1",
+            explanation: "Type 0: hechos generales (If + present, present). Type 1: situaciones reales/posibles (If + present, will + infinitive).",
+            examples: [
+                { text: "If you recycle, you help the planet (Type 0 - hecho)", translation: "Si reciclas, ayudas al planeta" },
+                { text: "If it rains, the plants will grow (Type 1 - posible)", translation: "Si llueve, las plantas crecerán" }
+            ],
+            exercises: [
+                { prompt: "If you ___ (recycle), you help the planet", answer: "recycle" },
+                { prompt: "If it ___ (rain), the plants will grow", answer: "rains" },
+                { prompt: "If we ___ (protect) nature, animals will survive", answer: "protect" },
+                { prompt: "If the temperature ___ (rise), ice will melt", answer: "rises" },
+                { prompt: "Water ___ (boil) if you heat it to 100°C", answer: "boils" }
+            ]
+        },
+        fr: {
+            title: "Phrases conditionnelles (Si + présent, futur)",
+            explanation: "Structure: Si + présent, futur simple. Pour exprimer une condition réelle ou possible.",
+            examples: [
+                { text: "Si tu recyclés, tu aides la planète", translation: "Si reciclas, ayudas al planeta" },
+                { text: "S'il pleut, les plantes pousseront", translation: "Si llueve, las plantas crecerán" }
+            ],
+            exercises: [
+                { prompt: "Si tu ___ (recycler), tu aides la planète", answer: "recycles" },
+                { prompt: "S'il ___ (pleuvoir), les plantes pousseront", answer: "pleut" },
+                { prompt: "Si nous ___ (protéger) la nature, les animaux survivront", answer: "protégeons" },
+                { prompt: "Si la température ___ (augmenter), la glace fondra", answer: "augmente" },
+                { prompt: "Si vous ___ (planter) des arbres, l'air sera plus pur", answer: "plantez" }
+            ]
+        }
+    }
+};
 
 // ==================== KARAOKE ====================
 const karaokeSongs = [
