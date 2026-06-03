@@ -391,26 +391,20 @@
     <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title">🔔 Recordatorios</div><div><span>Activar</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label>Hora:</label><input type="time" id="notifTime" value="17:00"><label>Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0">Dom</div><div class="day-chip active" data-day="1">Lun</div><div class="day-chip active" data-day="2">Mar</div><div class="day-chip active" data-day="3">Mié</div><div class="day-chip active" data-day="4">Jue</div><div class="day-chip active" data-day="5">Vie</div><div class="day-chip" data-day="6">Sáb</div></div><label>Mensaje:</label><select id="notifMessage"><option>📚 ¿Ya practicaste hoy?</option><option>🎯 ¡Hora de aprender!</option><option>💜 Mensaje de Papá</option></select><button class="btn btn-primary" onclick="testNotification()">🔔 Probar</button></div></div><div class="backup-section"><div class="card-title">💾 Copia de seguridad</div><div><button class="btn btn-warning" onclick="exportData()">📥 Exportar</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤 Importar</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"></div></div>
     <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><div id="lifeSkillsContainer" class="skills-grid"></div></div></div>
     
-    <!-- RINCÓN DE MAMÁ -->
+        <!-- RINCÓN DE MAMÁ -->
     <div id="viewMama" class="view">
-        <div id="viewMama" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    
-    <!-- CARTE PLAYLIST MAMAN (DÉPLACÉE DEPUIS HOME) -->
-    <div class="card mama-card" style="display:flex;justify-content:space-between; margin-bottom:20px;">
-        <div>
-            <div class="card-icon">🎵</div>
-            <div class="card-title">Maryse</div>
-            <div class="card-subtitle">💕 Playlist de Maman (Fiona)</div>
-        </div>
-        <button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button>
-    </div>
-    
-    <div id="mamaCornerContainer" class="mama-corner">
-        <div style="text-align:center; padding:40px;">Cargando...</div>
-    </div>
-</div>
         <button class="back-btn" onclick="showView('home')">← Volver</button>
+        
+        <!-- CARTE PLAYLIST MAMAN (DÉPLACÉE DEPUIS HOME) -->
+        <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div>
+                <div style="font-size:1.5rem;">🎵</div>
+                <div style="font-weight:600;">Maryse</div>
+                <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
+            </div>
+            <button class="btn btn-pink" onclick="openMamaPlaylist()" style="background:#fce7f3; color:#be185d; border:none; padding:10px 20px; border-radius:60px; cursor:pointer;">🎧 Écouter</button>
+        </div>
+        
         <div id="mamaCornerContainer" class="mama-corner">
             <div style="text-align:center; padding:40px;">Cargando...</div>
         </div>
