@@ -2009,31 +2009,7 @@ function openArticle(id) {
     document.body.appendChild(m);
 }
 
-function openMomActivity(id) {
-    // CERRAR CUALQUIER MODAL ABIERTO PRIMERO
-    const existingModals = document.querySelectorAll('.modal-overlay');
-    existingModals.forEach(modal => modal.remove());
-    
-    const act = getMomActivitiesData().find(a => a.id === id);
-    if (!act) return;
-    
-    const m = document.createElement('div');
-    m.className = 'modal-overlay';
-    m.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>👩‍👧 ${act.type}</div>
-                <button class="modal-close" onclick="closeModal(this)">✕</button>
-            </div>
-            <div class="card-title">${act.title}</div>
-            <div>${act.steps.replace(/\n/g, '<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div>
-            <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-primary" onclick="closeModal(this)">✨ Cerrar</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(m);
-}
+
 
 // Función universal para cerrar modales
 function closeModal(buttonElement) {
