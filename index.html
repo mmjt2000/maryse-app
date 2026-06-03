@@ -1978,7 +1978,164 @@ function getMomActivitiesData(){ try{ const a=weeklyMomActivities[getCurrentWeek
 let currentFilter="todos"; const cats=["todos",...new Set(getArticlesData().map(a=>a.category))];
 function renderDiscoverFilters(){ document.getElementById("discoverFilters").innerHTML=cats.map(c=>`<div class="filter-chip ${currentFilter===c?'active':''}" data-filter="${c}">${c}</div>`).join(''); document.querySelectorAll(".filter-chip").forEach(el=>el.addEventListener("click",()=>{ currentFilter=el.getAttribute("data-filter"); renderDiscoverFilters(); renderArticles(); })); }
 function renderArticles(){ const arts=getArticlesData(); let f=currentFilter==="todos"?arts:arts.filter(a=>a.category===currentFilter); document.getElementById("articlesContainer").innerHTML=f.map(a=>`<div class="article-card" onclick="openArticle(${a.id})"><div class="article-icon">${a.icon}</div><div class="article-content"><div class="article-category">${a.category}</div><div class="card-title">${a.title}</div><div class="article-excerpt">${a.excerpt}</div></div></div>`).join(''); }
-function openArticle(id){ const a=getArticlesData().find(a=>a.id===id); if(!a)return; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>${a.category}</div><button class="modal-close" onclick="this.remove()">✕</button></div><div class="card-title">${a.title}</div><div>${a.content}</div></div>`; document.body.appendChild(m); }
+// ==================== FUNCIONES CORREGIDAS PARA MODALES ====================
+
+function openArticle(id) {
+    // 1. Cerrar cualquier modal abierto primero
+    const modalExistente = document.querySelector('.modal-overlay');
+    if (modalExistente) {
+        modalExistente.remove();
+    }
+    
+    // 2. Buscar el artículo
+    const a = getArticlesData().find(a => a.id === id);
+    if (!a) return;
+    
+    // 3. Crear nuevo modal
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>${a.category}</div>
+                <button class="modal-close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="card-title">${a.title}</div>
+            <div>${a.content}</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-primary" onclick="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
+
+function openMomActivity(id) {
+    // 1. Cerrar cualquier modal abierto primero
+    const modalExistente = document.querySelector('.modal-overlay');
+    if (modalExistente) {
+        modalExistente.remove();
+    }
+    
+    // 2. Buscar la actividad
+    const act = getMomActivitiesData().find(a => a.id === id);
+    if (!act) return;
+    
+    // 3. Crear nuevo modal
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>👩‍👧 ${act.type}</div>
+                <button class="modal-close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="card-title">${act.title}</div>
+            <div>${act.steps.replace(/\n/g, '<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-primary" onclick="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
+
+// Función universal para cerrar modales
+function closeModal(buttonElement) {
+    // Encontrar el modal padre y eliminarlo
+    const modal = buttonElement.closest('.modal-overlay');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// También corrige openLesson para que cierre correctamente
+function openLesson(id) {
+    // CERRAR CUALQUIER MODAL ABIERTO PRIMERO
+    const existingModals = document.querySelectorAll('.modal-overlay');
+    existingModals.forEach(modal => modal.remove());
+    
+    const l = getLessons().find(l => l.id === id);
+    if (!l) return;
+    
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>📚 Lección</div>
+                <button class="modal-close" onclick="closeModal(this)">✕</button>
+            </div>
+            <div class="card-title">${l.title}</div>
+            <div>📌 ${l.taskEs}</div>
+            <ul>
+                ${l.phrases.map((p, i) => `<li><strong>${p}</strong> → ${l.trans[i]} <button class="btn-small" onclick="speakText('${p}','${currentLang}')">🔊</button></li>`).join('')}
+            </ul>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn-primary" onclick="completeLesson('${l.id}')">✅ Marcar (+20 XP)</button>
+                <button class="btn" onclick="closeModal(this)">❌ Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
+
+// Corrige completeLesson para que también cierre el modal
+function completeLesson(id) {
+    if (!completedLessons.includes(id)) {
+        completedLessons.push(id);
+        localStorage.setItem("maryse_completed", JSON.stringify(completedLessons));
+        userXP += 20;
+        if (userXP >= userLevel * 100) {
+            userLevel++;
+        }
+        localStorage.setItem("maryse_xp", userXP);
+        localStorage.setItem("maryse_level", userLevel);
+        autoBackup();
+        alert("🎉 +20 XP!");
+        renderLessons();
+        updateProfile();
+    }
+    // Cerrar el modal después de completar
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) modal.remove();
+}
+
+// Corrige openGrammar
+function openGrammar(w) {
+    // CERRAR CUALQUIER MODAL ABIERTO PRIMERO
+    const existingModals = document.querySelectorAll('.modal-overlay');
+    existingModals.forEach(modal => modal.remove());
+    
+    const g = weeklyGrammar[w];
+    if (!g) return;
+    const gr = g[currentLang];
+    if (!gr) return;
+    
+    let exHtml = '<div><strong>✍️ Ejercicios:</strong><br>';
+    gr.exercises.forEach((ex, idx) => {
+        exHtml += `<div>${ex.prompt} <input type="text" id="grammar_ex_${idx}"> <button onclick="checkGrammarExercise(${w},${idx})">✓</button> <span id="grammar_ex_result_${idx}"></span></div>`;
+    });
+    exHtml += '</div>';
+    
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>📚 ${gr.title}</div>
+                <button class="modal-close" onclick="closeModal(this)">✕</button>
+            </div>
+            <div><strong>📖 Regla:</strong><br>${gr.explanation}</div>
+            <div><strong>📝 Ejemplos:</strong><ul>${gr.examples.map(ex => `<li>${ex.text} → ${ex.translation}</li>`).join('')}</ul></div>
+            ${exHtml}
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn" onclick="closeModal(this)">❌ Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
 function renderMomActivities(){ const acts=getMomActivitiesData(); document.getElementById("momSection").innerHTML=`<div class="badge">👩‍👧 Actividad de la semana</div>${acts.map(act=>`<div class="mom-card" onclick="openMomActivity('${act.id}')"><h3>${act.title}</h3><p>${act.description}</p></div>`).join('')}`; }
 function openMomActivity(id){ const act=getMomActivitiesData().find(a=>a.id===id); if(!act)return; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>👩‍👧 ${act.type}</div><button class="modal-close" onclick="this.remove()">✕</button></div><div class="card-title">${act.title}</div><div>${act.steps.replace(/\n/g,'<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div></div>`; document.body.appendChild(m); }
 function getGameWords(){ const w=[]; const ci=getCurrentWeekInfo().cycleIndex; const wv=weeklyVocab[ci]; if(wv&&wv[currentLang]){ wv[currentLang].forEach(i=>{ w.push({front:i.en||i.fr,back:i.es}); }); } if(w.length===0) w.push({front:"hello",back:"hola"}); return w; }
