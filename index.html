@@ -1708,8 +1708,119 @@ function renderConjugation() {
         </div>
     `).join('');
 }
-function openConjugation(n){ const v=conjugationData[currentLang].find(v=>v.verb===n); if(!v)return; let html=''; for(const[t,k]of Object.entries({present:"PRESENTE"})){ if(v.tenses[t]){ html+=`<div><strong>📌 ${k}</strong></div><td>${Object.entries(v.tenses[t]).map(([p,c])=>`<tr><td>${p}</td><td>${c}</td></tr>`).join('')}赶`; } } html+=`<div><strong>📝 Ejercicios:</strong><br>${v.exercises.map((ex,idx)=>`<div>${ex.prompt} <input type="text" id="conj_ex_${idx}"> <button onclick="checkConjugationExercise('${v.verb}',${idx})">✓</button> <span id="conj_ex_result_${idx}"></span></div>`).join('')}</div>`; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📖 ${v.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div>${html}</div>`; document.body.appendChild(m); }
-function checkConjugationExercise(vn,idx){ const v=conjugationData[currentLang].find(v=>v.verb===vn); if(!v)return; const ua=document.getElementById(`conj_ex_${idx}`).value.trim().toLowerCase(); const ca=v.exercises[idx].answer.toLowerCase(); const rs=document.getElementById(`conj_ex_result_${idx}`); if(ua===ca){ rs.innerHTML='✅ +2 XP'; rs.style.color='#059669'; userXP+=2; localStorage.setItem("maryse_xp",userXP); updateProfile(); }else{ rs.innerHTML=`❌ ${ca}`; rs.style.color='#dc2626'; } }
+function openConjugation(n){
+    const v = conjugationData[currentLang].find(v => v.verb === n);
+    if(!v) return;
+    
+    // Diccionario de tiempos en español
+    const timeNames = {
+        present: "📖 PRESENTE",
+        past: "⏪ PASADO / PASÉ COMPOSÉ",
+        future: "⏩ FUTURO / FUTUR SIMPLE"
+    };
+    
+    let html = '<div style="margin-bottom: 16px;">';
+    
+    // Mostrar TODOS los tiempos (presente, pasado, futuro)
+    for(const [tense, name] of Object.entries(timeNames)){
+        if(v.tenses[tense]){
+            html += `
+                <div style="margin-bottom: 20px; padding: 12px; background: #f8f6ff; border-radius: 16px;">
+                    <strong style="color: var(--primary); font-size: 1rem;">${name}</strong>
+                    <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                        ${Object.entries(v.tenses[tense]).map(([person, conjugation]) => `
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 8px; font-weight: 600;">${person}</td>
+                                <td style="padding: 8px; color: var(--primary);">${conjugation}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                </div>
+            `;
+        }
+    }
+    
+    // Ejemplos
+    html += `
+        <div style="margin: 16px 0; padding: 12px; background: #e0e7ff; border-radius: 16px;">
+            <strong>💡 EJEMPLOS:</strong><br>
+            ${v.examples.map(ex => `📌 "${ex}"`).join('<br>')}
+        </div>
+    `;
+    
+    // Ejercicios interactivos
+    html += `<div style="margin-top: 16px;"><strong>📝 EJERCICIOS (+2 XP cada uno):</strong><br>`;
+    v.exercises.forEach((ex, idx) => {
+        html += `
+            <div style="margin: 12px 0; padding: 8px; background: var(--card); border-radius: 12px;">
+                ${ex.prompt} 
+                <input type="text" id="conj_ex_${idx}" placeholder="Escribe tu respuesta..." style="width: auto; display: inline-block; margin: 0 8px;">
+                <button class="btn-small" onclick="checkConjugationExercise('${v.verb}', ${idx})">✓ Verificar</button>
+                <span id="conj_ex_result_${idx}" style="margin-left: 8px;"></span>
+            </div>
+        `;
+    });
+    html += `</div>`;
+    
+    // Crear modal
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div style="font-size: 1.3rem; font-weight: 700;">📚 ${v.title}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            ${html}
+            <div style="margin-top: 16px; text-align: center; font-size: 0.7rem; color: var(--subtext);">
+                💪 Practica los 3 tiempos: Presente, Pasado y Futuro
+            </div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
+function checkConjugationExercise(vn, idx){
+    const v = conjugationData[currentLang].find(v => v.verb === vn);
+    if(!v) return;
+    
+    const userAnswer = document.getElementById(`conj_ex_${idx}`).value.trim().toLowerCase();
+    const correctAnswer = v.exercises[idx].answer.toLowerCase();
+    const resultSpan = document.getElementById(`conj_ex_result_${idx}`);
+    
+    if(userAnswer === correctAnswer){
+        resultSpan.innerHTML = '✅ ¡Correcto! +2 XP';
+        resultSpan.style.color = '#059669';
+        
+        // Dar XP
+        userXP += 2;
+        if(userXP >= userLevel * 100){
+            userLevel++;
+        }
+        localStorage.setItem("maryse_xp", userXP);
+        localStorage.setItem("maryse_level", userLevel);
+        updateProfile();
+        
+        // Marcar el input como correcto (solo lectura)
+        const input = document.getElementById(`conj_ex_${idx}`);
+        input.style.backgroundColor = '#d1fae5';
+        input.disabled = true;
+        
+        // Deshabilitar el botón
+        const btn = input.nextElementSibling;
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+    } else {
+        resultSpan.innerHTML = `❌ Incorrecto. Respuesta correcta: "${correctAnswer}"`;
+        resultSpan.style.color = '#dc2626';
+        
+        // Resaltar input en rojo
+        const input = document.getElementById(`conj_ex_${idx}`);
+        input.style.backgroundColor = '#fee2e2';
+        setTimeout(() => {
+            input.style.backgroundColor = '';
+        }, 1000);
+    }
+}
 function renderGrammar(){ const w=getCurrentWeekInfo().cycleIndex; const g=weeklyGrammar[w]; const c=document.getElementById("grammarContainer"); if(!c)return; if(!g){ c.innerHTML='<div>📚 Gramática no disponible</div>'; return; } const gr=g[currentLang]; if(!gr)return; const done=grammarCompleted.includes(w); c.innerHTML=`<div class="grammar-card" onclick="openGrammar(${w})"><div class="grammar-title">${gr.title}</div><div class="grammar-preview">${gr.explanation.substring(0,80)}...</div>${done?'<div style="color:#10b981;">✅ Completado</div>':''}</div>`; }
 function openGrammar(w){ const g=weeklyGrammar[w]; if(!g)return; const gr=g[currentLang]; if(!gr)return; let exHtml='<div><strong>✍️ Ejercicios:</strong><br>'; gr.exercises.forEach((ex,idx)=>{ exHtml+=`<div>${ex.prompt} <input type="text" id="grammar_ex_${idx}"> <button onclick="checkGrammarExercise(${w},${idx})">✓</button> <span id="grammar_ex_result_${idx}"></span></div>`; }); exHtml+='</div>'; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📚 ${gr.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div><strong>📖 Regla:</strong><br>${gr.explanation}</div><div><strong>📝 Ejemplos:</strong><ul>${gr.examples.map(ex=>`<li>${ex.text} → ${ex.translation}</li>`).join('')}</ul></div>${exHtml}</div>`; document.body.appendChild(m); }
 function checkGrammarExercise(w,idx){ const g=weeklyGrammar[w]; if(!g)return; const gr=g[currentLang]; if(!gr)return; const ua=document.getElementById(`grammar_ex_${idx}`).value.trim().toLowerCase(); const rs=document.getElementById(`grammar_ex_result_${idx}`); if(ua===gr.exercises[idx].answer.toLowerCase()){ rs.innerHTML='✅ +5 XP'; rs.style.color='#059669'; if(!grammarCompleted.includes(w)){ grammarCompleted.push(w); localStorage.setItem("maryse_grammar",JSON.stringify(grammarCompleted)); userXP+=5; localStorage.setItem("maryse_xp",userXP); updateProfile(); renderGrammar(); } }else{ rs.innerHTML=`❌ ${gr.exercises[idx].answer}`; rs.style.color='#dc2626'; } }
