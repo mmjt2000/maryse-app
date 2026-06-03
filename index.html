@@ -2108,7 +2108,14 @@ function openGrammar(w) {
     document.body.appendChild(m);
 }
 function renderMomActivities(){ const acts=getMomActivitiesData(); document.getElementById("momSection").innerHTML=`<div class="badge">👩‍👧 Actividad de la semana</div>${acts.map(act=>`<div class="mom-card" onclick="openMomActivity('${act.id}')"><h3>${act.title}</h3><p>${act.description}</p></div>`).join('')}`; }
-function openMomActivity(id){ const act=getMomActivitiesData().find(a=>a.id===id); if(!act)return; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>👩‍👧 ${act.type}</div><button class="modal-close" onclick="this.remove()">✕</button></div><div class="card-title">${act.title}</div><div>${act.steps.replace(/\n/g,'<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div></div>`; document.body.appendChild(m); }
+function openMomActivity(id) { 
+    const act = getMomActivitiesData().find(a => a.id === id); 
+    if (!act) return; 
+    const m = document.createElement('div'); 
+    m.className = 'modal-overlay'; 
+    m.innerHTML = `<div class="modal-content"><div class="modal-header"><div>👩‍👧 ${act.type}</div><button class="modal-close" onclick="document.querySelector('.modal-overlay').remove()">✕</button></div><div class="card-title">${act.title}</div><div>${act.steps.replace(/\n/g,'<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div><button class="btn btn-primary" onclick="document.querySelector('.modal-overlay').remove()" style="margin-top:15px;">Cerrar</button></div>`; 
+    document.body.appendChild(m); 
+}
 function getGameWords(){ const w=[]; const ci=getCurrentWeekInfo().cycleIndex; const wv=weeklyVocab[ci]; if(wv&&wv[currentLang]){ wv[currentLang].forEach(i=>{ w.push({front:i.en||i.fr,back:i.es}); }); } if(w.length===0) w.push({front:"hello",back:"hola"}); return w; }
 function switchGame(g){ currentGame=g; document.querySelectorAll(".game-btn").forEach(b=>b.classList.remove("active")); document.querySelector(`.game-btn[onclick="switchGame('${g}')"]`).classList.add("active"); if(g==="memory") initMemoryGame(); if(g==="quiz") initSpeedQuiz(); if(g==="scramble") initWordScramble(); }
 function initMemoryGame(){ const words=getGameWords().slice(0,6); memoryCards=[...words.flatMap(p=>[{text:p.front,pair:p.front},{text:p.back,pair:p.front}])].sort(()=>Math.random()-0.5); memoryFlipped=[]; memoryMatched=[]; memoryLocked=false; renderMemoryGame(); }
