@@ -521,29 +521,317 @@ const podcasts = {
 };
 
 // ==================== CONJUGACIÓN ====================
+// ==================== CONJUGACIÓN COMPLETA - 8 VERBOS EN 3 TIEMPOS ====================
 const conjugationData = {
     en: [
-        { verb: "to be", title: "TO BE · Ser o estar", tenses: { present: { "I": "am", "You": "are", "He/She/It": "is", "We": "are", "You (pl)": "are", "They": "are" }, past: { "I": "was", "You": "were", "He/She/It": "was", "We": "were", "You (pl)": "were", "They": "were" }, future: { "I": "will be", "You": "will be", "He/She/It": "will be", "We": "will be", "You (pl)": "will be", "They": "will be" } }, examples: ["I am happy", "I was tired", "I will be there"], exercises: [{ prompt: "I ___ happy", answer: "am" }, { prompt: "I ___ tired yesterday", answer: "was" }, { prompt: "I ___ there tomorrow", answer: "will be" }] },
-        { verb: "to have", title: "TO HAVE · Tener / Haber", tenses: { present: { "I": "have", "You": "have", "He/She/It": "has", "We": "have", "You (pl)": "have", "They": "have" }, past: { "I": "had", "You": "had", "He/She/It": "had", "We": "had", "You (pl)": "had", "They": "had" }, future: { "I": "will have", "You": "will have", "He/She/It": "will have", "We": "will have", "You (pl)": "will have", "They": "will have" } }, examples: ["I have a dog", "I had breakfast", "I will have time"], exercises: [{ prompt: "I ___ a dog", answer: "have" }, { prompt: "I ___ breakfast yesterday", answer: "had" }, { prompt: "I ___ time later", answer: "will have" }] },
-        { verb: "to do", title: "TO DO · Hacer", tenses: { present: { "I": "do", "You": "do", "He/She/It": "does", "We": "do", "You (pl)": "do", "They": "do" }, past: { "I": "did", "You": "did", "He/She/It": "did", "We": "did", "You (pl)": "did", "They": "did" }, future: { "I": "will do", "You": "will do", "He/She/It": "will do", "We": "will do", "You (pl)": "will do", "They": "will do" } }, examples: ["I do my homework", "I did my best", "I will do it"], exercises: [{ prompt: "I ___ my homework", answer: "do" }, { prompt: "I ___ my best yesterday", answer: "did" }, { prompt: "I ___ it tomorrow", answer: "will do" }] },
-        { verb: "to say", title: "TO SAY · Decir", tenses: { present: { "I": "say", "You": "say", "He/She/It": "says", "We": "say", "You (pl)": "say", "They": "say" }, past: { "I": "said", "You": "said", "He/She/It": "said", "We": "said", "You (pl)": "said", "They": "said" }, future: { "I": "will say", "You": "will say", "He/She/It": "will say", "We": "will say", "You (pl)": "will say", "They": "will say" } }, examples: ["I say hello", "I said sorry", "I will say yes"], exercises: [{ prompt: "I ___ hello", answer: "say" }, { prompt: "I ___ sorry yesterday", answer: "said" }, { prompt: "I ___ yes tomorrow", answer: "will say" }] },
-        { verb: "to go", title: "TO GO · Ir", tenses: { present: { "I": "go", "You": "go", "He/She/It": "goes", "We": "go", "You (pl)": "go", "They": "go" }, past: { "I": "went", "You": "went", "He/She/It": "went", "We": "went", "You (pl)": "went", "They": "went" }, future: { "I": "will go", "You": "will go", "He/She/It": "will go", "We": "will go", "You (pl)": "will go", "They": "will go" } }, examples: ["I go to school", "I went home", "I will go out"], exercises: [{ prompt: "I ___ to school", answer: "go" }, { prompt: "I ___ home yesterday", answer: "went" }, { prompt: "I ___ out later", answer: "will go" }] },
-        { verb: "to get", title: "TO GET · Obtener / Llegar", tenses: { present: { "I": "get", "You": "get", "He/She/It": "gets", "We": "get", "You (pl)": "get", "They": "get" }, past: { "I": "got", "You": "got", "He/She/It": "got", "We": "got", "You (pl)": "got", "They": "got" }, future: { "I": "will get", "You": "will get", "He/She/It": "will get", "We": "will get", "You (pl)": "will get", "They": "will get" } }, examples: ["I get up early", "I got a present", "I will get there"], exercises: [{ prompt: "I ___ up early", answer: "get" }, { prompt: "I ___ a present yesterday", answer: "got" }, { prompt: "I ___ there soon", answer: "will get" }] },
-        { verb: "to make", title: "TO MAKE · Hacer / Fabricar", tenses: { present: { "I": "make", "You": "make", "He/She/It": "makes", "We": "make", "You (pl)": "make", "They": "make" }, past: { "I": "made", "You": "made", "He/She/It": "made", "We": "made", "You (pl)": "made", "They": "made" }, future: { "I": "will make", "You": "will make", "He/She/It": "will make", "We": "will make", "You (pl)": "will make", "They": "will make" } }, examples: ["I make breakfast", "I made a cake", "I will make dinner"], exercises: [{ prompt: "I ___ breakfast", answer: "make" }, { prompt: "I ___ a cake yesterday", answer: "made" }, { prompt: "I ___ dinner tonight", answer: "will make" }] },
-        { verb: "to know", title: "TO KNOW · Saber / Conocer", tenses: { present: { "I": "know", "You": "know", "He/She/It": "knows", "We": "know", "You (pl)": "know", "They": "know" }, past: { "I": "knew", "You": "knew", "He/She/It": "knew", "We": "knew", "You (pl)": "knew", "They": "knew" }, future: { "I": "will know", "You": "will know", "He/She/It": "will know", "We": "will know", "You (pl)": "will know", "They": "will know" } }, examples: ["I know the answer", "I knew the truth", "I will know soon"], exercises: [{ prompt: "I ___ the answer", answer: "know" }, { prompt: "I ___ the truth yesterday", answer: "knew" }, { prompt: "I ___ soon", answer: "will know" }] }
+        { 
+            verb: "to be", 
+            title: "TO BE · Ser o estar", 
+            tenses: { 
+                present: { "I": "am", "You": "are", "He/She/It": "is", "We": "are", "You (pl)": "are", "They": "are" }, 
+                past: { "I": "was", "You": "were", "He/She/It": "was", "We": "were", "You (pl)": "were", "They": "were" }, 
+                future: { "I": "will be", "You": "will be", "He/She/It": "will be", "We": "will be", "You (pl)": "will be", "They": "will be" } 
+            }, 
+            examples: ["I am happy", "I was tired yesterday", "I will be there tomorrow"],
+            color: "#8b5cf6",
+            exercises: [
+                { prompt: "I ___ happy", answer: "am" }, 
+                { prompt: "I ___ tired yesterday", answer: "was" }, 
+                { prompt: "I ___ there tomorrow", answer: "will be" },
+                { prompt: "She ___ a student", answer: "is" },
+                { prompt: "They ___ at the party last night", answer: "were" },
+                { prompt: "We ___ ready in 5 minutes", answer: "will be" }
+            ] 
+        },
+        { 
+            verb: "to have", 
+            title: "TO HAVE · Tener / Haber", 
+            tenses: { 
+                present: { "I": "have", "You": "have", "He/She/It": "has", "We": "have", "You (pl)": "have", "They": "have" }, 
+                past: { "I": "had", "You": "had", "He/She/It": "had", "We": "had", "You (pl)": "had", "They": "had" }, 
+                future: { "I": "will have", "You": "will have", "He/She/It": "will have", "We": "will have", "You (pl)": "will have", "They": "will have" } 
+            }, 
+            examples: ["I have a dog", "I had breakfast at 8am", "I will have time later"],
+            color: "#10b981",
+            exercises: [
+                { prompt: "I ___ a dog", answer: "have" }, 
+                { prompt: "I ___ breakfast at 8am yesterday", answer: "had" }, 
+                { prompt: "I ___ time later", answer: "will have" },
+                { prompt: "She ___ two brothers", answer: "has" },
+                { prompt: "We ___ a great time last week", answer: "had" },
+                { prompt: "They ___ a meeting tomorrow", answer: "will have" }
+            ] 
+        },
+        { 
+            verb: "to do", 
+            title: "TO DO · Hacer", 
+            tenses: { 
+                present: { "I": "do", "You": "do", "He/She/It": "does", "We": "do", "You (pl)": "do", "They": "do" }, 
+                past: { "I": "did", "You": "did", "He/She/It": "did", "We": "did", "You (pl)": "did", "They": "did" }, 
+                future: { "I": "will do", "You": "will do", "He/She/It": "will do", "We": "will do", "You (pl)": "will do", "They": "will do" } 
+            }, 
+            examples: ["I do my homework every day", "I did my best yesterday", "I will do it right now"],
+            color: "#ef4444",
+            exercises: [
+                { prompt: "I ___ my homework every day", answer: "do" }, 
+                { prompt: "I ___ my best yesterday", answer: "did" }, 
+                { prompt: "I ___ it right now", answer: "will do" },
+                { prompt: "She ___ her hair every morning", answer: "does" },
+                { prompt: "What ___ you do last weekend?", answer: "did" },
+                { prompt: "They ___ the dishes after dinner", answer: "will do" }
+            ] 
+        },
+        { 
+            verb: "to say", 
+            title: "TO SAY · Decir", 
+            tenses: { 
+                present: { "I": "say", "You": "say", "He/She/It": "says", "We": "say", "You (pl)": "say", "They": "say" }, 
+                past: { "I": "said", "You": "said", "He/She/It": "said", "We": "said", "You (pl)": "said", "They": "said" }, 
+                future: { "I": "will say", "You": "will say", "He/She/It": "will say", "We": "will say", "You (pl)": "will say", "They": "will say" } 
+            }, 
+            examples: ["I say hello every morning", "I said sorry to her", "I will say yes"],
+            color: "#f59e0b",
+            exercises: [
+                { prompt: "I ___ hello every morning", answer: "say" }, 
+                { prompt: "I ___ sorry to her yesterday", answer: "said" }, 
+                { prompt: "I ___ yes tomorrow", answer: "will say" },
+                { prompt: "She ___ she loves me", answer: "says" },
+                { prompt: "They ___ goodbye an hour ago", answer: "said" },
+                { prompt: "He ___ something important later", answer: "will say" }
+            ] 
+        },
+        { 
+            verb: "to go", 
+            title: "TO GO · Ir", 
+            tenses: { 
+                present: { "I": "go", "You": "go", "He/She/It": "goes", "We": "go", "You (pl)": "go", "They": "go" }, 
+                past: { "I": "went", "You": "went", "He/She/It": "went", "We": "went", "You (pl)": "went", "They": "went" }, 
+                future: { "I": "will go", "You": "will go", "He/She/It": "will go", "We": "will go", "You (pl)": "will go", "They": "will go" } 
+            }, 
+            examples: ["I go to school by bus", "I went home early", "I will go to the party"],
+            color: "#3b82f6",
+            exercises: [
+                { prompt: "I ___ to school by bus", answer: "go" }, 
+                { prompt: "I ___ home early yesterday", answer: "went" }, 
+                { prompt: "I ___ to the party tomorrow", answer: "will go" },
+                { prompt: "She ___ to the gym every Monday", answer: "goes" },
+                { prompt: "We ___ to the beach last summer", answer: "went" },
+                { prompt: "They ___ on vacation next week", answer: "will go" }
+            ] 
+        },
+        { 
+            verb: "to get", 
+            title: "TO GET · Obtener / Llegar / Ponerse", 
+            tenses: { 
+                present: { "I": "get", "You": "get", "He/She/It": "gets", "We": "get", "You (pl)": "get", "They": "get" }, 
+                past: { "I": "got", "You": "got", "He/She/It": "got", "We": "got", "You (pl)": "got", "They": "got" }, 
+                future: { "I": "will get", "You": "will get", "He/She/It": "will get", "We": "will get", "You (pl)": "will get", "They": "will get" } 
+            }, 
+            examples: ["I get up at 7am", "I got a present for my birthday", "I will get there on time"],
+            color: "#ec4899",
+            exercises: [
+                { prompt: "I ___ up at 7am every day", answer: "get" }, 
+                { prompt: "I ___ a present for my birthday", answer: "got" }, 
+                { prompt: "I ___ there on time", answer: "will get" },
+                { prompt: "She ___ better every day", answer: "gets" },
+                { prompt: "We ___ lost in the city", answer: "got" },
+                { prompt: "They ___ married next year", answer: "will get" }
+            ] 
+        },
+        { 
+            verb: "to make", 
+            title: "TO MAKE · Hacer / Fabricar", 
+            tenses: { 
+                present: { "I": "make", "You": "make", "He/She/It": "makes", "We": "make", "You (pl)": "make", "They": "make" }, 
+                past: { "I": "made", "You": "made", "He/She/It": "made", "We": "made", "You (pl)": "made", "They": "made" }, 
+                future: { "I": "will make", "You": "will make", "He/She/It": "will make", "We": "will make", "You (pl)": "will make", "They": "will make" } 
+            }, 
+            examples: ["I make breakfast every day", "I made a cake for you", "I will make dinner tonight"],
+            color: "#14b8a6",
+            exercises: [
+                { prompt: "I ___ breakfast every day", answer: "make" }, 
+                { prompt: "I ___ a cake for you yesterday", answer: "made" }, 
+                { prompt: "I ___ dinner tonight", answer: "will make" },
+                { prompt: "She ___ her own clothes", answer: "makes" },
+                { prompt: "They ___ a big mistake", answer: "made" },
+                { prompt: "We ___ a decision soon", answer: "will make" }
+            ] 
+        },
+        { 
+            verb: "to know", 
+            title: "TO KNOW · Saber / Conocer", 
+            tenses: { 
+                present: { "I": "know", "You": "know", "He/She/It": "knows", "We": "know", "You (pl)": "know", "They": "know" }, 
+                past: { "I": "knew", "You": "knew", "He/She/It": "knew", "We": "knew", "You (pl)": "knew", "They": "knew" }, 
+                future: { "I": "will know", "You": "will know", "He/She/It": "will know", "We": "will know", "You (pl)": "will know", "They": "will know" } 
+            }, 
+            examples: ["I know the answer", "I knew the truth all along", "I will know by tomorrow"],
+            color: "#a855f7",
+            exercises: [
+                { prompt: "I ___ the answer", answer: "know" }, 
+                { prompt: "I ___ the truth all along", answer: "knew" }, 
+                { prompt: "I ___ by tomorrow", answer: "will know" },
+                { prompt: "She ___ how to cook", answer: "knows" },
+                { prompt: "We ___ each other for years", answer: "knew" },
+                { prompt: "They ___ the results soon", answer: "will know" }
+            ] 
+        }
     ],
     fr: [
-        { verb: "être", title: "ÊTRE · Ser o estar", tenses: { present: { "Je": "suis", "Tu": "es", "Il/Elle/On": "est", "Nous": "sommes", "Vous": "êtes", "Ils/Elles": "sont" }, past: { "Je": "ai été", "Tu": "as été", "Il/Elle/On": "a été", "Nous": "avons été", "Vous": "avez été", "Ils/Elles": "ont été" }, future: { "Je": "serai", "Tu": "seras", "Il/Elle/On": "sera", "Nous": "serons", "Vous": "serez", "Ils/Elles": "seront" } }, examples: ["Je suis heureuse", "J'ai été fatiguée", "Je serai là"], exercises: [{ prompt: "Je ___ heureuse", answer: "suis" }, { prompt: "J'___ fatiguée hier", answer: "ai été" }, { prompt: "Je ___ là demain", answer: "serai" }] },
-        { verb: "avoir", title: "AVOIR · Tener / Haber", tenses: { present: { "Je": "ai", "Tu": "as", "Il/Elle/On": "a", "Nous": "avons", "Vous": "avez", "Ils/Elles": "ont" }, past: { "Je": "ai eu", "Tu": "as eu", "Il/Elle/On": "a eu", "Nous": "avons eu", "Vous": "avez eu", "Ils/Elles": "ont eu" }, future: { "Je": "aurai", "Tu": "auras", "Il/Elle/On": "aura", "Nous": "aurons", "Vous": "aurez", "Ils/Elles": "auront" } }, examples: ["J'ai 14 ans", "J'ai eu de la chance", "J'aurai du temps"], exercises: [{ prompt: "J'___ 14 ans", answer: "ai" }, { prompt: "J'___ de la chance hier", answer: "ai eu" }, { prompt: "J'___ du temps demain", answer: "aurai" }] },
-        { verb: "faire", title: "FAIRE · Hacer", tenses: { present: { "Je": "fais", "Tu": "fais", "Il/Elle/On": "fait", "Nous": "faisons", "Vous": "faites", "Ils/Elles": "font" }, past: { "Je": "ai fait", "Tu": "as fait", "Il/Elle/On": "a fait", "Nous": "avons fait", "Vous": "avez fait", "Ils/Elles": "ont fait" }, future: { "Je": "ferai", "Tu": "feras", "Il/Elle/On": "fera", "Nous": "ferons", "Vous": "ferez", "Ils/Elles": "feront" } }, examples: ["Je fais du sport", "J'ai fait un gâteau", "Je ferai mes devoirs"], exercises: [{ prompt: "Je ___ du sport", answer: "fais" }, { prompt: "J'___ un gâteau hier", answer: "ai fait" }, { prompt: "Je ___ mes devoirs demain", answer: "ferai" }] },
-        { verb: "dire", title: "DIRE · Decir", tenses: { present: { "Je": "dis", "Tu": "dis", "Il/Elle/On": "dit", "Nous": "disons", "Vous": "dites", "Ils/Elles": "disent" }, past: { "Je": "ai dit", "Tu": "as dit", "Il/Elle/On": "a dit", "Nous": "avons dit", "Vous": "avez dit", "Ils/Elles": "ont dit" }, future: { "Je": "dirai", "Tu": "diras", "Il/Elle/On": "dira", "Nous": "dirons", "Vous": "direz", "Ils/Elles": "diront" } }, examples: ["Je dis la vérité", "J'ai dit oui", "Je dirai tout"], exercises: [{ prompt: "Je ___ la vérité", answer: "dis" }, { prompt: "J'___ oui hier", answer: "ai dit" }, { prompt: "Je ___ tout demain", answer: "dirai" }] },
-        { verb: "aller", title: "ALLER · Ir", tenses: { present: { "Je": "vais", "Tu": "vas", "Il/Elle/On": "va", "Nous": "allons", "Vous": "allez", "Ils/Elles": "vont" }, past: { "Je": "suis allé(e)", "Tu": "es allé(e)", "Il/Elle/On": "est allé(e)", "Nous": "sommes allé(e)s", "Vous": "êtes allé(e)(s)", "Ils/Elles": "sont allé(e)s" }, future: { "Je": "irai", "Tu": "iras", "Il/Elle/On": "ira", "Nous": "irons", "Vous": "irez", "Ils/Elles": "iront" } }, examples: ["Je vais à l'école", "Je suis allée à Paris", "J'irai au cinéma"], exercises: [{ prompt: "Je ___ à l'école", answer: "vais" }, { prompt: "Je ___ à Paris hier", answer: "suis allée" }, { prompt: "J'___ au cinéma demain", answer: "irai" }] },
-        { verb: "voir", title: "VOIR · Ver", tenses: { present: { "Je": "vois", "Tu": "vois", "Il/Elle/On": "voit", "Nous": "voyons", "Vous": "voyez", "Ils/Elles": "voient" }, past: { "Je": "ai vu", "Tu": "as vu", "Il/Elle/On": "a vu", "Nous": "avons vu", "Vous": "avez vu", "Ils/Elles": "ont vu" }, future: { "Je": "verrai", "Tu": "verras", "Il/Elle/On": "verra", "Nous": "verrons", "Vous": "verrez", "Ils/Elles": "verront" } }, examples: ["Je vois le soleil", "J'ai vu un oiseau", "Je verrai demain"], exercises: [{ prompt: "Je ___ le soleil", answer: "vois" }, { prompt: "J'___ un oiseau hier", answer: "ai vu" }, { prompt: "Je ___ demain", answer: "verrai" }] },
-        { verb: "pouvoir", title: "POUVOIR · Poder", tenses: { present: { "Je": "peux", "Tu": "peux", "Il/Elle/On": "peut", "Nous": "pouvons", "Vous": "pouvez", "Ils/Elles": "peuvent" }, past: { "Je": "ai pu", "Tu": "as pu", "Il/Elle/On": "a pu", "Nous": "avons pu", "Vous": "avez pu", "Ils/Elles": "ont pu" }, future: { "Je": "pourrai", "Tu": "pourras", "Il/Elle/On": "pourra", "Nous": "pourrons", "Vous": "pourrez", "Ils/Elles": "pourront" } }, examples: ["Je peux t'aider", "J'ai pu venir", "Je pourrai demain"], exercises: [{ prompt: "Je ___ t'aider", answer: "peux" }, { prompt: "J'___ venir hier", answer: "ai pu" }, { prompt: "Je ___ demain", answer: "pourrai" }] },
-        { verb: "vouloir", title: "VOULOIR · Querer", tenses: { present: { "Je": "veux", "Tu": "veux", "Il/Elle/On": "veut", "Nous": "voulons", "Vous": "voulez", "Ils/Elles": "veulent" }, past: { "Je": "ai voulu", "Tu": "as voulu", "Il/Elle/On": "a voulu", "Nous": "avons voulu", "Vous": "avez voulu", "Ils/Elles": "ont voulu" }, future: { "Je": "voudrai", "Tu": "voudras", "Il/Elle/On": "voudra", "Nous": "voudrons", "Vous": "voudrez", "Ils/Elles": "voudront" } }, examples: ["Je veux un café", "J'ai voulu partir", "Je voudrai réussir"], exercises: [{ prompt: "Je ___ un café", answer: "veux" }, { prompt: "J'___ partir hier", answer: "ai voulu" }, { prompt: "Je ___ réussir un jour", answer: "voudrai" }] }
+        { 
+            verb: "être", 
+            title: "ÊTRE · Ser o estar", 
+            tenses: { 
+                present: { "Je": "suis", "Tu": "es", "Il/Elle/On": "est", "Nous": "sommes", "Vous": "êtes", "Ils/Elles": "sont" }, 
+                past: { "Je": "ai été", "Tu": "as été", "Il/Elle/On": "a été", "Nous": "avons été", "Vous": "avez été", "Ils/Elles": "ont été" }, 
+                future: { "Je": "serai", "Tu": "seras", "Il/Elle/On": "sera", "Nous": "serons", "Vous": "serez", "Ils/Elles": "seront" } 
+            }, 
+            examples: ["Je suis heureuse", "J'ai été fatiguée hier", "Je serai là demain"],
+            color: "#8b5cf6",
+            exercises: [
+                { prompt: "Je ___ heureuse", answer: "suis" }, 
+                { prompt: "J'___ fatiguée hier", answer: "ai été" }, 
+                { prompt: "Je ___ là demain", answer: "serai" },
+                { prompt: "Tu ___ mon ami", answer: "es" },
+                { prompt: "Nous ___ en vacances", answer: "sommes" },
+                { prompt: "Ils ___ contents", answer: "sont" }
+            ] 
+        },
+        { 
+            verb: "avoir", 
+            title: "AVOIR · Tener / Haber", 
+            tenses: { 
+                present: { "Je": "ai", "Tu": "as", "Il/Elle/On": "a", "Nous": "avons", "Vous": "avez", "Ils/Elles": "ont" }, 
+                past: { "Je": "ai eu", "Tu": "as eu", "Il/Elle/On": "a eu", "Nous": "avons eu", "Vous": "avez eu", "Ils/Elles": "ont eu" }, 
+                future: { "Je": "aurai", "Tu": "auras", "Il/Elle/On": "aura", "Nous": "aurons", "Vous": "aurez", "Ils/Elles": "auront" } 
+            }, 
+            examples: ["J'ai 14 ans", "J'ai eu de la chance", "J'aurai du temps demain"],
+            color: "#10b981",
+            exercises: [
+                { prompt: "J'___ 14 ans", answer: "ai" }, 
+                { prompt: "J'___ de la chance hier", answer: "ai eu" }, 
+                { prompt: "J'___ du temps demain", answer: "aurai" },
+                { prompt: "Tu ___ faim", answer: "as" },
+                { prompt: "Nous ___ une maison", answer: "avons" },
+                { prompt: "Ils ___ peur", answer: "ont" }
+            ] 
+        },
+        { 
+            verb: "faire", 
+            title: "FAIRE · Hacer", 
+            tenses: { 
+                present: { "Je": "fais", "Tu": "fais", "Il/Elle/On": "fait", "Nous": "faisons", "Vous": "faites", "Ils/Elles": "font" }, 
+                past: { "Je": "ai fait", "Tu": "as fait", "Il/Elle/On": "a fait", "Nous": "avons fait", "Vous": "avez fait", "Ils/Elles": "ont fait" }, 
+                future: { "Je": "ferai", "Tu": "feras", "Il/Elle/On": "fera", "Nous": "ferons", "Vous": "ferez", "Ils/Elles": "feront" } 
+            }, 
+            examples: ["Je fais du sport", "J'ai fait un gâteau", "Je ferai mes devoirs"],
+            color: "#ef4444",
+            exercises: [
+                { prompt: "Je ___ du sport", answer: "fais" }, 
+                { prompt: "J'___ un gâteau hier", answer: "ai fait" }, 
+                { prompt: "Je ___ mes devoirs demain", answer: "ferai" },
+                { prompt: "Tu ___ la cuisine", answer: "fais" },
+                { prompt: "Nous ___ du vélo", answer: "faisons" },
+                { prompt: "Ils ___ du bruit", answer: "font" }
+            ] 
+        },
+        { 
+            verb: "dire", 
+            title: "DIRE · Decir", 
+            tenses: { 
+                present: { "Je": "dis", "Tu": "dis", "Il/Elle/On": "dit", "Nous": "disons", "Vous": "dites", "Ils/Elles": "disent" }, 
+                past: { "Je": "ai dit", "Tu": "as dit", "Il/Elle/On": "a dit", "Nous": "avons dit", "Vous": "avez dit", "Ils/Elles": "ont dit" }, 
+                future: { "Je": "dirai", "Tu": "diras", "Il/Elle/On": "dira", "Nous": "dirons", "Vous": "direz", "Ils/Elles": "diront" } 
+            }, 
+            examples: ["Je dis la vérité", "J'ai dit oui", "Je dirai tout demain"],
+            color: "#f59e0b",
+            exercises: [
+                { prompt: "Je ___ la vérité", answer: "dis" }, 
+                { prompt: "J'___ oui hier", answer: "ai dit" }, 
+                { prompt: "Je ___ tout demain", answer: "dirai" },
+                { prompt: "Tu ___ toujours bonjour", answer: "dis" },
+                { prompt: "Nous ___ merci", answer: "disons" },
+                { prompt: "Ils ___ non", answer: "disent" }
+            ] 
+        },
+        { 
+            verb: "aller", 
+            title: "ALLER · Ir", 
+            tenses: { 
+                present: { "Je": "vais", "Tu": "vas", "Il/Elle/On": "va", "Nous": "allons", "Vous": "allez", "Ils/Elles": "vont" }, 
+                past: { "Je": "suis allé(e)", "Tu": "es allé(e)", "Il/Elle/On": "est allé(e)", "Nous": "sommes allé(e)s", "Vous": "êtes allé(e)(s)", "Ils/Elles": "sont allé(e)s" }, 
+                future: { "Je": "irai", "Tu": "iras", "Il/Elle/On": "ira", "Nous": "irons", "Vous": "irez", "Ils/Elles": "iront" } 
+            }, 
+            examples: ["Je vais à l'école", "Je suis allée à Paris", "J'irai au cinéma"],
+            color: "#3b82f6",
+            exercises: [
+                { prompt: "Je ___ à l'école", answer: "vais" }, 
+                { prompt: "Je ___ à Paris hier", answer: "suis allée" }, 
+                { prompt: "J'___ au cinéma demain", answer: "irai" },
+                { prompt: "Tu ___ au parc", answer: "vas" },
+                { prompt: "Nous ___ au restaurant", answer: "allons" },
+                { prompt: "Ils ___ à la plage", answer: "vont" }
+            ] 
+        },
+        { 
+            verb: "voir", 
+            title: "VOIR · Ver", 
+            tenses: { 
+                present: { "Je": "vois", "Tu": "vois", "Il/Elle/On": "voit", "Nous": "voyons", "Vous": "voyez", "Ils/Elles": "voient" }, 
+                past: { "Je": "ai vu", "Tu": "as vu", "Il/Elle/On": "a vu", "Nous": "avons vu", "Vous": "avez vu", "Ils/Elles": "ont vu" }, 
+                future: { "Je": "verrai", "Tu": "verras", "Il/Elle/On": "verra", "Nous": "verrons", "Vous": "verrez", "Ils/Elles": "verront" } 
+            }, 
+            examples: ["Je vois le soleil", "J'ai vu un oiseau", "Je verrai demain"],
+            color: "#ec4899",
+            exercises: [
+                { prompt: "Je ___ le soleil", answer: "vois" }, 
+                { prompt: "J'___ un oiseau hier", answer: "ai vu" }, 
+                { prompt: "Je ___ demain", answer: "verrai" },
+                { prompt: "Tu ___ la télé", answer: "vois" },
+                { prompt: "Nous ___ un film", answer: "voyons" },
+                { prompt: "Ils ___ le paysage", answer: "voient" }
+            ] 
+        },
+        { 
+            verb: "pouvoir", 
+            title: "POUVOIR · Poder", 
+            tenses: { 
+                present: { "Je": "peux", "Tu": "peux", "Il/Elle/On": "peut", "Nous": "pouvons", "Vous": "pouvez", "Ils/Elles": "peuvent" }, 
+                past: { "Je": "ai pu", "Tu": "as pu", "Il/Elle/On": "a pu", "Nous": "avons pu", "Vous": "avez pu", "Ils/Elles": "ont pu" }, 
+                future: { "Je": "pourrai", "Tu": "pourras", "Il/Elle/On": "pourra", "Nous": "pourrons", "Vous": "pourrez", "Ils/Elles": "pourront" } 
+            }, 
+            examples: ["Je peux t'aider", "J'ai pu venir", "Je pourrai demain"],
+            color: "#14b8a6",
+            exercises: [
+                { prompt: "Je ___ t'aider", answer: "peux" }, 
+                { prompt: "J'___ venir hier", answer: "ai pu" }, 
+                { prompt: "Je ___ demain", answer: "pourrai" },
+                { prompt: "Tu ___ sortir", answer: "peux" },
+                { prompt: "Nous ___ gagner", answer: "pouvons" },
+                { prompt: "Ils ___ entrer", answer: "peuvent" }
+            ] 
+        },
+        { 
+            verb: "vouloir", 
+            title: "VOULOIR · Querer", 
+            tenses: { 
+                present: { "Je": "veux", "Tu": "veux", "Il/Elle/On": "veut", "Nous": "voulons", "Vous": "voulez", "Ils/Elles": "veulent" }, 
+                past: { "Je": "ai voulu", "Tu": "as voulu", "Il/Elle/On": "a voulu", "Nous": "avons voulu", "Vous": "avez voulu", "Ils/Elles": "ont voulu" }, 
+                future: { "Je": "voudrai", "Tu": "voudras", "Il/Elle/On": "voudra", "Nous": "voudrons", "Vous": "voudrez", "Ils/Elles": "voudront" } 
+            }, 
+            examples: ["Je veux un café", "J'ai voulu partir", "Je voudrai réussir"],
+            color: "#a855f7",
+            exercises: [
+                { prompt: "Je ___ un café", answer: "veux" }, 
+                { prompt: "J'___ partir hier", answer: "ai voulu" }, 
+                { prompt: "Je ___ réussir un jour", answer: "voudrai" },
+                { prompt: "Tu ___ danser", answer: "veux" },
+                { prompt: "Nous ___ apprendre", answer: "voulons" },
+                { prompt: "Ils ___ gagner", answer: "veulent" }
+            ] 
+        }
     ]
 };
-    
 // ==================== EXÁMENES FINALES ====================
 let examCompleted = JSON.parse(localStorage.getItem("maryse_exam_completed") || "[]");
 let currentExamAnswers = {};
@@ -1403,7 +1691,23 @@ function testNotification(){ if('Notification' in window && Notification.permiss
 function renderKaraokeSongs(){ const f=karaokeFilter==="all"?karaokeSongs:karaokeSongs.filter(s=>s.language===karaokeFilter); document.getElementById("karaokeSongList").innerHTML=f.map(s=>`<div class="karaoke-song-item" onclick="window.open('${s.searchLink}','_blank')"><div><strong>${s.language==="en"?"🇬🇧":"🇫🇷"} ${s.title}</strong><br><small>${s.artist}</small></div></div>`).join(''); }
 function filterKaraokeSongs(l){ karaokeFilter=l; renderKaraokeSongs(); }
 function installPWA(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById("installBtn").style.display="none"; }); } }
-function renderConjugation(){ const d=conjugationData[currentLang]; const c=document.getElementById("conjugationGrid"); if(c) c.innerHTML=d.map(v=>`<div class="conjugation-card" onclick="openConjugation('${v.verb}')"><div class="conjugation-title">${v.title}</div><div class="conjugation-preview">💡 ${v.examples[0]}</div></div>`).join(''); }
+function renderConjugation() {
+    const data = conjugationData[currentLang];
+    const container = document.getElementById("conjugationGrid");
+    if (!container) return;
+    
+    container.innerHTML = data.map(v => `
+        <div class="conjugation-card" onclick="openConjugation('${v.verb}')" style="border-top: 4px solid ${v.color || '#8b5cf6'}">
+            <div class="conjugation-title">${v.title}</div>
+            <div class="conjugation-preview">💡 ${v.examples[0]}</div>
+            <div style="display: flex; gap: 8px; margin-top: 12px; font-size: 0.7rem;">
+                <span>📖 Presente</span>
+                <span>📖 Pasado</span>
+                <span>📖 Futuro</span>
+            </div>
+        </div>
+    `).join('');
+}
 function openConjugation(n){ const v=conjugationData[currentLang].find(v=>v.verb===n); if(!v)return; let html=''; for(const[t,k]of Object.entries({present:"PRESENTE"})){ if(v.tenses[t]){ html+=`<div><strong>📌 ${k}</strong></div><td>${Object.entries(v.tenses[t]).map(([p,c])=>`<tr><td>${p}</td><td>${c}</td></tr>`).join('')}赶`; } } html+=`<div><strong>📝 Ejercicios:</strong><br>${v.exercises.map((ex,idx)=>`<div>${ex.prompt} <input type="text" id="conj_ex_${idx}"> <button onclick="checkConjugationExercise('${v.verb}',${idx})">✓</button> <span id="conj_ex_result_${idx}"></span></div>`).join('')}</div>`; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>📖 ${v.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div>${html}</div>`; document.body.appendChild(m); }
 function checkConjugationExercise(vn,idx){ const v=conjugationData[currentLang].find(v=>v.verb===vn); if(!v)return; const ua=document.getElementById(`conj_ex_${idx}`).value.trim().toLowerCase(); const ca=v.exercises[idx].answer.toLowerCase(); const rs=document.getElementById(`conj_ex_result_${idx}`); if(ua===ca){ rs.innerHTML='✅ +2 XP'; rs.style.color='#059669'; userXP+=2; localStorage.setItem("maryse_xp",userXP); updateProfile(); }else{ rs.innerHTML=`❌ ${ca}`; rs.style.color='#dc2626'; } }
 function renderGrammar(){ const w=getCurrentWeekInfo().cycleIndex; const g=weeklyGrammar[w]; const c=document.getElementById("grammarContainer"); if(!c)return; if(!g){ c.innerHTML='<div>📚 Gramática no disponible</div>'; return; } const gr=g[currentLang]; if(!gr)return; const done=grammarCompleted.includes(w); c.innerHTML=`<div class="grammar-card" onclick="openGrammar(${w})"><div class="grammar-title">${gr.title}</div><div class="grammar-preview">${gr.explanation.substring(0,80)}...</div>${done?'<div style="color:#10b981;">✅ Completado</div>':''}</div>`; }
