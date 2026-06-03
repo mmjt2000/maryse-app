@@ -1981,29 +1981,28 @@ function renderArticles(){ const arts=getArticlesData(); let f=currentFilter==="
 // ==================== FUNCIONES CORREGIDAS PARA MODALES ====================
 
 function openArticle(id) {
-    // 1. Cerrar cualquier modal abierto primero
-    const modalExistente = document.querySelector('.modal-overlay');
-    if (modalExistente) {
-        modalExistente.remove();
+    // CERRAR CUALQUIER MODAL ABIERTO PRIMERO
+    const existingModals = document.querySelectorAll('.modal-overlay');
+    existingModals.forEach(modal => modal.remove());
+    
+    const a = getArticlesData().find(a => a.id === id);
+    if (!a) {
+        console.error("Artículo no encontrado:", id);
+        return;
     }
     
-    // 2. Buscar el artículo
-    const a = getArticlesData().find(a => a.id === id);
-    if (!a) return;
-    
-    // 3. Crear nuevo modal
     const m = document.createElement('div');
     m.className = 'modal-overlay';
     m.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
                 <div>${a.category}</div>
-                <button class="modal-close" onclick="cerrarModal()">✕</button>
+                <button class="modal-close" onclick="closeModal(this)">✕</button>
             </div>
             <div class="card-title">${a.title}</div>
             <div>${a.content}</div>
             <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-primary" onclick="cerrarModal()">Cerrar</button>
+                <button class="btn btn-primary" onclick="closeModal(this)">✨ Cerrar</button>
             </div>
         </div>
     `;
@@ -2011,29 +2010,25 @@ function openArticle(id) {
 }
 
 function openMomActivity(id) {
-    // 1. Cerrar cualquier modal abierto primero
-    const modalExistente = document.querySelector('.modal-overlay');
-    if (modalExistente) {
-        modalExistente.remove();
-    }
+    // CERRAR CUALQUIER MODAL ABIERTO PRIMERO
+    const existingModals = document.querySelectorAll('.modal-overlay');
+    existingModals.forEach(modal => modal.remove());
     
-    // 2. Buscar la actividad
     const act = getMomActivitiesData().find(a => a.id === id);
     if (!act) return;
     
-    // 3. Crear nuevo modal
     const m = document.createElement('div');
     m.className = 'modal-overlay';
     m.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
                 <div>👩‍👧 ${act.type}</div>
-                <button class="modal-close" onclick="cerrarModal()">✕</button>
+                <button class="modal-close" onclick="closeModal(this)">✕</button>
             </div>
             <div class="card-title">${act.title}</div>
             <div>${act.steps.replace(/\n/g, '<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div>
             <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-primary" onclick="cerrarModal()">Cerrar</button>
+                <button class="btn btn-primary" onclick="closeModal(this)">✨ Cerrar</button>
             </div>
         </div>
     `;
