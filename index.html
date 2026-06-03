@@ -2032,15 +2032,233 @@ function goToView(vn){ showView(vn); const m=document.getElementById('radialMenu
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="MARYSE2025"){ alert("👩‍👧 Bienvenida, mamá."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
 function signOutAndClose(){ if(confirm("¿Cerrar sesión y salir de la aplicación?")){ localStorage.clear(); if(typeof window.close === 'function'){ window.close(); }else{ document.body.innerHTML=`<div style="text-align:center;padding:50px;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()">Volver a entrar</button></div>`; } } }
 function checkSession(){ const logged=localStorage.getItem("maryse_logged_in"); if(!logged && window.location.hash!=="#nologin"){ const email=prompt("📧 Introduce tu email para continuar:"); if(email && email.includes("@")){ localStorage.setItem("maryse_logged_in","true"); localStorage.setItem("maryse_user_email",email); }else if(email!==null){ alert("Email no válido"); location.reload(); } } }
-
-// ==================== COSAS DE LA VIDA ====================
+// ==================== COSAS DE LA VIDA - 10 SUPERPODERES SIN XP ====================
 const lifeSkills = [
-    {id:1,emoji:"🧠",title:"Pensadora Analítica",subtitle:"Piensa como Sherlock",explanation:"Desarma problemas grandes en piezas pequeñas.",frase:"💭 La curiosidad es tu mejor aliada.",tips:["Pregunta 5 veces por qué"],challenge:"Anota 3 causas de un problema"},
-    {id:2,emoji:"🎨",title:"Creativa",subtitle:"Tu visión única",explanation:"Conecta ideas locas entre sí.",frase:"🎨 La creatividad es inteligencia divirtiéndose.",tips:["Inventa nuevos usos"],challenge:"Nuevo uso para un objeto"},
-    {id:3,emoji:"💪",title:"Resiliente",subtitle:"Caerse está permitido",explanation:"Levantarse es obligatorio.",frase:"🌈 No te detengas",tips:["Respira y sigue"],challenge:"¿Qué aprendiste de un momento difícil?"}
+    {
+        id: 1,
+        emoji: "🧠",
+        title: "Pensadora Analítica",
+        subtitle: "Piensa como Sherlock Holmes",
+        explanation: "Desarma problemas grandes en piezas pequeñas. Los analistas no se abruman porque dividen todo en pasos manejables.",
+        frase: "💭 'La curiosidad es tu mejor aliada. Pregunta siempre el porqué.'",
+        tips: [
+            "Pregunta '¿por qué?' 5 veces seguidas para llegar a la raíz",
+            "Haz listas de pros y contras antes de decidir",
+            "Dibuja mapas mentales para organizar ideas"
+        ],
+        challenge: "Anota 3 causas de un problema que tengas y posibles soluciones para cada una.",
+        reflectionQuestion: "¿Qué problema analizaste hoy de manera diferente?"
+    },
+    {
+        id: 2,
+        emoji: "🎨",
+        title: "Creativa",
+        subtitle: "Tu visión única del mundo",
+        explanation: "La creatividad no es un don mágico, es la habilidad de conectar ideas que nadie había conectado antes. Todos somos creativos.",
+        frase: "🎨 'La creatividad es la inteligencia divirtiéndose.' - Albert Einstein",
+        tips: [
+            "Inventa 3 nuevos usos para un objeto cotidiano",
+            "Escribe sin parar por 5 minutos (tormenta de ideas)",
+            "Combina dos hobbies que te gusten para crear algo nuevo"
+        ],
+        challenge: "Toma un objeto común (como una silla) e inventa 5 usos completamente diferentes para él.",
+        reflectionQuestion: "¿Qué idea creativa tuviste hoy?"
+    },
+    {
+        id: 3,
+        emoji: "💪",
+        title: "Resiliente",
+        subtitle: "Caerse está permitido, levantarse es obligatorio",
+        explanation: "La resiliencia no es no sentir dolor, es sentir el dolor y seguir adelante. Es la habilidad de adaptarte y crecer después de las dificultades.",
+        frase: "🌈 'No importa qué tan lento vayas, siempre y cuando no te detengas.' - Confucio",
+        tips: [
+            "Permítete sentir, luego sigue adelante",
+            "Busca la lección en cada caída",
+            "Habla contigo misma como hablarías con tu mejor amiga"
+        ],
+        challenge: "Escribe sobre un momento difícil que superaste. ¿Qué aprendiste? ¿Qué te ayudó a seguir?",
+        reflectionQuestion: "¿Qué te ayudó a levantarte la última vez que te caíste?"
+    },
+    {
+        id: 4,
+        emoji: "🗣️",
+        title: "Comunicadora Asertiva",
+        subtitle: "Di lo que sientes sin herir",
+        explanation: "La comunicación asertiva es expresar tus ideas, sentimientos y necesidades de forma honesta, clara y respetuosa, sin pasividad ni agresión.",
+        frase: "💬 'El arte de la comunicación es el lenguaje del liderazgo.' - James Humes",
+        tips: [
+            "Usa frases con 'yo siento...' en lugar de 'tú siempre...'",
+            "Mantén contacto visual cuando hablas",
+            "Practica decir 'no' de forma educada"
+        ],
+        challenge: "Durante una semana, practica expresar una opinión diferente sin pelear. Usa la frase: 'Entiendo tu punto, pero yo veo que...'",
+        reflectionQuestion: "¿Cómo te sentiste al expresar tu opinión?"
+    },
+    {
+        id: 5,
+        emoji: "🤝",
+        title: "Trabajo en Equipo",
+        subtitle: "Sol@ llegas más rápido, en equipo llegas más lejos",
+        explanation: "Saber colaborar, escuchar, ceder y liderar cuando toca. Las mejores ideas nacen de mentes que trabajan juntas.",
+        frase: "👥 'Si quieres ir rápido, ve solo. Si quieres llegar lejos, ve acompañado.' - Proverbio africano",
+        tips: [
+            "Escucha más de lo que hablas",
+            "Reconoce las ideas de los demás",
+            "Ofrece ayuda antes de que la pidan"
+        ],
+        challenge: "Haz algo por un compañero o amiga sin esperar nada a cambio. Puede ser ayudar con una tarea o simplemente escuchar.",
+        reflectionQuestion: "¿Qué hiciste hoy por alguien más?"
+    },
+    {
+        id: 6,
+        emoji: "⏰",
+        title: "Gestora del Tiempo",
+        subtitle: "Las 24 horas son tuyas",
+        explanation: "No se trata de hacer más cosas, sino de hacer las cosas importantes. Priorizar es el secreto de la productividad.",
+        frase: "⏳ 'El tiempo es lo más valioso que tienes porque nunca recuperas el que pierdes.'",
+        tips: [
+            "Usa la técnica Pomodoro: 25 min de trabajo, 5 de descanso",
+            "Haz una lista de 3 prioridades cada mañana",
+            "Elimina distracciones mientras estudias"
+        ],
+        challenge: "Usa la técnica Pomodoro para estudiar hoy. Haz 4 ciclos de 25 minutos y descansa 5 entre cada uno.",
+        reflectionQuestion: "¿Qué técnica de gestión del tiempo te funcionó mejor?"
+    },
+    {
+        id: 7,
+        emoji: "💰",
+        title: "Educación Financiera",
+        subtitle: "El dinero no da la felicidad, pero saber usarlo ayuda",
+        explanation: "Aprender a ahorrar, gastar con cabeza y entender que el dinero es una herramienta, no un objetivo.",
+        frase: "💵 'No ahorres lo que te sobra después de gastar, gasta lo que te sobra después de ahorrar.' - Warren Buffett",
+        tips: [
+            "Ahorra al menos el 10% de lo que recibas",
+            "Pregunta: ¿necesito esto o solo lo quiero?",
+            "Lleva un registro de tus gastos"
+        ],
+        challenge: "Crea un pequeño presupuesto de tu semana. Anota cuánto recibes y en qué lo gastas.",
+        reflectionQuestion: "¿Qué aprendiste sobre tus hábitos de gasto?"
+    },
+    {
+        id: 8,
+        emoji: "🌱",
+        title: "Autocuidado",
+        subtitle: "Cuídate primero para poder cuidar de los demás",
+        explanation: "No es egoísmo, es necesidad. Cuidar tu cuerpo, mente y emociones te da energía para todo lo demás.",
+        frase: "🕯️ 'No puedes dar lo que no tienes. Cuídate como cuidas a quien más amas.'",
+        tips: [
+            "Duerme 7-8 horas diarias",
+            "Haz algo que te guste solo para ti cada día",
+            "Practica respirar profundo cuando estés estresada"
+        ],
+        challenge: "Hoy, dedícate 15 minutos solo para ti. Sin pantallas. Puedes leer, estirarte, escuchar música o simplemente respirar.",
+        reflectionQuestion: "¿Qué hiciste hoy para cuidarte?"
+    },
+    {
+        id: 9,
+        emoji: "🎯",
+        title: "Establecedora de Metas",
+        subtitle: "Sueños + Plan = Realidad",
+        explanation: "Los sueños sin metas son solo deseos. Convertir un sueño en metas concretas es el primer paso para alcanzarlo.",
+        frase: "🎯 'Una meta sin un plan es solo un deseo.' - Antoine de Saint-Exupéry",
+        tips: [
+            "Usa la técnica SMART: Específica, Medible, Alcanzable, Relevante, Temporal",
+            "Divide metas grandes en pasos pequeños",
+            "Celebra cada pequeño logro"
+        ],
+        challenge: "Escribe una meta que quieras lograr este mes. Luego, divídela en 3 pasos pequeños para la próxima semana.",
+        reflectionQuestion: "¿Cuál es tu meta más importante ahora mismo?"
+    },
+    {
+        id: 10,
+        emoji: "🔄",
+        title: "Mentalidad de Crecimiento",
+        subtitle: "Todavía no lo sé... ¡pero puedo aprender!",
+        explanation: "Creer que puedes mejorar con esfuerzo, práctica y ayuda. Los errores no son fracasos, son oportunidades de aprender.",
+        frase: "🌱 'El genio se hace, no se nace.' - Carol Dweck",
+        tips: [
+            "Cambia 'no puedo' por 'todavía no puedo'",
+            "Agradece los errores porque te enseñan",
+            "Celebra el esfuerzo, no solo el resultado"
+        ],
+        challenge: "Escribe 3 cosas que 'todavía no sabes hacer' pero que te gustaría aprender.",
+        reflectionQuestion: "¿Qué 'todavía no sabes hacer' pero te gustaría aprender?"
+    }
 ];
-function renderLifeSkills(){ const c=document.getElementById("lifeSkillsContainer"); if(c) c.innerHTML=lifeSkills.map(s=>`<div class="skill-card" onclick="openSkill(${s.id})"><div class="skill-emoji">${s.emoji}</div><div class="skill-title">${s.title}</div><div class="skill-subtitle">${s.subtitle}</div></div>`).join(''); }
-function openSkill(id){ const s=lifeSkills.find(s=>s.id===id); if(!s)return; const m=document.createElement('div'); m.className='modal-overlay'; m.innerHTML=`<div class="modal-content"><div class="modal-header"><div>${s.emoji} ${s.title}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div>${s.explanation}</div><div style="margin:8px 0;padding:8px;background:#f0ecff;border-radius:12px;"><i>${s.frase}</i></div><div><strong>🎯 Desafío:</strong> ${s.challenge}</div></div>`; document.body.appendChild(m); }
+
+// Variable para guardar reflexiones (sin XP, solo para recordar)
+let skillReflections = JSON.parse(localStorage.getItem("maryse_skill_reflections") || "{}");
+function renderLifeSkills() {
+    const container = document.getElementById("lifeSkillsContainer");
+    if (!container) return;
+    
+    container.innerHTML = lifeSkills.map(skill => {
+        const hasReflection = skillReflections[skill.id];
+        return `
+            <div class="skill-card" onclick="openSkill(${skill.id})" style="${hasReflection ? 'border-left: 8px solid #10b981;' : ''}">
+                <div class="skill-emoji">${skill.emoji}</div>
+                <div class="skill-title">${skill.title}</div>
+                <div class="skill-subtitle">${skill.subtitle}</div>
+                ${hasReflection ? '<div style="font-size: 0.6rem; color: #10b981; margin-top: 8px;">📝 Reflexión guardada</div>' : '<div style="font-size: 0.6rem; color: var(--subtext); margin-top: 8px;">✨ Completar desafío</div>'}
+            </div>
+        `;
+    }).join('');
+}
+function openSkill(id) {
+    const skill = lifeSkills.find(s => s.id === id);
+    if (!skill) return;
+    
+    const savedReflection = skillReflections[id] || "";
+    
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `
+        <div class="modal-content" style="max-width: 550px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div style="font-size: 1.3rem;">${skill.emoji} ${skill.title}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            
+            <div style="margin: 8px 0; color: var(--primary); font-style: italic;">
+                "${skill.subtitle}"
+            </div>
+            
+            <div style="margin: 12px 0; line-height: 1.5;">
+                ${skill.explanation}
+            </div>
+            
+            <div style="margin: 12px 0; padding: 12px; background: #f8f6ff; border-radius: 16px;">
+                <strong>💡 Frase inspiradora:</strong><br>
+                ${skill.frase}
+            </div>
+            
+            <div style="margin: 12px 0;">
+                <strong>📌 Tips prácticos:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    ${skill.tips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+            </div>
+            
+            <div style="margin: 12px 0; padding: 12px; background: #fef3c7; border-radius: 16px;">
+                <strong>🎯 DESAFÍO:</strong><br>
+                ${skill.challenge}
+            </div>
+            
+            <div style="margin: 12px 0; padding: 12px; background: #e0e7ff; border-radius: 16px;">
+                <strong>📝 Tu reflexión:</strong><br>
+                <textarea id="skillReflection_${skill.id}" rows="3" placeholder="Escribe aquí tu reflexión después de completar el desafío... ¿Qué aprendiste? ¿Cómo te sentiste?" style="width: 100%; margin: 8px 0;">${savedReflection}</textarea>
+                <button class="btn btn-primary" onclick="saveSkillReflection(${skill.id})" style="width: 100%;">
+                    💾 Guardar mi reflexión
+                </button>
+            </div>
+            
+            <div style="margin-top: 12px; text-align: center; font-size: 0.7rem; color: var(--subtext);">
+                🌱 No hay puntuación ni presión. Solo tú y tu crecimiento personal.
+            </div>
+        </div>
+    `;
+    document.body.appendChild(m);
+}
 
 // ==================== INICIALIZACIÓN ====================
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; document.getElementById("installBtn").style.display="block"; });
