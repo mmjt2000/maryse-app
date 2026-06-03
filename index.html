@@ -398,6 +398,16 @@
             <div style="text-align:center; padding:40px;">Cargando...</div>
         </div>
     </div>
+        <!-- AGENDA -->
+    <div id="viewAgenda" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="card">
+            <div class="card-title">📅 Agenda</div>
+            <div id="agendaContainer">
+                <p style="text-align:center; padding:40px;">📅 Tu agenda estará disponible pronto...</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -417,6 +427,7 @@
     <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
+    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
 </div>
 
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
@@ -1950,6 +1961,9 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
+    if(vn==='agenda'){ 
+    // La vue est déjà affichée, pas de render pour l'instant
+}
     window.scrollTo(0,0);
 }
 
