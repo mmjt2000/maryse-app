@@ -381,7 +381,7 @@
         <div class="exam-section" id="examSection"><div class="badge">📝 EXAMEN FINAL · Semana actual</div><div id="examContainer"></div></div>
     </div>
 
-    <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div>
+    <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
     <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
     <div id="viewDad" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="clock-card"><div class="clock-time" id="dadLiveClock">--:--:--</div><div class="clock-date" id="dadLiveDate"></div></div><div id="dadContainer"></div></div>
     <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" onclick="filterKaraokeSongs('en')">🇬🇧 English (24)</button><button class="btn" onclick="filterKaraokeSongs('fr')">🇫🇷 Français (12)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
@@ -403,11 +403,6 @@
                 <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
             </div>
             <button class="btn btn-pink" onclick="openMamaPlaylist()" style="background:#fce7f3; color:#be185d; border:none; padding:10px 20px; border-radius:60px; cursor:pointer;">🎧 Écouter</button>
-        </div>
-        <!-- ACTIVITÉS DE MAMÁ (DÉPLACÉES DEPUIS DISCOVER) -->
-        <div class="mom-section" id="momSection" style="margin-top: 20px;">
-            <div class="badge">👩‍👧 Actividad de la semana</div>
-            <div id="momActivitiesContainer"></div>
         </div>
         
         <div id="mamaCornerContainer" class="mama-corner">
@@ -1978,14 +1973,10 @@ function showView(vn){
     if(target)target.classList.add('active');
     if(vn==='home'){ renderMarysePlaylist(); }
     if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
-    
+    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
-    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }if(vn==='mama'){ 
-    updateMamaProgress(); 
-    renderMamaCorner(); 
-    renderMomActivities();  // ← AJOUTE CETTE LIGNE
-}
+    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
     if(vn==='karaoke') renderKaraokeSongs();
     if(vn==='diary') renderDiary();
     if(vn==='friends') renderAllInvites();
@@ -2155,24 +2146,7 @@ function openGrammar(w) {
     `;
     document.body.appendChild(m);
 }
-function renderMomActivities() {
-    const acts = getMomActivitiesData();
-    const container = document.getElementById("momActivitiesContainer");
-    if (!container) return;
-    
-    if (!acts || acts.length === 0) {
-        container.innerHTML = `<p>¡Pronto más actividades!</p>`;
-        return;
-    }
-    
-    container.innerHTML = acts.map(act => `
-        <div class="mom-card" onclick="openMomActivity('${act.id}')">
-            <h3>${act.title}</h3>
-            <p>${act.description}</p>
-            <div style="font-size: 0.7rem; color: var(--subtext); margin-top: 8px;">✨ ${act.type}</div>
-        </div>
-    `).join('');
-}
+function renderMomActivities(){ const acts=getMomActivitiesData(); document.getElementById("momSection").innerHTML=`<div class="badge">👩‍👧 Actividad de la semana</div>${acts.map(act=>`<div class="mom-card" onclick="openMomActivity('${act.id}')"><h3>${act.title}</h3><p>${act.description}</p></div>`).join('')}`; }
 function openMomActivity(id) { 
     const act = getMomActivitiesData().find(a => a.id === id); 
     if (!act) return; 
