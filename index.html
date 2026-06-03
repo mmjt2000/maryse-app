@@ -392,23 +392,29 @@
     <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><div id="lifeSkillsContainer" class="skills-grid"></div></div></div>
     
         <!-- RINCÓN DE MAMÁ -->
-    <div id="viewMama" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        
-        <!-- CARTE PLAYLIST MAMAN (DÉPLACÉE DEPUIS HOME) -->
-        <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <div>
-                <div style="font-size:1.5rem;">🎵</div>
-                <div style="font-weight:600;">Maryse</div>
-                <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
-            </div>
-            <button class="btn btn-pink" onclick="openMamaPlaylist()" style="background:#fce7f3; color:#be185d; border:none; padding:10px 20px; border-radius:60px; cursor:pointer;">🎧 Écouter</button>
+   <div id="viewMama" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    
+    <!-- CARTE PLAYLIST MAMAN -->
+    <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <div>
+            <div style="font-size:1.5rem;">🎵</div>
+            <div style="font-weight:600;">Maryse</div>
+            <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
         </div>
-        
-        <div id="mamaCornerContainer" class="mama-corner">
-            <div style="text-align:center; padding:40px;">Cargando...</div>
-        </div>
+        <button class="btn btn-pink" onclick="openMamaPlaylist()" style="background:#fce7f3; color:#be185d; border:none; padding:10px 20px; border-radius:60px; cursor:pointer;">🎧 Écouter</button>
     </div>
+    
+    <!-- ACTIVITÉS DE MAMÁ -->
+    <div class="mom-section" id="momSection" style="margin-top: 20px;">
+        <div class="badge">👩‍👧 Actividad de la semana</div>
+        <div id="momActivitiesContainer"></div>
+    </div>
+    
+    <div id="mamaCornerContainer" class="mama-corner">
+        <div style="text-align:center; padding:40px;">Cargando...</div>
+    </div>
+</div>
         <!-- AGENDA -->
     <div id="viewAgenda" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -1973,22 +1979,22 @@ function showView(vn){
     if(target)target.classList.add('active');
     if(vn==='home'){ renderMarysePlaylist(); }
     if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
-    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
+    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
-    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
+    if(vn==='mama'){ 
+        updateMamaProgress(); 
+        renderMamaCorner(); 
+        renderMomActivities(); 
+    }
     if(vn==='karaoke') renderKaraokeSongs();
     if(vn==='diary') renderDiary();
     if(vn==='friends') renderAllInvites();
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
-    if(vn==='agenda'){ 
-    // La vue est déjà affichée, pas de render pour l'instant
-}
-    if(vn==='fotos'){ 
-    // Rien pour l'instant
-}
+    if(vn==='agenda'){ }
+    if(vn==='fotos'){ }
     window.scrollTo(0,0);
 }
 
