@@ -492,7 +492,12 @@
         <div class="stat-card-agenda"><div class="stat-number" id="statTareasUrgentes">0</div><div class="stat-label">⚠️ Urgentes</div></div>
         <div class="stat-card-agenda"><div class="stat-number" id="statCompletadasSemana">0</div><div class="stat-label">✅ Completadas esta semana</div></div>
     </div>
-    
+    <!-- Asegúrate de que estos IDs existen -->
+<input type="text" id="nuevaTareaAgenda" ...>
+<select id="nuevaTareaCategoria" ...>
+<select id="nuevaTareaPrioridad" ...>
+<input type="date" id="nuevaTareaFechaLimite" ...>
+<select id="nuevaTareaMateria" ...>
     <!-- PESTAÑAS MEJORADAS -->
     <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
         <button class="btn" id="tabHorarioBtn" onclick="mostrarTabAgenda('horario')" style="background: var(--primary); color: white;">📚 Horario Escolar</button>
@@ -3677,10 +3682,10 @@ function agregarTareaAgendaMejorada() {
         return;
     }
     
-    const categoria = document.getElementById("nuevaTareaCategoria").value;
-    const prioridad = document.getElementById("nuevaTareaPrioridad").value;
-    const fechaLimite = document.getElementById("nuevaTareaFechaLimite").value;
-    const materia = document.getElementById("nuevaTareaMateria").value;
+    const categoria = document.getElementById("nuevaTareaCategoria") ? document.getElementById("nuevaTareaCategoria").value : "normal";
+    const prioridad = document.getElementById("nuevaTareaPrioridad") ? document.getElementById("nuevaTareaPrioridad").value : "media";
+    const fechaLimite = document.getElementById("nuevaTareaFechaLimite") ? document.getElementById("nuevaTareaFechaLimite").value : "";
+    const materia = document.getElementById("nuevaTareaMateria") ? document.getElementById("nuevaTareaMateria").value : "";
     
     const nuevaTarea = {
         id: Date.now() + "_" + Math.random().toString(36).substr(2, 6),
@@ -3695,12 +3700,24 @@ function agregarTareaAgendaMejorada() {
     
     tareasAgendaMejoradas.unshift(nuevaTarea);
     guardarTareasAgendaMejoradas();
+    
+    // IMPORTANTE: Aplicar el filtro actual para actualizar la vista
     filtrarTareasAgenda(filtroTareasActual);
+    
+    // Limpiar el formulario
     input.value = "";
-    document.getElementById("nuevaTareaFechaLimite").value = "";
-    document.getElementById("nuevaTareaMateria").value = "";
+    if (document.getElementById("nuevaTareaFechaLimite")) document.getElementById("nuevaTareaFechaLimite").value = "";
+    if (document.getElementById("nuevaTareaMateria")) document.getElementById("nuevaTareaMateria").value = "";
+    if (document.getElementById("nuevaTareaCategoria")) document.getElementById("nuevaTareaCategoria").value = "normal";
+    if (document.getElementById("nuevaTareaPrioridad")) document.getElementById("nuevaTareaPrioridad").value = "media";
+    
     actualizarEstadisticasAgenda();
+    // Forzar actualización de la vista
+if (document.getElementById("tareasSectionAgenda") && document.getElementById("tareasSectionAgenda").style.display !== "none") {
+    renderizarTareasAgendaMejoradas(tareasAgendaMejoradas.filter(t => !t.completada));
+}
     mostrarToastAgenda(`📌 "${texto}" añadida`);
+}
 }
 
 // Filtrar tareas
@@ -3708,9 +3725,15 @@ function filtrarTareasAgenda(filtro) {
     filtroTareasActual = filtro;
     
     // Actualizar estilo de los botones de filtro
-    document.querySelectorAll('[data-filtro-tarea]').forEach(btn => {
-        btn.style.background = btn.getAttribute('data-filtro-tarea') === filtro ? "var(--primary)" : "var(--card)";
-        btn.style.color = btn.getAttribute('data-filtro-tarea') === filtro ? "white" : "var(--text)";
+    const botonesFiltro = document.querySelectorAll('[data-filtro-tarea]');
+    botonesFiltro.forEach(btn => {
+        if (btn.getAttribute('data-filtro-tarea') === filtro) {
+            btn.style.background = "var(--primary)";
+            btn.style.color = "white";
+        } else {
+            btn.style.background = "var(--card)";
+            btn.style.color = "var(--text)";
+        }
     });
     
     const mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
@@ -3745,6 +3768,20 @@ function filtrarTareasAgenda(filtro) {
     });
     
     renderizarTareasAgendaMejoradas(tareasFiltradas);
+}
+// Función de depuración para ver el estado actual
+function debugTareasAgenda() {
+    console.log("=== ESTADO ACTUAL DE TAREAS ===");
+    console.log("Tareas guardadas:", tareasAgendaMejoradas);
+    console.log("Filtro actual:", filtroTareasActual);
+    console.log("Total de tareas:", tareasAgendaMejoradas.length);
+    console.log("Pendientes:", tareasAgendaMejoradas.filter(t => !t.completada).length);
+    
+    // Verificar localStorage
+    const stored = localStorage.getItem("maryse_tareas_mejoradas");
+    console.log("En localStorage:", stored ? JSON.parse(stored).length : 0, "tareas");
+    
+    mostrarToastAgenda(`🔍 Debug: ${tareasAgendaMejoradas.length} tareas en memoria`);
 }
 
 function renderizarTareasAgendaMejoradas(tareas) {
