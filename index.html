@@ -401,10 +401,23 @@
     <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><div id="lifeSkillsContainer" class="skills-grid"></div></div></div>
     
     <!-- RINCÓN DE MAMÁ -->
-    <div id="viewMama" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div id="viewMama" class="view">
+ <div id="viewMama" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
+    
+    <!-- PLAYLIST DE MAMÁ -->
+    <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:linear-gradient(135deg,#fdf2f8,#fce7f3); border-radius:28px; padding:16px 20px;">
+        <div>
+            <div style="font-size:1.5rem;">🎵</div>
+            <div style="font-weight:600;">Maryse</div>
+            <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
+        </div>
+        <button class="btn btn-pink" onclick="openMamaPlaylist()" style="background:#fce7f3; color:#be185d; border:none; padding:10px 20px; border-radius:60px; cursor:pointer;">🎧 Écouter</button>
+    </div>
+    
+    <div id="mamaCornerContainer" class="mama-corner">
+        <div style="text-align:center; padding:40px;">Cargando...</div>
+    </div>
+</div>
     
     <!-- PLAYLIST DE MAMÁ (MOVIDA DESDE HOME) -->
     <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
