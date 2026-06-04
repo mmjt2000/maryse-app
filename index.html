@@ -2847,36 +2847,49 @@ function cerrarTodosModales() {
     modales.forEach(modal => modal.remove());
 }
 
-// Reemplazar la función openMomActivity original con una versión que funciona
-window.openMomActivityOriginal = window.openMomActivity;
-window.openMomActivity = function(id) {
-    // Cerrar modales existentes
+// Función original de openMomActivity (la que funciona)
+function openMomActivity(id) { 
+    const act = getMomActivitiesData().find(a => a.id === id); 
+    if (!act) return; 
+    const m = document.createElement('div'); 
+    m.className = 'modal-overlay'; 
+    m.innerHTML = `<div class="modal-content"><div class="modal-header"><div>👩‍👧 ${act.type}</div><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div><div class="card-title">${act.title}</div><div>${act.steps.replace(/\n/g,'<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()" style="margin-top:15px;">Cerrar</button></div>`; 
+    document.body.appendChild(m); 
+}
+
+// Reemplazar openArticle también
+window.openArticleOriginal = window.openArticle;
+window.openArticle = function(id) {
     cerrarTodosModales();
     
-    // Obtener la actividad
-    const act = getMomActivitiesData().find(a => a.id === id);
-    if (!act) return;
+    const a = getArticlesData().find(a => a.id === id);
+    if (!a) return;
     
-    // Crear nuevo modal
     const m = document.createElement('div');
     m.className = 'modal-overlay';
     m.setAttribute('data-modal', 'true');
     m.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
-                <div>👩‍👧 ${act.type}</div>
-                <button class="modal-close" data-close="true">✕</button>
+                <div>${a.category}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
             </div>
-            <div class="card-title">${act.title}</div>
-            <div>${act.steps.replace(/\n/g, '<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div>
+            <div class="card-title">${a.title}</div>
+            <div>${a.content}</div>
             <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-primary" data-close="true">✨ Cerrar</button>
+                <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">✨ Cerrar</button>
             </div>
         </div>
     `;
     document.body.appendChild(m);
 };
 
+// Evento global para cerrar modales con ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        cerrarTodosModales();
+    }
+});
 // Reemplazar openArticle también
 window.openArticleOriginal = window.openArticle;
 window.openArticle = function(id) {
