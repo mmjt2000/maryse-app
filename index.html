@@ -336,7 +336,16 @@
         <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
         <div class="card mama-card" style="display:flex;justify-content:space-between;"><div><div class="card-icon">🎵</div><div class="card-title" id="mamaPlaylistTitle">Maryse</div><div class="card-subtitle">💕 Playlist de Maman (Fiona)</div></div><button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button></div>
-        
+        <!-- AGENDA -->
+    <div id="viewAgenda" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="card">
+            <div class="card-title">📅 Mi Agenda</div>
+            <div id="agendaContainer">
+                <p style="text-align:center; padding:40px;">📅 Tu agenda estará disponible pronto...</p>
+            </div>
+        </div>
+    </div>
         <!-- REPRODUCTOR DE MÚSICA -->
         <div class="music-player">
             <div class="now-playing" id="nowPlaying">
@@ -417,6 +426,7 @@
     <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
+    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
 </div>
 
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
