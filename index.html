@@ -1790,16 +1790,228 @@ const TOTAL_LESSONS=16;
 
 // ==================== RINCÓN DE PAPÁ ====================
 const dadWeek = [
-    { dia: "Lunes", emoji: "💌", carta: "Eres mucho más de lo que crees.", articulo: "El poder de los objetivos", consejo: "Escribe 3 objetivos", actividad: "Cumple un objetivo" },
-    { dia: "Martes", emoji: "😢", carta: "Todas las emociones son válidas.", articulo: "Entendiendo emociones", consejo: "Escribe cómo te sientes", actividad: "Dibuja 3 emociones" },
-    { dia: "Miércoles", emoji: "👭", carta: "Rodéate de personas que te impulsen.", articulo: "Amistades saludables", consejo: "Regala un cumplido", actividad: "Mensaje bonito" },
-    { dia: "Jueves", emoji: "🪞", carta: "Soy suficiente.", articulo: "Construir confianza", consejo: "Repite frente al espejo", actividad: "Ejercicio del espejo" },
-    { dia: "Viernes", emoji: "🌟", carta: "Tus sueños importan.", articulo: "Perseguir sueños", consejo: "Imagina tu sueño", actividad: "Mapa de sueños" }
+    { 
+        dia: "Lunes", 
+        emoji: "💌", 
+        carta: "Eres mucho más de lo que crees.", 
+        reflexion: "¿Qué talento descubriste en ti esta semana?",
+        articulo: "El poder de los objetivos", 
+        consejo: "Escribe 3 objetivos para esta semana", 
+        actividad: "Cumple un objetivo pequeño",
+        afirmacion: "Soy capaz de lograr lo que me propongo",
+        videoLink: "https://www.youtube.com/results?search_query=frases+motivadoras+para+mujeres"
+    },
+    { 
+        dia: "Martes", 
+        emoji: "😢", 
+        carta: "Todas las emociones son válidas. Sentir no es debilidad, es humanidad.", 
+        reflexion: "¿Qué emoción sentiste hoy y cómo la manejaste?",
+        articulo: "Entendiendo emociones", 
+        consejo: "Escribe cómo te sientes en un papel", 
+        actividad: "Dibuja 3 emociones diferentes",
+        afirmacion: "Mis emociones me guían, no me controlan",
+        videoLink: "https://www.youtube.com/results?search_query=inteligencia+emocional+para+jovenes"
+    },
+    { 
+        dia: "Miércoles", 
+        emoji: "👭", 
+        carta: "Rodéate de personas que te impulsen a ser mejor. Una amiga de verdad te celebra, no te compite.", 
+        reflexion: "¿Qué cualidad valoras más en tus amigas?",
+        articulo: "Amistades saludables", 
+        consejo: "Regala un cumplido sincero hoy", 
+        actividad: "Envía un mensaje bonito a una amiga",
+        afirmacion: "Merezco amistades que me suman",
+        videoLink: "https://www.youtube.com/results?search_query=amistad+verdadera+consejos"
+    },
+    { 
+        dia: "Jueves", 
+        emoji: "🪞", 
+        carta: "Eres suficiente tal como eres. No necesitas cambiar para merecer amor o respeto.", 
+        reflexion: "¿Qué es lo que más te gusta de ti misma?",
+        articulo: "Construir confianza", 
+        consejo: "Repite frente al espejo: 'Soy suficiente'", 
+        actividad: "Ejercicio del espejo: 3 cosas que te gustan de ti",
+        afirmacion: "Soy valiosa, única y suficiente",
+        videoLink: "https://www.youtube.com/results?search_query=autoestima+para+adolescentes"
+    },
+    { 
+        dia: "Viernes", 
+        emoji: "🌟", 
+        carta: "Tus sueños importan. Nadie puede soñar por ti ni decirte qué es imposible.", 
+        reflexion: "¿Qué harías si supieras que no puedes fallar?",
+        articulo: "Perseguir sueños", 
+        consejo: "Imagina tu sueño como si ya lo hubieras cumplido", 
+        actividad: "Crea un mapa de sueños (collage de imágenes)",
+        afirmacion: "Mis sueños son posibles y voy por ellos",
+        videoLink: "https://www.youtube.com/results?search_query=cumple+tus+sueños+motivacion"
+    },
+    { 
+        dia: "Sábado", 
+        emoji: "🌿", 
+        carta: "El descanso no es un premio, es una necesidad. Cuidarte es parte del éxito.", 
+        reflexion: "¿Cómo cuidas tu cuerpo y mente?",
+        articulo: "Importancia del descanso", 
+        consejo: "Hoy haz algo solo por ti", 
+        actividad: "15 minutos de algo que te haga feliz sin pantallas",
+        afirmacion: "Merezco descansar y cuidarme",
+        videoLink: "https://www.youtube.com/results?search_query=autocuidado+para+mujeres"
+    },
+    { 
+        dia: "Domingo", 
+        emoji: "🙏", 
+        carta: "Agradece lo que tienes, incluso lo pequeño. La gratitud cambia tu mirada del mundo.", 
+        reflexion: "¿Qué 3 cosas te pasaron esta semana que agradeces?",
+        articulo: "El poder de la gratitud", 
+        consejo: "Escribe una lista de gratitud", 
+        actividad: "Comparte con alguien algo que agradeces de él/ella",
+        afirmacion: "Elijo ver lo bueno en mi vida",
+        videoLink: "https://www.youtube.com/results?search_query=gratitud+frases+motivadoras"
+    }
 ];
-function renderDad() { let completadas = JSON.parse(localStorage.getItem('maryse_dad_completadas')||'[]'); document.getElementById("dadContainer").innerHTML = `<div class="card"><div class="dad-week-grid">${dadWeek.map(day => `<div class="dad-day-card"><div class="dad-day-header">${day.emoji} ${day.dia}</div><div class="dad-section"><strong>💌 Carta</strong><br>“${day.carta}”</div><div class="dad-section"><strong>🎯 Actividad</strong><br>${day.actividad}<br><button class="btn-small" onclick="marcarActividadDad('${day.dia}')">${completadas.includes(day.dia)?'✅ Completada':'✅ Marcar (+10 XP)'}</button></div></div>`).join('')}</div></div>`; }
-function marcarActividadDad(dia) { let completadas = JSON.parse(localStorage.getItem('maryse_dad_completadas')||'[]'); if(!completadas.includes(dia)){ completadas.push(dia); localStorage.setItem('maryse_dad_completadas',JSON.stringify(completadas)); userXP+=10; if(userXP>=userLevel*100){ userLevel++; } localStorage.setItem("maryse_xp",userXP); updateProfile(); renderDad(); alert("🎉 +10 XP!"); } }
-function updateDadClock() { const c=document.getElementById('dadLiveClock'); if(c) c.textContent=new Date().toLocaleTimeString('es-ES'); }
-setInterval(updateDadClock,1000);
+
+// Guardar progreso de papá
+let dadProgress = JSON.parse(localStorage.getItem("maryse_dad_progress") || "{}");
+
+function renderDad() {
+    const container = document.getElementById("dadContainer");
+    if (!container) return;
+    
+    let html = `<div class="dad-week-grid">`;
+    
+    for (let i = 0; i < dadWeek.length; i++) {
+        const day = dadWeek[i];
+        const isCompleted = dadProgress[day.dia];
+        
+        html += `
+            <div class="dad-day-card" style="border-left: 8px solid ${isCompleted ? '#10b981' : 'var(--primary)'}">
+                <div class="dad-day-header">
+                    <span style="font-size:1.8rem;">${day.emoji}</span>
+                    <span>${day.dia}</span>
+                    ${isCompleted ? '<span style="margin-left:auto; color:#10b981;">✅ Completado</span>' : ''}
+                </div>
+                
+                <div class="dad-section">
+                    <strong>💌 Carta de hoy:</strong><br>
+                    "${day.carta}"
+                </div>
+                
+                <div class="dad-section">
+                    <strong>🤔 Para reflexionar:</strong><br>
+                    ${day.reflexion}
+                </div>
+                
+                <div class="dad-section">
+                    <strong>📖 Artículo recomendado:</strong><br>
+                    <a href="${day.videoLink}" target="_blank" style="color: var(--primary);">🔗 ${day.articulo}</a>
+                </div>
+                
+                <div class="dad-section">
+                    <strong>💡 Consejo del día:</strong><br>
+                    ${day.consejo}
+                </div>
+                
+                <div class="dad-section">
+                    <strong>🎯 Actividad:</strong><br>
+                    ${day.actividad}
+                    <button class="btn-small" onclick="completarActividadPapa('${day.dia}')" style="margin-top:10px; display:block; width:100%;" ${isCompleted ? 'disabled' : ''}>
+                        ${isCompleted ? '✅ Completada' : '✅ Marcar como completada'}
+                    </button>
+                </div>
+                
+                <div class="dad-section" style="background: linear-gradient(135deg, #e0e7ff, #f0ecff);">
+                    <strong>✨ Afirmación del día:</strong><br>
+                    "${day.afirmacion}"
+                    <button class="btn-small" onclick="speakText('${day.afirmacion}', 'es')" style="margin-top:8px;">🔊 Escuchar afirmación</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Mostrar estadísticas
+    const completados = Object.keys(dadProgress).length;
+    const total = dadWeek.length;
+    const porcentaje = Math.round((completados / total) * 100);
+    
+    html += `
+        <div class="dad-day-card" style="background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; text-align: center;">
+            <div class="dad-day-header" style="justify-content: center;">
+                <span>📊 Tu progreso esta semana</span>
+            </div>
+            <div class="progress-bar-container" style="background: rgba(255,255,255,0.3);">
+                <div class="progress-bar-fill" style="width: ${porcentaje}%; background: white;"></div>
+            </div>
+            <div style="margin-top: 10px;">${completados} de ${total} días completados (${porcentaje}%)</div>
+            ${completados === total ? '<div style="margin-top: 15px; font-size: 1.2rem;">🎉 ¡Completaste la semana! 🎉</div>' : ''}
+        </div>
+    `;
+    
+    html += `</div>`;
+    container.innerHTML = html;
+    
+    // Guardar el porcentaje para mostrar en perfil
+    localStorage.setItem("maryse_dad_progress_percent", porcentaje);
+}
+
+function completarActividadPapa(dia) {
+    if (dadProgress[dia]) {
+        alert("⚠️ Ya completaste este día anteriormente");
+        return;
+    }
+    
+    dadProgress[dia] = {
+        fecha: new Date().toISOString(),
+        dia: dia
+    };
+    
+    localStorage.setItem("maryse_dad_progress", JSON.stringify(dadProgress));
+    
+    // Dar XP por completar
+    userXP += 15;
+    if (userXP >= userLevel * 100) {
+        userLevel++;
+    }
+    localStorage.setItem("maryse_xp", userXP);
+    localStorage.setItem("maryse_level", userLevel);
+    updateProfile();
+    
+    renderDad();
+    
+    // Mostrar mensaje motivador
+    const mensajes = [
+        "🎉 ¡Bien hecho! Papá está orgulloso de ti",
+        "💪 ¡Un día más, un paso más cerca de tu mejor versión!",
+        "🌟 Sigue así, pequeña. Estás creciendo cada día",
+        "💜 Papá te ama. Sigue esforzándote",
+        "✨ ¡+15 XP! Vas a llegar lejos"
+    ];
+    const msg = mensajes[Math.floor(Math.random() * mensajes.length)];
+    alert(msg + " (+15 XP)");
+}
+
+function resetDadWeek() {
+    if (confirm("¿Quieres reiniciar la semana de Papá? Esto borrará todo tu progreso.")) {
+        dadProgress = {};
+        localStorage.setItem("maryse_dad_progress", JSON.stringify(dadProgress));
+        renderDad();
+        alert("✅ Semana reiniciada. ¡Puedes volver a completar los días!");
+    }
+}
+
+function updateDadClock() {
+    const clock = document.getElementById("dadLiveClock");
+    const dateElem = document.getElementById("dadLiveDate");
+    if (clock) {
+        const now = new Date();
+        clock.textContent = now.toLocaleTimeString('es-ES');
+        if (dateElem) {
+            dateElem.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+    }
+}
+
+// Inicializar reloj de papá
+setInterval(updateDadClock, 1000);
+updateDadClock();
 
 // ==================== REPRODUCTOR DE MÚSICA ====================
 const maryseFavSongs = [
