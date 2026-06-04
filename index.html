@@ -3025,6 +3025,88 @@ function openSkill(id) {
     `;
     document.body.appendChild(m);
 }
+// ==================== AGENDA SIMPLE Y FUNCIONAL ====================
+const DIAS_AGENDA = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+const HORAS_AGENDA = ["08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00"];
+const BASE_AGENDA = [["Matemáticas","Historia","Matemáticas","Física","Historia"],["Lengua","Matemáticas","Inglés","Matemáticas","Lengua"],["Educación Física","Química","Lengua","Inglés","Inglés"],["Física","Biología","Arte","Historia","Biología"],["Inglés","Lengua","Tecnología","Tecnología","Matemáticas"],["Tutoría","Música","Ética","Física","Deporte"],["Estudio libre","Estudio libre","Clase refuerzo","Orientación","Estudio libre"]];
+let horarioAgenda = [], tareasAgenda = [];
+
+function cargarHorarioAgenda() { let g = localStorage.getItem("maryse_horario_agenda"); horarioAgenda = g ? JSON.parse(g) : JSON.parse(JSON.stringify(BASE_AGENDA)); }
+function guardarHorarioAgenda() { localStorage.setItem("maryse_horario_agenda", JSON.stringify(horarioAgenda)); }
+function renderHorarioAgenda() {
+    let t = document.getElementById("tablaHorarioFinal");
+    if (!t) return;
+    let h = "<thead><tr><th>Hora</th>";
+    DIAS_AGENDA.forEach(d => h += `<th>${d}</th>`);
+    h += "</tr></thead><tbody>";
+    for (let i = 0; i < HORAS_AGENDA.length; i++) {
+        h += "<tr>";
+        h += `<td style="background:#f3e8ff;font-weight:600">${HORAS_AGENDA[i]}</td>`;
+        for (let j = 0; j < DIAS_AGENDA.length; j++) {
+            let v = horarioAgenda[i]?.[j] || "—";
+            h += `<td onclick="editarMateriaAgenda(${i},${j})" style="cursor:pointer">${v}</td>`;
+        }
+        h += "</tr>";
+    }
+    h += "</tbody>";
+    t.innerHTML = h;
+}
+function editarMateriaAgenda(f,c) { let a = horarioAgenda[f]?.[c] || "—", n = prompt("Editar materia:", a); if (n !== null) { if (!horarioAgenda[f]) horarioAgenda[f] = []; horarioAgenda[f][c] = n.trim() || "—"; guardarHorarioAgenda(); renderHorarioAgenda(); } }
+function restaurarHorarioAgenda() { if (confirm("Restaurar horario?")) { horarioAgenda = JSON.parse(JSON.stringify(BASE_AGENDA)); guardarHorarioAgenda(); renderHorarioAgenda(); } }
+function exportarHorarioAgenda() { let a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify({fecha:new Date(),horario:horarioAgenda})], {type:"application/json"})); a.download = `horario_${new Date().toISOString().slice(0,19)}.json`; a.click(); }
+
+function cargarTareasAgenda() { let g = localStorage.getItem("maryse_tareas_agenda"); tareasAgenda = g ? JSON.parse(g) : [{id:Date.now()+"_1",texto:"📖 Terminar historia",completada:false},{id:Date.now()+"_2",texto:"🧪 Práctica química",completada:false}]; }
+function guardarTareasAgenda() { localStorage.setItem("maryse_tareas_agenda", JSON.stringify(tareasAgenda)); }
+function renderTareasAgenda() {
+    let c = document.getElementById("listaTareasFinal");
+    if (!c) return;
+    let mostrar = document.getElementById("mostrarCompletadasFinal")?.checked || false;
+    let filtradas = mostrar ? tareasAgenda : tareasAgenda.filter(t => !t.completada);
+    if (filtradas.length === 0) { c.innerHTML = "<div style='text-align:center;padding:40px'>✨ No hay tareas</div>"; return; }
+    c.innerHTML = filtradas.map(t => `<div style="display:flex;align-items:center;justify-content:space-between;background:#f9f9ff;border-radius:60px;padding:10px 16px;margin-bottom:8px"><div style="display:flex;align-items:center;gap:12px;flex:1"><input type="checkbox" ${t.completada?"checked":""} onchange="toggleTareaAgenda('${t.id}')"><span style="${t.completada?'text-decoration:line-through;opacity:0.6':''}">${t.texto}</span></div><button onclick="eliminarTareaAgenda('${t.id}')" style="background:none;border:none;font-size:1.2rem;cursor:pointer">🗑️</button></div>`).join("");
+}
+function agregarTareaAgenda() { let inp = document.getElementById("inputTareaFinal"), txt = inp.value.trim(); if (!txt) return; tareasAgenda.unshift({id:Date.now()+"_"+Math.random().toString(36).substr(2,6), texto:txt, completada:false}); guardarTareasAgenda(); renderTareasAgenda(); inp.value = ""; }
+function toggleTareaAgenda(id) { let t = tareasAgenda.find(t => t.id === id); if(t){ t.completada = !t.completada; guardarTareasAgenda(); renderTareasAgenda(); } }
+function eliminarTareaAgenda(id) { tareasAgenda = tareasAgenda.filter(t => t.id !== id); guardarTareasAgenda(); renderTareasAgenda(); }
+
+function mostrarPestanaAgenda(p) {
+    let ph = document.getElementById("panelHorarioFinal"), pt = document.getElementById("panelTareasFinal");
+    let bh = document.getElementById("btnHorarioFinal"), bt = document.getElementById("btnTareasFinal");
+    if (p === "horario") {
+        ph.style.display = "block"; pt.style.display = "none";
+        bh.style.background = "var(--primary)"; bh.style.color = "white";
+        bt.style.background = "var(--card)"; bt.style.color = "var(--text)";
+        renderHorarioAgenda();
+    } else {
+        ph.style.display = "none"; pt.style.display = "block";
+        bt.style.background = "var(--primary)"; bt.style.color = "white";
+        bh.style.background = "var(--card)"; bh.style.color = "var(--text)";
+        renderTareasAgenda();
+    }
+}
+
+function iniciarAgendaFinal() {
+    cargarHorarioAgenda();
+    cargarTareasAgenda();
+    renderHorarioAgenda();
+    renderTareasAgenda();
+    document.getElementById("btnHorarioFinal").onclick = () => mostrarPestanaAgenda("horario");
+    document.getElementById("btnTareasFinal").onclick = () => mostrarPestanaAgenda("tareas");
+    document.getElementById("restaurarHorarioFinal").onclick = () => restaurarHorarioAgenda();
+    document.getElementById("exportarHorarioFinal").onclick = () => exportarHorarioAgenda();
+    document.getElementById("agregarTareaFinal").onclick = () => agregarTareaAgenda();
+    document.getElementById("inputTareaFinal").onkeypress = (e) => { if(e.key === "Enter") agregarTareaAgenda(); };
+    document.getElementById("mostrarCompletadasFinal").onchange = () => renderTareasAgenda();
+    mostrarPestanaAgenda("horario");
+}
+
+// Conectar con showView
+const showViewAnteriorAgenda = window.showView;
+window.showView = function(v) {
+    if (showViewAnteriorAgenda) showViewAnteriorAgenda(v);
+    if (v === "agenda") setTimeout(iniciarAgendaFinal, 50);
+};
+
 
 // ==================== INICIALIZACIÓN ====================
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; document.getElementById("installBtn").style.display="block"; });
@@ -3039,324 +3121,4 @@ document.querySelectorAll(".mood-card").forEach(c=>c.addEventListener("click",fu
 checkSession();
 renderMarysePlaylist();
 updateMamaProgress();
-// ==================== AGENDA FUNCIONAL ====================
-const DIAS_FINAL = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-const HORAS_FINAL = ["08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00"];
 
-const BASE_HORARIO_FINAL = [
-    ["Matemáticas", "Historia", "Matemáticas", "Física", "Historia"],
-    ["Lengua", "Matemáticas", "Inglés", "Matemáticas", "Lengua"],
-    ["Educación Física", "Química", "Lengua", "Inglés", "Inglés"],
-    ["Física", "Biología", "Arte", "Historia", "Biología"],
-    ["Inglés", "Lengua", "Tecnología", "Tecnología", "Matemáticas"],
-    ["Tutoría", "Música", "Ética", "Física", "Deporte"],
-    ["Estudio libre", "Estudio libre", "Clase refuerzo", "Orientación", "Estudio libre"]
-];
-
-let horarioFinal = [];
-let tareasFinal = [];
-
-function cargarHorarioFinal() {
-    let g = localStorage.getItem("maryse_horario_final");
-    horarioFinal = g ? JSON.parse(g) : JSON.parse(JSON.stringify(BASE_HORARIO_FINAL));
-}
-function guardarHorarioFinal() { localStorage.setItem("maryse_horario_final", JSON.stringify(horarioFinal)); }
-
-function renderizarHorarioFinal() {
-    let t = document.getElementById("tablaHorarioFinal");
-    if (!t) return;
-    let html = "<thead><tr><th style='padding:12px;background:var(--primary);color:white;'>Hora</th>";
-    DIAS_FINAL.forEach(d => html += `<th style='padding:12px;background:var(--primary);color:white;'>${d}</th>`);
-    html += "</tr></thead><tbody>";
-    for (let i = 0; i < HORAS_FINAL.length; i++) {
-        html += "<tr>";
-        html += `<td style='padding:12px;background:rgba(139,92,246,0.08);font-weight:600;text-align:center;'>${HORAS_FINAL[i]}<\/td>`;
-        for (let j = 0; j < DIAS_FINAL.length; j++) {
-            let v = horarioFinal[i]?.[j] || "—";
-            html += `<td onclick='editarMateriaFinal(${i},${j})' style='padding:12px;text-align:center;cursor:pointer;background:var(--card);' onmouseenter="this.style.background='rgba(139,92,246,0.1)'" onmouseleave="this.style.background='var(--card)'">${v}<\/td>`;
-        }
-        html += "<\/tr>";
-    }
-    html += "</tbody>";
-    t.innerHTML = html;
-}
-
-function editarMateriaFinal(f, c) {
-    let a = horarioFinal[f]?.[c] || "—";
-    let n = prompt("✏️ Editar materia:", a);
-    if (n !== null) {
-        if (!horarioFinal[f]) horarioFinal[f] = [];
-        horarioFinal[f][c] = n.trim() === "" ? "—" : n.trim();
-        guardarHorarioFinal();
-        renderizarHorarioFinal();
-    }
-}
-
-function restaurarHorarioFinal() {
-    if (confirm("¿Restaurar horario original?")) {
-        horarioFinal = JSON.parse(JSON.stringify(BASE_HORARIO_FINAL));
-        guardarHorarioFinal();
-        renderizarHorarioFinal();
-    }
-}
-
-function exportarHorarioFinal() {
-    let a = document.createElement("a");
-    let datos = { fecha: new Date().toISOString(), horas: HORAS_FINAL, dias: DIAS_FINAL, horario: horarioFinal };
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" }));
-    a.download = `horario_maryse_${new Date().toISOString().slice(0,19)}.json`;
-    a.click();
-}
-
-function cargarTareasFinal() {
-    let g = localStorage.getItem("maryse_tareas_final");
-    if (g) {
-        tareasFinal = JSON.parse(g);
-    } else {
-        tareasFinal = [
-            { id: Date.now() + "_1", texto: "📖 Terminar resumen de historia", completada: false },
-            { id: Date.now() + "_2", texto: "🧪 Práctica de química", completada: false },
-            { id: Date.now() + "_3", texto: "📐 Ejercicios de álgebra", completada: true }
-        ];
-    }
-}
-function guardarTareasFinal() { localStorage.setItem("maryse_tareas_final", JSON.stringify(tareasFinal)); }
-
-function renderizarTareasFinal() {
-    let c = document.getElementById("listaTareasFinal");
-    if (!c) return;
-    let mostrar = document.getElementById("mostrarCompletadasFinal")?.checked || false;
-    let filtradas = mostrar ? tareasFinal : tareasFinal.filter(t => !t.completada);
-    if (filtradas.length === 0) {
-        c.innerHTML = "<div style='text-align:center;padding:40px;color:var(--subtext);'>✨ ¡No hay tareas! Añade una ✨</div>";
-        return;
-    }
-    c.innerHTML = filtradas.map(t => `
-        <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:60px;padding:10px 16px;margin-bottom:8px;border:1px solid var(--border);">
-            <div style="display:flex;align-items:center;gap:12px;flex:1;">
-                <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTareaFinal('${t.id}')" style="width:20px;height:20px;cursor:pointer;accent-color:var(--primary);">
-                <span style="${t.completada ? 'text-decoration:line-through;opacity:0.6;' : ''}">${t.texto}</span>
-            </div>
-            <button onclick="eliminarTareaFinal('${t.id}')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#ef4444;">🗑️</button>
-        </div>
-    `).join("");
-}
-
-function agregarTareaFinal() {
-    let inp = document.getElementById("inputTareaFinal");
-    let txt = inp.value.trim();
-    if (!txt) return;
-    tareasFinal.unshift({
-        id: Date.now() + "_" + Math.random().toString(36).substr(2, 6),
-        texto: txt,
-        completada: false
-    });
-    guardarTareasFinal();
-    renderizarTareasFinal();
-    inp.value = "";
-}
-
-function toggleTareaFinal(id) {
-    let t = tareasFinal.find(t => t.id === id);
-    if (t) {
-        t.completada = !t.completada;
-        guardarTareasFinal();
-        renderizarTareasFinal();
-    }
-}
-
-function eliminarTareaFinal(id) {
-    tareasFinal = tareasFinal.filter(t => t.id !== id);
-    guardarTareasFinal();
-    renderizarTareasFinal();
-}
-
-function mostrarPestanaFinal(p) {
-    let ph = document.getElementById("panelHorarioFinal");
-    let pt = document.getElementById("panelTareasFinal");
-    let bh = document.getElementById("btnHorarioFinal");
-    let bt = document.getElementById("btnTareasFinal");
-    if (p === "horario") {
-        ph.style.display = "block";
-        pt.style.display = "none";
-        bh.style.background = "var(--primary)";
-        bh.style.color = "white";
-        bt.style.background = "var(--card)";
-        bt.style.color = "var(--text)";
-        renderizarHorarioFinal();
-    } else {
-        ph.style.display = "none";
-        pt.style.display = "block";
-        bt.style.background = "var(--primary)";
-        bt.style.color = "white";
-        bh.style.background = "var(--card)";
-        bh.style.color = "var(--text)";
-        renderizarTareasFinal();
-    }
-}
-
-function iniciarAgendaFinal() {
-    cargarHorarioFinal();
-    cargarTareasFinal();
-    renderizarHorarioFinal();
-    renderizarTareasFinal();
-    document.getElementById("btnHorarioFinal").onclick = () => mostrarPestanaFinal("horario");
-    document.getElementById("btnTareasFinal").onclick = () => mostrarPestanaFinal("tareas");
-    document.getElementById("restaurarHorarioFinal").onclick = () => restaurarHorarioFinal();
-    document.getElementById("exportarHorarioFinal").onclick = () => exportarHorarioFinal();
-    document.getElementById("agregarTareaFinal").onclick = () => agregarTareaFinal();
-    document.getElementById("inputTareaFinal").onkeypress = (e) => { if (e.key === "Enter") agregarTareaFinal(); };
-    document.getElementById("mostrarCompletadasFinal").onchange = () => renderizarTareasFinal();
-    mostrarPestanaFinal("horario");
-}
-
-// Sobrescribir showView
-const showViewAnteriorFinal = window.showView;
-window.showView = function(v) {
-    if (showViewAnteriorFinal) showViewAnteriorFinal(v);
-    if (v === "agenda") setTimeout(iniciarAgendaFinal, 50);
-};
-
-// Exponer funciones globales
-window.editarMateriaFinal = editarMateriaFinal;
-window.toggleTareaFinal = toggleTareaFinal;
-window.eliminarTareaFinal = eliminarTareaFinal;
-window.agregarTareaFinal = agregarTareaFinal;
-window.mostrarPestanaFinal = mostrarPestanaFinal;
-
-
-// Exponer funciones globales para la agenda
-window.mostrarTabAgenda = mostrarTabAgenda;
-window.agregarTareaAgenda = agregarTareaAgenda;
-window.toggleTareaAgenda = toggleTareaAgenda;
-window.eliminarTareaAgenda = eliminarTareaAgenda;
-window.restaurarHorarioAgenda = restaurarHorarioAgenda;
-window.exportarHorarioJSON = exportarHorarioJSON;
-window.renderizarHorarioAgenda = renderizarHorarioAgenda;
-window.renderizarTareasAgenda = renderizarTareasAgenda;
-// Exponer funciones globales
-window.showView=showView; window.openLesson=openLesson; window.completeLesson=completeLesson;
-window.openArticle=openArticle; window.openMomActivity=openMomActivity;
-window.speakText=speakText; window.toggleDarkMode=toggleDarkMode; window.changeAvatar=changeAvatar;
-window.openMamaPlaylist=openMamaPlaylist;
-window.loadFlashcards=loadFlashcards; window.flipFlashcard=flipFlashcard;
-window.flashcardResult=flashcardResult; window.nextFlashcard=nextFlashcard; window.switchFlashMode=switchFlashMode;
-window.switchGame=switchGame; window.flipMemoryCard=flipMemoryCard;
-window.answerSpeedQuiz=answerSpeedQuiz; window.pickScrambleLetter=pickScrambleLetter;
-window.resetScrambleAnswer=resetScrambleAnswer; window.checkScrambleAnswer=checkScrambleAnswer;
-window.filterKaraokeSongs=filterKaraokeSongs;
-window.saveDiaryEntry=saveDiaryEntry; window.previewDiaryPhoto=previewDiaryPhoto;
-window.rotatePhoto=rotatePhoto; window.flipPhoto=flipPhoto; window.centerPhoto=centerPhoto; window.resetPhoto=resetPhoto; window.applyEdit=applyEdit;
-window.generateFriendCode=generateFriendCode; window.addFriend=addFriend;
-window.approveReceivedInvite=approveReceivedInvite; window.rejectReceivedInvite=rejectReceivedInvite;
-window.cancelSentInvite=cancelSentInvite;
-window.applyPreset=applyPreset; window.updateTheme=updateTheme; window.saveTheme=saveTheme; window.installPWA=installPWA;
-window.exportData=exportData; window.importData=importData;
-window.changeTestWeek=changeTestWeek;
-window.toggleNotifications=toggleNotifications; window.toggleDay=toggleDay;
-window.saveNotifSettings=saveNotifSettings; window.testNotification=testNotification;
-window.marcarActividadDad=marcarActividadDad;
-window.openConjugation=openConjugation;
-window.checkConjugationExercise=checkConjugationExercise;
-window.checkGrammarExercise=checkGrammarExercise;
-window.toggleRadialMenu=toggleRadialMenu;
-window.goToView=goToView;
-window.openAdminPanel=openAdminPanel;
-window.signOutAndClose=signOutAndClose;
-window.renderMarysePlaylist=renderMarysePlaylist;
-window.playSong=playSong;
-window.prevSong=prevSong;
-window.nextSong=nextSong;
-window.togglePlayPause=togglePlayPause;
-window.renderLifeSkills=renderLifeSkills;
-window.openSkill=openSkill;
-window.updateMamaProgress=updateMamaProgress;
-window.renderMamaCorner=renderMamaCorner;
-window.updateChallengeStep=updateChallengeStep;
-window.saveReflection=saveReflection;
-
-// ==================== SOLUCIÓN DEFINITIVA PARA CERRAR MODALES ====================
-// Forzar cierre de todos los modales
-function cerrarTodosModales() {
-    const modales = document.querySelectorAll('.modal-overlay');
-    modales.forEach(modal => modal.remove());
-}
-
-// Reemplazar la función openMomActivity original con una versión que funciona
-window.openMomActivityOriginal = window.openMomActivity;
-window.openMomActivity = function(id) {
-    // Cerrar modales existentes
-    cerrarTodosModales();
-    
-    // Obtener la actividad
-    const act = getMomActivitiesData().find(a => a.id === id);
-    if (!act) return;
-    
-    // Crear nuevo modal
-    const m = document.createElement('div');
-    m.className = 'modal-overlay';
-    m.setAttribute('data-modal', 'true');
-    m.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>👩‍👧 ${act.type}</div>
-                <button class="modal-close" data-close="true">✕</button>
-            </div>
-            <div class="card-title">${act.title}</div>
-            <div>${act.steps.replace(/\n/g, '<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div>
-            <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-primary" data-close="true">✨ Cerrar</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(m);
-};
-
-// Reemplazar openArticle también
-window.openArticleOriginal = window.openArticle;
-window.openArticle = function(id) {
-    cerrarTodosModales();
-    
-    const a = getArticlesData().find(a => a.id === id);
-    if (!a) return;
-    
-    const m = document.createElement('div');
-    m.className = 'modal-overlay';
-    m.setAttribute('data-modal', 'true');
-    m.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>${a.category}</div>
-                <button class="modal-close" data-close="true">✕</button>
-            </div>
-            <div class="card-title">${a.title}</div>
-            <div>${a.content}</div>
-            <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-primary" data-close="true">✨ Cerrar</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(m);
-};
-
-// Evento global para cerrar modales (funciona para TODOS los botones con data-close)
-document.addEventListener('click', function(e) {
-    if (e.target.getAttribute('data-close') === 'true') {
-        cerrarTodosModales();
-    }
-    // También cerrar si se hace clic fuera del contenido
-    if (e.target.classList && e.target.classList.contains('modal-overlay')) {
-        cerrarTodosModales();
-    }
-});
-
-// Cerrar con tecla ESC
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        cerrarTodosModales();
-    }
-});
-    
-</script>
-</body>
-</html>
