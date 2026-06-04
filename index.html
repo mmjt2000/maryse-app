@@ -4032,6 +4032,148 @@ console.log("✅ Maryse App - Script cargado correctamente");
 
 // NOTA: Asegúrate de que NO haya llaves sueltas después de aquí
 // El script debe terminar correctamente  
+    // ==================== FONCTIONS MANQUANTES DE L'AGENDA ====================
+
+let tareasAgendaMejoradas = [];
+let examenesAgenda = [];
+let filtroTareasActual = "todas";
+
+function cargarTareasAgendaMejoradas() {
+    const guardado = localStorage.getItem("maryse_tareas_mejoradas");
+    if (guardado) tareasAgendaMejoradas = JSON.parse(guardado);
+    else tareasAgendaMejoradas = [];
+}
+
+function guardarTareasAgendaMejoradas() {
+    localStorage.setItem("maryse_tareas_mejoradas", JSON.stringify(tareasAgendaMejoradas));
+}
+
+function agregarTareaAgendaMejorada() {
+    const texto = document.getElementById("nuevaTareaAgenda")?.value.trim();
+    if (!texto) return alert("Escribe una tarea");
+    
+    tareasAgendaMejoradas.unshift({
+        id: Date.now(),
+        texto: texto,
+        completada: false,
+        categoria: document.getElementById("nuevaTareaCategoria")?.value || "normal",
+        prioridad: document.getElementById("nuevaTareaPrioridad")?.value || "media",
+        fechaLimite: document.getElementById("nuevaTareaFechaLimite")?.value || null,
+        materia: document.getElementById("nuevaTareaMateria")?.value || null,
+        fechaCreacion: new Date().toISOString()
+    });
+    guardarTareasAgendaMejoradas();
+    filtrarTareasAgenda(filtroTareasActual);
+    document.getElementById("nuevaTareaAgenda").value = "";
+    actualizarEstadisticasAgenda();
+}
+
+function filtrarTareasAgenda(filtro) {
+    filtroTareasActual = filtro;
+    const mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
+    let filtradas = tareasAgendaMejoradas;
+    if (!mostrarCompletadas) filtradas = filtradas.filter(t => !t.completada);
+    if (filtro === "pendientes") filtradas = filtradas.filter(t => !t.completada);
+    else if (filtro === "hoy") filtradas = filtradas.filter(t => t.fechaLimite === new Date().toISOString().split('T')[0] && !t.completada);
+    else if (filtro === "urgentes") filtradas = filtradas.filter(t => t.categoria === "urgente" && !t.completada);
+    else if (filtro === "importantes") filtradas = filtradas.filter(t => t.categoria === "importante" && !t.completada);
+    
+    document.getElementById("listaTareasAgenda").innerHTML = filtradas.map(t => `
+        <div style="background:var(--bg);border-radius:16px;padding:10px;margin-bottom:8px;">
+            <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTareaAgendaMejorada('${t.id}')">
+            <span style="${t.completada ? 'text-decoration:line-through;' : ''}">${t.texto}</span>
+            <button onclick="eliminarTareaAgendaMejorada('${t.id}')">🗑️</button>
+        </div>
+    `).join("");
+}
+
+function toggleTareaAgendaMejorada(id) {
+    const t = tareasAgendaMejoradas.find(t => t.id == id);
+    if (t) t.completada = !t.completada;
+    guardarTareasAgendaMejoradas();
+    filtrarTareasAgenda(filtroTareasActual);
+    actualizarEstadisticasAgenda();
+}
+
+function eliminarTareaAgendaMejorada(id) {
+    tareasAgendaMejoradas = tareasAgendaMejoradas.filter(t => t.id != id);
+    guardarTareasAgendaMejoradas();
+    filtrarTareasAgenda(filtroTareasActual);
+    actualizarEstadisticasAgenda();
+}
+
+function eliminarTareasCompletadasAgenda() {
+    tareasAgendaMejoradas = tareasAgendaMejoradas.filter(t => !t.completada);
+    guardarTareasAgendaMejoradas();
+    filtrarTareasAgenda(filtroTareasActual);
+    actualizarEstadisticasAgenda();
+}
+
+function actualizarEstadisticasAgenda() {
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById("statTareasPendientes").innerText = tareasAgendaMejoradas.filter(t => !t.completada).length;
+    document.getElementById("statTareasHoy").innerText = tareasAgendaMejoradas.filter(t => t.fechaLimite === hoy && !t.completada).length;
+    document.getElementById("statTareasUrgentes").innerText = tareasAgendaMejoradas.filter(t => t.categoria === "urgente" && !t.completada).length;
+}
+
+function agregarExamenAgenda() {
+    const nombre = document.getElementById("nuevoExamenNombre")?.value.trim();
+    const fecha = document.getElementById("nuevoExamenFecha")?.value;
+    if (!nombre || !fecha) return alert("Completa todos los campos");
+    examenesAgenda.push({ id: Date.now(), nombre, fecha, materia: document.getElementById("nuevoExamenMateria")?.value });
+    localStorage.setItem("maryse_examenes_agenda", JSON.stringify(examenesAgenda));
+    renderizarExamenesAgenda();
+    document.getElementById("nuevoExamenNombre").value = "";
+    document.getElementById("nuevoExamenFecha").value = "";
+}
+
+function renderizarExamenesAgenda() {
+    document.getElementById("listaExamenesAgenda").innerHTML = examenesAgenda.map(ex => `
+        <div style="background:var(--bg);border-radius:16px;padding:10px;margin-bottom:8px;">
+            <strong>${ex.nombre}</strong> - ${ex.materia || ""} - 📅 ${ex.fecha}
+            <button onclick="eliminarExamenAgenda(${ex.id})">🗑️</button>
+        </div>
+    `).join("");
+}
+
+function eliminarExamenAgenda(id) {
+    examenesAgenda = examenesAgenda.filter(ex => ex.id != id);
+    localStorage.setItem("maryse_examenes_agenda", JSON.stringify(examenesAgenda));
+    renderizarExamenesAgenda();
+}
+
+function mostrarTabAgenda(tab) {
+    document.getElementById("horarioSectionAgenda").style.display = tab === "horario" ? "block" : "none";
+    document.getElementById("tareasSectionAgenda").style.display = tab === "tareas" ? "block" : "none";
+    document.getElementById("examenesSectionAgenda").style.display = tab === "examenes" ? "block" : "none";
+}
+
+function restaurarHorarioAgenda() {
+    localStorage.removeItem("maryse_horario");
+    location.reload();
+}
+
+function exportarHorarioJSON() {
+    alert("Fonction à implémenter");
+}
+
+// Initialisation
+cargarTareasAgendaMejoradas();
+examenesAgenda = JSON.parse(localStorage.getItem("maryse_examenes_agenda") || "[]");
+renderizarExamenesAgenda();
+actualizarEstadisticasAgenda();
+
+// Exposer les fonctions
+window.mostrarTabAgenda = mostrarTabAgenda;
+window.agregarTareaAgendaMejorada = agregarTareaAgendaMejorada;
+window.filtrarTareasAgenda = filtrarTareasAgenda;
+window.eliminarTareasCompletadasAgenda = eliminarTareasCompletadasAgenda;
+window.agregarExamenAgenda = agregarExamenAgenda;
+window.restaurarHorarioAgenda = restaurarHorarioAgenda;
+window.exportarHorarioJSON = exportarHorarioJSON;
+window.toggleTareaAgendaMejorada = toggleTareaAgendaMejorada;
+window.eliminarTareaAgendaMejorada = eliminarTareaAgendaMejorada;
+window.eliminarExamenAgenda = eliminarExamenAgenda;
 </script>
 </body>
 </html>
