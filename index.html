@@ -2934,7 +2934,72 @@ document.addEventListener('keydown', function(e) {
         cerrarTodosModales();
     }
 });
+
+// ==================== REPARACIÓN DEFINITIVA DE openMomActivity ====================
+// Eliminar cualquier función existente
+if (typeof window.openMomActivity !== 'undefined') {
+    delete window.openMomActivity;
+}
+
+// Crear la función nueva y simple
+window.openMomActivity = function(id) {
+    // Obtener la actividad
+    const act = getMomActivitiesData().find(a => a.id === id);
+    if (!act) return;
     
+    // Crear modal
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>👩‍👧 ${act.type}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div class="card-title">${act.title}</div>
+            <div>${act.steps.replace(/\n/g, '<br>')}<br><br><strong>💬</strong> ${act.talkQuestions}</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">✨ Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+};
+
+// También arreglar openArticle si es necesario
+if (typeof window.openArticle !== 'undefined') {
+    const originalOpenArticle = window.openArticle;
+    window.openArticle = function(id) {
+        const a = getArticlesData().find(a => a.id === id);
+        if (!a) return;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>${a.category}</div>
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                </div>
+                <div class="card-title">${a.title}</div>
+                <div>${a.content}</div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">✨ Cerrar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    };
+}
+
+// Cerrar modales con ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modales = document.querySelectorAll('.modal-overlay');
+        modales.forEach(modal => modal.remove());
+    }
+});
+
+console.log("✅ openMomActivity reparada correctamente");
 </script>
 </body>
 </html>
