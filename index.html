@@ -335,17 +335,8 @@
         <div class="week-theme-hero" id="weekThemeHero"></div>
         <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
+        <div class="card mama-card" style="display:flex;justify-content:space-between;"><div><div class="card-icon">🎵</div><div class="card-title" id="mamaPlaylistTitle">Maryse</div><div class="card-subtitle">💕 Playlist de Maman (Fiona)</div></div><button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button></div>
         
-        <!-- AGENDA -->
-    <div id="viewAgenda" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="card">
-            <div class="card-title">📅 Mi Agenda</div>
-            <div id="agendaContainer">
-                <p style="text-align:center; padding:40px;">📅 Tu agenda estará disponible pronto...</p>
-            </div>
-        </div>
-    </div>
         <!-- REPRODUCTOR DE MÚSICA -->
         <div class="music-player">
             <div class="now-playing" id="nowPlaying">
@@ -401,53 +392,13 @@
     <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><div id="lifeSkillsContainer" class="skills-grid"></div></div></div>
     
     <!-- RINCÓN DE MAMÁ -->
- <div id="viewMama" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    
-    <!-- PLAYLIST DE MAMÁ -->
-    <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:linear-gradient(135deg,#fdf2f8,#fce7f3); border-radius:28px; padding:16px 20px;">
-        <div>
-            <div style="font-size:1.5rem;">🎵</div>
-            <div style="font-weight:600;">Maryse</div>
-            <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
-        </div>
-        <button class="btn btn-pink" onclick="openMamaPlaylist()" style="background:#fce7f3; color:#be185d; border:none; padding:10px 20px; border-radius:60px; cursor:pointer;">🎧 Écouter</button>
-    </div>
-    
-    <div id="mamaCornerContainer" class="mama-corner">
-        <div style="text-align:center; padding:40px;">Cargando...</div>
-    </div>
-</div>
-    
-    <!-- PLAYLIST DE MAMÁ (MOVIDA DESDE HOME) -->
-    <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <div>
-            <div class="card-icon" style="font-size:1.5rem;">🎵</div>
-            <div class="card-title">Maryse</div>
-            <div class="card-subtitle">💕 Playlist de Maman (Fiona)</div>
-        </div>
-        <button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button>
-    </div>
-    
-    <div id="mamaCornerContainer" class="mama-corner">
-        <div style="text-align:center; padding:40px;">Cargando...</div>
-    </div>
-</div>
+    <div id="viewMama" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
         <div id="mamaCornerContainer" class="mama-corner">
             <div style="text-align:center; padding:40px;">Cargando...</div>
         </div>
     </div>
 </div>
-        <!-- GALERÍA DE FOTOS -->
-    <div id="viewFotos" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="card">
-            <div class="card-title">🖼️ Mis Fotos</div>
-            <div id="fotosContainer">
-                <p style="text-align:center; padding:40px;">🖼️ Tus fotos aparecerán aquí pronto...</p>
-            </div>
-        </div>
-    </div>
 
 <!-- CÍRCULOS FLOTANTES -->
 <div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
@@ -463,11 +414,9 @@
     <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
-    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
+    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Amigas</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
-    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
-        <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
 </div>
 
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
