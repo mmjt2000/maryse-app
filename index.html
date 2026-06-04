@@ -394,18 +394,6 @@
     <div id="viewMama" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
         
-        <!-- PLAYLIST DE MAMÁ (MOVIDA DESDE HOME) -->
-        <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <div>
-                <div style="font-size:1.5rem;">🎵</div>
-                <div style="font-weight:600;">Maryse</div>
-                <div style="font-size:0.7rem; opacity:0.8;">💕 Playlist de Maman (Fiona)</div>
-            </div>
-            <button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button>
-        </div>
-            <div id="viewMama" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        
         <!-- PLAYLIST DE MAMÁ -->
         <div class="card mama-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <div>
@@ -415,6 +403,17 @@
             </div>
             <button class="btn btn-pink" onclick="openMamaPlaylist()">🎧 Écouter</button>
         </div>
+        
+        <!-- ACTIVIDADES DE MAMÁ -->
+        <div class="card" style="margin-top: 20px;">
+            <div class="badge">👩‍👧 Actividad de la semana</div>
+            <div id="momActivitiesContainer"></div>
+        </div>
+        
+        <div id="mamaCornerContainer" class="mama-corner">
+            <div style="text-align:center; padding:40px;">Cargando...</div>
+        </div>
+    </div>
         
         <!-- 👇 NUEVO BLOQUE DE ACTIVIDADES 👇 -->
         <div class="card" style="margin-top: 20px;">
@@ -1980,11 +1979,7 @@ function showView(vn){
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
-        if(vn==='mama'){ 
-        updateMamaProgress(); 
-        renderMamaCorner(); 
-        renderMomActivities(); 
-    }
+    if(vn==='mama'){ updateMamaProgress();renderMamaCorner(); renderMomActivities(); }
     if(vn==='karaoke') renderKaraokeSongs();
     if(vn==='diary') renderDiary();
     if(vn==='friends') renderAllInvites();
@@ -2165,7 +2160,6 @@ function renderMomActivities() {
             <div style="font-size: 0.7rem; color: var(--subtext); margin-top: 8px;">✨ ${act.type}</div>
         </div>
     `).join('');
-}
 }
 function getGameWords(){ const w=[]; const ci=getCurrentWeekInfo().cycleIndex; const wv=weeklyVocab[ci]; if(wv&&wv[currentLang]){ wv[currentLang].forEach(i=>{ w.push({front:i.en||i.fr,back:i.es}); }); } if(w.length===0) w.push({front:"hello",back:"hola"}); return w; }
 function switchGame(g){ currentGame=g; document.querySelectorAll(".game-btn").forEach(b=>b.classList.remove("active")); document.querySelector(`.game-btn[onclick="switchGame('${g}')"]`).classList.add("active"); if(g==="memory") initMemoryGame(); if(g==="quiz") initSpeedQuiz(); if(g==="scramble") initWordScramble(); }
