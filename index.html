@@ -423,39 +423,6 @@
         </div>
     </div>
 </div>
-        <!-- AGENDA (con horario escolar editable y tareas pendientes) -->
-<div id="viewAgenda" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-
-    <div style="display: flex; gap: 12px; margin-bottom: 20px;">
-        <button class="btn" id="btnHorarioFinal" style="background: var(--primary); color: white;">📚 Horario</button>
-        <button class="btn" id="btnTareasFinal" style="background: var(--card);">✅ Tareas</button>
-    </div>
-
-    <div id="panelHorarioFinal" class="card">
-        <div class="card-title">📚 Mi Horario de Clases</div>
-        <p style="font-size:0.7rem; color:var(--subtext);">💡 Haz clic en cualquier celda para editar</p>
-        <div style="overflow-x:auto">
-            <table id="tablaHorarioFinal" style="width:100%; border-collapse:collapse;"></table>
-        </div>
-        <div style="margin-top:20px">
-            <button class="btn outline" id="restaurarHorarioFinal">⟳ Restaurar</button>
-            <button class="btn outline" id="exportarHorarioFinal">📎 Exportar</button>
-        </div>
-    </div>
-
-    <div id="panelTareasFinal" class="card" style="display:none">
-        <div class="card-title">✅ Mis Tareas Pendientes</div>
-        <div style="display:flex; gap:12px; margin-bottom:16px">
-            <input type="text" id="inputTareaFinal" placeholder="Escribe una tarea..." style="flex:1">
-            <button class="btn btn-primary" id="agregarTareaFinal">➕ Añadir</button>
-        </div>
-        <div id="listaTareasFinal"></div>
-        <label style="display:flex; align-items:center; gap:8px; margin-top:16px">
-            <input type="checkbox" id="mostrarCompletadasFinal"> Mostrar tareas completadas
-        </label>
-    </div>
-</div>
     <!-- FOTOS -->
     <div id="viewFotos" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
