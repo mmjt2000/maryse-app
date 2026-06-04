@@ -492,12 +492,7 @@
         <div class="stat-card-agenda"><div class="stat-number" id="statTareasUrgentes">0</div><div class="stat-label">⚠️ Urgentes</div></div>
         <div class="stat-card-agenda"><div class="stat-number" id="statCompletadasSemana">0</div><div class="stat-label">✅ Completadas esta semana</div></div>
     </div>
-    <!-- Asegúrate de que estos IDs existen -->
-<input type="text" id="nuevaTareaAgenda" ...>
-<select id="nuevaTareaCategoria" ...>
-<select id="nuevaTareaPrioridad" ...>
-<input type="date" id="nuevaTareaFechaLimite" ...>
-<select id="nuevaTareaMateria" ...>
+    
     <!-- PESTAÑAS MEJORADAS -->
     <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
         <button class="btn" id="tabHorarioBtn" onclick="mostrarTabAgenda('horario')" style="background: var(--primary); color: white;">📚 Horario Escolar</button>
@@ -3682,10 +3677,10 @@ function agregarTareaAgendaMejorada() {
         return;
     }
     
-    const categoria = document.getElementById("nuevaTareaCategoria") ? document.getElementById("nuevaTareaCategoria").value : "normal";
-    const prioridad = document.getElementById("nuevaTareaPrioridad") ? document.getElementById("nuevaTareaPrioridad").value : "media";
-    const fechaLimite = document.getElementById("nuevaTareaFechaLimite") ? document.getElementById("nuevaTareaFechaLimite").value : "";
-    const materia = document.getElementById("nuevaTareaMateria") ? document.getElementById("nuevaTareaMateria").value : "";
+    const categoria = document.getElementById("nuevaTareaCategoria").value;
+    const prioridad = document.getElementById("nuevaTareaPrioridad").value;
+    const fechaLimite = document.getElementById("nuevaTareaFechaLimite").value;
+    const materia = document.getElementById("nuevaTareaMateria").value;
     
     const nuevaTarea = {
         id: Date.now() + "_" + Math.random().toString(36).substr(2, 6),
@@ -3700,24 +3695,12 @@ function agregarTareaAgendaMejorada() {
     
     tareasAgendaMejoradas.unshift(nuevaTarea);
     guardarTareasAgendaMejoradas();
-    
-    // IMPORTANTE: Aplicar el filtro actual para actualizar la vista
     filtrarTareasAgenda(filtroTareasActual);
-    
-    // Limpiar el formulario
     input.value = "";
-    if (document.getElementById("nuevaTareaFechaLimite")) document.getElementById("nuevaTareaFechaLimite").value = "";
-    if (document.getElementById("nuevaTareaMateria")) document.getElementById("nuevaTareaMateria").value = "";
-    if (document.getElementById("nuevaTareaCategoria")) document.getElementById("nuevaTareaCategoria").value = "normal";
-    if (document.getElementById("nuevaTareaPrioridad")) document.getElementById("nuevaTareaPrioridad").value = "media";
-    
+    document.getElementById("nuevaTareaFechaLimite").value = "";
+    document.getElementById("nuevaTareaMateria").value = "";
     actualizarEstadisticasAgenda();
-    // Forzar actualización de la vista
-if (document.getElementById("tareasSectionAgenda") && document.getElementById("tareasSectionAgenda").style.display !== "none") {
-    renderizarTareasAgendaMejoradas(tareasAgendaMejoradas.filter(t => !t.completada));
-}
     mostrarToastAgenda(`📌 "${texto}" añadida`);
-}
 }
 
 // Filtrar tareas
@@ -3725,15 +3708,9 @@ function filtrarTareasAgenda(filtro) {
     filtroTareasActual = filtro;
     
     // Actualizar estilo de los botones de filtro
-    const botonesFiltro = document.querySelectorAll('[data-filtro-tarea]');
-    botonesFiltro.forEach(btn => {
-        if (btn.getAttribute('data-filtro-tarea') === filtro) {
-            btn.style.background = "var(--primary)";
-            btn.style.color = "white";
-        } else {
-            btn.style.background = "var(--card)";
-            btn.style.color = "var(--text)";
-        }
+    document.querySelectorAll('[data-filtro-tarea]').forEach(btn => {
+        btn.style.background = btn.getAttribute('data-filtro-tarea') === filtro ? "var(--primary)" : "var(--card)";
+        btn.style.color = btn.getAttribute('data-filtro-tarea') === filtro ? "white" : "var(--text)";
     });
     
     const mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
@@ -3768,20 +3745,6 @@ function filtrarTareasAgenda(filtro) {
     });
     
     renderizarTareasAgendaMejoradas(tareasFiltradas);
-}
-// Función de depuración para ver el estado actual
-function debugTareasAgenda() {
-    console.log("=== ESTADO ACTUAL DE TAREAS ===");
-    console.log("Tareas guardadas:", tareasAgendaMejoradas);
-    console.log("Filtro actual:", filtroTareasActual);
-    console.log("Total de tareas:", tareasAgendaMejoradas.length);
-    console.log("Pendientes:", tareasAgendaMejoradas.filter(t => !t.completada).length);
-    
-    // Verificar localStorage
-    const stored = localStorage.getItem("maryse_tareas_mejoradas");
-    console.log("En localStorage:", stored ? JSON.parse(stored).length : 0, "tareas");
-    
-    mostrarToastAgenda(`🔍 Debug: ${tareasAgendaMejoradas.length} tareas en memoria`);
 }
 
 function renderizarTareasAgendaMejoradas(tareas) {
@@ -4012,7 +3975,7 @@ window.inicializarAgenda = function() {
     mostrarTabAgenda("horario");
 };
 
-// Exponer funciones globalmente
+// Exponer nuevas funciones globalmente
 window.agregarTareaAgendaMejorada = agregarTareaAgendaMejorada;
 window.toggleTareaAgendaMejorada = toggleTareaAgendaMejorada;
 window.eliminarTareaAgendaMejorada = eliminarTareaAgendaMejorada;
@@ -4020,150 +3983,297 @@ window.eliminarTareasCompletadasAgenda = eliminarTareasCompletadasAgenda;
 window.filtrarTareasAgenda = filtrarTareasAgenda;
 window.agregarExamenAgenda = agregarExamenAgenda;
 window.eliminarExamenAgenda = eliminarExamenAgenda;
-window.actualizarEstadisticasAgenda = actualizarEstadisticasAgenda;
-window.mostrarTabAgenda = mostrarTabAgenda;
-window.inicializarAgenda = inicializarAgenda;
+window.actualizarEstadisticasAgenda = actualizarEstadisticasAgenda;   
+// ==================== AGENDA COMPLET - VERSION TES IDS ====================
 
-console.log("✅ Maryse App - Script cargado correctamente");
+let tareasLista = [];
+let examenesLista = [];
+let filtreActuel = "todas";
 
-</script>
-</body>
-</html>
-
-// NOTA: Asegúrate de que NO haya llaves sueltas después de aquí
-// El script debe terminar correctamente  
-    // ==================== FONCTIONS MANQUANTES DE L'AGENDA ====================
-
-let tareasAgendaMejoradas = [];
-let examenesAgenda = [];
-let filtroTareasActual = "todas";
-
-function cargarTareasAgendaMejoradas() {
-    const guardado = localStorage.getItem("maryse_tareas_mejoradas");
-    if (guardado) tareasAgendaMejoradas = JSON.parse(guardado);
-    else tareasAgendaMejoradas = [];
-}
-
-function guardarTareasAgendaMejoradas() {
-    localStorage.setItem("maryse_tareas_mejoradas", JSON.stringify(tareasAgendaMejoradas));
-}
-
-function agregarTareaAgendaMejorada() {
-    const texto = document.getElementById("nuevaTareaAgenda")?.value.trim();
-    if (!texto) return alert("Escribe una tarea");
+// Charger au démarrage
+function cargarTareasAgenda() {
+    let saved = localStorage.getItem("maryse_tareas_mejoradas");
+    if(saved) tareasLista = JSON.parse(saved);
+    else tareasLista = [];
     
-    tareasAgendaMejoradas.unshift({
+    let savedExams = localStorage.getItem("maryse_examenes_agenda");
+    if(savedExams) examenesLista = JSON.parse(savedExams);
+    else examenesLista = [];
+    
+    renderizarTareasAgenda();
+    renderizarExamenesAgenda();
+    actualizarStatsAgenda();
+}
+
+function guardarTareasAgenda() {
+    localStorage.setItem("maryse_tareas_mejoradas", JSON.stringify(tareasLista));
+    renderizarTareasAgenda();
+    actualizarStatsAgenda();
+}
+
+function guardarExamenesAgenda() {
+    localStorage.setItem("maryse_examenes_agenda", JSON.stringify(examenesLista));
+    renderizarExamenesAgenda();
+}
+
+// Rendre les tâches
+function renderizarTareasAgenda() {
+    let contenedor = document.getElementById("listaTareasAgenda");
+    if(!contenedor) return;
+    
+    let mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
+    let tareasFiltradas = [...tareasLista];
+    
+    if(filtreActuel === "pendientes") {
+        tareasFiltradas = tareasFiltradas.filter(t => !t.completada);
+    } else if(filtreActuel === "hoy") {
+        let hoy = new Date().toISOString().split('T')[0];
+        tareasFiltradas = tareasFiltradas.filter(t => t.fechaLimite === hoy && !t.completada);
+    } else if(filtreActuel === "urgentes") {
+        tareasFiltradas = tareasFiltradas.filter(t => t.categoria === "urgente" && !t.completada);
+    } else if(filtreActuel === "importantes") {
+        tareasFiltradas = tareasFiltradas.filter(t => t.categoria === "importante" && !t.completada);
+    } else if(filtreActuel === "todas") {
+        if(!mostrarCompletadas) tareasFiltradas = tareasFiltradas.filter(t => !t.completada);
+    }
+    
+    if(tareasFiltradas.length === 0) {
+        contenedor.innerHTML = `<div style="text-align:center;padding:40px;color:var(--subtext)">✨ No hay tareas ✨</div>`;
+        return;
+    }
+    
+    contenedor.innerHTML = tareasFiltradas.map(t => `
+        <div style="background:var(--bg);border-radius:16px;padding:12px;margin-bottom:10px;border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+                <div style="display:flex;align-items:center;gap:12px;flex:1">
+                    <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTareaAgenda(${t.id})" style="width:20px;height:20px">
+                    <span style="${t.completada ? 'text-decoration:line-through;opacity:0.6' : ''} flex:1">${t.texto}</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                    ${t.categoria ? `<span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:${t.categoria === 'urgente' ? '#fee2e2' : (t.categoria === 'importante' ? '#fef3c7' : '#e0e7ff')};color:${t.categoria === 'urgente' ? '#dc2626' : (t.categoria === 'importante' ? '#d97706' : '#4f46e5')}">${t.categoria === 'urgente' ? '⚠️ Urgente' : (t.categoria === 'importante' ? '⭐ Importante' : '📘 Normal')}</span>` : ''}
+                    ${t.prioridad ? `<span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:${t.prioridad === 'alta' ? '#fee2e2' : (t.prioridad === 'media' ? '#fef3c7' : '#d1fae5')};color:${t.prioridad === 'alta' ? '#dc2626' : (t.prioridad === 'media' ? '#d97706' : '#059669')}">🔴 ${t.prioridad === 'alta' ? 'Alta' : (t.prioridad === 'media' ? 'Media' : 'Baja')}</span>` : ''}
+                    ${t.materia ? `<span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:var(--primary-light);color:white">📚 ${t.materia}</span>` : ''}
+                    ${t.fechaLimite ? `<span style="font-size:0.7rem;color:var(--subtext)">📅 ${new Date(t.fechaLimite).toLocaleDateString()}</span>` : ''}
+                    <button onclick="eliminarTareaAgenda(${t.id})" style="background:none;border:none;cursor:pointer;font-size:1.2rem">🗑️</button>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+// Ajouter une tâche (version MEJORADA avec TES IDs)
+function agregarTareaAgendaMejorada() {
+    let input = document.getElementById("nuevaTareaAgenda");
+    let texto = input?.value.trim();
+    if(!texto) {
+        alert("✏️ Escribe una tarea");
+        return;
+    }
+    
+    let categoria = document.getElementById("nuevaTareaCategoria")?.value || "normal";
+    let prioridad = document.getElementById("nuevaTareaPrioridad")?.value || "media";
+    let fechaLimite = document.getElementById("nuevaTareaFechaLimite")?.value || null;
+    let materia = document.getElementById("nuevaTareaMateria")?.value || null;
+    
+    let nuevaTarea = {
         id: Date.now(),
         texto: texto,
         completada: false,
-        categoria: document.getElementById("nuevaTareaCategoria")?.value || "normal",
-        prioridad: document.getElementById("nuevaTareaPrioridad")?.value || "media",
-        fechaLimite: document.getElementById("nuevaTareaFechaLimite")?.value || null,
-        materia: document.getElementById("nuevaTareaMateria")?.value || null,
+        categoria: categoria,
+        prioridad: prioridad,
+        fechaLimite: fechaLimite,
+        materia: materia,
         fechaCreacion: new Date().toISOString()
-    });
-    guardarTareasAgendaMejoradas();
-    filtrarTareasAgenda(filtroTareasActual);
-    document.getElementById("nuevaTareaAgenda").value = "";
-    actualizarEstadisticasAgenda();
-}
-
-function filtrarTareasAgenda(filtro) {
-    filtroTareasActual = filtro;
-    const mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
-    let filtradas = tareasAgendaMejoradas;
-    if (!mostrarCompletadas) filtradas = filtradas.filter(t => !t.completada);
-    if (filtro === "pendientes") filtradas = filtradas.filter(t => !t.completada);
-    else if (filtro === "hoy") filtradas = filtradas.filter(t => t.fechaLimite === new Date().toISOString().split('T')[0] && !t.completada);
-    else if (filtro === "urgentes") filtradas = filtradas.filter(t => t.categoria === "urgente" && !t.completada);
-    else if (filtro === "importantes") filtradas = filtradas.filter(t => t.categoria === "importante" && !t.completada);
+    };
     
-    document.getElementById("listaTareasAgenda").innerHTML = filtradas.map(t => `
-        <div style="background:var(--bg);border-radius:16px;padding:10px;margin-bottom:8px;">
-            <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTareaAgendaMejorada('${t.id}')">
-            <span style="${t.completada ? 'text-decoration:line-through;' : ''}">${t.texto}</span>
-            <button onclick="eliminarTareaAgendaMejorada('${t.id}')">🗑️</button>
-        </div>
-    `).join("");
+    tareasLista.unshift(nuevaTarea);
+    guardarTareasAgenda();
+    
+    input.value = "";
+    if(document.getElementById("nuevaTareaFechaLimite")) document.getElementById("nuevaTareaFechaLimite").value = "";
+    if(document.getElementById("nuevaTareaMateria")) document.getElementById("nuevaTareaMateria").value = "";
+    
+    alert(`✅ "${texto}" añadida`);
 }
 
-function toggleTareaAgendaMejorada(id) {
-    const t = tareasAgendaMejoradas.find(t => t.id == id);
-    if (t) t.completada = !t.completada;
-    guardarTareasAgendaMejoradas();
-    filtrarTareasAgenda(filtroTareasActual);
-    actualizarEstadisticasAgenda();
+function toggleTareaAgenda(id) {
+    let tarea = tareasLista.find(t => t.id === id);
+    if(tarea) {
+        tarea.completada = !tarea.completada;
+        guardarTareasAgenda();
+    }
 }
 
-function eliminarTareaAgendaMejorada(id) {
-    tareasAgendaMejoradas = tareasAgendaMejoradas.filter(t => t.id != id);
-    guardarTareasAgendaMejoradas();
-    filtrarTareasAgenda(filtroTareasActual);
-    actualizarEstadisticasAgenda();
+function eliminarTareaAgenda(id) {
+    tareasLista = tareasLista.filter(t => t.id !== id);
+    guardarTareasAgenda();
 }
 
 function eliminarTareasCompletadasAgenda() {
-    tareasAgendaMejoradas = tareasAgendaMejoradas.filter(t => !t.completada);
-    guardarTareasAgendaMejoradas();
-    filtrarTareasAgenda(filtroTareasActual);
-    actualizarEstadisticasAgenda();
+    let completadas = tareasLista.filter(t => t.completada).length;
+    if(completadas === 0) {
+        alert("No hay tareas completadas para eliminar");
+        return;
+    }
+    if(confirm(`¿Eliminar ${completadas} tarea(s) completada(s)?`)) {
+        tareasLista = tareasLista.filter(t => !t.completada);
+        guardarTareasAgenda();
+    }
 }
 
-function actualizarEstadisticasAgenda() {
-    const hoy = new Date().toISOString().split('T')[0];
-    document.getElementById("statTareasPendientes").innerText = tareasAgendaMejoradas.filter(t => !t.completada).length;
-    document.getElementById("statTareasHoy").innerText = tareasAgendaMejoradas.filter(t => t.fechaLimite === hoy && !t.completada).length;
-    document.getElementById("statTareasUrgentes").innerText = tareasAgendaMejoradas.filter(t => t.categoria === "urgente" && !t.completada).length;
+// Filtrar tareas
+function filtrarTareasAgenda(filtro) {
+    filtreActuel = filtro;
+    
+    // Actualizar estilo de los botones
+    document.querySelectorAll('[data-filtro-tarea]').forEach(btn => {
+        if(btn.getAttribute('data-filtro-tarea') === filtro) {
+            btn.style.background = "var(--primary)";
+            btn.style.color = "white";
+        } else {
+            btn.style.background = "var(--card)";
+            btn.style.color = "var(--text)";
+        }
+    });
+    
+    renderizarTareasAgenda();
 }
 
+// Examens
 function agregarExamenAgenda() {
-    const nombre = document.getElementById("nuevoExamenNombre")?.value.trim();
-    const fecha = document.getElementById("nuevoExamenFecha")?.value;
-    if (!nombre || !fecha) return alert("Completa todos los campos");
-    examenesAgenda.push({ id: Date.now(), nombre, fecha, materia: document.getElementById("nuevoExamenMateria")?.value });
-    localStorage.setItem("maryse_examenes_agenda", JSON.stringify(examenesAgenda));
-    renderizarExamenesAgenda();
+    let nombre = document.getElementById("nuevoExamenNombre")?.value.trim();
+    let fecha = document.getElementById("nuevoExamenFecha")?.value;
+    let materia = document.getElementById("nuevoExamenMateria")?.value;
+    
+    if(!nombre || !fecha) {
+        alert("❌ Completa todos los campos del examen");
+        return;
+    }
+    
+    examenesLista.push({
+        id: Date.now(),
+        nombre: nombre,
+        fecha: fecha,
+        materia: materia,
+        completado: false
+    });
+    guardarExamenesAgenda();
+    
     document.getElementById("nuevoExamenNombre").value = "";
     document.getElementById("nuevoExamenFecha").value = "";
+    alert(`✅ Examen "${nombre}" añadido`);
 }
 
 function renderizarExamenesAgenda() {
-    document.getElementById("listaExamenesAgenda").innerHTML = examenesAgenda.map(ex => `
-        <div style="background:var(--bg);border-radius:16px;padding:10px;margin-bottom:8px;">
-            <strong>${ex.nombre}</strong> - ${ex.materia || ""} - 📅 ${ex.fecha}
-            <button onclick="eliminarExamenAgenda(${ex.id})">🗑️</button>
-        </div>
-    `).join("");
+    let contenedor = document.getElementById("listaExamenesAgenda");
+    if(!contenedor) return;
+    
+    if(examenesLista.length === 0) {
+        contenedor.innerHTML = `<div style="text-align:center;padding:40px;color:var(--subtext)">📝 No hay exámenes programados</div>`;
+        return;
+    }
+    
+    let ordenados = [...examenesLista].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+    let hoy = new Date();
+    
+    contenedor.innerHTML = ordenados.map(e => {
+        let fechaExam = new Date(e.fecha);
+        let diasRestantes = Math.ceil((fechaExam - hoy) / (1000 * 60 * 60 * 24));
+        let claseUrgente = diasRestantes <= 3 && diasRestantes >= 0 ? "urgente" : "";
+        
+        return `
+            <div style="background:var(--bg);border-radius:16px;padding:12px;margin-bottom:10px;border:1px solid var(--border);${claseUrgente ? 'border-left:4px solid #dc2626' : ''}">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                    <div>
+                        <strong>${e.nombre}</strong>
+                        ${e.materia ? `<span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:var(--primary-light);color:white;margin-left:8px">📚 ${e.materia}</span>` : ''}
+                        <div style="font-size:0.75rem;color:var(--subtext);margin-top:4px">📅 ${fechaExam.toLocaleDateString()}</div>
+                    </div>
+                    <div style="display:flex;gap:10px;align-items:center">
+                        <span style="font-size:0.7rem;${diasRestantes < 0 ? 'color:#dc2626' : (diasRestantes === 0 ? 'color:#dc2626;font-weight:bold' : 'color:var(--subtext)')}">
+                            ${diasRestantes < 0 ? '⚠️ VENCIDO' : (diasRestantes === 0 ? '🔥 ¡HOY!' : `${diasRestantes} día(s)`)}
+                        </span>
+                        <button onclick="eliminarExamenAgenda(${e.id})" style="background:none;border:none;cursor:pointer;font-size:1.2rem">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join("");
 }
 
 function eliminarExamenAgenda(id) {
-    examenesAgenda = examenesAgenda.filter(ex => ex.id != id);
-    localStorage.setItem("maryse_examenes_agenda", JSON.stringify(examenesAgenda));
-    renderizarExamenesAgenda();
+    examenesLista = examenesLista.filter(e => e.id !== id);
+    guardarExamenesAgenda();
 }
 
+// Onglets
 function mostrarTabAgenda(tab) {
-    document.getElementById("horarioSectionAgenda").style.display = tab === "horario" ? "block" : "none";
-    document.getElementById("tareasSectionAgenda").style.display = tab === "tareas" ? "block" : "none";
-    document.getElementById("examenesSectionAgenda").style.display = tab === "examenes" ? "block" : "none";
+    let horarioSection = document.getElementById("horarioSectionAgenda");
+    let tareasSection = document.getElementById("tareasSectionAgenda");
+    let examenesSection = document.getElementById("examenesSectionAgenda");
+    let btnHorario = document.getElementById("tabHorarioBtn");
+    let btnTareas = document.getElementById("tabTareasBtn");
+    let btnExamenes = document.getElementById("tabExamenesBtn");
+    
+    if(horarioSection) horarioSection.style.display = tab === "horario" ? "block" : "none";
+    if(tareasSection) tareasSection.style.display = tab === "tareas" ? "block" : "none";
+    if(examenesSection) examenesSection.style.display = tab === "examenes" ? "block" : "none";
+    
+    if(btnHorario) {
+        btnHorario.style.background = tab === "horario" ? "var(--primary)" : "var(--card)";
+        btnHorario.style.color = tab === "horario" ? "white" : "var(--text)";
+    }
+    if(btnTareas) {
+        btnTareas.style.background = tab === "tareas" ? "var(--primary)" : "var(--card)";
+        btnTareas.style.color = tab === "tareas" ? "white" : "var(--text)";
+    }
+    if(btnExamenes) {
+        btnExamenes.style.background = tab === "examenes" ? "var(--primary)" : "var(--card)";
+        btnExamenes.style.color = tab === "examenes" ? "white" : "var(--text)";
+    }
+    
+    if(tab === "tareas") renderizarTareasAgenda();
+    if(tab === "examenes") renderizarExamenesAgenda();
 }
 
+// Statistiques
+function actualizarStatsAgenda() {
+    let hoy = new Date().toISOString().split('T')[0];
+    let pendientes = tareasLista.filter(t => !t.completada).length;
+    let paraHoy = tareasLista.filter(t => t.fechaLimite === hoy && !t.completada).length;
+    let urgentes = tareasLista.filter(t => t.categoria === "urgente" && !t.completada).length;
+    
+    let statPendientes = document.getElementById("statTareasPendientes");
+    let statHoy = document.getElementById("statTareasHoy");
+    let statUrgentes = document.getElementById("statTareasUrgentes");
+    
+    if(statPendientes) statPendientes.innerText = pendientes;
+    if(statHoy) statHoy.innerText = paraHoy;
+    if(statUrgentes) statUrgentes.innerText = urgentes;
+}
+
+// Horaire (fonctions existantes)
 function restaurarHorarioAgenda() {
-    localStorage.removeItem("maryse_horario");
-    location.reload();
+    if(confirm("¿Restaurar horario a los valores originales?")) {
+        localStorage.removeItem("maryse_horario");
+        location.reload();
+    }
 }
 
 function exportarHorarioJSON() {
-    alert("Fonction à implémenter");
+    alert("📎 Exportación de horario disponible pronto");
 }
 
 // Initialisation
-cargarTareasAgendaMejoradas();
-examenesAgenda = JSON.parse(localStorage.getItem("maryse_examenes_agenda") || "[]");
-renderizarExamenesAgenda();
-actualizarEstadisticasAgenda();
+cargarTareasAgenda();
 
-// Exposer les fonctions
+// Écouter le checkbox "mostrar completadas"
+document.addEventListener("DOMContentLoaded", function() {
+    let chk = document.getElementById("mostrarCompletadasAgenda");
+    if(chk) chk.onchange = () => renderizarTareasAgenda();
+});
+
+// Exposer les fonctions globalement
 window.mostrarTabAgenda = mostrarTabAgenda;
 window.agregarTareaAgendaMejorada = agregarTareaAgendaMejorada;
 window.filtrarTareasAgenda = filtrarTareasAgenda;
@@ -4171,9 +4281,11 @@ window.eliminarTareasCompletadasAgenda = eliminarTareasCompletadasAgenda;
 window.agregarExamenAgenda = agregarExamenAgenda;
 window.restaurarHorarioAgenda = restaurarHorarioAgenda;
 window.exportarHorarioJSON = exportarHorarioJSON;
-window.toggleTareaAgendaMejorada = toggleTareaAgendaMejorada;
-window.eliminarTareaAgendaMejorada = eliminarTareaAgendaMejorada;
+window.toggleTareaAgenda = toggleTareaAgenda;
+window.eliminarTareaAgenda = eliminarTareaAgenda;
 window.eliminarExamenAgenda = eliminarExamenAgenda;
+
+console.log("✅ Agenda cargada - Todas las funciones están listas con tus IDs");
 </script>
 </body>
 </html>
