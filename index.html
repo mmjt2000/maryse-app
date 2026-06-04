@@ -411,6 +411,63 @@
         </div>
     </div>
 </div>
+    <!-- AGENDA -->
+    <div id="viewAgenda" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        
+        <!-- Pestañas -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button class="btn" id="tabHorarioBtn" onclick="mostrarTab('horario')" style="background: var(--primary); color: white;">📚 Horario Escolar</button>
+            <button class="btn" id="tabTareasBtn" onclick="mostrarTab('tareas')" style="background: var(--card);">✅ Tareas Pendientes</button>
+        </div>
+        
+        <!-- HORARIO ESCOLAR -->
+        <div id="horarioSection" class="card">
+            <div class="card-title">📚 Mi Horario de Clases</div>
+            <div style="overflow-x: auto;">
+                <table id="horarioTable" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--primary); color: white;">
+                            <th style="padding: 10px;">Hora</th>
+                            <th style="padding: 10px;">Lunes</th>
+                            <th style="padding: 10px;">Martes</th>
+                            <th style="padding: 10px;">Miércoles</th>
+                            <th style="padding: 10px;">Jueves</th>
+                            <th style="padding: 10px;">Viernes</th>
+                        </table>
+                    </thead>
+                    <tbody id="horarioBody"></tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary" onclick="editarHorario()" style="margin-top: 15px;">✏️ Editar Horario</button>
+        </div>
+        
+        <!-- TAREAS PENDIENTES -->
+        <div id="tareasSection" class="card" style="display: none;">
+            <div class="card-title">✅ Mis Tareas Pendientes</div>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="text" id="nuevaTarea" placeholder="Ej: Estudiar matemáticas..." style="flex: 1;">
+                <button class="btn btn-primary" onclick="agregarTarea()">➕ Añadir</button>
+            </div>
+            <div id="listaTareas"></div>
+            <div style="margin-top: 15px;">
+                <label style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="mostrarCompletadas"> Mostrar tareas completadas
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOTOS -->
+    <div id="viewFotos" class="view">
+        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="card">
+            <div class="card-title">🖼️ Mis Fotos</div>
+            <div id="fotosContainer">
+                <p style="text-align:center; padding:40px;">🖼️ Tus fotos aparecerán aquí pronto...</p>
+            </div>
+        </div>
+    </div>
 
 <!-- CÍRCULOS FLOTANTES -->
 <div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
