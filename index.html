@@ -423,47 +423,44 @@
         </div>
     </div>
 </div>
-        <!-- AGENDA (con horario escolar editable y tareas pendientes) -->
-    <div id="viewAgenda" class="view">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
-        
-        <!-- Pestañas mejoradas -->
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-            <button class="btn" id="tabHorarioBtn" onclick="mostrarTabAgenda('horario')" style="background: var(--primary); color: white;">📚 Horario Escolar</button>
-            <button class="btn" id="tabTareasBtn" onclick="mostrarTabAgenda('tareas')" style="background: var(--card);">✅ Tareas Pendientes</button>
+<div id="viewAgenda" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+
+    <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+        <button class="btn" id="btnHorarioFinal" style="background: var(--primary); color: white;">📚 Horario</button>
+        <button class="btn" id="btnTareasFinal" style="background: var(--card);">✅ Tareas</button>
+    </div>
+
+    <!-- PANEL HORARIO -->
+    <div id="panelHorarioFinal" class="card">
+        <div class="card-title">📚 Mi Horario de Clases</div>
+        <p style="font-size: 0.7rem; color: var(--subtext); margin-bottom: 12px;">💡 Haz clic en cualquier celda para editar</p>
+        <div style="overflow-x: auto;">
+            <table id="tablaHorarioFinal" style="width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden;">
+                <!-- Se llena con JS -->
+            </table>
         </div>
-        
-        <!-- SECCIÓN HORARIO ESCOLAR (editable) -->
-        <div id="horarioSectionAgenda" class="card">
-            <div class="card-title">📚 Mi Horario de Clases</div>
-            <p style="font-size: 0.7rem; color: var(--subtext); margin-bottom: 12px;">💡 Haz clic en cualquier celda para editar la materia</p>
-            <div style="overflow-x: auto;">
-                <table id="horarioTableAgenda" style="width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden;">
-                    <thead id="horarioHeaderAgenda"></thead>
-                    <tbody id="horarioBodyAgenda"></tbody>
-                </table>
-            </div>
-            <div style="display: flex; gap: 12px; margin-top: 15px; justify-content: flex-end;">
-                <button class="btn outline" onclick="restaurarHorarioAgenda()" style="background: var(--card); border: 1px solid var(--border);">⟳ Restaurar horario</button>
-                <button class="btn outline" onclick="exportarHorarioJSON()" style="background: var(--card); border: 1px solid var(--border);">📎 Exportar horario</button>
-            </div>
-        </div>
-        
-        <!-- SECCIÓN TAREAS PENDIENTES -->
-        <div id="tareasSectionAgenda" class="card" style="display: none;">
-            <div class="card-title">✅ Mis Tareas Pendientes</div>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <input type="text" id="nuevaTareaAgenda" placeholder="Ej: Estudiar matemáticas, leer capítulo 3..." style="flex: 1; padding: 12px; border-radius: 60px; border: 1px solid var(--border); background: var(--card); color: var(--text);">
-                <button class="btn btn-primary" onclick="agregarTareaAgenda()">➕ Añadir</button>
-            </div>
-            <div id="listaTareasAgenda"></div>
-            <div style="margin-top: 15px;">
-                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
-                    <input type="checkbox" id="mostrarCompletadasAgenda"> Mostrar tareas completadas
-                </label>
-            </div>
+        <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end;">
+            <button class="btn outline" id="restaurarHorarioFinal" style="background: var(--card); border: 1px solid var(--border); cursor: pointer;">⟳ Restaurar</button>
+            <button class="btn outline" id="exportarHorarioFinal" style="background: var(--card); border: 1px solid var(--border); cursor: pointer;">📎 Exportar</button>
         </div>
     </div>
+
+    <!-- PANEL TAREAS -->
+    <div id="panelTareasFinal" class="card" style="display: none;">
+        <div class="card-title">✅ Mis Tareas Pendientes</div>
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <input type="text" id="inputTareaFinal" placeholder="Escribe una tarea..." style="flex: 1; padding: 12px; border-radius: 60px; border: 1px solid var(--border); background: var(--card); color: var(--text);">
+            <button class="btn btn-primary" id="agregarTareaFinal">➕ Añadir</button>
+        </div>
+        <div id="listaTareasFinal"></div>
+        <div style="margin-top: 16px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="mostrarCompletadasFinal"> Mostrar tareas completadas
+            </label>
+        </div>
+    </div>
+</div>
     <!-- FOTOS -->
     <div id="viewFotos" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -3042,13 +3039,11 @@ document.querySelectorAll(".mood-card").forEach(c=>c.addEventListener("click",fu
 checkSession();
 renderMarysePlaylist();
 updateMamaProgress();
+// ==================== AGENDA FUNCIONAL ====================
+const DIAS_FINAL = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+const HORAS_FINAL = ["08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00"];
 
-// ==================== AGENDA: HORARIO ESCOLAR + TAREAS ====================
-// Datos del horario (por defecto)
-const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-const horasClase = ["08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00"];
-
-const horarioDefecto = [
+const BASE_HORARIO_FINAL = [
     ["Matemáticas", "Historia", "Matemáticas", "Física", "Historia"],
     ["Lengua", "Matemáticas", "Inglés", "Matemáticas", "Lengua"],
     ["Educación Física", "Química", "Lengua", "Inglés", "Inglés"],
@@ -3058,301 +3053,177 @@ const horarioDefecto = [
     ["Estudio libre", "Estudio libre", "Clase refuerzo", "Orientación", "Estudio libre"]
 ];
 
-let horarioActual = [];
-let tareasAgenda = [];
+let horarioFinal = [];
+let tareasFinal = [];
 
-// Cargar o inicializar horario
-function cargarHorarioAgenda() {
-    const guardado = localStorage.getItem("maryse_horario");
-    if (guardado) {
-        try {
-            horarioActual = JSON.parse(guardado);
-            if (horarioActual.length !== horasClase.length || horarioActual[0]?.length !== diasSemana.length) {
-                reiniciarHorarioAgenda();
-            }
-        } catch(e) { reiniciarHorarioAgenda(); }
-    } else {
-        reiniciarHorarioAgenda();
-    }
+function cargarHorarioFinal() {
+    let g = localStorage.getItem("maryse_horario_final");
+    horarioFinal = g ? JSON.parse(g) : JSON.parse(JSON.stringify(BASE_HORARIO_FINAL));
 }
+function guardarHorarioFinal() { localStorage.setItem("maryse_horario_final", JSON.stringify(horarioFinal)); }
 
-function reiniciarHorarioAgenda() {
-    horarioActual = horarioDefecto.map(fila => [...fila]);
-    guardarHorarioAgenda();
-}
-
-function guardarHorarioAgenda() {
-    localStorage.setItem("maryse_horario", JSON.stringify(horarioActual));
-}
-
-// Cargar tareas
-function cargarTareasAgenda() {
-    const guardado = localStorage.getItem("maryse_tareas_agenda");
-    if (guardado) {
-        try {
-            tareasAgenda = JSON.parse(guardado);
-            if (!Array.isArray(tareasAgenda)) tareasAgenda = [];
-        } catch(e) { tareasAgenda = []; }
-    }
-    if (tareasAgenda.length === 0) {
-        tareasAgenda = [
-            { id: Date.now() + "_1", texto: "📖 Terminar resumen de historia", completada: false },
-            { id: Date.now() + "_2", texto: "🧪 Práctica de química para el jueves", completada: false },
-            { id: Date.now() + "_3", texto: "📐 Ejercicios de álgebra", completada: true }
-        ];
-        guardarTareasAgenda();
-    }
-}
-
-function guardarTareasAgenda() {
-    localStorage.setItem("maryse_tareas_agenda", JSON.stringify(tareasAgenda));
-}
-
-// Renderizar horario (editable con clic)
-function renderizarHorarioAgenda() {
-    const thead = document.getElementById("horarioHeaderAgenda");
-    const tbody = document.getElementById("horarioBodyAgenda");
-    if (!thead || !tbody) return;
-    
-    // Cabecera
-    thead.innerHTML = "";
-    let trHead = document.createElement("tr");
-    trHead.style.background = "var(--primary)";
-    trHead.style.color = "white";
-    
-    let thHora = document.createElement("th");
-    thHora.textContent = "Hora";
-    thHora.style.padding = "10px";
-    thHora.style.fontWeight = "600";
-    trHead.appendChild(thHora);
-    
-    diasSemana.forEach(dia => {
-        let th = document.createElement("th");
-        th.textContent = dia;
-        th.style.padding = "10px";
-        th.style.fontWeight = "600";
-        trHead.appendChild(th);
-    });
-    thead.appendChild(trHead);
-    
-    // Cuerpo
-    tbody.innerHTML = "";
-    for (let i = 0; i < horasClase.length; i++) {
-        let tr = document.createElement("tr");
-        tr.style.borderBottom = "1px solid var(--border)";
-        
-        let tdHora = document.createElement("td");
-        tdHora.textContent = horasClase[i];
-        tdHora.style.padding = "10px";
-        tdHora.style.fontWeight = "600";
-        tdHora.style.backgroundColor = "rgba(var(--primary-rgb), 0.05)";
-        tr.appendChild(tdHora);
-        
-        for (let j = 0; j < diasSemana.length; j++) {
-            let td = document.createElement("td");
-            td.textContent = horarioActual[i]?.[j] || "—";
-            td.style.padding = "10px";
-            td.style.cursor = "pointer";
-            td.style.transition = "background 0.1s";
-            td.style.backgroundColor = "var(--card)";
-            td.setAttribute("data-fila", i);
-            td.setAttribute("data-col", j);
-            td.onclick = (function(fila, col) {
-                return function() {
-                    const nuevoValor = prompt("✏️ Editar materia:", horarioActual[fila]?.[col] || "");
-                    if (nuevoValor !== null) {
-                        if (!horarioActual[fila]) horarioActual[fila] = [];
-                        horarioActual[fila][col] = nuevoValor.trim() === "" ? "—" : nuevoValor.trim();
-                        guardarHorarioAgenda();
-                        renderizarHorarioAgenda();
-                        mostrarToastAgenda(`✅ "${horarioActual[fila][col]}" actualizado`);
-                    }
-                };
-            })(i, j);
-            
-            td.onmouseenter = function() { this.style.backgroundColor = "rgba(var(--primary-rgb), 0.1)"; };
-            td.onmouseleave = function() { this.style.backgroundColor = "var(--card)"; };
-            
-            tr.appendChild(td);
+function renderizarHorarioFinal() {
+    let t = document.getElementById("tablaHorarioFinal");
+    if (!t) return;
+    let html = "<thead><tr><th style='padding:12px;background:var(--primary);color:white;'>Hora</th>";
+    DIAS_FINAL.forEach(d => html += `<th style='padding:12px;background:var(--primary);color:white;'>${d}</th>`);
+    html += "</tr></thead><tbody>";
+    for (let i = 0; i < HORAS_FINAL.length; i++) {
+        html += "<tr>";
+        html += `<td style='padding:12px;background:rgba(139,92,246,0.08);font-weight:600;text-align:center;'>${HORAS_FINAL[i]}<\/td>`;
+        for (let j = 0; j < DIAS_FINAL.length; j++) {
+            let v = horarioFinal[i]?.[j] || "—";
+            html += `<td onclick='editarMateriaFinal(${i},${j})' style='padding:12px;text-align:center;cursor:pointer;background:var(--card);' onmouseenter="this.style.background='rgba(139,92,246,0.1)'" onmouseleave="this.style.background='var(--card)'">${v}<\/td>`;
         }
-        tbody.appendChild(tr);
+        html += "<\/tr>";
+    }
+    html += "</tbody>";
+    t.innerHTML = html;
+}
+
+function editarMateriaFinal(f, c) {
+    let a = horarioFinal[f]?.[c] || "—";
+    let n = prompt("✏️ Editar materia:", a);
+    if (n !== null) {
+        if (!horarioFinal[f]) horarioFinal[f] = [];
+        horarioFinal[f][c] = n.trim() === "" ? "—" : n.trim();
+        guardarHorarioFinal();
+        renderizarHorarioFinal();
     }
 }
 
-// Restaurar horario original
-function restaurarHorarioAgenda() {
-    if (confirm("¿Restaurar horario a los valores originales? Se perderán los cambios personalizados.")) {
-        reiniciarHorarioAgenda();
-        renderizarHorarioAgenda();
-        mostrarToastAgenda("🔄 Horario restaurado");
+function restaurarHorarioFinal() {
+    if (confirm("¿Restaurar horario original?")) {
+        horarioFinal = JSON.parse(JSON.stringify(BASE_HORARIO_FINAL));
+        guardarHorarioFinal();
+        renderizarHorarioFinal();
     }
 }
 
-// Exportar horario a JSON
-function exportarHorarioJSON() {
-    const datosExport = {
-        version: "1.0",
-        fecha: new Date().toISOString(),
-        dias: diasSemana,
-        horas: horasClase,
-        horario: horarioActual
-    };
-    const blob = new Blob([JSON.stringify(datosExport, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
+function exportarHorarioFinal() {
+    let a = document.createElement("a");
+    let datos = { fecha: new Date().toISOString(), horas: HORAS_FINAL, dias: DIAS_FINAL, horario: horarioFinal };
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" }));
     a.download = `horario_maryse_${new Date().toISOString().slice(0,19)}.json`;
     a.click();
-    URL.revokeObjectURL(url);
-    mostrarToastAgenda("📁 Horario exportado");
 }
 
-// Toast pequeño para agenda
-let toastTimeoutAgenda;
-function mostrarToastAgenda(mensaje, duracion = 2000) {
-    let toast = document.getElementById("toastAgenda");
-    if (!toast) {
-        toast = document.createElement("div");
-        toast.id = "toastAgenda";
-        toast.style.position = "fixed";
-        toast.style.bottom = "80px";
-        toast.style.left = "50%";
-        toast.style.transform = "translateX(-50%)";
-        toast.style.backgroundColor = "rgba(0,0,0,0.8)";
-        toast.style.color = "white";
-        toast.style.padding = "8px 20px";
-        toast.style.borderRadius = "60px";
-        toast.style.fontSize = "0.8rem";
-        toast.style.zIndex = "1000";
-        toast.style.opacity = "0";
-        toast.style.transition = "opacity 0.2s";
-        document.body.appendChild(toast);
+function cargarTareasFinal() {
+    let g = localStorage.getItem("maryse_tareas_final");
+    if (g) {
+        tareasFinal = JSON.parse(g);
+    } else {
+        tareasFinal = [
+            { id: Date.now() + "_1", texto: "📖 Terminar resumen de historia", completada: false },
+            { id: Date.now() + "_2", texto: "🧪 Práctica de química", completada: false },
+            { id: Date.now() + "_3", texto: "📐 Ejercicios de álgebra", completada: true }
+        ];
     }
-    toast.textContent = mensaje;
-    toast.style.opacity = "1";
-    if (toastTimeoutAgenda) clearTimeout(toastTimeoutAgenda);
-    toastTimeoutAgenda = setTimeout(() => {
-        toast.style.opacity = "0";
-    }, duracion);
 }
+function guardarTareasFinal() { localStorage.setItem("maryse_tareas_final", JSON.stringify(tareasFinal)); }
 
-// Renderizar lista de tareas
-function renderizarTareasAgenda() {
-    const container = document.getElementById("listaTareasAgenda");
-    if (!container) return;
-    
-    const mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
-    let tareasFiltradas = mostrarCompletadas ? tareasAgenda : tareasAgenda.filter(t => !t.completada);
-    
-    if (tareasFiltradas.length === 0) {
-        container.innerHTML = `<div style="text-align: center; padding: 30px; color: var(--subtext);">✨ ¡No hay tareas pendientes! Añade una nueva ✨</div>`;
+function renderizarTareasFinal() {
+    let c = document.getElementById("listaTareasFinal");
+    if (!c) return;
+    let mostrar = document.getElementById("mostrarCompletadasFinal")?.checked || false;
+    let filtradas = mostrar ? tareasFinal : tareasFinal.filter(t => !t.completada);
+    if (filtradas.length === 0) {
+        c.innerHTML = "<div style='text-align:center;padding:40px;color:var(--subtext);'>✨ ¡No hay tareas! Añade una ✨</div>";
         return;
     }
-    
-    container.innerHTML = tareasFiltradas.map(tarea => `
-        <div class="task-item-agenda" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg); border-radius: 60px; padding: 10px 16px; margin-bottom: 8px; border: 1px solid var(--border);">
-            <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                <input type="checkbox" ${tarea.completada ? "checked" : ""} onchange="toggleTareaAgenda('${tarea.id}')" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary);">
-                <span style="${tarea.completada ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${tarea.texto}</span>
+    c.innerHTML = filtradas.map(t => `
+        <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:60px;padding:10px 16px;margin-bottom:8px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:12px;flex:1;">
+                <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTareaFinal('${t.id}')" style="width:20px;height:20px;cursor:pointer;accent-color:var(--primary);">
+                <span style="${t.completada ? 'text-decoration:line-through;opacity:0.6;' : ''}">${t.texto}</span>
             </div>
-            <button onclick="eliminarTareaAgenda('${tarea.id}')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #ef4444;">🗑️</button>
+            <button onclick="eliminarTareaFinal('${t.id}')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#ef4444;">🗑️</button>
         </div>
     `).join("");
 }
 
-// Añadir tarea
-function agregarTareaAgenda() {
-    const input = document.getElementById("nuevaTareaAgenda");
-    const texto = input.value.trim();
-    if (!texto) {
-        mostrarToastAgenda("✏️ Escribe una tarea válida");
-        return;
-    }
-    const nuevaTarea = {
+function agregarTareaFinal() {
+    let inp = document.getElementById("inputTareaFinal");
+    let txt = inp.value.trim();
+    if (!txt) return;
+    tareasFinal.unshift({
         id: Date.now() + "_" + Math.random().toString(36).substr(2, 6),
-        texto: texto,
+        texto: txt,
         completada: false
-    };
-    tareasAgenda.unshift(nuevaTarea);
-    guardarTareasAgenda();
-    renderizarTareasAgenda();
-    input.value = "";
-    mostrarToastAgenda(`📌 "${texto}" añadida`);
+    });
+    guardarTareasFinal();
+    renderizarTareasFinal();
+    inp.value = "";
 }
 
-// Cambiar estado completado
-function toggleTareaAgenda(id) {
-    const tarea = tareasAgenda.find(t => t.id === id);
-    if (tarea) {
-        tarea.completada = !tarea.completada;
-        guardarTareasAgenda();
-        renderizarTareasAgenda();
-        mostrarToastAgenda(tarea.completada ? "✔️ ¡Bien hecho!" : "↩️ Tarea pendiente de nuevo");
+function toggleTareaFinal(id) {
+    let t = tareasFinal.find(t => t.id === id);
+    if (t) {
+        t.completada = !t.completada;
+        guardarTareasFinal();
+        renderizarTareasFinal();
     }
 }
 
-// Eliminar tarea
-function eliminarTareaAgenda(id) {
-    tareasAgenda = tareasAgenda.filter(t => t.id !== id);
-    guardarTareasAgenda();
-    renderizarTareasAgenda();
-    mostrarToastAgenda("🗑️ Tarea eliminada");
+function eliminarTareaFinal(id) {
+    tareasFinal = tareasFinal.filter(t => t.id !== id);
+    guardarTareasFinal();
+    renderizarTareasFinal();
 }
 
-// Cambiar entre pestañas (horario/tareas)
-function mostrarTabAgenda(tab) {
-    const horarioSection = document.getElementById("horarioSectionAgenda");
-    const tareasSection = document.getElementById("tareasSectionAgenda");
-    const btnHorario = document.getElementById("tabHorarioBtn");
-    const btnTareas = document.getElementById("tabTareasBtn");
-    
-    if (tab === "horario") {
-        horarioSection.style.display = "block";
-        tareasSection.style.display = "none";
-        btnHorario.style.background = "var(--primary)";
-        btnHorario.style.color = "white";
-        btnTareas.style.background = "var(--card)";
-        btnTareas.style.color = "var(--text)";
-        renderizarHorarioAgenda(); // refrescar por si acaso
+function mostrarPestanaFinal(p) {
+    let ph = document.getElementById("panelHorarioFinal");
+    let pt = document.getElementById("panelTareasFinal");
+    let bh = document.getElementById("btnHorarioFinal");
+    let bt = document.getElementById("btnTareasFinal");
+    if (p === "horario") {
+        ph.style.display = "block";
+        pt.style.display = "none";
+        bh.style.background = "var(--primary)";
+        bh.style.color = "white";
+        bt.style.background = "var(--card)";
+        bt.style.color = "var(--text)";
+        renderizarHorarioFinal();
     } else {
-        horarioSection.style.display = "none";
-        tareasSection.style.display = "block";
-        btnTareas.style.background = "var(--primary)";
-        btnTareas.style.color = "white";
-        btnHorario.style.background = "var(--card)";
-        btnHorario.style.color = "var(--text)";
-        renderizarTareasAgenda();
+        ph.style.display = "none";
+        pt.style.display = "block";
+        bt.style.background = "var(--primary)";
+        bt.style.color = "white";
+        bh.style.background = "var(--card)";
+        bh.style.color = "var(--text)";
+        renderizarTareasFinal();
     }
 }
 
-// Inicializar agenda al mostrar la vista
-function inicializarAgenda() {
-    cargarHorarioAgenda();
-    cargarTareasAgenda();
-    renderizarHorarioAgenda();
-    renderizarTareasAgenda();
-    
-    // Configurar evento del checkbox "mostrar completadas"
-    const chkMostrar = document.getElementById("mostrarCompletadasAgenda");
-    if (chkMostrar) {
-        chkMostrar.onchange = () => renderizarTareasAgenda();
-    }
-    
-    // Asegurar que la pestaña activa sea horario por defecto
-    mostrarTabAgenda("horario");
+function iniciarAgendaFinal() {
+    cargarHorarioFinal();
+    cargarTareasFinal();
+    renderizarHorarioFinal();
+    renderizarTareasFinal();
+    document.getElementById("btnHorarioFinal").onclick = () => mostrarPestanaFinal("horario");
+    document.getElementById("btnTareasFinal").onclick = () => mostrarPestanaFinal("tareas");
+    document.getElementById("restaurarHorarioFinal").onclick = () => restaurarHorarioFinal();
+    document.getElementById("exportarHorarioFinal").onclick = () => exportarHorarioFinal();
+    document.getElementById("agregarTareaFinal").onclick = () => agregarTareaFinal();
+    document.getElementById("inputTareaFinal").onkeypress = (e) => { if (e.key === "Enter") agregarTareaFinal(); };
+    document.getElementById("mostrarCompletadasFinal").onchange = () => renderizarTareasFinal();
+    mostrarPestanaFinal("horario");
 }
 
-// Sobrescribir showView para que inicialice agenda cuando se abra
-const showViewOriginal = window.showView;
-window.showView = function(vn) {
-    if (vn === "agenda") {
-        inicializarAgenda();
-    }
-    if (showViewOriginal) showViewOriginal(vn);
-    // Asegurar que el menú radial se cierre
-    const radialMenu = document.getElementById("radialMenu");
-    if (radialMenu) radialMenu.classList.add("hidden");
+// Sobrescribir showView
+const showViewAnteriorFinal = window.showView;
+window.showView = function(v) {
+    if (showViewAnteriorFinal) showViewAnteriorFinal(v);
+    if (v === "agenda") setTimeout(iniciarAgendaFinal, 50);
 };
+
+// Exponer funciones globales
+window.editarMateriaFinal = editarMateriaFinal;
+window.toggleTareaFinal = toggleTareaFinal;
+window.eliminarTareaFinal = eliminarTareaFinal;
+window.agregarTareaFinal = agregarTareaFinal;
+window.mostrarPestanaFinal = mostrarPestanaFinal;
+
 
 // Exponer funciones globales para la agenda
 window.mostrarTabAgenda = mostrarTabAgenda;
