@@ -5087,6 +5087,149 @@ window.editarHorario = editarHorario;
 window.restaurarHorario = restaurarHorario;
 
 console.log("✅ Agenda definitiva cargada");
+// ==================== CORRECCIÓN DE ERRORES ====================
+
+// 1. Eliminar variables duplicadas (forzar reinicio seguro)
+if (typeof window.misTareas !== 'undefined') { 
+    var oldTareas = window.misTareas;
+    delete window.misTareas; 
+}
+if (typeof window.misExamenes !== 'undefined') { delete window.misExamenes; }
+if (typeof window.horarioActual !== 'undefined') { delete window.horarioActual; }
+
+// 2. Declarar variables solo si no existen
+window.misTareas = window.misTareas || [];
+window.misExamenes = window.misExamenes || [];
+window.horarioActual = window.horarioActual || {};
+
+// 3. Función toggleRadialMenu (para el menú)
+function toggleRadialMenu() {
+    let menu = document.getElementById("radialMenu");
+    if(menu) menu.classList.toggle("hidden");
+}
+
+function goToView(vista) {
+    if(typeof showView === 'function') showView(vista);
+    let menu = document.getElementById("radialMenu");
+    if(menu) menu.classList.add("hidden");
+}
+
+// 4. Función changeAvatar (para cambiar el avatar)
+function changeAvatar() {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = function(e) {
+        let file = e.target.files[0];
+        if(file) {
+            let reader = new FileReader();
+            reader.onload = function(ev) {
+                localStorage.setItem("maryse_avatar", ev.target.result);
+                let avatarDiv = document.getElementById("avatarContent");
+                if(avatarDiv) avatarDiv.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+                alert("✅ Avatar actualizado");
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+// 5. Función openAdminPanel
+function openAdminPanel() {
+    let code = prompt("🔐 Code secret:");
+    if(code === "MARYSE2025") {
+        alert("👩‍👧 Bienvenue maman");
+        if(typeof showView === 'function') showView("profile");
+    } else if(code) {
+        alert("❌ Code incorrect");
+    }
+}
+
+// 6. Función signOutAndClose
+function signOutAndClose() {
+    if(confirm("🚪 Fermer la session et quitter ?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+// 7. Función installPWA
+function installPWA() {
+    alert("📱 Pour installer l'application, utilisez 'Ajouter à l'écran d'accueil' depuis le navigateur");
+}
+
+// 8. Función exportData
+function exportData() {
+    let datos = {};
+    for(let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        datos[key] = localStorage.getItem(key);
+    }
+    let blob = new Blob([JSON.stringify(datos, null, 2)], {type: "application/json"});
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `maryse_backup_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+}
+
+// 9. Función importData
+function importData(input) {
+    let file = input.files[0];
+    if(!file) return;
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            let datos = JSON.parse(e.target.result);
+            for(let key in datos) {
+                localStorage.setItem(key, datos[key]);
+            }
+            alert("✅ Importación exitosa. Recargando...");
+            location.reload();
+        } catch(err) {
+            alert("❌ Error al importar");
+        }
+    };
+    reader.readAsText(file);
+}
+
+// 10. Función toggleDarkMode
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("maryse_dark_mode", document.body.classList.contains("dark"));
+}
+
+// 11. Función showView (si no existe)
+if(typeof showView === 'undefined') {
+    window.showView = function(viewName) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        let target = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
+        if(target) target.classList.add('active');
+    };
+}
+
+// 12. Cargar avatar guardado
+function loadAvatar() {
+    let avatar = localStorage.getItem("maryse_avatar");
+    let avatarDiv = document.getElementById("avatarContent");
+    if(avatarDiv) {
+        if(avatar) {
+            avatarDiv.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+        } else {
+            avatarDiv.innerHTML = "👧";
+        }
+    }
+}
+
+// 13. Modo oscuro guardado
+if(localStorage.getItem("maryse_dark_mode") === "true") {
+    document.body.classList.add("dark");
+}
+
+// 14. Cargar avatar al inicio
+loadAvatar();
+
+console.log("✅ Todas las funciones han sido corregidas");
 </script>
 </body>
 </html>
