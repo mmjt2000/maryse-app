@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#8b5cf6">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Maryse">
     <title>Maryse · Aprende, crece, conecta</title>
@@ -3237,7 +3237,6 @@ const horarioDefecto = [
     ["Estudio libre", "Estudio libre", "Clase refuerzo", "Orientación", "Estudio libre"]
 ];
 
-let horarioActual = [];
 let tareasAgenda = [];
 
 // Cargar o inicializar horario
@@ -4838,6 +4837,41 @@ window.editarHorarioCelda = editarHorarioCelda;
 initAgendaCompleta();
 
 console.log("✅ Agenda completa con 11 materias cargada");    
+// ==================== FUNCIONES FALTANTES ====================
+
+function toggleRadialMenu() {
+    let menu = document.getElementById("radialMenu");
+    if(menu) menu.classList.toggle("hidden");
+}
+
+function goToView(vn) {
+    showView(vn);
+    let menu = document.getElementById("radialMenu");
+    if(menu) menu.classList.add("hidden");
+}
+
+function openAdminPanel() {
+    let code = prompt("🔐 Code secret:");
+    if(code === "MARYSE2025") {
+        alert("👩‍👧 Bienvenue maman");
+        showView("profile");
+    } else if(code) {
+        alert("❌ Code incorrect");
+    }
+}
+
+function signOutAndClose() {
+    if(confirm("🚪 Fermer la session ?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+// Si el error "horarioActual" persiste, descomenta esta línea:
+// if(typeof horarioActual !== 'undefined') { var horarioActual = horarioActual; }
+// Y comenta la otra declaración de horarioActual que tengas en tu código
+
+console.log("✅ Funciones de menú cargadas");
 </script>
 </body>
 </html>
