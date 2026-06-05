@@ -3023,14 +3023,21 @@ function startExam(weekIndex) {
 function toggleRadialMenu() { const m=document.getElementById('radialMenu'); if(m) m.classList.toggle('hidden'); }
 function goToView(viewName) {
     if (viewName === 'agenda') {
-        // Mostrar la nueva Agenda interna
-        document.getElementById('viewAgendaNueva').classList.add('active');
-        document.getElementById('viewHome').classList.remove('active');
-        iniciarAgendaNueva();
-        toggleRadialMenu();
+        var agendaDiv = document.getElementById('viewAgendaNueva');
+        var homeDiv = document.getElementById('viewHome');
+        if (agendaDiv) agendaDiv.classList.add('active');
+        if (homeDiv) homeDiv.classList.remove('active');
+        if (typeof iniciarAgendaNueva === 'function') {
+            iniciarAgendaNueva();
+        }
+        var menu = document.getElementById('radialMenu');
+        if (menu) menu.classList.add('hidden');
     } else {
-        showView(viewName);
-        toggleRadialMenu();
+        if (typeof showView === 'function') {
+            showView(viewName);
+        }
+        var menu = document.getElementById('radialMenu');
+        if (menu) menu.classList.add('hidden');
     }
 }
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="MARYSE2025"){ alert("👩‍👧 Bienvenida, mamá."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
