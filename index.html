@@ -628,7 +628,7 @@ function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== i
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
-</script>
+
 
 <!-- CÍRCULOS FLOTANTES -->
 <div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
@@ -4315,8 +4315,8 @@ console.log("✅ Agenda cargada - Todas las funciones están listas con tus IDs"
 // ==================== CORRECTION TOTALE DE L'AGENDA ====================
 // Ces fonctions utilisent EXACTEMENT les IDs de votre HTML
 
-let misTareas = [];
-let misExamenes = [];
+var misTareas = [];
+var misExamenes = [];
 let filtroTareaActivo = "todas";
 
 function cargarTareasStorage() {
@@ -4851,8 +4851,8 @@ console.log("✅ Funciones de menú cargadas");
     // ==================== AGENDA DEFINITIVA ====================
 
 // DATOS
-let misTareas = [];
-let misExamenes = [];
+var misTareas = [];
+var misExamenes = [];
 
 // HORARIO
 const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
@@ -5230,6 +5230,29 @@ if(localStorage.getItem("maryse_dark_mode") === "true") {
 loadAvatar();
 
 console.log("✅ Todas las funciones han sido corregidas");
+    function toggleRadialMenu() {
+    let menu = document.getElementById("radialMenu");
+    if(menu) menu.classList.toggle("hidden");
+}
+
+function changeAvatar() {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = function(e) {
+        let file = e.target.files[0];
+        if(file) {
+            let reader = new FileReader();
+            reader.onload = function(ev) {
+                localStorage.setItem("maryse_avatar", ev.target.result);
+                let avatarDiv = document.getElementById("avatarContent");
+                if(avatarDiv) avatarDiv.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
 </script>
 </body>
 </html>
