@@ -2861,7 +2861,16 @@ function startExam(weekIndex) {
 
 // ==================== CÍRCULOS FLOTANTES ====================
 function toggleRadialMenu() { const m=document.getElementById('radialMenu'); if(m) m.classList.toggle('hidden'); }
-function goToView(vn){ showView(vn); const m=document.getElementById('radialMenu'); if(m) m.classList.add('hidden'); }
+function goToView(viewName) {
+    if (viewName === 'agenda') {
+        // Abre la Agenda en un archivo separado
+        window.location.href = 'agenda-simple.html';
+    } else {
+        // Para las demás vistas
+        showView(viewName);
+        toggleRadialMenu();
+    }
+}
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="MARYSE2025"){ alert("👩‍👧 Bienvenida, mamá."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
 function signOutAndClose(){ if(confirm("¿Cerrar sesión y salir de la aplicación?")){ localStorage.clear(); if(typeof window.close === 'function'){ window.close(); }else{ document.body.innerHTML=`<div style="text-align:center;padding:50px;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()">Volver a entrar</button></div>`; } } }
 function checkSession(){ const logged=localStorage.getItem("maryse_logged_in"); if(!logged && window.location.hash!=="#nologin"){ const email=prompt("📧 Introduce tu email para continuar:"); if(email && email.includes("@")){ localStorage.setItem("maryse_logged_in","true"); localStorage.setItem("maryse_user_email",email); }else if(email!==null){ alert("Email no válido"); location.reload(); } } }
