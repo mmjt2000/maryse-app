@@ -483,76 +483,52 @@
 </div>
         <!-- AGENDA (con horario escolar editable y tareas pendientes) -->
     <div id="viewAgenda" class="view">
+   <div id="viewAgenda" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     
-    <!-- ESTADÍSTICAS RÁPIDAS -->
-    <div class="agenda-stats" id="agendaStats">
-        <div class="stat-card-agenda"><div class="stat-number" id="statTareasPendientes">0</div><div class="stat-label">📋 Tareas pendientes</div></div>
-        <div class="stat-card-agenda"><div class="stat-number" id="statTareasHoy">0</div><div class="stat-label">⏰ Para hoy</div></div>
-        <div class="stat-card-agenda"><div class="stat-number" id="statTareasUrgentes">0</div><div class="stat-label">⚠️ Urgentes</div></div>
-        <div class="stat-card-agenda"><div class="stat-number" id="statCompletadasSemana">0</div><div class="stat-label">✅ Completadas esta semana</div></div>
+    <!-- Pestañas -->
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn" id="btnHorario" onclick="verHorario()" style="background: var(--primary); color: white;">📚 Horario</button>
+        <button class="btn" id="btnTareas" onclick="verTareas()">✅ Tareas</button>
+        <button class="btn" id="btnExamenes" onclick="verExamenes()">📝 Exámenes</button>
     </div>
     
-    <!-- PESTAÑAS MEJORADAS -->
-    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-        <button class="btn" id="tabHorarioBtn" onclick="mostrarTabAgenda('horario')" style="background: var(--primary); color: white;">📚 Horario Escolar</button>
-        <button class="btn" id="tabTareasBtn" onclick="mostrarTabAgenda('tareas')" style="background: var(--card);">✅ Tareas Pendientes</button>
-        <button class="btn" id="tabExamenesBtn" onclick="mostrarTabAgenda('examenes')" style="background: var(--card);">📝 Exámenes</button>
-    </div>
-    
-    <!-- SECCIÓN HORARIO ESCOLAR (editable) -->
-    <div id="horarioSectionAgenda" class="card">
+    <!-- SECCIÓN HORARIO -->
+    <div id="seccionHorario" class="card">
         <div class="card-title">📚 Mi Horario de Clases</div>
-        <p style="font-size: 0.7rem; color: var(--subtext); margin-bottom: 12px;">💡 Haz clic en cualquier celda para editar la materia</p>
-        <div style="overflow-x: auto;">
-            <table id="horarioTableAgenda" style="width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden;">
-                <thead id="horarioHeaderAgenda"></thead>
-                <tbody id="horarioBodyAgenda"></tbody>
-            </table>
-        </div>
-        <div style="display: flex; gap: 12px; margin-top: 15px; justify-content: flex-end; flex-wrap: wrap;">
-            <button class="btn outline" onclick="restaurarHorarioAgenda()" style="background: var(--card); border: 1px solid var(--border);">⟳ Restaurar horario</button>
-            <button class="btn outline" onclick="exportarHorarioJSON()" style="background: var(--card); border: 1px solid var(--border);">📎 Exportar horario</button>
-        </div>
+        <div id="tablaHorario"></div>
+        <button class="btn" onclick="restaurarHorario()" style="margin-top: 10px;">⟳ Restaurar</button>
     </div>
     
-    <!-- SECCIÓN TAREAS PENDIENTES (MEJORADA) -->
-    <div id="tareasSectionAgenda" class="card" style="display: none;">
-        <div class="card-title">✅ Mis Tareas Pendientes</div>
+    <!-- SECCIÓN TAREAS -->
+    <div id="seccionTareas" class="card" style="display: none;">
+        <div class="card-title">✅ Mis Tareas</div>
         
-        <!-- Formulario mejorado -->
-        <div style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 20px;">
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
-                <input type="text" id="nuevaTareaAgenda" placeholder="Ej: Estudiar matemáticas, leer capítulo 3..." style="flex: 1; padding: 12px; border-radius: 60px; border: 1px solid var(--border); background: var(--card); color: var(--text);">
-                <select id="nuevaTareaCategoria" style="width: auto; padding: 12px; border-radius: 60px;">
-                    <option value="normal">📘 Normal</option>
-                    <option value="importante">⭐ Importante</option>
-                    <option value="urgente">⚠️ Urgente</option>
-                </select>
-                <select id="nuevaTareaPrioridad" style="width: auto; padding: 12px; border-radius: 60px;">
-                    <option value="baja">🟢 Prioridad baja</option>
-                    <option value="media">🟡 Prioridad media</option>
-                    <option value="alta">🔴 Prioridad alta</option>
-                </select>
-            </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <input type="date" id="nuevaTareaFechaLimite" style="flex: 1; padding: 10px; border-radius: 60px;">
-                <select id="nuevaTareaMateria" style="flex: 1; padding: 10px; border-radius: 60px;">
-                    <option value="">📚 Sin materia específica</option>
-                    <option value="Matemáticas">📐 Matemáticas</option>
-                    <option value="Lengua">📖 Lengua</option>
-                    <option value="Inglés">🇬🇧 Inglés</option>
-                    <option value="Francés">🇫🇷 Francés</option>
-                    <option value="Historia">🏛️ Historia</option>
-                    <option value="Ciencias">🔬 Ciencias</option>
-                    <option value="Arte">🎨 Arte</option>
-                    <option value="Música">🎵 Música</option>
-                    <option value="Educación Física">⚽ Educación Física</option>
-                </select>
-                <button class="btn btn-primary" onclick="agregarTareaAgendaMejorada()">➕ Añadir</button>
-            </div>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <input type="text" id="inputTarea" placeholder="Nueva tarea..." style="flex: 1;">
+            <button class="btn btn-primary" onclick="agregarTarea()">➕ Añadir</button>
         </div>
         
+        <div id="listaTareas"></div>
+        
+        <label style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="mostrarCompletadas" onchange="cargarTareas()"> Mostrar completadas
+        </label>
+    </div>
+    
+    <!-- SECCIÓN EXÁMENES -->
+    <div id="seccionExamenes" class="card" style="display: none;">
+        <div class="card-title">📝 Mis Exámenes</div>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+            <input type="text" id="inputExamen" placeholder="Nombre del examen..." style="flex: 2;">
+            <input type="date" id="fechaExamen" style="flex: 1;">
+            <button class="btn btn-primary" onclick="agregarExamen()">➕ Añadir</button>
+        </div>
+        
+        <div id="listaExamenes"></div>
+    </div>
+</div>
         <!-- Filtros -->
         <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
             <button class="filter-chip" data-filtro-tarea="todas" onclick="filtrarTareasAgenda('todas')" style="background: var(--primary); color: white;">📋 Todas</button>
@@ -4872,6 +4848,245 @@ function signOutAndClose() {
 // Y comenta la otra declaración de horarioActual que tengas en tu código
 
 console.log("✅ Funciones de menú cargadas");
+    // ==================== AGENDA DEFINITIVA ====================
+
+// DATOS
+let misTareas = [];
+let misExamenes = [];
+
+// HORARIO
+const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+const horas = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
+
+const horarioDefecto = {
+    Lunes: ["📐 Matemática", "📖 Español", "🇬🇧 Inglés", "⚡ Física", "📊 Tutoría", "⚽ Educación Física"],
+    Martes: ["🏛️ Historia", "💻 Ofimática", "📐 Matemática", "♀️ Igualdad Género", "🎨 Artes", "🫂 Formación Cívica"],
+    Miércoles: ["⚡ Física", "🇬🇧 Inglés", "📐 Matemática", "🏛️ Historia", "📖 Español", "💻 Ofimática"],
+    Jueves: ["📖 Español", "🎨 Artes", "♀️ Igualdad Género", "📐 Matemática", "🫂 Formación Cívica", "📊 Tutoría"],
+    Viernes: ["🇬🇧 Inglés", "⚡ Física", "🏛️ Historia", "⚽ Educación Física", "💻 Ofimática", "📐 Matemática"]
+};
+
+let horarioActual = {};
+
+function cargarHorario() {
+    let guardado = localStorage.getItem("maryse_horario");
+    if(guardado) {
+        horarioActual = JSON.parse(guardado);
+    } else {
+        horarioActual = JSON.parse(JSON.stringify(horarioDefecto));
+    }
+    renderizarHorario();
+}
+
+function renderizarHorario() {
+    let container = document.getElementById("tablaHorario");
+    if(!container) return;
+    
+    let html = `<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse;">`;
+    html += `<tr style="background:var(--primary);color:white;"><th style="padding:10px;">Hora</th>`;
+    dias.forEach(d => { html += `<th style="padding:10px;">${d}</th>`; });
+    html += `</tr>`;
+    
+    for(let i = 0; i < horas.length; i++) {
+        html += `<tr style="border-bottom:1px solid var(--border);">`;
+        html += `<td style="padding:10px;font-weight:bold;background:var(--bg);">${horas[i]}</td>`;
+        
+        for(let j = 0; j < dias.length; j++) {
+            let materia = horarioActual[dias[j]]?.[i] || "—";
+            html += `<td onclick="editarHorario('${dias[j]}', ${i})" style="padding:10px;cursor:pointer;background:var(--card);border-radius:8px;margin:2px;">${materia}</td>`;
+        }
+        html += `</tr>`;
+    }
+    html += `</table></div>`;
+    container.innerHTML = html;
+}
+
+function editarHorario(dia, horaIndex) {
+    let nuevo = prompt(`✏️ Editar materia para ${dia} a las ${horas[horaIndex]}:`, horarioActual[dia][horaIndex]);
+    if(nuevo && nuevo.trim()) {
+        horarioActual[dia][horaIndex] = nuevo.trim();
+        localStorage.setItem("maryse_horario", JSON.stringify(horarioActual));
+        renderizarHorario();
+    }
+}
+
+function restaurarHorario() {
+    if(confirm("¿Restaurar horario original?")) {
+        horarioActual = JSON.parse(JSON.stringify(horarioDefecto));
+        localStorage.setItem("maryse_horario", JSON.stringify(horarioActual));
+        renderizarHorario();
+    }
+}
+
+// TAREAS
+function cargarTareas() {
+    let guardado = localStorage.getItem("maryse_tareas");
+    if(guardado) misTareas = JSON.parse(guardado);
+    else misTareas = [];
+    renderizarTareas();
+}
+
+function guardarTareas() {
+    localStorage.setItem("maryse_tareas", JSON.stringify(misTareas));
+}
+
+function renderizarTareas() {
+    let container = document.getElementById("listaTareas");
+    if(!container) return;
+    
+    let mostrarCompletadas = document.getElementById("mostrarCompletadas")?.checked || false;
+    let tareasFiltradas = mostrarCompletadas ? misTareas : misTareas.filter(t => !t.completada);
+    
+    if(tareasFiltradas.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:30px;">✨ No hay tareas ✨</div>`;
+        return;
+    }
+    
+    container.innerHTML = tareasFiltradas.map(t => `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:12px;border-radius:16px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTarea(${t.id})">
+                <span style="${t.completada ? 'text-decoration:line-through;opacity:0.6' : ''}">${t.texto}</span>
+            </div>
+            <button onclick="eliminarTarea(${t.id})" style="background:none;border:none;cursor:pointer;">🗑️</button>
+        </div>
+    `).join("");
+}
+
+function agregarTarea() {
+    let input = document.getElementById("inputTarea");
+    let texto = input.value.trim();
+    if(!texto) { alert("✏️ Escribe una tarea"); return; }
+    
+    misTareas.unshift({ id: Date.now(), texto: texto, completada: false });
+    guardarTareas();
+    renderizarTareas();
+    input.value = "";
+}
+
+function toggleTarea(id) {
+    let t = misTareas.find(t => t.id === id);
+    if(t) { t.completada = !t.completada; guardarTareas(); renderizarTareas(); }
+}
+
+function eliminarTarea(id) {
+    misTareas = misTareas.filter(t => t.id !== id);
+    guardarTareas();
+    renderizarTareas();
+}
+
+// EXÁMENES
+function cargarExamenes() {
+    let guardado = localStorage.getItem("maryse_examenes");
+    if(guardado) misExamenes = JSON.parse(guardado);
+    else misExamenes = [];
+    renderizarExamenes();
+}
+
+function guardarExamenes() {
+    localStorage.setItem("maryse_examenes", JSON.stringify(misExamenes));
+}
+
+function renderizarExamenes() {
+    let container = document.getElementById("listaExamenes");
+    if(!container) return;
+    
+    if(misExamenes.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:30px;">📝 No hay exámenes</div>`;
+        return;
+    }
+    
+    let ordenados = [...misExamenes].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+    
+    container.innerHTML = ordenados.map(e => `
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:12px;border-radius:16px;margin-bottom:8px;">
+            <div>
+                <strong>${e.nombre}</strong>
+                <div style="font-size:0.7rem;color:var(--subtext);">📅 ${new Date(e.fecha).toLocaleDateString()}</div>
+            </div>
+            <button onclick="eliminarExamen(${e.id})" style="background:none;border:none;cursor:pointer;">🗑️</button>
+        </div>
+    `).join("");
+}
+
+function agregarExamen() {
+    let nombre = document.getElementById("inputExamen").value.trim();
+    let fecha = document.getElementById("fechaExamen").value;
+    
+    if(!nombre || !fecha) { alert("❌ Completa nombre y fecha"); return; }
+    
+    misExamenes.push({ id: Date.now(), nombre: nombre, fecha: fecha });
+    guardarExamenes();
+    renderizarExamenes();
+    
+    document.getElementById("inputExamen").value = "";
+    document.getElementById("fechaExamen").value = "";
+}
+
+function eliminarExamen(id) {
+    misExamenes = misExamenes.filter(e => e.id !== id);
+    guardarExamenes();
+    renderizarExamenes();
+}
+
+// NAVEGACIÓN PESTAÑAS
+function verHorario() {
+    document.getElementById("seccionHorario").style.display = "block";
+    document.getElementById("seccionTareas").style.display = "none";
+    document.getElementById("seccionExamenes").style.display = "none";
+    document.getElementById("btnHorario").style.background = "var(--primary)";
+    document.getElementById("btnHorario").style.color = "white";
+    document.getElementById("btnTareas").style.background = "var(--card)";
+    document.getElementById("btnTareas").style.color = "var(--text)";
+    document.getElementById("btnExamenes").style.background = "var(--card)";
+    document.getElementById("btnExamenes").style.color = "var(--text)";
+    renderizarHorario();
+}
+
+function verTareas() {
+    document.getElementById("seccionHorario").style.display = "none";
+    document.getElementById("seccionTareas").style.display = "block";
+    document.getElementById("seccionExamenes").style.display = "none";
+    document.getElementById("btnTareas").style.background = "var(--primary)";
+    document.getElementById("btnTareas").style.color = "white";
+    document.getElementById("btnHorario").style.background = "var(--card)";
+    document.getElementById("btnHorario").style.color = "var(--text)";
+    document.getElementById("btnExamenes").style.background = "var(--card)";
+    document.getElementById("btnExamenes").style.color = "var(--text)";
+    cargarTareas();
+}
+
+function verExamenes() {
+    document.getElementById("seccionHorario").style.display = "none";
+    document.getElementById("seccionTareas").style.display = "none";
+    document.getElementById("seccionExamenes").style.display = "block";
+    document.getElementById("btnExamenes").style.background = "var(--primary)";
+    document.getElementById("btnExamenes").style.color = "white";
+    document.getElementById("btnHorario").style.background = "var(--card)";
+    document.getElementById("btnHorario").style.color = "var(--text)";
+    document.getElementById("btnTareas").style.background = "var(--card)";
+    document.getElementById("btnTareas").style.color = "var(--text)";
+    cargarExamenes();
+}
+
+// INICIALIZAR
+cargarHorario();
+cargarTareas();
+cargarExamenes();
+
+// EXPONER FUNCIONES
+window.verHorario = verHorario;
+window.verTareas = verTareas;
+window.verExamenes = verExamenes;
+window.agregarTarea = agregarTarea;
+window.toggleTarea = toggleTarea;
+window.eliminarTarea = eliminarTarea;
+window.agregarExamen = agregarExamen;
+window.eliminarExamen = eliminarExamen;
+window.editarHorario = editarHorario;
+window.restaurarHorario = restaurarHorario;
+
+console.log("✅ Agenda definitiva cargada");
 </script>
 </body>
 </html>
