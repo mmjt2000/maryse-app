@@ -664,41 +664,31 @@ function mostrarTabN(tab){
 }
 function iniciarAgendaNueva(){renderizarHorarioN();actualizarStatsN();renderizarTareasN();renderizarExamenesN();let chk=document.getElementById("checkMostrarCompletadasN");if(chk)chk.onchange=function(){renderizarTareasN();};}
 // ==================== FUNCIONES NUEVA AGENDA ====================
-
-const horarioBase = {
-    "Lunes":["Ofimatica","Ofimatica","Historia","Español","BREAK","Ofimatica","Español","Matemática","Artes"],
-    "Martes":["Educación Física","Educación Física","Formación Cívica y Etica","Formación Cívica y Etica","BREAK","Física","Física","Español","Matemática"],
-    "Miercoles":["Tutoría","Español","Español","Historia","BREAK","Ofimatica","Inglés","Artes","Artes"],
-    "Jueves":["Ofimatica","Ofimatica","Ofimatica","Matemática","BREAK","Historia","Física","Física","Historia"],
-    "Viernes":["Ofimatica","Inglés","Inglés","Matemáticas","BREAK","Matemáticas","Física","Física","Igualdad de Género"]
-};
-const horasDia = ["7:00-7:50","7:50-8:40","8:40-9:30","9:30-10:20","10:20-10:40","10:40-11:30","11:30-12:20","12:20-13:10","13:10-14:00"];
-
-function guardarHorarioN(h){localStorage.setItem("horarioMaryse",JSON.stringify(h));}
-function cargarHorarioN(){let g=localStorage.getItem("horarioMaryse");return g?JSON.parse(g):JSON.parse(JSON.stringify(horarioBase));}
+function guardarHorarioN(h){localStorage.setItem("horarioMaryseNueva",JSON.stringify(h));}
+function cargarHorarioN(){let g=localStorage.getItem("horarioMaryseNueva");return g?JSON.parse(g):JSON.parse(JSON.stringify(horarioBaseNueva));}
 function renderizarHorarioN(){
     let h=cargarHorarioN(),dias=["Lunes","Martes","Miercoles","Jueves","Viernes"],html='<thead><tr><th>Hora</th>';
     for(let d of dias)html+=`<th>${d}</th>`;
-    html+='</table></thead><tbody>';
-    for(let i=0;i<horasDia.length;i++){
-        html+=`<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasDia[i]}<\/td>`;
+    html+='</tr></thead><tbody>';
+    for(let i=0;i<horasDiaNueva.length;i++){
+        html+=`<td><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasDiaNueva[i]}<\/td>`;
         for(let j=0;j<dias.length;j++){let val=h[dias[j]][i]||"";html+=`<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}',${i},this.innerText)">${val}<\/td>`;}
         html+='</tr>';
     }
     html+='</tbody>';let t=document.getElementById("tablaHorarioN");if(t)t.innerHTML=html;
 }
 function actualizarCeldaN(d,i,v){let h=cargarHorarioN();h[d][i]=v;guardarHorarioN(h);}
-function restaurarHorarioN(){if(confirm("¿Restaurar horario original?")){guardarHorarioN(JSON.parse(JSON.stringify(horarioBase)));renderizarHorarioN();alert("✅ Horario restaurado");}}
+function restaurarHorarioN(){if(confirm("¿Restaurar horario original?")){guardarHorarioN(JSON.parse(JSON.stringify(horarioBaseNueva)));renderizarHorarioN();alert("✅ Horario restaurado");}}
 function exportarHorarioN(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(cargarHorarioN(),null,2)],{type:"application/json"}));a.download="horario.json";a.click();}
-function cargarTareasN(){let t=localStorage.getItem("tareasMaryse");return t?JSON.parse(t):[];}
-function guardarTareasN(t){localStorage.setItem("tareasMaryse",JSON.stringify(t));actualizarStatsN();renderizarTareasN();}
+function cargarTareasN(){let t=localStorage.getItem("tareasMaryseNueva");return t?JSON.parse(t):[];}
+function guardarTareasN(t){localStorage.setItem("tareasMaryseNueva",JSON.stringify(t));actualizarStatsN();renderizarTareasN();}
 function agregarTareaN(){let txt=document.getElementById("inputTareaN").value.trim();if(!txt){alert("Escribe una tarea");return;}let t=cargarTareasN();t.push({id:Date.now(),texto:txt,completada:false});guardarTareasN(t);document.getElementById("inputTareaN").value="";}
 function renderizarTareasN(){let c=document.getElementById("listaTareasN");if(!c)return;let t=cargarTareasN(),mostrar=document.getElementById("checkMostrarCompletadasN").checked,f=mostrar?t:t.filter(x=>!x.completada);if(f.length===0){c.innerHTML="<p style='text-align:center;padding:20px;'>✨ Sin tareas ✨</p>";return;}c.innerHTML=f.map(x=>`<div style="background:var(--bg);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;"><span style="${x.completada?'text-decoration:line-through;opacity:0.6;':''}">${x.texto}</span><div>${!x.completada?`<button onclick="completarTareaN(${x.id})" style="background:#10b981;border:none;padding:5px 12px;border-radius:20px;">✅</button>`:''}<button onclick="eliminarTareaN(${x.id})" style="background:#ef4444;border:none;padding:5px 12px;border-radius:20px;">🗑️</button></div></div>`).join("");}
 function completarTareaN(id){let t=cargarTareasN(),ta=t.find(x=>x.id===id);if(ta){ta.completada=true;guardarTareasN(t);}}
 function eliminarTareaN(id){guardarTareasN(cargarTareasN().filter(x=>x.id!==id));}
 function eliminarCompletadasN(){if(confirm("¿Eliminar tareas completadas?"))guardarTareasN(cargarTareasN().filter(x=>!x.completada));}
-function cargarExamenesN(){let e=localStorage.getItem("examenesMaryse");return e?JSON.parse(e):[];}
-function guardarExamenesN(e){localStorage.setItem("examenesMaryse",JSON.stringify(e));renderizarExamenesN();}
+function cargarExamenesN(){let e=localStorage.getItem("examenesMaryseNueva");return e?JSON.parse(e):[];}
+function guardarExamenesN(e){localStorage.setItem("examenesMaryseNueva",JSON.stringify(e));renderizarExamenesN();}
 function agregarExamenN(){let nom=document.getElementById("inputExamenN").value.trim(),fec=document.getElementById("inputFechaExamenN").value;if(!nom||!fec){alert("Completa nombre y fecha");return;}let e=cargarExamenesN();e.push({id:Date.now(),nombre:nom,fecha:fec});guardarExamenesN(e);document.getElementById("inputExamenN").value="";document.getElementById("inputFechaExamenN").value="";}
 function renderizarExamenesN(){let c=document.getElementById("listaExamenesN");if(!c)return;let e=cargarExamenesN();if(e.length===0){c.innerHTML="<p style='text-align:center;padding:20px;'>📝 Sin exámenes</p>";return;}c.innerHTML=e.map(x=>`<div style="background:var(--bg);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;"><div><strong>📝 ${x.nombre}</strong><br><small>📅 ${x.fecha}</small></div><button onclick="eliminarExamenN(${x.id})" style="background:#ef4444;border:none;padding:5px 12px;border-radius:20px;">🗑️</button></div>`).join("");}
 function eliminarExamenN(id){guardarExamenesN(cargarExamenesN().filter(x=>x.id!==id));}
