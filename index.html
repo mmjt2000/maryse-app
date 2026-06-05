@@ -481,7 +481,55 @@
         </div>
     </div>
 </div>
+<!-- NUEVA AGENDA (VERSIÓN FUNCIONAL) -->
+<div id="viewAgendaNueva" class="view" style="display:none;">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
 
+    <div class="agenda-stats">
+        <div class="stat-card-agenda"><div class="stat-number" id="statPendientesN">0</div><div class="stat-label">📋 Pendientes</div></div>
+        <div class="stat-card-agenda"><div class="stat-number" id="statHoyN">0</div><div class="stat-label">⏰ Para hoy</div></div>
+        <div class="stat-card-agenda"><div class="stat-number" id="statUrgentesN">0</div><div class="stat-label">⚠️ Urgentes</div></div>
+        <div class="stat-card-agenda"><div class="stat-number" id="statSemanaN">0</div><div class="stat-label">✅ Completadas</div></div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn" id="btnHorarioN" onclick="mostrarTabN('horario')" style="background:#8b5cf6;color:white;">📚 Horario</button>
+        <button class="btn" id="btnTareasN" onclick="mostrarTabN('tareas')">✅ Tareas</button>
+        <button class="btn" id="btnExamenesN" onclick="mostrarTabN('examenes')">📝 Exámenes</button>
+    </div>
+
+    <div id="horarioSectionN" class="card">
+        <div class="card-title">📚 Mi Horario</div>
+        <div style="overflow-x: auto;">
+            <table id="tablaHorarioN" style="width:100%; border-collapse:collapse;"></table>
+        </div>
+        <div style="margin-top:15px;">
+            <button class="btn" onclick="restaurarHorarioN()">⟳ Restaurar</button>
+            <button class="btn" onclick="exportarHorarioN()">📎 Exportar</button>
+        </div>
+    </div>
+
+    <div id="tareasSectionN" class="card" style="display:none;">
+        <div class="card-title">✅ Mis Tareas</div>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="inputTareaN" placeholder="Nueva tarea..." style="flex:1;">
+            <button class="btn btn-primary" onclick="agregarTareaN()">➕</button>
+        </div>
+        <div id="listaTareasN"></div>
+        <div><label><input type="checkbox" id="checkMostrarCompletadasN"> Mostrar completadas</label>
+        <button class="btn" onclick="eliminarCompletadasN()">🗑️</button></div>
+    </div>
+
+    <div id="examenesSectionN" class="card" style="display:none;">
+        <div class="card-title">📝 Exámenes</div>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="inputExamenN" placeholder="Examen..." style="flex:2;">
+            <input type="date" id="inputFechaExamenN" style="flex:1;">
+            <button class="btn btn-primary" onclick="agregarExamenN()">➕</button>
+        </div>
+        <div id="listaExamenesN"></div>
+    </div>
+</div>
 
     <!-- FOTOS (version corrigée et fonctionnelle) -->
 <div id="viewFotos" class="view">
@@ -563,6 +611,56 @@ window.borrarFoto = borrarFoto;
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 
 <script>
+    const horarioBase = {
+    "Lunes":["Ofimatica","Ofimatica","Historia","Español","BREAK","Ofimatica","Español","Matemática","Artes"],
+    "Martes":["Educación Física","Educación Física","Formación Cívica y Etica","Formación Cívica y Etica","BREAK","Física","Física","Español","Matemática"],
+    "Miercoles":["Tutoría","Español","Español","Historia","BREAK","Ofimatica","Inglés","Artes","Artes"],
+    "Jueves":["Ofimatica","Ofimatica","Ofimatica","Matemática","BREAK","Historia","Física","Física","Historia"],
+    "Viernes":["Ofimatica","Inglés","Inglés","Matemáticas","BREAK","Matemáticas","Física","Física","Igualdad de Género"]
+};
+const horasDia = ["7:00-7:50","7:50-8:40","8:40-9:30","9:30-10:20","10:20-10:40","10:40-11:30","11:30-12:20","12:20-13:10","13:10-14:00"];
+
+function guardarHorarioN(h){localStorage.setItem("horarioMaryse",JSON.stringify(h));}
+function cargarHorarioN(){let g=localStorage.getItem("horarioMaryse");return g?JSON.parse(g):JSON.parse(JSON.stringify(horarioBase));}
+function renderizarHorarioN(){
+    let h=cargarHorarioN(),dias=["Lunes","Martes","Miercoles","Jueves","Viernes"],html='<thead><tr><th>Hora</th>';
+    for(let d of dias)html+=`<th>${d}</th>`;
+    html+='</td></thead><tbody>';
+    for(let i=0;i<horasDia.length;i++){
+        html+=`<tr><td style="background:#8b5cf6;color:white;">${horasDia[i]}<\/td>`;
+        for(let j=0;j<dias.length;j++){let val=h[dias[j]][i]||"";html+=`<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}',${i},this.innerText)">${val}<\/td>`;}
+        html+='</tr>';
+    }
+    html+='</tbody>';let t=document.getElementById("tablaHorarioN");if(t)t.innerHTML=html;
+}
+function actualizarCeldaN(d,i,v){let h=cargarHorarioN();h[d][i]=v;guardarHorarioN(h);}
+function restaurarHorarioN(){if(confirm("¿Restaurar?")){guardarHorarioN(JSON.parse(JSON.stringify(horarioBase)));renderizarHorarioN();alert("✅ Listo");}}
+function exportarHorarioN(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(cargarHorarioN(),null,2)],{type:"application/json"}));a.download="horario.json";a.click();}
+function cargarTareasN(){let t=localStorage.getItem("tareasMaryse");return t?JSON.parse(t):[];}
+function guardarTareasN(t){localStorage.setItem("tareasMaryse",JSON.stringify(t));actualizarStatsN();renderizarTareasN();}
+function agregarTareaN(){let txt=document.getElementById("inputTareaN").value.trim();if(!txt){alert("Escribe algo");return;}let t=cargarTareasN();t.push({id:Date.now(),texto:txt,completada:false});guardarTareasN(t);document.getElementById("inputTareaN").value="";}
+function renderizarTareasN(){let c=document.getElementById("listaTareasN");if(!c)return;let t=cargarTareasN(),mostrar=document.getElementById("checkMostrarCompletadasN").checked,f=mostrar?t:t.filter(x=>!x.completada);if(f.length===0){c.innerHTML="<p>✨ Sin tareas ✨</p>";return;}c.innerHTML=f.map(x=>`<div style="background:var(--bg);border-radius:12px;padding:12px;margin:8px 0;display:flex;justify-content:space-between"><span style="${x.completada?'text-decoration:line-through;opacity:0.6;':''}">${x.texto}</span><div>${!x.completada?`<button onclick="completarTareaN(${x.id})">✅</button>`:''}<button onclick="eliminarTareaN(${x.id})">🗑️</button></div></div>`).join("");}
+function completarTareaN(id){let t=cargarTareasN(),ta=t.find(x=>x.id===id);if(ta){ta.completada=true;guardarTareasN(t);}}
+function eliminarTareaN(id){guardarTareasN(cargarTareasN().filter(x=>x.id!==id));}
+function eliminarCompletadasN(){if(confirm("¿Eliminar completadas?"))guardarTareasN(cargarTareasN().filter(x=>!x.completada));}
+function cargarExamenesN(){let e=localStorage.getItem("examenesMaryse");return e?JSON.parse(e):[];}
+function guardarExamenesN(e){localStorage.setItem("examenesMaryse",JSON.stringify(e));renderizarExamenesN();}
+function agregarExamenN(){let nom=document.getElementById("inputExamenN").value.trim(),fec=document.getElementById("inputFechaExamenN").value;if(!nom||!fec){alert("Completa todo");return;}let e=cargarExamenesN();e.push({id:Date.now(),nombre:nom,fecha:fec});guardarExamenesN(e);document.getElementById("inputExamenN").value="";document.getElementById("inputFechaExamenN").value="";}
+function renderizarExamenesN(){let c=document.getElementById("listaExamenesN");if(!c)return;let e=cargarExamenesN();if(e.length===0){c.innerHTML="<p>📝 Sin exámenes</p>";return;}c.innerHTML=e.map(x=>`<div style="background:var(--bg);border-radius:12px;padding:12px;margin:8px 0;display:flex;justify-content:space-between"><div><strong>${x.nombre}</strong><br><small>${x.fecha}</small></div><button onclick="eliminarExamenN(${x.id})">🗑️</button></div>`).join("");}
+function eliminarExamenN(id){guardarExamenesN(cargarExamenesN().filter(x=>x.id!==id));}
+function actualizarStatsN(){let p=cargarTareasN().filter(x=>!x.completada).length,pe=document.getElementById("statPendientesN");if(pe)pe.innerText=p;}
+function mostrarTabN(tab){
+    let h=document.getElementById("horarioSectionN"),ta=document.getElementById("tareasSectionN"),e=document.getElementById("examenesSectionN"),bh=document.getElementById("btnHorarioN"),bt=document.getElementById("btnTareasN"),be=document.getElementById("btnExamenesN");
+    if(h)h.style.display=tab==="horario"?"block":"none";
+    if(ta)ta.style.display=tab==="tareas"?"block":"none";
+    if(e)e.style.display=tab==="examenes"?"block":"none";
+    if(bh){bh.style.background=tab==="horario"?"#8b5cf6":"white";bh.style.color=tab==="horario"?"white":"#1e1b4b";}
+    if(bt){bt.style.background=tab==="tareas"?"#8b5cf6":"white";bt.style.color=tab==="tareas"?"white":"#1e1b4b";}
+    if(be){be.style.background=tab==="examenes"?"#8b5cf6":"white";be.style.color=tab==="examenes"?"white":"#1e1b4b";}
+    if(tab==="tareas")renderizarTareasN();
+    if(tab==="examenes")renderizarExamenesN();
+}
+function iniciarAgendaNueva(){renderizarHorarioN();actualizarStatsN();renderizarTareasN();renderizarExamenesN();let chk=document.getElementById("checkMostrarCompletadasN");if(chk)chk.onchange=function(){renderizarTareasN();};}
 // ==================== SERVICE WORKER ====================
 if ('serviceWorker' in navigator) {
     const swCode = `self.addEventListener('install',function(e){self.skipWaiting();});self.addEventListener('activate',function(e){e.waitUntil(clients.claim());});self.addEventListener('message',function(e){if(e.data.type==='schedule-notification'){const{title,message,hour,minute}=e.data;const now=new Date();const target=new Date();target.setHours(hour,minute,0,0);if(target<=now)target.setDate(target.getDate()+1);const delay=target-now;setTimeout(()=>{self.registration.showNotification(title,{body:message,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>',tag:'daily-reminder',requireInteraction:true,vibrate:[200,100,200]});},delay);}});self.addEventListener('notificationclick',function(e){e.notification.close();e.waitUntil(clients.openWindow('/'));});`;
@@ -2304,6 +2402,14 @@ function showView(vn){
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
     window.scrollTo(0,0);
+        function showView(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    let v = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
+    if (v) v.classList.add('active');
+    let vNueva = document.getElementById('viewAgendaNueva');
+    if (vNueva) vNueva.classList.remove('active');
+}
+    }
 }
 
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
@@ -2863,10 +2969,13 @@ function startExam(weekIndex) {
 function toggleRadialMenu() { const m=document.getElementById('radialMenu'); if(m) m.classList.toggle('hidden'); }
 function goToView(viewName) {
     if (viewName === 'agenda') {
-        // Abre la Agenda en un archivo separado
-        window.location.href = 'agenda-simple.html';
+        // Mostrar la nueva Agenda (sin salir del index.html)
+        document.getElementById('viewAgendaNueva').style.display = 'block';
+        document.getElementById('viewHome').classList.remove('active');
+        document.getElementById('viewAgendaNueva').classList.add('active');
+        iniciarAgendaNueva();
+        toggleRadialMenu();
     } else {
-        // Para las demás vistas
         showView(viewName);
         toggleRadialMenu();
     }
