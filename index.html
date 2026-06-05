@@ -593,7 +593,11 @@
         <div id="listaExamenesAgenda"></div>
     </div>
 </div>
+<!-- Contenedor del horario -->
+<div id="horarioCompletoContainer" class="card" style="margin-bottom: 20px;"></div>
 
+<!-- Contenedor de actividades -->
+<div id="listaActividadesAcademicas"></div>
     <!-- FOTOS (version corrigée et fonctionnelle) -->
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -4468,6 +4472,372 @@ window.goToView = function(v) { showView(v); document.getElementById("radialMenu
 
 console.log("✅ Agenda et menus corrigés !");
 
+// ==================== AGENDA COMPLETA - 11 MATERIAS ====================
+
+// 1. LISTA OFICIAL DE MATERIAS
+const materiasOficiales = [
+    { id: 1, nombre: "Ofimática", emoji: "💻", color: "#3b82f6", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 2, nombre: "Física", emoji: "⚡", color: "#06b6d4", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 3, nombre: "Matemática", emoji: "📐", color: "#ef4444", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 4, nombre: "Historia", emoji: "🏛️", color: "#8b5cf6", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 5, nombre: "Español", emoji: "📖", color: "#f59e0b", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 6, nombre: "Artes", emoji: "🎨", color: "#ec4899", tieneTareas: true, tieneProyectos: true, tieneExamenes: false },
+    { id: 7, nombre: "Inglés", emoji: "🇬🇧", color: "#10b981", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 8, nombre: "Educación Física", emoji: "⚽", color: "#22c55e", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 9, nombre: "Formación Cívica y Ética", emoji: "🫂", color: "#14b8a6", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
+    { id: 10, nombre: "Igualdad de Género", emoji: "♀️", color: "#a855f7", tieneTareas: true, tieneProyectos: false, tieneExamenes: false },
+    { id: 11, nombre: "Tutoría", emoji: "📊", color: "#f43f5e", tieneTareas: true, tieneProyectos: false, tieneExamenes: false, nota: "Assessment & Evaluation - Seguimiento del progreso" }
+];
+
+// 2. VARIABLES GLOBALES
+let actividadesAcademicas = [];
+let filtroMateriaActual = "todas";
+let filtroTipoActual = "todos";
+
+const tiposActividad = [
+    { id: "tarea", nombre: "📝 Tarea", color: "#f59e0b" },
+    { id: "proyecto", nombre: "📁 Proyecto", color: "#8b5cf6" },
+    { id: "examen", nombre: "📚 Examen", color: "#ef4444" }
+];
+
+// 3. CARGAR Y GUARDAR DATOS
+function cargarActividadesStorage() {
+    let guardado = localStorage.getItem("maryse_actividades_academicas");
+    if(guardado) {
+        actividadesAcademicas = JSON.parse(guardado);
+    } else {
+        actividadesAcademicas = [];
+    }
+    renderizarActividadesAcademicas();
+    actualizarEstadisticasMaterias();
+}
+
+function guardarActividadesStorage() {
+    localStorage.setItem("maryse_actividades_academicas", JSON.stringify(actividadesAcademicas));
+}
+
+// 4. ACTUALIZAR SELECTOR DE TIPO SEGÚN MATERIA
+function actualizarTiposActividad() {
+    let materiaSelect = document.getElementById("selectMateria");
+    let tipoSelect = document.getElementById("selectTipoActividad");
+    if(!materiaSelect || !tipoSelect) return;
+    
+    let materiaNombre = materiaSelect.value;
+    let materia = materiasOficiales.find(m => m.nombre === materiaNombre);
+    
+    if(!materia) {
+        tipoSelect.innerHTML = `<option value="tarea">📝 Tarea</option><option value="proyecto">📁 Proyecto</option><option value="examen">📚 Examen</option>`;
+        return;
+    }
+    
+    let opciones = [];
+    if(materia.tieneTareas) opciones.push('<option value="tarea">📝 Tarea</option>');
+    if(materia.tieneProyectos) opciones.push('<option value="proyecto">📁 Proyecto</option>');
+    if(materia.tieneExamenes) opciones.push('<option value="examen">📚 Examen</option>');
+    tipoSelect.innerHTML = opciones.join('');
+    
+    let infoDiv = document.getElementById("infoActividad");
+    if(infoDiv) {
+        if(materia.nombre === "Tutoría") {
+            infoDiv.innerHTML = `<div style="background:#fce7f3; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem; border-left:3px solid #f43f5e;">📊 <strong>Tutoría - Assessment & Evaluation</strong><br>Seguimiento del progreso, reuniones con consejero pedagógico. Solo se permiten <strong>TAREAS</strong>.</div>`;
+        } else if(!materia.tieneProyectos && !materia.tieneExamenes) {
+            infoDiv.innerHTML = `<div style="background:#fef3c7; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem;">⚠️ <strong>${materia.emoji} ${materia.nombre}</strong>: Solo TAREAS.</div>`;
+        } else if(!materia.tieneExamenes) {
+            infoDiv.innerHTML = `<div style="background:#fef3c7; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem;">⚠️ <strong>${materia.emoji} ${materia.nombre}</strong>: Sin exámenes (solo TAREAS y PROYECTOS).</div>`;
+        } else if(!materia.tieneProyectos) {
+            infoDiv.innerHTML = `<div style="background:#fef3c7; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem;">⚠️ <strong>${materia.emoji} ${materia.nombre}</strong>: Sin proyectos (solo TAREAS y EXÁMENES).</div>`;
+        } else {
+            infoDiv.innerHTML = "";
+        }
+    }
+}
+
+// 5. AGREGAR ACTIVIDAD
+function agregarActividadAcademica() {
+    let materia = document.getElementById("selectMateria")?.value;
+    let tipo = document.getElementById("selectTipoActividad")?.value;
+    let titulo = document.getElementById("actividadTitulo")?.value.trim();
+    let fecha = document.getElementById("actividadFecha")?.value;
+    let descripcion = document.getElementById("actividadDescripcion")?.value.trim();
+    
+    if(!materia || !tipo || !titulo || !fecha) {
+        alert("❌ Completa todos los campos obligatorios");
+        return;
+    }
+    
+    let materiaInfo = materiasOficiales.find(m => m.nombre === materia);
+    
+    if(tipo === "proyecto" && !materiaInfo.tieneProyectos) {
+        alert(`❌ ${materiaInfo.emoji} ${materia} NO permite proyectos.`);
+        return;
+    }
+    if(tipo === "examen" && !materiaInfo.tieneExamenes) {
+        alert(`❌ ${materiaInfo.emoji} ${materia} NO permite exámenes.`);
+        return;
+    }
+    
+    let nuevaActividad = {
+        id: Date.now(),
+        materia: materia,
+        tipo: tipo,
+        titulo: titulo,
+        fecha: fecha,
+        descripcion: descripcion || "",
+        completada: false,
+        fechaCreacion: new Date().toISOString()
+    };
+    
+    actividadesAcademicas.unshift(nuevaActividad);
+    guardarActividadesStorage();
+    renderizarActividadesAcademicas();
+    actualizarEstadisticasMaterias();
+    
+    document.getElementById("actividadTitulo").value = "";
+    document.getElementById("actividadFecha").value = "";
+    document.getElementById("actividadDescripcion").value = "";
+    
+    let tipoNombre = tiposActividad.find(t => t.id === tipo).nombre;
+    alert(`✅ ${tipoNombre} añadida para ${materiaInfo.emoji} ${materia}`);
+}
+
+// 6. RENDERIZAR ACTIVIDADES
+function renderizarActividadesAcademicas() {
+    let container = document.getElementById("listaActividadesAcademicas");
+    if(!container) return;
+    
+    let filtradas = actividadesAcademicas;
+    if(filtroMateriaActual !== "todas") filtradas = filtradas.filter(a => a.materia === filtroMateriaActual);
+    if(filtroTipoActual !== "todos") filtradas = filtradas.filter(a => a.tipo === filtroTipoActual);
+    
+    filtradas.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+    
+    if(filtradas.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:40px;">📭 No hay actividades</div>`;
+        return;
+    }
+    
+    container.innerHTML = filtradas.map(a => {
+        let tipoInfo = tiposActividad.find(t => t.id === a.tipo);
+        let materiaInfo = materiasOficiales.find(m => m.nombre === a.materia);
+        let fechaAct = new Date(a.fecha);
+        let hoy = new Date();
+        let diasRestantes = Math.ceil((fechaAct - hoy) / (1000*60*60*24));
+        
+        let estadoTexto = diasRestantes < 0 ? "⚠️ VENCIDO" : (diasRestantes === 0 ? "🔥 ¡HOY!" : `📅 ${diasRestantes} día(s)`);
+        
+        return `
+            <div style="background:var(--bg);border-radius:16px;padding:12px;margin-bottom:10px;border-left:4px solid ${tipoInfo.color};">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                    <div style="flex:1;">
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <strong>${a.titulo}</strong>
+                            <span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:${tipoInfo.color}20;color:${tipoInfo.color};">${tipoInfo.nombre}</span>
+                            <span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:${materiaInfo?.color || '#8b5cf6'}20;color:${materiaInfo?.color || '#8b5cf6'};">${materiaInfo?.emoji || '📚'} ${a.materia}</span>
+                        </div>
+                        ${a.descripcion ? `<div style="font-size:0.75rem;color:var(--subtext);margin-top:4px;">${a.descripcion}</div>` : ''}
+                        <div style="font-size:0.7rem;color:var(--subtext);margin-top:4px;">📅 ${fechaAct.toLocaleDateString()} · ${estadoTexto}</div>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <input type="checkbox" ${a.completada ? "checked" : ""} onchange="toggleActividadCompletada(${a.id})" style="width:20px;height:20px;">
+                        <button onclick="eliminarActividadAcademica(${a.id})" style="background:none;border:none;cursor:pointer;">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+// 7. FUNCIONES DE CONTROL
+function toggleActividadCompletada(id) {
+    let act = actividadesAcademicas.find(a => a.id === id);
+    if(act) {
+        act.completada = !act.completada;
+        guardarActividadesStorage();
+        renderizarActividadesAcademicas();
+        actualizarEstadisticasMaterias();
+    }
+}
+
+function eliminarActividadAcademica(id) {
+    if(confirm("¿Eliminar esta actividad?")) {
+        actividadesAcademicas = actividadesAcademicas.filter(a => a.id !== id);
+        guardarActividadesStorage();
+        renderizarActividadesAcademicas();
+        actualizarEstadisticasMaterias();
+    }
+}
+
+// 8. FILTROS
+function filtrarActividadesPorMateria(materia) {
+    filtroMateriaActual = materia;
+    renderizarActividadesAcademicas();
+}
+
+function filtrarActividadesPorTipo(tipo) {
+    filtroTipoActual = tipo;
+    renderizarActividadesAcademicas();
+}
+
+// 9. ESTADÍSTICAS POR MATERIA
+function actualizarEstadisticasMaterias() {
+    materiasOficiales.forEach(materia => {
+        let actividades = actividadesAcademicas.filter(a => a.materia === materia.nombre);
+        let completadas = actividades.filter(a => a.completada).length;
+        let total = actividades.length;
+        let porcentaje = total > 0 ? Math.round((completadas / total) * 100) : 0;
+        
+        let elemStat = document.getElementById(`stat_${materia.nombre.replace(/\s/g, '_')}`);
+        if(elemStat) {
+            elemStat.innerHTML = `${completadas}/${total} (${porcentaje}%)`;
+        }
+    });
+}
+
+function verResumenMateria(materiaNombre) {
+    let materiaInfo = materiasOficiales.find(m => m.nombre === materiaNombre);
+    let actividades = actividadesAcademicas.filter(a => a.materia === materiaNombre);
+    let tareas = actividades.filter(a => a.tipo === "tarea");
+    let proyectos = actividades.filter(a => a.tipo === "proyecto");
+    let examenes = actividades.filter(a => a.tipo === "examen");
+    let completadas = actividades.filter(a => a.completada).length;
+    
+    let restricciones = "";
+    if(!materiaInfo.tieneProyectos && !materiaInfo.tieneExamenes) {
+        restricciones = "\n⚠️ Solo TAREAS en esta materia.";
+    } else if(!materiaInfo.tieneExamenes) {
+        restricciones = "\n⚠️ Sin exámenes (solo TAREAS y PROYECTOS).";
+    } else if(!materiaInfo.tieneProyectos) {
+        restricciones = "\n⚠️ Sin proyectos (solo TAREAS y EXÁMENES).";
+    }
+    
+    alert(`
+📊 RESUMEN: ${materiaInfo.emoji} ${materiaNombre}
+━━━━━━━━━━━━━━━━━━━━
+📝 Tareas: ${tareas.length} (${tareas.filter(t => t.completada).length} completadas)
+📁 Proyectos: ${proyectos.length} (${proyectos.filter(p => p.completada).length} completadas)
+📚 Exámenes: ${examenes.length} (${examenes.filter(e => e.completada).length} completados)
+✅ Total: ${completadas}/${actividades.length}
+━━━━━━━━━━━━━━━━━━━━
+${restricciones}
+${materiaInfo.nombre === "Tutoría" ? "📊 " + materiaInfo.nota : ""}
+    `);
+}
+
+// 10. AUTOEVALUACIÓN TUTORÍA
+function agregarReflexionTutoria() {
+    let reflexion = prompt("📊 Autoevaluación de Tutoría:\n\nEscribe tu reflexión sobre tu progreso esta semana:");
+    if(!reflexion || reflexion.trim() === "") return;
+    
+    let nuevaActividad = {
+        id: Date.now(),
+        materia: "Tutoría",
+        tipo: "tarea",
+        titulo: `Autoevaluación - ${new Date().toLocaleDateString()}`,
+        fecha: new Date().toISOString().split('T')[0],
+        descripcion: reflexion.trim(),
+        completada: false,
+        fechaCreacion: new Date().toISOString()
+    };
+    
+    actividadesAcademicas.unshift(nuevaActividad);
+    guardarActividadesStorage();
+    renderizarActividadesAcademicas();
+    actualizarEstadisticasMaterias();
+    alert("✅ Reflexión de Tutoría guardada");
+}
+
+// 11. HORARIO
+let horarioActual = {};
+
+function cargarHorario() {
+    let guardado = localStorage.getItem("maryse_horario_completo");
+    if(guardado) {
+        horarioActual = JSON.parse(guardado);
+    } else {
+        horarioActual = {
+            lunes: ["Matemática", "Español", "Inglés", "Física", "Tutoría", "Educación Física"],
+            martes: ["Historia", "Ofimática", "Matemática", "Igualdad de Género", "Artes", "Formación Cívica y Ética"],
+            miercoles: ["Física", "Inglés", "Matemática", "Historia", "Español", "Ofimática"],
+            jueves: ["Español", "Artes", "Igualdad de Género", "Matemática", "Formación Cívica y Ética", "Tutoría"],
+            viernes: ["Inglés", "Física", "Historia", "Educación Física", "Ofimática", "Matemática"]
+        };
+    }
+    renderizarHorario();
+}
+
+function renderizarHorario() {
+    let container = document.getElementById("horarioCompletoContainer");
+    if(!container) return;
+    
+    const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+    const horas = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
+    
+    let html = `<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse;">`;
+    html += `<tr style="background:var(--primary);color:white;"><th style="padding:10px;">Hora</th>${dias.map(d => `<th style="padding:10px;">${d}</th>`).join('')}</table>`;
+    
+    for(let i = 0; i < horas.length; i++) {
+        html += `<tr style="border-bottom:1px solid var(--border);">`;
+        html += `<td style="padding:10px;font-weight:bold;background:var(--bg);">${horas[i]}</td>`;
+        
+        for(let j = 0; j < dias.length; j++) {
+            let diaKey = dias[j].toLowerCase();
+            let materia = horarioActual[diaKey]?.[i] || "—";
+            let materiaInfo = materiasOficiales.find(m => m.nombre === materia);
+            let bgColor = materiaInfo ? materiaInfo.color + '20' : 'transparent';
+            
+            html += `<td onclick="editarHorarioCelda('${diaKey}', ${i})" style="padding:10px;cursor:pointer;background:${bgColor};border-radius:8px;text-align:center;">
+                        ${materiaInfo ? materiaInfo.emoji + ' ' : ''}${materia}
+                    </td>`;
+        }
+        html += `</tr>`;
+    }
+    html += `<table></div>`;
+    container.innerHTML = html;
+}
+
+function editarHorarioCelda(dia, horaIndex) {
+    let materiaActual = horarioActual[dia]?.[horaIndex] || "";
+    let materiasList = materiasOficiales.map(m => `${m.emoji} ${m.nombre}`).join(", ");
+    
+    let nuevaMateria = prompt(`✏️ Editar (${dia} - ${horaIndex+8}:00):\nMaterias: ${materiasList}`, materiaActual);
+    
+    if(nuevaMateria && nuevaMateria.trim()) {
+        let nombreLimpio = nuevaMateria.replace(/[^\w\s\u00C0-\u00FF]/g, '').trim();
+        
+        if(!horarioActual[dia]) horarioActual[dia] = [];
+        horarioActual[dia][horaIndex] = nombreLimpio;
+        localStorage.setItem("maryse_horario_completo", JSON.stringify(horarioActual));
+        renderizarHorario();
+    }
+}
+
+// 12. INICIALIZACIÓN
+function initAgendaCompleta() {
+    cargarActividadesStorage();
+    cargarHorario();
+    actualizarEstadisticasMaterias();
+    
+    let chkMostrar = document.getElementById("mostrarCompletadasAgenda");
+    if(chkMostrar) {
+        chkMostrar.onchange = () => renderizarActividadesAcademicas();
+    }
+}
+
+// EXPONER FUNCIONES GLOBALES
+window.actualizarTiposActividad = actualizarTiposActividad;
+window.agregarActividadAcademica = agregarActividadAcademica;
+window.toggleActividadCompletada = toggleActividadCompletada;
+window.eliminarActividadAcademica = eliminarActividadAcademica;
+window.filtrarActividadesPorMateria = filtrarActividadesPorMateria;
+window.filtrarActividadesPorTipo = filtrarActividadesPorTipo;
+window.verResumenMateria = verResumenMateria;
+window.agregarReflexionTutoria = agregarReflexionTutoria;
+window.editarHorarioCelda = editarHorarioCelda;
+
+// EJECUTAR
+initAgendaCompleta();
+
+console.log("✅ Agenda completa con 11 materias cargada");    
 </script>
 </body>
 </html>
