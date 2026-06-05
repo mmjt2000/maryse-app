@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#8b5cf6">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Maryse">
     <title>Maryse · Aprende, crece, conecta</title>
@@ -483,52 +483,76 @@
 </div>
         <!-- AGENDA (con horario escolar editable y tareas pendientes) -->
     <div id="viewAgenda" class="view">
-   <div id="viewAgenda" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     
-    <!-- Pestañas -->
-    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button class="btn" id="btnHorario" onclick="verHorario()" style="background: var(--primary); color: white;">📚 Horario</button>
-        <button class="btn" id="btnTareas" onclick="verTareas()">✅ Tareas</button>
-        <button class="btn" id="btnExamenes" onclick="verExamenes()">📝 Exámenes</button>
+    <!-- ESTADÍSTICAS RÁPIDAS -->
+    <div class="agenda-stats" id="agendaStats">
+        <div class="stat-card-agenda"><div class="stat-number" id="statTareasPendientes">0</div><div class="stat-label">📋 Tareas pendientes</div></div>
+        <div class="stat-card-agenda"><div class="stat-number" id="statTareasHoy">0</div><div class="stat-label">⏰ Para hoy</div></div>
+        <div class="stat-card-agenda"><div class="stat-number" id="statTareasUrgentes">0</div><div class="stat-label">⚠️ Urgentes</div></div>
+        <div class="stat-card-agenda"><div class="stat-number" id="statCompletadasSemana">0</div><div class="stat-label">✅ Completadas esta semana</div></div>
     </div>
     
-    <!-- SECCIÓN HORARIO -->
-    <div id="seccionHorario" class="card">
+    <!-- PESTAÑAS MEJORADAS -->
+    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <button class="btn" id="tabHorarioBtn" onclick="mostrarTabAgenda('horario')" style="background: var(--primary); color: white;">📚 Horario Escolar</button>
+        <button class="btn" id="tabTareasBtn" onclick="mostrarTabAgenda('tareas')" style="background: var(--card);">✅ Tareas Pendientes</button>
+        <button class="btn" id="tabExamenesBtn" onclick="mostrarTabAgenda('examenes')" style="background: var(--card);">📝 Exámenes</button>
+    </div>
+    
+    <!-- SECCIÓN HORARIO ESCOLAR (editable) -->
+    <div id="horarioSectionAgenda" class="card">
         <div class="card-title">📚 Mi Horario de Clases</div>
-        <div id="tablaHorario"></div>
-        <button class="btn" onclick="restaurarHorario()" style="margin-top: 10px;">⟳ Restaurar</button>
+        <p style="font-size: 0.7rem; color: var(--subtext); margin-bottom: 12px;">💡 Haz clic en cualquier celda para editar la materia</p>
+        <div style="overflow-x: auto;">
+            <table id="horarioTableAgenda" style="width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden;">
+                <thead id="horarioHeaderAgenda"></thead>
+                <tbody id="horarioBodyAgenda"></tbody>
+            </table>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 15px; justify-content: flex-end; flex-wrap: wrap;">
+            <button class="btn outline" onclick="restaurarHorarioAgenda()" style="background: var(--card); border: 1px solid var(--border);">⟳ Restaurar horario</button>
+            <button class="btn outline" onclick="exportarHorarioJSON()" style="background: var(--card); border: 1px solid var(--border);">📎 Exportar horario</button>
+        </div>
     </div>
     
-    <!-- SECCIÓN TAREAS -->
-    <div id="seccionTareas" class="card" style="display: none;">
-        <div class="card-title">✅ Mis Tareas</div>
+    <!-- SECCIÓN TAREAS PENDIENTES (MEJORADA) -->
+    <div id="tareasSectionAgenda" class="card" style="display: none;">
+        <div class="card-title">✅ Mis Tareas Pendientes</div>
         
-        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <input type="text" id="inputTarea" placeholder="Nueva tarea..." style="flex: 1;">
-            <button class="btn btn-primary" onclick="agregarTarea()">➕ Añadir</button>
+        <!-- Formulario mejorado -->
+        <div style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
+                <input type="text" id="nuevaTareaAgenda" placeholder="Ej: Estudiar matemáticas, leer capítulo 3..." style="flex: 1; padding: 12px; border-radius: 60px; border: 1px solid var(--border); background: var(--card); color: var(--text);">
+                <select id="nuevaTareaCategoria" style="width: auto; padding: 12px; border-radius: 60px;">
+                    <option value="normal">📘 Normal</option>
+                    <option value="importante">⭐ Importante</option>
+                    <option value="urgente">⚠️ Urgente</option>
+                </select>
+                <select id="nuevaTareaPrioridad" style="width: auto; padding: 12px; border-radius: 60px;">
+                    <option value="baja">🟢 Prioridad baja</option>
+                    <option value="media">🟡 Prioridad media</option>
+                    <option value="alta">🔴 Prioridad alta</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="date" id="nuevaTareaFechaLimite" style="flex: 1; padding: 10px; border-radius: 60px;">
+                <select id="nuevaTareaMateria" style="flex: 1; padding: 10px; border-radius: 60px;">
+                    <option value="">📚 Sin materia específica</option>
+                    <option value="Matemáticas">📐 Matemáticas</option>
+                    <option value="Lengua">📖 Lengua</option>
+                    <option value="Inglés">🇬🇧 Inglés</option>
+                    <option value="Francés">🇫🇷 Francés</option>
+                    <option value="Historia">🏛️ Historia</option>
+                    <option value="Ciencias">🔬 Ciencias</option>
+                    <option value="Arte">🎨 Arte</option>
+                    <option value="Música">🎵 Música</option>
+                    <option value="Educación Física">⚽ Educación Física</option>
+                </select>
+                <button class="btn btn-primary" onclick="agregarTareaAgendaMejorada()">➕ Añadir</button>
+            </div>
         </div>
         
-        <div id="listaTareas"></div>
-        
-        <label style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="mostrarCompletadas" onchange="cargarTareas()"> Mostrar completadas
-        </label>
-    </div>
-    
-    <!-- SECCIÓN EXÁMENES -->
-    <div id="seccionExamenes" class="card" style="display: none;">
-        <div class="card-title">📝 Mis Exámenes</div>
-        
-        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-            <input type="text" id="inputExamen" placeholder="Nombre del examen..." style="flex: 2;">
-            <input type="date" id="fechaExamen" style="flex: 1;">
-            <button class="btn btn-primary" onclick="agregarExamen()">➕ Añadir</button>
-        </div>
-        
-        <div id="listaExamenes"></div>
-    </div>
-</div>
         <!-- Filtros -->
         <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
             <button class="filter-chip" data-filtro-tarea="todas" onclick="filtrarTareasAgenda('todas')" style="background: var(--primary); color: white;">📋 Todas</button>
@@ -569,11 +593,7 @@
         <div id="listaExamenesAgenda"></div>
     </div>
 </div>
-<!-- Contenedor del horario -->
-<div id="horarioCompletoContainer" class="card" style="margin-bottom: 20px;"></div>
 
-<!-- Contenedor de actividades -->
-<div id="listaActividadesAcademicas"></div>
     <!-- FOTOS (version corrigée et fonctionnelle) -->
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -628,21 +648,33 @@ function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== i
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
+</script>
 
+<!-- CÍRCULOS FLOTANTES -->
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
+<div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
+<div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
+
+<!-- MENÚ RADIAL -->
+<div id="radialMenu" class="radial-menu hidden">
+    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
+    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
+    <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
+    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
+    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
+    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
+    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
+    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
+    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
+    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
+    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
+    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
+</div>
+
+<button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
+
+<script>
 // ==================== SERVICE WORKER ====================
-    // ==================== FUNCIONES DEL MENÚ ====================
-function toggleRadialMenu() { let m = document.getElementById("radialMenu"); if(m) m.classList.toggle("hidden"); }
-function changeAvatar() { let i = document.createElement("input"); i.type = "file"; i.accept = "image/*"; i.onchange = function(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = function(ev) { localStorage.setItem("maryse_avatar", ev.target.result); document.getElementById("avatarContent").innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">'; }; r.readAsDataURL(f); } }; i.click(); }
-function toggleDarkMode() { document.body.classList.toggle("dark"); localStorage.setItem("maryse_dark_mode", document.body.classList.contains("dark")); }
-function openAdminPanel() { let c = prompt("Code:"); if(c === "MARYSE2025") alert("Bienvenue"); else if(c) alert("Incorrect"); }
-function signOutAndClose() { if(confirm("Fermer?")) { localStorage.clear(); location.reload(); } }
-function goToView(v) { if(typeof showView === 'function') showView(v); let m = document.getElementById("radialMenu"); if(m) m.classList.add("hidden"); }
-function installPWA() { alert("Instalar desde el navegador"); }
-function exportData() { let d={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); d[k]=localStorage.getItem(k);} let b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"}); let a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="maryse_backup.json"; a.click(); }
-function importData(i) { let f=i.files[0]; if(!f) return; let r=new FileReader(); r.onload=function(e){let d=JSON.parse(e.target.result); for(let k in d) localStorage.setItem(k,d[k]); alert("Importado. Recargando..."); location.reload(); }; r.readAsText(f); }
-function verHorario() { document.getElementById("seccionHorario").style.display = "block"; document.getElementById("seccionTareas").style.display = "none"; document.getElementById("seccionExamenes").style.display = "none"; document.getElementById("btnHorario").style.background = "var(--primary)"; document.getElementById("btnTareas").style.background = "var(--card)"; document.getElementById("btnExamenes").style.background = "var(--card)"; if(typeof mostrarHorario === 'function') mostrarHorario(); else if(typeof cargarHorario === 'function') cargarHorario(); }
-function verTareas() { document.getElementById("seccionHorario").style.display = "none"; document.getElementById("seccionTareas").style.display = "block"; document.getElementById("seccionExamenes").style.display = "none"; document.getElementById("btnTareas").style.background = "var(--primary)"; document.getElementById("btnHorario").style.background = "var(--card)"; document.getElementById("btnExamenes").style.background = "var(--card)"; if(typeof cargarTareas === 'function') cargarTareas(); }
-function verExamenes() { document.getElementById("seccionHorario").style.display = "none"; document.getElementById("seccionTareas").style.display = "none"; document.getElementById("seccionExamenes").style.display = "block"; document.getElementById("btnExamenes").style.background = "var(--primary)"; document.getElementById("btnHorario").style.background = "var(--card)"; document.getElementById("btnTareas").style.background = "var(--card)"; if(typeof cargarExamenes === 'function') cargarExamenes(); }
 if ('serviceWorker' in navigator) {
     const swCode = `self.addEventListener('install',function(e){self.skipWaiting();});self.addEventListener('activate',function(e){e.waitUntil(clients.claim());});self.addEventListener('message',function(e){if(e.data.type==='schedule-notification'){const{title,message,hour,minute}=e.data;const now=new Date();const target=new Date();target.setHours(hour,minute,0,0);if(target<=now)target.setDate(target.getDate()+1);const delay=target-now;setTimeout(()=>{self.registration.showNotification(title,{body:message,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>',tag:'daily-reminder',requireInteraction:true,vibrate:[200,100,200]});},delay);}});self.addEventListener('notificationclick',function(e){e.notification.close();e.waitUntil(clients.openWindow('/'));});`;
     const blob = new Blob([swCode], { type: 'application/javascript' });
@@ -3201,6 +3233,7 @@ const horarioDefecto = [
     ["Estudio libre", "Estudio libre", "Clase refuerzo", "Orientación", "Estudio libre"]
 ];
 
+let horarioActual = [];
 let tareasAgenda = [];
 
 // Cargar o inicializar horario
@@ -4303,8 +4336,8 @@ console.log("✅ Agenda cargada - Todas las funciones están listas con tus IDs"
 // ==================== CORRECTION TOTALE DE L'AGENDA ====================
 // Ces fonctions utilisent EXACTEMENT les IDs de votre HTML
 
-var misTareas = [];
-var misExamenes = [];
+let misTareas = [];
+let misExamenes = [];
 let filtroTareaActivo = "todas";
 
 function cargarTareasStorage() {
@@ -4435,838 +4468,6 @@ window.goToView = function(v) { showView(v); document.getElementById("radialMenu
 
 console.log("✅ Agenda et menus corrigés !");
 
-// ==================== AGENDA COMPLETA - 11 MATERIAS ====================
-
-// 1. LISTA OFICIAL DE MATERIAS
-const materiasOficiales = [
-    { id: 1, nombre: "Ofimática", emoji: "💻", color: "#3b82f6", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 2, nombre: "Física", emoji: "⚡", color: "#06b6d4", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 3, nombre: "Matemática", emoji: "📐", color: "#ef4444", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 4, nombre: "Historia", emoji: "🏛️", color: "#8b5cf6", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 5, nombre: "Español", emoji: "📖", color: "#f59e0b", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 6, nombre: "Artes", emoji: "🎨", color: "#ec4899", tieneTareas: true, tieneProyectos: true, tieneExamenes: false },
-    { id: 7, nombre: "Inglés", emoji: "🇬🇧", color: "#10b981", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 8, nombre: "Educación Física", emoji: "⚽", color: "#22c55e", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 9, nombre: "Formación Cívica y Ética", emoji: "🫂", color: "#14b8a6", tieneTareas: true, tieneProyectos: true, tieneExamenes: true },
-    { id: 10, nombre: "Igualdad de Género", emoji: "♀️", color: "#a855f7", tieneTareas: true, tieneProyectos: false, tieneExamenes: false },
-    { id: 11, nombre: "Tutoría", emoji: "📊", color: "#f43f5e", tieneTareas: true, tieneProyectos: false, tieneExamenes: false, nota: "Assessment & Evaluation - Seguimiento del progreso" }
-];
-
-// 2. VARIABLES GLOBALES
-let actividadesAcademicas = [];
-let filtroMateriaActual = "todas";
-let filtroTipoActual = "todos";
-
-const tiposActividad = [
-    { id: "tarea", nombre: "📝 Tarea", color: "#f59e0b" },
-    { id: "proyecto", nombre: "📁 Proyecto", color: "#8b5cf6" },
-    { id: "examen", nombre: "📚 Examen", color: "#ef4444" }
-];
-
-// 3. CARGAR Y GUARDAR DATOS
-function cargarActividadesStorage() {
-    let guardado = localStorage.getItem("maryse_actividades_academicas");
-    if(guardado) {
-        actividadesAcademicas = JSON.parse(guardado);
-    } else {
-        actividadesAcademicas = [];
-    }
-    renderizarActividadesAcademicas();
-    actualizarEstadisticasMaterias();
-}
-
-function guardarActividadesStorage() {
-    localStorage.setItem("maryse_actividades_academicas", JSON.stringify(actividadesAcademicas));
-}
-
-// 4. ACTUALIZAR SELECTOR DE TIPO SEGÚN MATERIA
-function actualizarTiposActividad() {
-    let materiaSelect = document.getElementById("selectMateria");
-    let tipoSelect = document.getElementById("selectTipoActividad");
-    if(!materiaSelect || !tipoSelect) return;
-    
-    let materiaNombre = materiaSelect.value;
-    let materia = materiasOficiales.find(m => m.nombre === materiaNombre);
-    
-    if(!materia) {
-        tipoSelect.innerHTML = `<option value="tarea">📝 Tarea</option><option value="proyecto">📁 Proyecto</option><option value="examen">📚 Examen</option>`;
-        return;
-    }
-    
-    let opciones = [];
-    if(materia.tieneTareas) opciones.push('<option value="tarea">📝 Tarea</option>');
-    if(materia.tieneProyectos) opciones.push('<option value="proyecto">📁 Proyecto</option>');
-    if(materia.tieneExamenes) opciones.push('<option value="examen">📚 Examen</option>');
-    tipoSelect.innerHTML = opciones.join('');
-    
-    let infoDiv = document.getElementById("infoActividad");
-    if(infoDiv) {
-        if(materia.nombre === "Tutoría") {
-            infoDiv.innerHTML = `<div style="background:#fce7f3; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem; border-left:3px solid #f43f5e;">📊 <strong>Tutoría - Assessment & Evaluation</strong><br>Seguimiento del progreso, reuniones con consejero pedagógico. Solo se permiten <strong>TAREAS</strong>.</div>`;
-        } else if(!materia.tieneProyectos && !materia.tieneExamenes) {
-            infoDiv.innerHTML = `<div style="background:#fef3c7; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem;">⚠️ <strong>${materia.emoji} ${materia.nombre}</strong>: Solo TAREAS.</div>`;
-        } else if(!materia.tieneExamenes) {
-            infoDiv.innerHTML = `<div style="background:#fef3c7; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem;">⚠️ <strong>${materia.emoji} ${materia.nombre}</strong>: Sin exámenes (solo TAREAS y PROYECTOS).</div>`;
-        } else if(!materia.tieneProyectos) {
-            infoDiv.innerHTML = `<div style="background:#fef3c7; border-radius:12px; padding:8px; margin-top:8px; font-size:0.75rem;">⚠️ <strong>${materia.emoji} ${materia.nombre}</strong>: Sin proyectos (solo TAREAS y EXÁMENES).</div>`;
-        } else {
-            infoDiv.innerHTML = "";
-        }
-    }
-}
-
-// 5. AGREGAR ACTIVIDAD
-function agregarActividadAcademica() {
-    let materia = document.getElementById("selectMateria")?.value;
-    let tipo = document.getElementById("selectTipoActividad")?.value;
-    let titulo = document.getElementById("actividadTitulo")?.value.trim();
-    let fecha = document.getElementById("actividadFecha")?.value;
-    let descripcion = document.getElementById("actividadDescripcion")?.value.trim();
-    
-    if(!materia || !tipo || !titulo || !fecha) {
-        alert("❌ Completa todos los campos obligatorios");
-        return;
-    }
-    
-    let materiaInfo = materiasOficiales.find(m => m.nombre === materia);
-    
-    if(tipo === "proyecto" && !materiaInfo.tieneProyectos) {
-        alert(`❌ ${materiaInfo.emoji} ${materia} NO permite proyectos.`);
-        return;
-    }
-    if(tipo === "examen" && !materiaInfo.tieneExamenes) {
-        alert(`❌ ${materiaInfo.emoji} ${materia} NO permite exámenes.`);
-        return;
-    }
-    
-    let nuevaActividad = {
-        id: Date.now(),
-        materia: materia,
-        tipo: tipo,
-        titulo: titulo,
-        fecha: fecha,
-        descripcion: descripcion || "",
-        completada: false,
-        fechaCreacion: new Date().toISOString()
-    };
-    
-    actividadesAcademicas.unshift(nuevaActividad);
-    guardarActividadesStorage();
-    renderizarActividadesAcademicas();
-    actualizarEstadisticasMaterias();
-    
-    document.getElementById("actividadTitulo").value = "";
-    document.getElementById("actividadFecha").value = "";
-    document.getElementById("actividadDescripcion").value = "";
-    
-    let tipoNombre = tiposActividad.find(t => t.id === tipo).nombre;
-    alert(`✅ ${tipoNombre} añadida para ${materiaInfo.emoji} ${materia}`);
-}
-
-// 6. RENDERIZAR ACTIVIDADES
-function renderizarActividadesAcademicas() {
-    let container = document.getElementById("listaActividadesAcademicas");
-    if(!container) return;
-    
-    let filtradas = actividadesAcademicas;
-    if(filtroMateriaActual !== "todas") filtradas = filtradas.filter(a => a.materia === filtroMateriaActual);
-    if(filtroTipoActual !== "todos") filtradas = filtradas.filter(a => a.tipo === filtroTipoActual);
-    
-    filtradas.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-    
-    if(filtradas.length === 0) {
-        container.innerHTML = `<div style="text-align:center;padding:40px;">📭 No hay actividades</div>`;
-        return;
-    }
-    
-    container.innerHTML = filtradas.map(a => {
-        let tipoInfo = tiposActividad.find(t => t.id === a.tipo);
-        let materiaInfo = materiasOficiales.find(m => m.nombre === a.materia);
-        let fechaAct = new Date(a.fecha);
-        let hoy = new Date();
-        let diasRestantes = Math.ceil((fechaAct - hoy) / (1000*60*60*24));
-        
-        let estadoTexto = diasRestantes < 0 ? "⚠️ VENCIDO" : (diasRestantes === 0 ? "🔥 ¡HOY!" : `📅 ${diasRestantes} día(s)`);
-        
-        return `
-            <div style="background:var(--bg);border-radius:16px;padding:12px;margin-bottom:10px;border-left:4px solid ${tipoInfo.color};">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-                    <div style="flex:1;">
-                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                            <strong>${a.titulo}</strong>
-                            <span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:${tipoInfo.color}20;color:${tipoInfo.color};">${tipoInfo.nombre}</span>
-                            <span style="font-size:0.7rem;padding:2px 8px;border-radius:12px;background:${materiaInfo?.color || '#8b5cf6'}20;color:${materiaInfo?.color || '#8b5cf6'};">${materiaInfo?.emoji || '📚'} ${a.materia}</span>
-                        </div>
-                        ${a.descripcion ? `<div style="font-size:0.75rem;color:var(--subtext);margin-top:4px;">${a.descripcion}</div>` : ''}
-                        <div style="font-size:0.7rem;color:var(--subtext);margin-top:4px;">📅 ${fechaAct.toLocaleDateString()} · ${estadoTexto}</div>
-                    </div>
-                    <div style="display:flex;gap:8px;">
-                        <input type="checkbox" ${a.completada ? "checked" : ""} onchange="toggleActividadCompletada(${a.id})" style="width:20px;height:20px;">
-                        <button onclick="eliminarActividadAcademica(${a.id})" style="background:none;border:none;cursor:pointer;">🗑️</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join("");
-}
-
-// 7. FUNCIONES DE CONTROL
-function toggleActividadCompletada(id) {
-    let act = actividadesAcademicas.find(a => a.id === id);
-    if(act) {
-        act.completada = !act.completada;
-        guardarActividadesStorage();
-        renderizarActividadesAcademicas();
-        actualizarEstadisticasMaterias();
-    }
-}
-
-function eliminarActividadAcademica(id) {
-    if(confirm("¿Eliminar esta actividad?")) {
-        actividadesAcademicas = actividadesAcademicas.filter(a => a.id !== id);
-        guardarActividadesStorage();
-        renderizarActividadesAcademicas();
-        actualizarEstadisticasMaterias();
-    }
-}
-
-// 8. FILTROS
-function filtrarActividadesPorMateria(materia) {
-    filtroMateriaActual = materia;
-    renderizarActividadesAcademicas();
-}
-
-function filtrarActividadesPorTipo(tipo) {
-    filtroTipoActual = tipo;
-    renderizarActividadesAcademicas();
-}
-
-// 9. ESTADÍSTICAS POR MATERIA
-function actualizarEstadisticasMaterias() {
-    materiasOficiales.forEach(materia => {
-        let actividades = actividadesAcademicas.filter(a => a.materia === materia.nombre);
-        let completadas = actividades.filter(a => a.completada).length;
-        let total = actividades.length;
-        let porcentaje = total > 0 ? Math.round((completadas / total) * 100) : 0;
-        
-        let elemStat = document.getElementById(`stat_${materia.nombre.replace(/\s/g, '_')}`);
-        if(elemStat) {
-            elemStat.innerHTML = `${completadas}/${total} (${porcentaje}%)`;
-        }
-    });
-}
-
-function verResumenMateria(materiaNombre) {
-    let materiaInfo = materiasOficiales.find(m => m.nombre === materiaNombre);
-    let actividades = actividadesAcademicas.filter(a => a.materia === materiaNombre);
-    let tareas = actividades.filter(a => a.tipo === "tarea");
-    let proyectos = actividades.filter(a => a.tipo === "proyecto");
-    let examenes = actividades.filter(a => a.tipo === "examen");
-    let completadas = actividades.filter(a => a.completada).length;
-    
-    let restricciones = "";
-    if(!materiaInfo.tieneProyectos && !materiaInfo.tieneExamenes) {
-        restricciones = "\n⚠️ Solo TAREAS en esta materia.";
-    } else if(!materiaInfo.tieneExamenes) {
-        restricciones = "\n⚠️ Sin exámenes (solo TAREAS y PROYECTOS).";
-    } else if(!materiaInfo.tieneProyectos) {
-        restricciones = "\n⚠️ Sin proyectos (solo TAREAS y EXÁMENES).";
-    }
-    
-    alert(`
-📊 RESUMEN: ${materiaInfo.emoji} ${materiaNombre}
-━━━━━━━━━━━━━━━━━━━━
-📝 Tareas: ${tareas.length} (${tareas.filter(t => t.completada).length} completadas)
-📁 Proyectos: ${proyectos.length} (${proyectos.filter(p => p.completada).length} completadas)
-📚 Exámenes: ${examenes.length} (${examenes.filter(e => e.completada).length} completados)
-✅ Total: ${completadas}/${actividades.length}
-━━━━━━━━━━━━━━━━━━━━
-${restricciones}
-${materiaInfo.nombre === "Tutoría" ? "📊 " + materiaInfo.nota : ""}
-    `);
-}
-
-// 10. AUTOEVALUACIÓN TUTORÍA
-function agregarReflexionTutoria() {
-    let reflexion = prompt("📊 Autoevaluación de Tutoría:\n\nEscribe tu reflexión sobre tu progreso esta semana:");
-    if(!reflexion || reflexion.trim() === "") return;
-    
-    let nuevaActividad = {
-        id: Date.now(),
-        materia: "Tutoría",
-        tipo: "tarea",
-        titulo: `Autoevaluación - ${new Date().toLocaleDateString()}`,
-        fecha: new Date().toISOString().split('T')[0],
-        descripcion: reflexion.trim(),
-        completada: false,
-        fechaCreacion: new Date().toISOString()
-    };
-    
-    actividadesAcademicas.unshift(nuevaActividad);
-    guardarActividadesStorage();
-    renderizarActividadesAcademicas();
-    actualizarEstadisticasMaterias();
-    alert("✅ Reflexión de Tutoría guardada");
-}
-
-// 11. HORARIO
-let horarioActual = {};
-
-function cargarHorario() {
-    let guardado = localStorage.getItem("maryse_horario_completo");
-    if(guardado) {
-        horarioActual = JSON.parse(guardado);
-    } else {
-        horarioActual = {
-            lunes: ["Matemática", "Español", "Inglés", "Física", "Tutoría", "Educación Física"],
-            martes: ["Historia", "Ofimática", "Matemática", "Igualdad de Género", "Artes", "Formación Cívica y Ética"],
-            miercoles: ["Física", "Inglés", "Matemática", "Historia", "Español", "Ofimática"],
-            jueves: ["Español", "Artes", "Igualdad de Género", "Matemática", "Formación Cívica y Ética", "Tutoría"],
-            viernes: ["Inglés", "Física", "Historia", "Educación Física", "Ofimática", "Matemática"]
-        };
-    }
-    renderizarHorario();
-}
-
-function renderizarHorario() {
-    let container = document.getElementById("horarioCompletoContainer");
-    if(!container) return;
-    
-    const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-    const horas = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
-    
-    let html = `<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse;">`;
-    html += `<tr style="background:var(--primary);color:white;"><th style="padding:10px;">Hora</th>${dias.map(d => `<th style="padding:10px;">${d}</th>`).join('')}</table>`;
-    
-    for(let i = 0; i < horas.length; i++) {
-        html += `<tr style="border-bottom:1px solid var(--border);">`;
-        html += `<td style="padding:10px;font-weight:bold;background:var(--bg);">${horas[i]}</td>`;
-        
-        for(let j = 0; j < dias.length; j++) {
-            let diaKey = dias[j].toLowerCase();
-            let materia = horarioActual[diaKey]?.[i] || "—";
-            let materiaInfo = materiasOficiales.find(m => m.nombre === materia);
-            let bgColor = materiaInfo ? materiaInfo.color + '20' : 'transparent';
-            
-            html += `<td onclick="editarHorarioCelda('${diaKey}', ${i})" style="padding:10px;cursor:pointer;background:${bgColor};border-radius:8px;text-align:center;">
-                        ${materiaInfo ? materiaInfo.emoji + ' ' : ''}${materia}
-                    </td>`;
-        }
-        html += `</tr>`;
-    }
-    html += `<table></div>`;
-    container.innerHTML = html;
-}
-
-function editarHorarioCelda(dia, horaIndex) {
-    let materiaActual = horarioActual[dia]?.[horaIndex] || "";
-    let materiasList = materiasOficiales.map(m => `${m.emoji} ${m.nombre}`).join(", ");
-    
-    let nuevaMateria = prompt(`✏️ Editar (${dia} - ${horaIndex+8}:00):\nMaterias: ${materiasList}`, materiaActual);
-    
-    if(nuevaMateria && nuevaMateria.trim()) {
-        let nombreLimpio = nuevaMateria.replace(/[^\w\s\u00C0-\u00FF]/g, '').trim();
-        
-        if(!horarioActual[dia]) horarioActual[dia] = [];
-        horarioActual[dia][horaIndex] = nombreLimpio;
-        localStorage.setItem("maryse_horario_completo", JSON.stringify(horarioActual));
-        renderizarHorario();
-    }
-}
-
-// 12. INICIALIZACIÓN
-function initAgendaCompleta() {
-    cargarActividadesStorage();
-    cargarHorario();
-    actualizarEstadisticasMaterias();
-    
-    let chkMostrar = document.getElementById("mostrarCompletadasAgenda");
-    if(chkMostrar) {
-        chkMostrar.onchange = () => renderizarActividadesAcademicas();
-    }
-}
-
-// EXPONER FUNCIONES GLOBALES
-window.actualizarTiposActividad = actualizarTiposActividad;
-window.agregarActividadAcademica = agregarActividadAcademica;
-window.toggleActividadCompletada = toggleActividadCompletada;
-window.eliminarActividadAcademica = eliminarActividadAcademica;
-window.filtrarActividadesPorMateria = filtrarActividadesPorMateria;
-window.filtrarActividadesPorTipo = filtrarActividadesPorTipo;
-window.verResumenMateria = verResumenMateria;
-window.agregarReflexionTutoria = agregarReflexionTutoria;
-window.editarHorarioCelda = editarHorarioCelda;
-
-// EJECUTAR
-initAgendaCompleta();
-
-console.log("✅ Agenda completa con 11 materias cargada");    
-// ==================== FUNCIONES FALTANTES ====================
-
-function toggleRadialMenu() {
-    let menu = document.getElementById("radialMenu");
-    if(menu) menu.classList.toggle("hidden");
-}
-
-function goToView(vn) {
-    showView(vn);
-    let menu = document.getElementById("radialMenu");
-    if(menu) menu.classList.add("hidden");
-}
-
-function openAdminPanel() {
-    let code = prompt("🔐 Code secret:");
-    if(code === "MARYSE2025") {
-        alert("👩‍👧 Bienvenue maman");
-        showView("profile");
-    } else if(code) {
-        alert("❌ Code incorrect");
-    }
-}
-
-function signOutAndClose() {
-    if(confirm("🚪 Fermer la session ?")) {
-        localStorage.clear();
-        location.reload();
-    }
-}
-
-// Si el error "horarioActual" persiste, descomenta esta línea:
-// if(typeof horarioActual !== 'undefined') { var horarioActual = horarioActual; }
-// Y comenta la otra declaración de horarioActual que tengas en tu código
-
-console.log("✅ Funciones de menú cargadas");
-    // ==================== AGENDA DEFINITIVA ====================
-
-// DATOS
-var misTareas = [];
-var misExamenes = [];
-
-// HORARIO
-const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-const horas = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
-
-const horarioDefecto = {
-    Lunes: ["📐 Matemática", "📖 Español", "🇬🇧 Inglés", "⚡ Física", "📊 Tutoría", "⚽ Educación Física"],
-    Martes: ["🏛️ Historia", "💻 Ofimática", "📐 Matemática", "♀️ Igualdad Género", "🎨 Artes", "🫂 Formación Cívica"],
-    Miércoles: ["⚡ Física", "🇬🇧 Inglés", "📐 Matemática", "🏛️ Historia", "📖 Español", "💻 Ofimática"],
-    Jueves: ["📖 Español", "🎨 Artes", "♀️ Igualdad Género", "📐 Matemática", "🫂 Formación Cívica", "📊 Tutoría"],
-    Viernes: ["🇬🇧 Inglés", "⚡ Física", "🏛️ Historia", "⚽ Educación Física", "💻 Ofimática", "📐 Matemática"]
-};
-
-let horarioActual = {};
-
-function cargarHorario() {
-    let guardado = localStorage.getItem("maryse_horario");
-    if(guardado) {
-        horarioActual = JSON.parse(guardado);
-    } else {
-        horarioActual = JSON.parse(JSON.stringify(horarioDefecto));
-    }
-    renderizarHorario();
-}
-
-function renderizarHorario() {
-    let container = document.getElementById("tablaHorario");
-    if(!container) return;
-    
-    let html = `<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse;">`;
-    html += `<tr style="background:var(--primary);color:white;"><th style="padding:10px;">Hora</th>`;
-    dias.forEach(d => { html += `<th style="padding:10px;">${d}</th>`; });
-    html += `</tr>`;
-    
-    for(let i = 0; i < horas.length; i++) {
-        html += `<tr style="border-bottom:1px solid var(--border);">`;
-        html += `<td style="padding:10px;font-weight:bold;background:var(--bg);">${horas[i]}</td>`;
-        
-        for(let j = 0; j < dias.length; j++) {
-            let materia = horarioActual[dias[j]]?.[i] || "—";
-            html += `<td onclick="editarHorario('${dias[j]}', ${i})" style="padding:10px;cursor:pointer;background:var(--card);border-radius:8px;margin:2px;">${materia}</td>`;
-        }
-        html += `</tr>`;
-    }
-    html += `</table></div>`;
-    container.innerHTML = html;
-}
-
-function editarHorario(dia, horaIndex) {
-    let nuevo = prompt(`✏️ Editar materia para ${dia} a las ${horas[horaIndex]}:`, horarioActual[dia][horaIndex]);
-    if(nuevo && nuevo.trim()) {
-        horarioActual[dia][horaIndex] = nuevo.trim();
-        localStorage.setItem("maryse_horario", JSON.stringify(horarioActual));
-        renderizarHorario();
-    }
-}
-
-function restaurarHorario() {
-    if(confirm("¿Restaurar horario original?")) {
-        horarioActual = JSON.parse(JSON.stringify(horarioDefecto));
-        localStorage.setItem("maryse_horario", JSON.stringify(horarioActual));
-        renderizarHorario();
-    }
-}
-
-// TAREAS
-function cargarTareas() {
-    let guardado = localStorage.getItem("maryse_tareas");
-    if(guardado) misTareas = JSON.parse(guardado);
-    else misTareas = [];
-    renderizarTareas();
-}
-
-function guardarTareas() {
-    localStorage.setItem("maryse_tareas", JSON.stringify(misTareas));
-}
-
-function renderizarTareas() {
-    let container = document.getElementById("listaTareas");
-    if(!container) return;
-    
-    let mostrarCompletadas = document.getElementById("mostrarCompletadas")?.checked || false;
-    let tareasFiltradas = mostrarCompletadas ? misTareas : misTareas.filter(t => !t.completada);
-    
-    if(tareasFiltradas.length === 0) {
-        container.innerHTML = `<div style="text-align:center;padding:30px;">✨ No hay tareas ✨</div>`;
-        return;
-    }
-    
-    container.innerHTML = tareasFiltradas.map(t => `
-        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:12px;border-radius:16px;margin-bottom:8px;">
-            <div style="display:flex;align-items:center;gap:10px;">
-                <input type="checkbox" ${t.completada ? "checked" : ""} onchange="toggleTarea(${t.id})">
-                <span style="${t.completada ? 'text-decoration:line-through;opacity:0.6' : ''}">${t.texto}</span>
-            </div>
-            <button onclick="eliminarTarea(${t.id})" style="background:none;border:none;cursor:pointer;">🗑️</button>
-        </div>
-    `).join("");
-}
-
-function agregarTarea() {
-    let input = document.getElementById("inputTarea");
-    let texto = input.value.trim();
-    if(!texto) { alert("✏️ Escribe una tarea"); return; }
-    
-    misTareas.unshift({ id: Date.now(), texto: texto, completada: false });
-    guardarTareas();
-    renderizarTareas();
-    input.value = "";
-}
-
-function toggleTarea(id) {
-    let t = misTareas.find(t => t.id === id);
-    if(t) { t.completada = !t.completada; guardarTareas(); renderizarTareas(); }
-}
-
-function eliminarTarea(id) {
-    misTareas = misTareas.filter(t => t.id !== id);
-    guardarTareas();
-    renderizarTareas();
-}
-
-// EXÁMENES
-function cargarExamenes() {
-    let guardado = localStorage.getItem("maryse_examenes");
-    if(guardado) misExamenes = JSON.parse(guardado);
-    else misExamenes = [];
-    renderizarExamenes();
-}
-
-function guardarExamenes() {
-    localStorage.setItem("maryse_examenes", JSON.stringify(misExamenes));
-}
-
-function renderizarExamenes() {
-    let container = document.getElementById("listaExamenes");
-    if(!container) return;
-    
-    if(misExamenes.length === 0) {
-        container.innerHTML = `<div style="text-align:center;padding:30px;">📝 No hay exámenes</div>`;
-        return;
-    }
-    
-    let ordenados = [...misExamenes].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-    
-    container.innerHTML = ordenados.map(e => `
-        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:12px;border-radius:16px;margin-bottom:8px;">
-            <div>
-                <strong>${e.nombre}</strong>
-                <div style="font-size:0.7rem;color:var(--subtext);">📅 ${new Date(e.fecha).toLocaleDateString()}</div>
-            </div>
-            <button onclick="eliminarExamen(${e.id})" style="background:none;border:none;cursor:pointer;">🗑️</button>
-        </div>
-    `).join("");
-}
-
-function agregarExamen() {
-    let nombre = document.getElementById("inputExamen").value.trim();
-    let fecha = document.getElementById("fechaExamen").value;
-    
-    if(!nombre || !fecha) { alert("❌ Completa nombre y fecha"); return; }
-    
-    misExamenes.push({ id: Date.now(), nombre: nombre, fecha: fecha });
-    guardarExamenes();
-    renderizarExamenes();
-    
-    document.getElementById("inputExamen").value = "";
-    document.getElementById("fechaExamen").value = "";
-}
-
-function eliminarExamen(id) {
-    misExamenes = misExamenes.filter(e => e.id !== id);
-    guardarExamenes();
-    renderizarExamenes();
-}
-
-// NAVEGACIÓN PESTAÑAS
-function verHorario() {
-    document.getElementById("seccionHorario").style.display = "block";
-    document.getElementById("seccionTareas").style.display = "none";
-    document.getElementById("seccionExamenes").style.display = "none";
-    document.getElementById("btnHorario").style.background = "var(--primary)";
-    document.getElementById("btnHorario").style.color = "white";
-    document.getElementById("btnTareas").style.background = "var(--card)";
-    document.getElementById("btnTareas").style.color = "var(--text)";
-    document.getElementById("btnExamenes").style.background = "var(--card)";
-    document.getElementById("btnExamenes").style.color = "var(--text)";
-    renderizarHorario();
-}
-
-function verTareas() {
-    document.getElementById("seccionHorario").style.display = "none";
-    document.getElementById("seccionTareas").style.display = "block";
-    document.getElementById("seccionExamenes").style.display = "none";
-    document.getElementById("btnTareas").style.background = "var(--primary)";
-    document.getElementById("btnTareas").style.color = "white";
-    document.getElementById("btnHorario").style.background = "var(--card)";
-    document.getElementById("btnHorario").style.color = "var(--text)";
-    document.getElementById("btnExamenes").style.background = "var(--card)";
-    document.getElementById("btnExamenes").style.color = "var(--text)";
-    cargarTareas();
-}
-
-function verExamenes() {
-    document.getElementById("seccionHorario").style.display = "none";
-    document.getElementById("seccionTareas").style.display = "none";
-    document.getElementById("seccionExamenes").style.display = "block";
-    document.getElementById("btnExamenes").style.background = "var(--primary)";
-    document.getElementById("btnExamenes").style.color = "white";
-    document.getElementById("btnHorario").style.background = "var(--card)";
-    document.getElementById("btnHorario").style.color = "var(--text)";
-    document.getElementById("btnTareas").style.background = "var(--card)";
-    document.getElementById("btnTareas").style.color = "var(--text)";
-    cargarExamenes();
-}
-
-// INICIALIZAR
-cargarHorario();
-cargarTareas();
-cargarExamenes();
-
-// EXPONER FUNCIONES
-window.verHorario = verHorario;
-window.verTareas = verTareas;
-window.verExamenes = verExamenes;
-window.agregarTarea = agregarTarea;
-window.toggleTarea = toggleTarea;
-window.eliminarTarea = eliminarTarea;
-window.agregarExamen = agregarExamen;
-window.eliminarExamen = eliminarExamen;
-window.editarHorario = editarHorario;
-window.restaurarHorario = restaurarHorario;
-
-console.log("✅ Agenda definitiva cargada");
-// ==================== CORRECCIÓN DE ERRORES ====================
-
-// 1. Eliminar variables duplicadas (forzar reinicio seguro)
-if (typeof window.misTareas !== 'undefined') { 
-    var oldTareas = window.misTareas;
-    delete window.misTareas; 
-}
-if (typeof window.misExamenes !== 'undefined') { delete window.misExamenes; }
-if (typeof window.horarioActual !== 'undefined') { delete window.horarioActual; }
-
-// 2. Declarar variables solo si no existen
-window.misTareas = window.misTareas || [];
-window.misExamenes = window.misExamenes || [];
-window.horarioActual = window.horarioActual || {};
-
-// 3. Función toggleRadialMenu (para el menú)
-function toggleRadialMenu() {
-    let menu = document.getElementById("radialMenu");
-    if(menu) menu.classList.toggle("hidden");
-}
-
-function goToView(vista) {
-    if(typeof showView === 'function') showView(vista);
-    let menu = document.getElementById("radialMenu");
-    if(menu) menu.classList.add("hidden");
-}
-
-// 4. Función changeAvatar (para cambiar el avatar)
-function changeAvatar() {
-    let input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = function(e) {
-        let file = e.target.files[0];
-        if(file) {
-            let reader = new FileReader();
-            reader.onload = function(ev) {
-                localStorage.setItem("maryse_avatar", ev.target.result);
-                let avatarDiv = document.getElementById("avatarContent");
-                if(avatarDiv) avatarDiv.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
-                alert("✅ Avatar actualizado");
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    input.click();
-}
-
-// 5. Función openAdminPanel
-function openAdminPanel() {
-    let code = prompt("🔐 Code secret:");
-    if(code === "MARYSE2025") {
-        alert("👩‍👧 Bienvenue maman");
-        if(typeof showView === 'function') showView("profile");
-    } else if(code) {
-        alert("❌ Code incorrect");
-    }
-}
-
-// 6. Función signOutAndClose
-function signOutAndClose() {
-    if(confirm("🚪 Fermer la session et quitter ?")) {
-        localStorage.clear();
-        location.reload();
-    }
-}
-
-// 7. Función installPWA
-function installPWA() {
-    alert("📱 Pour installer l'application, utilisez 'Ajouter à l'écran d'accueil' depuis le navigateur");
-}
-
-// 8. Función exportData
-function exportData() {
-    let datos = {};
-    for(let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        datos[key] = localStorage.getItem(key);
-    }
-    let blob = new Blob([JSON.stringify(datos, null, 2)], {type: "application/json"});
-    let a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `maryse_backup_${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-}
-
-// 9. Función importData
-function importData(input) {
-    let file = input.files[0];
-    if(!file) return;
-    let reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            let datos = JSON.parse(e.target.result);
-            for(let key in datos) {
-                localStorage.setItem(key, datos[key]);
-            }
-            alert("✅ Importación exitosa. Recargando...");
-            location.reload();
-        } catch(err) {
-            alert("❌ Error al importar");
-        }
-    };
-    reader.readAsText(file);
-}
-
-// 10. Función toggleDarkMode
-function toggleDarkMode() {
-    document.body.classList.toggle("dark");
-    localStorage.setItem("maryse_dark_mode", document.body.classList.contains("dark"));
-}
-
-// 11. Función showView (si no existe)
-if(typeof showView === 'undefined') {
-    window.showView = function(viewName) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        let target = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
-        if(target) target.classList.add('active');
-    };
-}
-
-// 12. Cargar avatar guardado
-function loadAvatar() {
-    let avatar = localStorage.getItem("maryse_avatar");
-    let avatarDiv = document.getElementById("avatarContent");
-    if(avatarDiv) {
-        if(avatar) {
-            avatarDiv.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;">`;
-        } else {
-            avatarDiv.innerHTML = "👧";
-        }
-    }
-}
-
-// 13. Modo oscuro guardado
-if(localStorage.getItem("maryse_dark_mode") === "true") {
-    document.body.classList.add("dark");
-}
-
-// 14. Cargar avatar al inicio
-loadAvatar();
-
-console.log("✅ Todas las funciones han sido corregidas");
-    function toggleRadialMenu() {
-    let menu = document.getElementById("radialMenu");
-    if(menu) menu.classList.toggle("hidden");
-}
-
-function changeAvatar() {
-    let input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = function(e) {
-        let file = e.target.files[0];
-        if(file) {
-            let reader = new FileReader();
-            reader.onload = function(ev) {
-                localStorage.setItem("maryse_avatar", ev.target.result);
-                let avatarDiv = document.getElementById("avatarContent");
-                if(avatarDiv) avatarDiv.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    input.click();
-}
-  function toggleRadialMenu(){let m=document.getElementById("radialMenu");if(m)m.classList.toggle("hidden");}
-function changeAvatar(){let i=document.createElement("input");i.type="file";i.accept="image/*";i.onchange=e=>{let f=e.target.files[0];if(f){let r=new FileReader();r.onload=ev=>{localStorage.setItem("maryse_avatar",ev.target.result);document.getElementById("avatarContent").innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;};r.readAsDataURL(f);}};i.click();}
-function toggleDarkMode(){document.body.classList.toggle("dark");localStorage.setItem("maryse_dark_mode",document.body.classList.contains("dark"));}
-function openAdminPanel(){let c=prompt("Code:");if(c==="MARYSE2025")alert("Bienvenue");else if(c)alert("Incorrect");}
-function signOutAndClose(){if(confirm("Fermer?")){localStorage.clear();location.reload();}}
-function goToView(v){if(typeof showView==='function')showView(v);let m=document.getElementById("radialMenu");if(m)m.classList.add("hidden");}
-function installPWA(){alert("Instalar desde el navegador");}
-function exportData(){let d={};for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);d[k]=localStorage.getItem(k);}let b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="maryse_backup.json";a.click();}
-function importData(i){let f=i.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{let d=JSON.parse(e.target.result);for(let k in d)localStorage.setItem(k,d[k]);alert("Importado. Recargando...");location.reload();};r.readAsText(f);}
-function verHorario(){document.getElementById("seccionHorario").style.display="block";document.getElementById("seccionTareas").style.display="none";document.getElementById("seccionExamenes").style.display="none";document.getElementById("btnHorario").style.background="var(--primary)";document.getElementById("btnTareas").style.background="var(--card)";document.getElementById("btnExamenes").style.background="var(--card)";if(typeof mostrarHorario==='function')mostrarHorario();else if(typeof cargarHorario==='function')cargarHorario();}
-function verTareas(){document.getElementById("seccionHorario").style.display="none";document.getElementById("seccionTareas").style.display="block";document.getElementById("seccionExamenes").style.display="none";document.getElementById("btnTareas").style.background="var(--primary)";document.getElementById("btnHorario").style.background="var(--card)";document.getElementById("btnExamenes").style.background="var(--card)";if(typeof cargarTareas==='function')cargarTareas();}
-function verExamenes(){document.getElementById("seccionHorario").style.display="none";document.getElementById("seccionTareas").style.display="none";document.getElementById("seccionExamenes").style.display="block";document.getElementById("btnExamenes").style.background="var(--primary)";document.getElementById("btnHorario").style.background="var(--card)";document.getElementById("btnTareas").style.background="var(--card)";if(typeof cargarExamenes==='function')cargarExamenes();}
-function agregarTarea(){let t=document.getElementById("inputTarea")?.value.trim();if(!t){alert("Escribe una tarea");return;}if(typeof tareasApp==='undefined'){var tareasApp=[];}tareasApp.push({id:Date.now(),texto:t,completada:false});localStorage.setItem("tareasApp",JSON.stringify(tareasApp));if(typeof mostrarTareas==='function')mostrarTareas();document.getElementById("inputTarea").value="";}
-function agregarExamen(){let n=document.getElementById("inputExamen")?.value.trim();let f=document.getElementById("fechaExamen")?.value;if(!n||!f){alert("Completa nombre y fecha");return;}if(typeof examenesApp==='undefined'){var examenesApp=[];}examenesApp.push({id:Date.now(),nombre:n,fecha:f});localStorage.setItem("examenesApp",JSON.stringify(examenesApp));if(typeof mostrarExamenes==='function')mostrarExamenes();document.getElementById("inputExamen").value="";document.getElementById("fechaExamen").value="";}
-function mostrarHorario(){let c=document.getElementById("tablaHorario");if(!c)return;let d=["Lunes","Martes","Miércoles","Jueves","Viernes"];let h=["8:00","9:00","10:00","11:00","12:00","13:00"];let horarioDefault={Lunes:["📐 Matemática","📖 Español","🇬🇧 Inglés","⚡ Física","📊 Tutoría","⚽ EF"],Martes:["🏛️ Historia","💻 Ofimática","📐 Matemática","♀️ Igualdad","🎨 Artes","🫂 Cívica"],Miércoles:["⚡ Física","🇬🇧 Inglés","📐 Matemática","🏛️ Historia","📖 Español","💻 Ofimática"],Jueves:["📖 Español","🎨 Artes","♀️ Igualdad","📐 Matemática","🫂 Cívica","📊 Tutoría"],Viernes:["🇬🇧 Inglés","⚡ Física","🏛️ Historia","⚽ EF","💻 Ofimática","📐 Matemática"]};let guardado=localStorage.getItem("horarioApp");let horario=guardado?JSON.parse(guardado):horarioDefault;let html=`<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--primary);color:white;"><th>Hora</th>${d.map(dd=>`<th>${dd}</th>`).join('')}<tr>`;for(let i=0;i<h.length;i++){html+=`<tr><td style="background:var(--bg);">${h[i]}</td>`;for(let j=0;j<d.length;j++){let materia=horario[d[j]]?.[i]||"—";html+=`<td onclick="editarHorarioCelda('${d[j]}',${i})" style="cursor:pointer;">${materia}</td>`;}html+=`<tr>`;}html+=`</table>`;c.innerHTML=html;}
-function editarHorarioCelda(dia,idx){let h=["8:00","9:00","10:00","11:00","12:00","13:00"];let guardado=localStorage.getItem("horarioApp");let horario=guardado?JSON.parse(guardado):{};let nuevo=prompt(`Editar ${dia} ${h[idx]}:`,horario[dia]?.[idx]||"");if(nuevo&&nuevo.trim()){if(!horario[dia])horario[dia]=[];horario[dia][idx]=nuevo.trim();localStorage.setItem("horarioApp",JSON.stringify(horario));mostrarHorario();}}
-function restaurarHorario(){if(confirm("Restaurar horario original?")){localStorage.removeItem("horarioApp");mostrarHorario();}}
-function cargarTareas(){let g=localStorage.getItem("tareasApp");if(g)tareasApp=JSON.parse(g);else tareasApp=[];mostrarTareas();}
-function mostrarTareas(){let c=document.getElementById("listaTareas");if(!c)return;let mostrar=document.getElementById("mostrarCompletadas")?.checked||false;let f=mostrar?tareasApp:tareasApp.filter(t=>!t.completada);if(f.length===0){c.innerHTML="<div style='padding:20px'>✨ No hay tareas</div>";return;}c.innerHTML=f.map(t=>`<div style="display:flex;justify-content:space-between;background:var(--bg);padding:10px;margin:5px 0;border-radius:16px;"><div><input type="checkbox" ${t.completada?"checked":""} onchange="toggleTarea(${t.id})"> ${t.texto}</div><button onclick="eliminarTarea(${t.id})">🗑️</button></div>`).join("");}
-function toggleTarea(id){let t=tareasApp.find(t=>t.id===id);if(t){t.completada=!t.completada;localStorage.setItem("tareasApp",JSON.stringify(tareasApp));mostrarTareas();}}
-function eliminarTarea(id){tareasApp=tareasApp.filter(t=>t.id!==id);localStorage.setItem("tareasApp",JSON.stringify(tareasApp));mostrarTareas();}
-function cargarExamenes(){let g=localStorage.getItem("examenesApp");if(g)examenesApp=JSON.parse(g);else examenesApp=[];mostrarExamenes();}
-function mostrarExamenes(){let c=document.getElementById("listaExamenes");if(!c)return;if(examenesApp.length===0){c.innerHTML="<div style='padding:20px'>📝 No hay exámenes</div>";return;}c.innerHTML=examenesApp.map(e=>`<div style="display:flex;justify-content:space-between;background:var(--bg);padding:10px;margin:5px 0;border-radius:16px;"><div><strong>${e.nombre}</strong><br><small>📅 ${new Date(e.fecha).toLocaleDateString()}</small></div><button onclick="eliminarExamen(${e.id})">🗑️</button></div>`).join("");}
-function eliminarExamen(id){examenesApp=examenesApp.filter(e=>e.id!==id);localStorage.setItem("examenesApp",JSON.stringify(examenesApp));mostrarExamenes();}
-window.toggleRadialMenu=toggleRadialMenu;window.changeAvatar=changeAvatar;window.toggleDarkMode=toggleDarkMode;window.openAdminPanel=openAdminPanel;window.signOutAndClose=signOutAndClose;window.goToView=goToView;window.installPWA=installPWA;window.exportData=exportData;window.importData=importData;window.verHorario=verHorario;window.verTareas=verTareas;window.verExamenes=verExamenes;window.agregarTarea=agregarTarea;window.agregarExamen=agregarExamen;window.editarHorarioCelda=editarHorarioCelda;window.restaurarHorario=restaurarHorario;window.toggleTarea=toggleTarea;window.eliminarTarea=eliminarTarea;window.eliminarExamen=eliminarExamen;
-console.log("✅ Todo corregido");  
 </script>
 </body>
 </html>
