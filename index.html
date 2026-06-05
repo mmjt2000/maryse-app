@@ -648,6 +648,328 @@ function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== i
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
+// ==================== FUNCIONES DE AGENDA ====================
+
+const horarioPredeterminado = {
+    "Lunes": ["Ofimatica", "Ofimatica", "Historia", "Español", "BREAK", "Ofimatica", "Español", "Matemática", "Artes"],
+    "Martes": ["Educación Física", "Educación Física", "Formación Cívica y Etica", "Formación Cívica y Etica", "BREAK", "Física", "Física", "Español", "Matemática"],
+    "Miercoles": ["Tutoría", "Español", "Español", "Historia", "BREAK", "Ofimatica", "Inglés", "Artes", "Artes"],
+    "Jueves": ["Ofimatica", "Ofimatica", "Ofimatica", "Matemática", "BREAK", "Historia", "Física", "Física", "Historia"],
+    "Viernes": ["Ofimatica", "Inglés", "Inglés", "Matemáticas", "BREAK", "Matemáticas", "Física", "Física", "Igualdad de Género"]
+};
+
+const horasClase = ["7:00-7:50", "7:50-8:40", "8:40-9:30", "9:30-10:20", "10:20-10:40", "10:40-11:30", "11:30-12:20", "12:20-13:10", "13:10-14:00"];
+
+function cargarHorarioAgenda() {
+    let horario = localStorage.getItem("maryse_horario_escolar");
+    return horario ? JSON.parse(horario) : JSON.parse(JSON.stringify(horarioPredeterminado));
+}
+
+function guardarHorarioAgenda(horario) {
+    localStorage.setItem("maryse_horario_escolar", JSON.stringify(horario));
+}
+
+function renderizarHorarioAgenda() {
+    const horario = cargarHorarioAgenda();
+    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
+    let headerHTML = "<tr><th>Hora</th>";
+    dias.forEach(dia => { headerHTML += `<th>${dia}</th>`; });
+    headerHTML += "</tr>";
+    const headerEl = document.getElementById("horarioHeaderAgenda");
+    if (headerEl) headerEl.innerHTML = headerHTML;
+    
+    let bodyHTML = "";
+    for (let i = 0; i < horasClase.length; i++) {
+        bodyHTML += `<tr><td style="font-weight: 600; background: var(--primary-light); color: white; padding: 8px;">${horasClase[i]}<\/td>`;
+        for (let j = 0; j < dias.length; j++) {
+            const dia = dias[j];
+            const materia = horario[dia][i] || "";
+            bodyHTML += `<td contenteditable="true" data-dia="${dia}" data-hora="${i}" style="cursor: text; background: var(--card); padding: 8px;" onblur="editarCeldaHorario(this, '${dia}', ${i})">${materia}<\/td>`;
+        }
+        bodyHTML += "</tr>";
+    }
+    const bodyEl = document.getElementById("horarioBodyAgenda");
+    if (bodyEl) bodyEl.innerHTML = bodyHTML;
+}
+
+function editarCeldaHorario(elemento, dia, horaIndex) {
+    let nuevoValor = elemento.innerText.trim();
+    const horario = cargarHorarioAgenda();
+    horario[dia][horaIndex] = nuevoValor;
+    guardarHorarioAgenda(horario);
+}
+
+function restaurarHorarioAgenda() {
+    if (confirm("¿Restaurar el horario original?")) {
+        guardarHorarioAgenda(JSON.parse(JSON.stringify(horarioPredeterminado)));
+        renderizarHorarioAgenda();
+        alert("✅ Horario restaurado");
+    }
+}
+
+function exportarHorarioJSON() {
+    const horario = cargarHorarioAgenda();
+    const dataStr = JSON.stringify(horario, null, 2);
+    const blob = new Blob([dataStr], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mi_horario.json";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// TAREAS
+function cargarTareasAgenda() {
+    let tareas = localStorage.getItem("maryse_tareas_agenda");
+    return tareas ? JSON.parse(tareas) : [];
+}
+
+function guardarTareasAgenda(tareas) {
+    localStorage.setItem("maryse_tareas_agenda", JSON.stringify(tareas));
+    actualizarEstadisticasAgenda();
+}
+
+function agregarTareaAgendaMejorada() {
+    const texto = document.getElementById("nuevaTareaAgenda")?.value.trim();
+    if (!texto) { alert("📝 Escribe una tarea"); return; }
+    const categoria = document.getElementById("nuevaTareaCategoria")?.value || "normal";
+    const prioridad = document.getElementById("nuevaTareaPrioridad")?.value || "media";
+    const fechaLimite = document.getElementById("nuevaTareaFechaLimite")?.value || "";
+    const materia = document.getElementById("nuevaTareaMateria")?.value || "";
+    const tareas = cargarTareasAgenda();
+    tareas.push({
+        id: Date.now(),
+        texto: texto,
+        completada: false,
+        categoria: categoria,
+        prioridad: prioridad,
+        fechaLimite: fechaLimite,
+        materia: materia,
+        fechaCreacion: new Date().toISOString()
+    });
+    guardarTareasAgenda(tareas);
+    const inputTarea = document.getElementById("nuevaTareaAgenda");
+    const inputFecha = document.getElementById("nuevaTareaFechaLimite");
+    if (inputTarea) inputTarea.value = "";
+    if (inputFecha) inputFecha.value = "";
+    mostrarTabAgenda('tareas');
+}
+
+function renderizarTareasAgenda(tareas) {
+    const contenedor = document.getElementById("listaTareasAgenda");
+    if (!contenedor) return;
+    const mostrarCompletadas = document.getElementById("mostrarCompletadasAgenda")?.checked || false;
+    let tareasFiltradas = tareas;
+    if (!mostrarCompletadas) tareasFiltradas = tareasFiltradas.filter(t => !t.completada);
+    
+    if (tareasFiltradas.length === 0) {
+        contenedor.innerHTML = '<p style="text-align:center; padding:20px;">✨ ¡Sin tareas por aquí! ✨</p>';
+        return;
+    }
+    const prioridadEmoji = { "alta": "🔴", "media": "🟡", "baja": "🟢" };
+    const categoriaTexto = { "urgente": "⚠️ Urgente", "importante": "⭐ Importante", "normal": "📘 Normal" };
+    contenedor.innerHTML = tareasFiltradas.map(t => `
+        <div style="background: var(--bg); border-radius: 16px; padding: 12px; margin-bottom: 10px; border-left: 6px solid ${t.categoria === 'urgente' ? '#dc2626' : (t.categoria === 'importante' ? '#d97706' : '#8b5cf6')};">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                <div style="flex: 1;">
+                    <span style="font-weight: 600; ${t.completada ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${escapeHtml(t.texto)}</span>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                        <span style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: ${t.categoria === 'urgente' ? '#fee2e2' : (t.categoria === 'importante' ? '#fef3c7' : '#e0e7ff')}">${categoriaTexto[t.categoria]}</span>
+                        <span style="font-size: 0.7rem;">${prioridadEmoji[t.prioridad]} ${t.prioridad}</span>
+                        ${t.materia ? `<span style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: #8b5cf6; color: white;">📚 ${t.materia}</span>` : ''}
+                        ${t.fechaLimite ? `<span style="font-size: 0.7rem;">📅 ${formatFecha(t.fechaLimite)}</span>` : ''}
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    ${!t.completada ? `<button onclick="completarTareaAgenda(${t.id})" style="background: #10b981; border: none; padding: 6px 12px; border-radius: 60px; cursor: pointer;">✅</button>` : ''}
+                    <button onclick="eliminarTareaAgenda(${t.id})" style="background: #ef4444; border: none; padding: 6px 12px; border-radius: 60px; cursor: pointer;">🗑️</button>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function completarTareaAgenda(id) {
+    let tareas = cargarTareasAgenda();
+    const tarea = tareas.find(t => t.id === id);
+    if (tarea) {
+        tarea.completada = true;
+        guardarTareasAgenda(tareas);
+        mostrarTabAgenda('tareas');
+    }
+}
+
+function eliminarTareaAgenda(id) {
+    let tareas = cargarTareasAgenda();
+    tareas = tareas.filter(t => t.id !== id);
+    guardarTareasAgenda(tareas);
+    mostrarTabAgenda('tareas');
+}
+
+function eliminarTareasCompletadasAgenda() {
+    if (confirm("¿Eliminar todas las tareas completadas?")) {
+        let tareas = cargarTareasAgenda();
+        tareas = tareas.filter(t => !t.completada);
+        guardarTareasAgenda(tareas);
+        mostrarTabAgenda('tareas');
+    }
+}
+
+// EXÁMENES
+function cargarExamenesAgenda() {
+    let examenes = localStorage.getItem("maryse_examenes_agenda");
+    return examenes ? JSON.parse(examenes) : [];
+}
+
+function guardarExamenesAgenda(examenes) {
+    localStorage.setItem("maryse_examenes_agenda", JSON.stringify(examenes));
+    actualizarEstadisticasAgenda();
+}
+
+function agregarExamenAgenda() {
+    const nombre = document.getElementById("nuevoExamenNombre")?.value.trim();
+    const fecha = document.getElementById("nuevoExamenFecha")?.value;
+    const materia = document.getElementById("nuevoExamenMateria")?.value || "";
+    if (!nombre || !fecha) { alert("📝 Completa nombre y fecha"); return; }
+    const examenes = cargarExamenesAgenda();
+    examenes.push({ id: Date.now(), nombre: nombre, fecha: fecha, materia: materia });
+    guardarExamenesAgenda(examenes);
+    const inputNombre = document.getElementById("nuevoExamenNombre");
+    const inputFecha = document.getElementById("nuevoExamenFecha");
+    if (inputNombre) inputNombre.value = "";
+    if (inputFecha) inputFecha.value = "";
+    mostrarTabAgenda('examenes');
+}
+
+function renderizarExamenesAgenda() {
+    const contenedor = document.getElementById("listaExamenesAgenda");
+    if (!contenedor) return;
+    const examenes = cargarExamenesAgenda();
+    const hoy = new Date().toISOString().split('T')[0];
+    examenes.sort((a, b) => a.fecha.localeCompare(b.fecha));
+    if (examenes.length === 0) {
+        contenedor.innerHTML = '<p style="text-align:center; padding:20px;">📝 No hay exámenes programados</p>';
+        return;
+    }
+    contenedor.innerHTML = examenes.map(e => `
+        <div style="background: var(--bg); border-radius: 16px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>
+                <span style="font-weight: 600;">📝 ${escapeHtml(e.nombre)}</span>
+                <div style="font-size: 0.75rem; margin-top: 4px;">
+                    ${e.materia ? `📚 ${e.materia} · ` : ''}📅 ${formatFecha(e.fecha)} ${e.fecha === hoy ? '<span style="color: #dc2626;"> (¡HOY!)</span>' : (e.fecha < hoy ? '<span style="color: #ef4444;"> (PASADO)</span>' : '')}
+                </div>
+            </div>
+            <button onclick="eliminarExamenAgenda(${e.id})" style="background: #ef4444; border: none; padding: 6px 12px; border-radius: 60px; cursor: pointer;">🗑️</button>
+        </div>
+    `).join("");
+}
+
+function eliminarExamenAgenda(id) {
+    let examenes = cargarExamenesAgenda();
+    examenes = examenes.filter(e => e.id !== id);
+    guardarExamenesAgenda(examenes);
+    mostrarTabAgenda('examenes');
+}
+
+// ESTADÍSTICAS
+function actualizarEstadisticasAgenda() {
+    const tareas = cargarTareasAgenda();
+    const hoy = new Date().toISOString().split('T')[0];
+    const pendientes = tareas.filter(t => !t.completada).length;
+    const tareasHoy = tareas.filter(t => t.fechaLimite === hoy && !t.completada).length;
+    const urgentes = tareas.filter(t => t.categoria === "urgente" && !t.completada).length;
+    
+    const inicioSemana = new Date();
+    inicioSemana.setDate(inicioSemana.getDate() - (inicioSemana.getDay() === 0 ? 6 : inicioSemana.getDay() - 1));
+    inicioSemana.setHours(0, 0, 0, 0);
+    const completadasSemana = tareas.filter(t => t.completada && new Date(t.fechaCreacion) >= inicioSemana).length;
+    
+    const pendientesEl = document.getElementById("statTareasPendientes");
+    const hoyEl = document.getElementById("statTareasHoy");
+    const urgentesEl = document.getElementById("statTareasUrgentes");
+    const semanaEl = document.getElementById("statCompletadasSemana");
+    if (pendientesEl) pendientesEl.innerText = pendientes;
+    if (hoyEl) hoyEl.innerText = tareasHoy;
+    if (urgentesEl) urgentesEl.innerText = urgentes;
+    if (semanaEl) semanaEl.innerText = completadasSemana;
+}
+
+function formatFecha(fechaISO) {
+    if (!fechaISO) return "";
+    const [year, month, day] = fechaISO.split('-');
+    return `${day}/${month}/${year}`;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// PESTAÑAS
+function mostrarTabAgenda(tab) {
+    const horarioSection = document.getElementById("horarioSectionAgenda");
+    const tareasSection = document.getElementById("tareasSectionAgenda");
+    const examenesSection = document.getElementById("examenesSectionAgenda");
+    const tabHorarioBtn = document.getElementById("tabHorarioBtn");
+    const tabTareasBtn = document.getElementById("tabTareasBtn");
+    const tabExamenesBtn = document.getElementById("tabExamenesBtn");
+    
+    if (horarioSection) horarioSection.style.display = tab === "horario" ? "block" : "none";
+    if (tareasSection) tareasSection.style.display = tab === "tareas" ? "block" : "none";
+    if (examenesSection) examenesSection.style.display = tab === "examenes" ? "block" : "none";
+    
+    if (tabHorarioBtn) {
+        tabHorarioBtn.style.background = tab === "horario" ? "#8b5cf6" : "var(--card)";
+        tabHorarioBtn.style.color = tab === "horario" ? "white" : "var(--text)";
+    }
+    if (tabTareasBtn) {
+        tabTareasBtn.style.background = tab === "tareas" ? "#8b5cf6" : "var(--card)";
+        tabTareasBtn.style.color = tab === "tareas" ? "white" : "var(--text)";
+    }
+    if (tabExamenesBtn) {
+        tabExamenesBtn.style.background = tab === "examenes" ? "#8b5cf6" : "var(--card)";
+        tabExamenesBtn.style.color = tab === "examenes" ? "white" : "var(--text)";
+    }
+    
+    if (tab === "tareas") {
+        const tareas = cargarTareasAgenda();
+        renderizarTareasAgenda(tareas);
+    } else if (tab === "examenes") {
+        renderizarExamenesAgenda();
+    }
+}
+
+function inicializarAgenda() {
+    renderizarHorarioAgenda();
+    actualizarEstadisticasAgenda();
+    renderizarExamenesAgenda();
+    const tareas = cargarTareasAgenda();
+    renderizarTareasAgenda(tareas);
+    
+    const chk = document.getElementById("mostrarCompletadasAgenda");
+    if (chk) {
+        chk.removeEventListener('change', function() {});
+        chk.addEventListener('change', function() {
+            const tareasList = cargarTareasAgenda();
+            renderizarTareasAgenda(tareasList);
+        });
+    }
+}
+
+// Exponer funciones globalmente
+window.editarCeldaHorario = editarCeldaHorario;
+window.restaurarHorarioAgenda = restaurarHorarioAgenda;
+window.exportarHorarioJSON = exportarHorarioJSON;
+window.agregarTareaAgendaMejorada = agregarTareaAgendaMejorada;
+window.completarTareaAgenda = completarTareaAgenda;
+window.eliminarTareaAgenda = eliminarTareaAgenda;
+window.eliminarTareasCompletadasAgenda = eliminarTareasCompletadasAgenda;
+window.agregarExamenAgenda = agregarExamenAgenda;
+window.eliminarExamenAgenda = eliminarExamenAgenda;
+window.mostrarTabAgenda = mostrarTabAgenda;
+window.inicializarAgenda = inicializarAgenda;
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -2414,6 +2736,10 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
+    if (viewName === 'agenda') {
+        setTimeout(inicializarAgenda, 100);
+    }
+}
     window.scrollTo(0,0);
 }
 
