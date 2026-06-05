@@ -674,19 +674,7 @@ window.borrarFoto = borrarFoto;
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 
 <script>
-
-// ==================== SUPABASE CONFIGURATION ====================
-// REMPLACE AVEC TES VRAIES CLÉS (récupérées dans Settings → API)
-const SUPABASE_URL = " https://cwetrblkzgsmmmfgxpiv.supabase.co";  // ← Mets ta Project URL
-const SUPABASE_ANON_KEY = "sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT";           // ← Mets ta anon key
-
-// Importer Supabase
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-console.log("✅ Supabase connecté");
-    
- // ==================== SERVICE WORKER ====================   
+// ==================== SERVICE WORKER ====================
 if ('serviceWorker' in navigator) {
     const swCode = `self.addEventListener('install',function(e){self.skipWaiting();});self.addEventListener('activate',function(e){e.waitUntil(clients.claim());});self.addEventListener('message',function(e){if(e.data.type==='schedule-notification'){const{title,message,hour,minute}=e.data;const now=new Date();const target=new Date();target.setHours(hour,minute,0,0);if(target<=now)target.setDate(target.getDate()+1);const delay=target-now;setTimeout(()=>{self.registration.showNotification(title,{body:message,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>',tag:'daily-reminder',requireInteraction:true,vibrate:[200,100,200]});},delay);}});self.addEventListener('notificationclick',function(e){e.notification.close();e.waitUntil(clients.openWindow('/'));});`;
     const blob = new Blob([swCode], { type: 'application/javascript' });
