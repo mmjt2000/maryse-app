@@ -628,9 +628,9 @@ function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== i
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
+// CÍRCULOS FLOTANTES
 
 
-<!-- CÍRCULOS FLOTANTES -->
 <div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
 <div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
@@ -655,6 +655,19 @@ window.borrarFoto = borrarFoto;
 
 <script>
 // ==================== SERVICE WORKER ====================
+    // ==================== FUNCIONES DEL MENÚ ====================
+function toggleRadialMenu() { let m = document.getElementById("radialMenu"); if(m) m.classList.toggle("hidden"); }
+function changeAvatar() { let i = document.createElement("input"); i.type = "file"; i.accept = "image/*"; i.onchange = function(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = function(ev) { localStorage.setItem("maryse_avatar", ev.target.result); document.getElementById("avatarContent").innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">'; }; r.readAsDataURL(f); } }; i.click(); }
+function toggleDarkMode() { document.body.classList.toggle("dark"); localStorage.setItem("maryse_dark_mode", document.body.classList.contains("dark")); }
+function openAdminPanel() { let c = prompt("Code:"); if(c === "MARYSE2025") alert("Bienvenue"); else if(c) alert("Incorrect"); }
+function signOutAndClose() { if(confirm("Fermer?")) { localStorage.clear(); location.reload(); } }
+function goToView(v) { if(typeof showView === 'function') showView(v); let m = document.getElementById("radialMenu"); if(m) m.classList.add("hidden"); }
+function installPWA() { alert("Instalar desde el navegador"); }
+function exportData() { let d={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); d[k]=localStorage.getItem(k);} let b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"}); let a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="maryse_backup.json"; a.click(); }
+function importData(i) { let f=i.files[0]; if(!f) return; let r=new FileReader(); r.onload=function(e){let d=JSON.parse(e.target.result); for(let k in d) localStorage.setItem(k,d[k]); alert("Importado. Recargando..."); location.reload(); }; r.readAsText(f); }
+function verHorario() { document.getElementById("seccionHorario").style.display = "block"; document.getElementById("seccionTareas").style.display = "none"; document.getElementById("seccionExamenes").style.display = "none"; document.getElementById("btnHorario").style.background = "var(--primary)"; document.getElementById("btnTareas").style.background = "var(--card)"; document.getElementById("btnExamenes").style.background = "var(--card)"; if(typeof mostrarHorario === 'function') mostrarHorario(); else if(typeof cargarHorario === 'function') cargarHorario(); }
+function verTareas() { document.getElementById("seccionHorario").style.display = "none"; document.getElementById("seccionTareas").style.display = "block"; document.getElementById("seccionExamenes").style.display = "none"; document.getElementById("btnTareas").style.background = "var(--primary)"; document.getElementById("btnHorario").style.background = "var(--card)"; document.getElementById("btnExamenes").style.background = "var(--card)"; if(typeof cargarTareas === 'function') cargarTareas(); }
+function verExamenes() { document.getElementById("seccionHorario").style.display = "none"; document.getElementById("seccionTareas").style.display = "none"; document.getElementById("seccionExamenes").style.display = "block"; document.getElementById("btnExamenes").style.background = "var(--primary)"; document.getElementById("btnHorario").style.background = "var(--card)"; document.getElementById("btnTareas").style.background = "var(--card)"; if(typeof cargarExamenes === 'function') cargarExamenes(); }
 if ('serviceWorker' in navigator) {
     const swCode = `self.addEventListener('install',function(e){self.skipWaiting();});self.addEventListener('activate',function(e){e.waitUntil(clients.claim());});self.addEventListener('message',function(e){if(e.data.type==='schedule-notification'){const{title,message,hour,minute}=e.data;const now=new Date();const target=new Date();target.setHours(hour,minute,0,0);if(target<=now)target.setDate(target.getDate()+1);const delay=target-now;setTimeout(()=>{self.registration.showNotification(title,{body:message,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>',tag:'daily-reminder',requireInteraction:true,vibrate:[200,100,200]});},delay);}});self.addEventListener('notificationclick',function(e){e.notification.close();e.waitUntil(clients.openWindow('/'));});`;
     const blob = new Blob([swCode], { type: 'application/javascript' });
