@@ -348,6 +348,69 @@
     color: white;
     margin-left: 8px;
 }
+/* === ARREGLO CÍRCULOS FLOTANTES === */
+.float-circle {
+    position: fixed !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+    font-size: 1.5rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+.circle-admin {
+    bottom: 110px !important;
+    right: 16px !important;
+    background: #8b5cf6 !important;
+    border: 2px solid #fbbf24 !important;
+}
+.circle-signout {
+    bottom: 40px !important;
+    right: 16px !important;
+    background: #8b5cf6 !important;
+    border: 2px solid #10b981 !important;
+}
+.circle-menu {
+    bottom: 40px !important;
+    left: 16px !important;
+    background: #c084fc !important;
+}
+.radial-menu {
+    position: fixed !important;
+    bottom: 110px !important;
+    left: 20px !important;
+    display: none !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    background: var(--card) !important;
+    border-radius: 28px !important;
+    padding: 12px !important;
+    z-index: 9998 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
+    min-width: 140px !important;
+}
+.radial-menu.active {
+    display: flex !important;
+}
+.radial-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 8px 14px !important;
+    border-radius: 40px !important;
+    cursor: pointer !important;
+    background: var(--bg) !important;
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+}
+.radial-item:hover {
+    background: var(--primary) !important;
+    color: white !important;
+}
     </style>
 </head>
 <body>
@@ -2932,9 +2995,7 @@ function startExam(weekIndex) {
 // ==================== CÍRCULOS FLOTANTES ====================
 function toggleRadialMenu() {
     let menu = document.getElementById('radialMenu');
-    if (menu) {
-        menu.classList.toggle('active');
-    }
+    if (menu) {menu.classList.toggle('active');}
 }
 function goToView(viewName) {
     if (viewName === 'agenda') {
