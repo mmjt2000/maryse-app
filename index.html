@@ -2479,26 +2479,11 @@ function renderMamaCorner() {
 }
 
 // ==================== FUNCIONES PRINCIPALES ====================
-function showView(vn){
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
-    if(target)target.classList.add('active');
-    if(vn==='home'){ renderMarysePlaylist(); }
-    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
-    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
-    if(vn==='games'){ switchGame(currentGame); }
-    if(vn==='dad'){ renderDad(); updateDadClock(); }
-    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
-    if(vn==='karaoke') renderKaraokeSongs();
-    if(vn==='diary') renderDiary();
-    if(vn==='friends') renderAllInvites();
-    if(vn==='theme') loadTheme();
-    if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
-    if(vn==='lifeskills') renderLifeSkills();
-    window.scrollTo(0,0);
-        // Ocultar la nueva Agenda
-    let agendaNueva = document.getElementById('viewAgendaNueva');
-    if (agendaNueva) agendaNueva.classList.remove('active');
+function showView(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    let vista = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
+    if (vista) vista.classList.add('active');
+    window.scrollTo(0, 0);
 }
 
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
@@ -3060,16 +3045,8 @@ function toggleRadialMenu() {
     if (menu) {menu.classList.toggle('active');}
 }
 function goToView(viewName) {
-    if (viewName === 'agenda') {
-        // Mostrar la nueva Agenda
-        document.getElementById('viewAgendaNueva').classList.add('active');
-        document.getElementById('viewHome').classList.remove('active');
-        iniciarAgendaN();
-        toggleRadialMenu();
-    } else {
-        showView(viewName);
-        toggleRadialMenu();
-    }
+    showView(viewName);
+    toggleRadialMenu();
 }
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="maryse2026"){ alert("👩‍👧 Bienvenida, padres de familia."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
 function signOutAndClose(){ if(confirm("¿Cerrar sesión y salir de la aplicación?")){ localStorage.clear(); if(typeof window.close === 'function'){ window.close(); }else{ document.body.innerHTML=`<div style="text-align:center;padding:50px;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()">Volver a entrar</button></div>`; } } }
