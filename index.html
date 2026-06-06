@@ -600,28 +600,7 @@
         <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 </div>
-/* === MEJORAS VISUALES PARA EL HORARIO === */
-#tablaHorario td {
-    transition: all 0.2s ease;
-    font-size: 0.85rem;
-}
-#tablaHorario td:hover {
-    transform: scale(1.01);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-/* Estilo especial para el BREAK (recreo) */
-#tablaHorario td.break-cell {
-    background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
-    color: #92400e !important;
-    font-weight: bold;
-    text-align: center;
-}
-.break-emoji {
-    font-size: 1.2rem;
-    display: inline-block;
-    margin-right: 6px;
-    vertical-align: middle;
-}
+
 <script>
 // ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
 let fotosGuardadas = [];
@@ -704,27 +683,16 @@ const horasClaseN = ["7:00-7:50", "7:50-8:40", "8:40-9:30", "9:30-10:20", "10:20
 
 function guardarHorarioN(h) { localStorage.setItem("maryse_horario_nuevo", JSON.stringify(h)); }
 function cargarHorarioN() { let g = localStorage.getItem("maryse_horario_nuevo"); return g ? JSON.parse(g) : JSON.parse(JSON.stringify(horarioPredeterminadoN)); }
-function renderizarHorario() {
-    let h = cargarHorario();
-    let dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
-    let html = '<thead><tr><th>Hora</th>';
+function renderizarHorarioN() {
+    let h = cargarHorarioN(), dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"], html = '<thead></table><th>Hora</th>';
     for (let d of dias) html += `<th>${d}</th>`;
     html += '</table></thead><tbody>';
-    for (let i = 0; i < horas.length; i++) {
-        html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horas[i]}<\/td>`;
-        for (let j = 0; j < dias.length; j++) {
-            let materia = h[dias[j]][i] || "";
-            if (materia === "BREAK" || materia.toLowerCase().includes("break")) {
-                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<br><span style="font-size:0.7rem;">Descansa y come algo</span><\/td>`;
-            } else {
-                html += `<td contenteditable="true" onblur="actualizarCelda('${dias[j]}', ${i}, this.innerText)">${materia}<\/td>`;
-            }
-        }
+    for (let i = 0; i < horasClaseN.length; i++) {
+        html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasClaseN[i]}<\/td>`;
+        for (let j = 0; j < dias.length; j++) { let val = h[dias[j]][i] || ""; html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)">${val}<\/td>`; }
         html += '</tr>';
     }
-    html += '</tbody>';
-    let t = document.getElementById("tablaHorario");
-    if (t) t.innerHTML = html;
+    html += '</tbody>'; let t = document.getElementById("tablaHorarioN"); if (t) t.innerHTML = html;
 }
 function actualizarCeldaN(d, i, v) { let h = cargarHorarioN(); h[d][i] = v; guardarHorarioN(h); }
 function restaurarHorarioN() { if (confirm("¿Restaurar horario original?")) { guardarHorarioN(JSON.parse(JSON.stringify(horarioPredeterminadoN))); renderizarHorarioN(); alert("✅ Horario restaurado"); } }
@@ -2479,11 +2447,26 @@ function renderMamaCorner() {
 }
 
 // ==================== FUNCIONES PRINCIPALES ====================
-function showView(viewName) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    let vista = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
-    if (vista) vista.classList.add('active');
-    window.scrollTo(0, 0);
+function showView(vn){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
+    if(target)target.classList.add('active');
+    if(vn==='home'){ renderMarysePlaylist(); }
+    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
+    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
+    if(vn==='games'){ switchGame(currentGame); }
+    if(vn==='dad'){ renderDad(); updateDadClock(); }
+    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
+    if(vn==='karaoke') renderKaraokeSongs();
+    if(vn==='diary') renderDiary();
+    if(vn==='friends') renderAllInvites();
+    if(vn==='theme') loadTheme();
+    if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
+    if(vn==='lifeskills') renderLifeSkills();
+    window.scrollTo(0,0);
+        // Ocultar la nueva Agenda
+    let agendaNueva = document.getElementById('viewAgendaNueva');
+    if (agendaNueva) agendaNueva.classList.remove('active');
 }
 
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
@@ -3045,8 +3028,16 @@ function toggleRadialMenu() {
     if (menu) {menu.classList.toggle('active');}
 }
 function goToView(viewName) {
-    showView(viewName);
-    toggleRadialMenu();
+    if (viewName === 'agenda') {
+        // Mostrar la nueva Agenda
+        document.getElementById('viewAgendaNueva').classList.add('active');
+        document.getElementById('viewHome').classList.remove('active');
+        iniciarAgendaN();
+        toggleRadialMenu();
+    } else {
+        showView(viewName);
+        toggleRadialMenu();
+    }
 }
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="maryse2026"){ alert("👩‍👧 Bienvenida, padres de familia."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
 function signOutAndClose(){ if(confirm("¿Cerrar sesión y salir de la aplicación?")){ localStorage.clear(); if(typeof window.close === 'function'){ window.close(); }else{ document.body.innerHTML=`<div style="text-align:center;padding:50px;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()">Volver a entrar</button></div>`; } } }
