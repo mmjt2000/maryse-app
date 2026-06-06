@@ -181,44 +181,48 @@
         .skill-explanation { font-size: 0.9rem; line-height: 1.4; margin: 12px 0; padding: 12px; background: #f8f6ff; border-radius: 16px; }
 
     /* ===== CÍRCULOS FLOTANTES ===== */
-.float-circle {
+/* Menú radial */
+.radial-menu {
     position: fixed;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    bottom: 110px;
+    left: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--card);
+    border-radius: 32px;
+    padding: 16px;
+    z-index: 999;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    min-width: 120px;
+}
+.radial-menu.active {
+    display: flex;
+}
+.radial-item {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 40px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
-    z-index: 1000;
-    font-size: 1.5rem;
-    border: 2px solid rgba(255,255,255,0.3);
+    background: var(--bg);
+    transition: 0.2s;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
 }
-.float-circle:hover {
-    transform: scale(1.08);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+.radial-item:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateX(5px);
 }
-.circle-admin {
-    bottom: 110px;
-    right: 16px;
-    background: #8b5cf6;
-    border: 2px solid #fbbf24;
+.radial-item span:first-child {
+    font-size: 1.2rem;
 }
-.circle-signout {
-    bottom: 40px;
-    right: 16px;
-    background: #8b5cf6;
-    border: 2px solid #10b981;
-}
-.circle-menu {
-    bottom: 40px;
-    left: 16px;
-    background: #c084fc;
-    border: 2px solid rgba(255,255,255,0.5);
-}
-
         /* ===== REPRODUCTOR DE MÚSICA ===== */
         .music-player {
             background: var(--card);
@@ -555,7 +559,7 @@ window.borrarFoto = borrarFoto;
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
 <!-- MENÚ RADIAL -->
-<div id="radialMenu" class="radial-menu hidden">
+    <div id="radialMenu" class="radial-menu">
     <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
     <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
     <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
@@ -2926,7 +2930,12 @@ function startExam(weekIndex) {
 }
 
 // ==================== CÍRCULOS FLOTANTES ====================
-function toggleRadialMenu() { const m=document.getElementById('radialMenu'); if(m) m.classList.toggle('hidden'); }
+function toggleRadialMenu() {
+    let menu = document.getElementById('radialMenu');
+    if (menu) {
+        menu.classList.toggle('active');
+    }
+}
 function goToView(viewName) {
     if (viewName === 'agenda') {
         // Mostrar la nueva Agenda
