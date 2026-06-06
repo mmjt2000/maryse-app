@@ -600,7 +600,28 @@
         <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 </div>
-
+/* === MEJORAS VISUALES PARA EL HORARIO === */
+#tablaHorario td {
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+}
+#tablaHorario td:hover {
+    transform: scale(1.01);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+/* Estilo especial para el BREAK (recreo) */
+#tablaHorario td.break-cell {
+    background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+    color: #92400e !important;
+    font-weight: bold;
+    text-align: center;
+}
+.break-emoji {
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+}
 <script>
 // ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
 let fotosGuardadas = [];
@@ -683,16 +704,27 @@ const horasClaseN = ["7:00-7:50", "7:50-8:40", "8:40-9:30", "9:30-10:20", "10:20
 
 function guardarHorarioN(h) { localStorage.setItem("maryse_horario_nuevo", JSON.stringify(h)); }
 function cargarHorarioN() { let g = localStorage.getItem("maryse_horario_nuevo"); return g ? JSON.parse(g) : JSON.parse(JSON.stringify(horarioPredeterminadoN)); }
-function renderizarHorarioN() {
-    let h = cargarHorarioN(), dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"], html = '<thead></table><th>Hora</th>';
+function renderizarHorario() {
+    let h = cargarHorario();
+    let dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
+    let html = '<thead><tr><th>Hora</th>';
     for (let d of dias) html += `<th>${d}</th>`;
     html += '</table></thead><tbody>';
-    for (let i = 0; i < horasClaseN.length; i++) {
-        html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasClaseN[i]}<\/td>`;
-        for (let j = 0; j < dias.length; j++) { let val = h[dias[j]][i] || ""; html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)">${val}<\/td>`; }
+    for (let i = 0; i < horas.length; i++) {
+        html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horas[i]}<\/td>`;
+        for (let j = 0; j < dias.length; j++) {
+            let materia = h[dias[j]][i] || "";
+            if (materia === "BREAK" || materia.toLowerCase().includes("break")) {
+                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<br><span style="font-size:0.7rem;">Descansa y come algo</span><\/td>`;
+            } else {
+                html += `<td contenteditable="true" onblur="actualizarCelda('${dias[j]}', ${i}, this.innerText)">${materia}<\/td>`;
+            }
+        }
         html += '</tr>';
     }
-    html += '</tbody>'; let t = document.getElementById("tablaHorarioN"); if (t) t.innerHTML = html;
+    html += '</tbody>';
+    let t = document.getElementById("tablaHorario");
+    if (t) t.innerHTML = html;
 }
 function actualizarCeldaN(d, i, v) { let h = cargarHorarioN(); h[d][i] = v; guardarHorarioN(h); }
 function restaurarHorarioN() { if (confirm("¿Restaurar horario original?")) { guardarHorarioN(JSON.parse(JSON.stringify(horarioPredeterminadoN))); renderizarHorarioN(); alert("✅ Horario restaurado"); } }
