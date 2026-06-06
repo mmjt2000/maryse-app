@@ -181,59 +181,45 @@
         .skill-explanation { font-size: 0.9rem; line-height: 1.4; margin: 12px 0; padding: 12px; background: #f8f6ff; border-radius: 16px; }
 
 }
-        /* ===== CÍRCULOS FLOTANTES ===== */
-        .float-circle {
-            position: fixed;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-            z-index: 1000;
-            font-size: 1.5rem;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .float-circle:hover { transform: scale(1.08); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
-        .circle-admin { bottom: 110px; right: 16px; background: var(--primary); border: 2px solid #fbbf24; }
-        .circle-signout { bottom: 40px; right: 16px; background: var(--primary); border: 2px solid #10b981; }
-        .circle-menu { bottom: 40px; left: 16px; background: var(--primary-light); border: 2px solid rgba(255,255,255,0.5); }
-        .radial-menu {
-            position: fixed;
-            bottom: 110px;
-            left: 16px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            background: var(--card);
-            border-radius: 28px;
-            padding: 16px;
-            max-width: 300px;
-            z-index: 999;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-        .radial-menu.hidden { display: none; }
-        .radial-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 12px;
-            border-radius: 40px;
-            cursor: pointer;
-            background: var(--bg);
-            transition: 0.2s;
-            font-size: 0.7rem;
-            font-weight: 500;
-            min-width: 70px;
-        }
-        .radial-item:hover { background: var(--primary); color: white; transform: translateY(-3px); }
-        .radial-item span:first-child { font-size: 1.3rem; }
+
+    /* ===== CÍRCULOS FLOTANTES ===== */
+.float-circle {
+    position: fixed;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 1000;
+    font-size: 1.5rem;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+.float-circle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+.circle-admin {
+    bottom: 110px;
+    right: 16px;
+    background: #8b5cf6;
+    border: 2px solid #fbbf24;
+}
+.circle-signout {
+    bottom: 40px;
+    right: 16px;
+    background: #8b5cf6;
+    border: 2px solid #10b981;
+}
+.circle-menu {
+    bottom: 40px;
+    left: 16px;
+    background: #c084fc;
+    border: 2px solid rgba(255,255,255,0.5);
+}
 
         /* ===== REPRODUCTOR DE MÚSICA ===== */
         .music-player {
@@ -566,7 +552,7 @@ window.borrarFoto = borrarFoto;
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
-<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩‍👧</div>
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
 <div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
