@@ -441,6 +441,65 @@
     color: white !important;
     font-weight: bold !important;
 }       
+    /* ===== ESTILO MODERNO PARA TABLA DE HORARIO ===== */
+#tablaHorarioN {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+#tablaHorarioN th,
+#tablaHorarioN td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px 8px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+}
+
+#tablaHorarioN th {
+    background: #8b5cf6;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #6d28d9;
+}
+
+#tablaHorarioN td:first-child,
+#tablaHorarioN th:first-child {
+    border-left: none;
+}
+
+#tablaHorarioN td:last-child,
+#tablaHorarioN th:last-child {
+    border-right: none;
+}
+
+/* Fila de BREAK con color especial */
+#tablaHorarioN td.break-cell {
+    background: linear-gradient(135deg, #fef3c7, #ffedd5);
+    color: #92400e;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+#tablaHorarioN td.break-cell .break-emoji {
+    font-size: 1.2rem;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* Efecto hover en celdas */
+#tablaHorarioN td:not(.break-cell):hover {
+    background: var(--primary-light);
+    color: white;
+    transition: 0.2s;
+}
     </style>
 </head>
 <body>
@@ -684,15 +743,27 @@ const horasClaseN = ["7:00-7:50", "7:50-8:40", "8:40-9:30", "9:30-10:20", "10:20
 function guardarHorarioN(h) { localStorage.setItem("maryse_horario_nuevo", JSON.stringify(h)); }
 function cargarHorarioN() { let g = localStorage.getItem("maryse_horario_nuevo"); return g ? JSON.parse(g) : JSON.parse(JSON.stringify(horarioPredeterminadoN)); }
 function renderizarHorarioN() {
-    let h = cargarHorarioN(), dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"], html = '<thead></table><th>Hora</th>';
+    let h = cargarHorarioN();
+    let dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
+    let html = '<thead><tr><th>Hora</th>';
     for (let d of dias) html += `<th>${d}</th>`;
     html += '</table></thead><tbody>';
+    
     for (let i = 0; i < horasClaseN.length; i++) {
-        html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasClaseN[i]}<\/td>`;
-        for (let j = 0; j < dias.length; j++) { let val = h[dias[j]][i] || ""; html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)">${val}<\/td>`; }
+        html += `<tr><td style="background:#8b5cf6; color:white; font-weight:bold; text-align:center;">${horasClaseN[i]}<\/td>`;
+        for (let j = 0; j < dias.length; j++) {
+            let materia = h[dias[j]][i] || "";
+            if (materia.toUpperCase() === "BREAK") {
+                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<br><span style="font-size:0.65rem;">Descansa y come algo</span><\/td>`;
+            } else {
+                html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)" style="text-align:center;">${materia}<\/td>`;
+            }
+        }
         html += '</tr>';
     }
-    html += '</tbody>'; let t = document.getElementById("tablaHorarioN"); if (t) t.innerHTML = html;
+    html += '</tbody>';
+    let t = document.getElementById("tablaHorarioN");
+    if (t) t.innerHTML = html;
 }
 function actualizarCeldaN(d, i, v) { let h = cargarHorarioN(); h[d][i] = v; guardarHorarioN(h); }
 function restaurarHorarioN() { if (confirm("¿Restaurar horario original?")) { guardarHorarioN(JSON.parse(JSON.stringify(horarioPredeterminadoN))); renderizarHorarioN(); alert("✅ Horario restaurado"); } }
