@@ -503,6 +503,35 @@
     text-align: center !important;
     vertical-align: middle !important;
 }
+/* === RELOJ ELEGANTE === */
+.reloj-elegante {
+    background: linear-gradient(135deg, #1e1b4b, #2e2a5e);
+    border-radius: 40px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.reloj-hora {
+    font-family: 'Courier New', monospace;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #f0f0ff;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px #c084fc;
+}
+.reloj-fecha {
+    font-size: 1rem;
+    color: #c084fc;
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+.reloj-dia {
+    font-size: 0.9rem;
+    color: #a5a5d4;
+    margin-top: 5px;
+}
     </style>
 </head>
 <body>
@@ -514,6 +543,12 @@
         <div class="week-theme-hero" id="weekThemeHero"></div>
         <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
+<!-- RELOJ ELEGANTE -->
+<div class="reloj-elegante">
+    <div class="reloj-hora" id="horaElegante">--:--:--</div>
+    <div class="reloj-fecha" id="fechaElegante">--/--/----</div>
+    <div class="reloj-dia" id="diaElegante">----------</div>
+</div>
         
         <!-- REPRODUCTOR DE MÚSICA -->
         <div class="music-player">
