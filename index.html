@@ -411,6 +411,40 @@
     background: var(--primary) !important;
     color: white !important;
 }
+/* === ESTILOS FUERZA BRUTA PARA TABLA DE HORARIO === */
+table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+}
+
+th, td {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 10px 8px !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+th {
+    background: #8b5cf6 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+td:first-child {
+    background: #8b5cf6 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* Estilo especial para BREAK */
+td:has(span.break-emoji), 
+td.break-cell {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+    font-weight: bold !important;
+}  
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     /* ... todo el CSS que ya tienes ... */
@@ -795,7 +829,7 @@ function renderizarHorarioN() {
         for (let j = 0; j < dias.length; j++) {
             let materia = h[dias[j]][i] || "";
             if (materia.toUpperCase() === "BREAK") {
-                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<br><span style="font-size:0.65rem;">Descansa</span><\/td>`;
+                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<\/td>`;
             } else {
                 html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)" style="text-align:center;">${materia}<\/td>`;
             }
