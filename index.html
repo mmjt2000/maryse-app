@@ -823,21 +823,16 @@ function renderizarHorarioN() {
     let html = '<thead><tr><th>Hora</th>';
     for (let d of dias) html += `<th>${d}</th>`;
     html += '</table></thead><tbody>';
-    
     for (let i = 0; i < horasClaseN.length; i++) {
-        html += `<tr><td style="background:#8b5cf6; color:white; font-weight:bold; text-align:center;">${horasClaseN[i]}<\/td>`;
+        html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasClaseN[i]}<\/td>`;
         for (let j = 0; j < dias.length; j++) {
-            let materia = h[dias[j]][i] || "";
-            if (materia.toUpperCase() === "BREAK") {
-                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<\/td>`;
-            } else {
-                html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)" style="text-align:center;">${materia}<\/td>`;
-            }
+            let val = h[dias[j]][i] || "";
+            html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)">${val}<\/td>`;
         }
         html += '</tr>';
     }
     html += '</tbody>';
-    let t = document.getElementById("tablaHorario");  // ← CAMBIADO
+    let t = document.getElementById("tablaHorario");
     if (t) t.innerHTML = html;
 }
 function actualizarCeldaN(d, i, v) { let h = cargarHorarioN(); h[d][i] = v; guardarHorarioN(h); }
