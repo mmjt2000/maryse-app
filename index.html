@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Maryse">
-    <title>Maryse Adele · Aprende, Crece, Conecta</title>
+    <title>Maryse · Aprende, Crece, Conecta</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #8b5cf6; --primary-light: #c084fc; --bg: #f5f3ff; --card: white; --text: #1e1b4b; --subtext: #8b79c9; --border: #eeeef7; --accent: #10b981; }
@@ -411,40 +411,6 @@
     background: var(--primary) !important;
     color: white !important;
 }
-/* === ESTILOS FUERZA BRUTA PARA TABLA DE HORARIO === */
-table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
-}
-
-th, td {
-    text-align: center !important;
-    vertical-align: middle !important;
-    padding: 10px 8px !important;
-    border: 1px solid #cbd5e1 !important;
-}
-
-th {
-    background: #8b5cf6 !important;
-    color: white !important;
-    font-weight: bold !important;
-}
-
-td:first-child {
-    background: #8b5cf6 !important;
-    color: white !important;
-    font-weight: bold !important;
-}
-
-/* Estilo especial para BREAK */
-td:has(span.break-emoji), 
-td.break-cell {
-    background: #fef3c7 !important;
-    color: #92400e !important;
-    font-weight: bold !important;
-}  
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     /* ... todo el CSS que ya tienes ... */
@@ -455,16 +421,16 @@ td.break-cell {
         gap: 12px;
         flex-wrap: wrap;
         margin-bottom: 20px;
-    } 
+    }
     .stat-card {
-            background: white;
-            border-radius: 20px;
-            padding: 12px 16px;
-            flex: 1;
-            min-width: 100px;
-            text-align: center;
-            border: 1px solid #eeeef7;
-        }
+        background: var(--card);
+        border-radius: 20px;
+        padding: 12px 16px;
+        flex: 1;
+        min-width: 100px;
+        text-align: center;
+        border: 1px solid var(--border);
+    } 
  /* === FORZAR MISMO COLOR EN FILA DE DÍAS Y COLUMNA DE HORAS === */
 #tablaHorario th {
     background: #8b5cf6 !important;
@@ -475,106 +441,6 @@ td.break-cell {
     color: white !important;
     font-weight: bold !important;
 }       
-    /* ===== ESTILO MODERNO PARA TABLA DE HORARIO ===== */
-#tablaHorarioN {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-}
-
-#tablaHorarioN th,
-#tablaHorarioN td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 12px 8px;
-    font-size: 0.85rem;
-    border-bottom: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-}
-
-#tablaHorarioN th {
-    background: #8b5cf6;
-    color: white;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border-bottom: 2px solid #6d28d9;
-}
-
-#tablaHorarioN td:first-child,
-#tablaHorarioN th:first-child {
-    border-left: none;
-}
-
-#tablaHorarioN td:last-child,
-#tablaHorarioN th:last-child {
-    border-right: none;
-}
-
-/* Fila de BREAK con color especial */
-#tablaHorarioN td.break-cell {
-    background: linear-gradient(135deg, #fef3c7, #ffedd5);
-    color: #92400e;
-    font-weight: bold;
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-#tablaHorarioN td.break-cell .break-emoji {
-    font-size: 1.2rem;
-    margin-right: 6px;
-    vertical-align: middle;
-}
-
-/* Efecto hover en celdas */
-#tablaHorarioN td:not(.break-cell):hover {
-    background: var(--primary-light);
-    color: white;
-    transition: 0.2s;
-}
-/* === FORZAR ESTILO MODERNO A LA TABLA === */
-#tablaHorarioN,
-#tablaHorario {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-}
-
-#tablaHorarioN th,
-#tablaHorarioN td,
-#tablaHorario th,
-#tablaHorario td {
-    text-align: center !important;
-    vertical-align: middle !important;
-    padding: 10px 8px !important;
-    border: 1px solid #ddd !important;
-}
-
-#tablaHorarioN th,
-#tablaHorario th {
-    background: #8b5cf6 !important;
-    color: white !important;
-    font-weight: bold !important;
-}
-
-#tablaHorarioN td:first-child,
-#tablaHorario td:first-child {
-    background: #8b5cf6 !important;
-    color: white !important;
-    font-weight: bold !important;
-}
-
-/* Break con color especial */
-#tablaHorarioN td.break-cell,
-#tablaHorario td.break-cell {
-    background: #fef3c7 !important;
-    color: #92400e !important;
-    font-weight: bold !important;
-}
     </style>
 </head>
 <body>
@@ -818,22 +684,15 @@ const horasClaseN = ["7:00-7:50", "7:50-8:40", "8:40-9:30", "9:30-10:20", "10:20
 function guardarHorarioN(h) { localStorage.setItem("maryse_horario_nuevo", JSON.stringify(h)); }
 function cargarHorarioN() { let g = localStorage.getItem("maryse_horario_nuevo"); return g ? JSON.parse(g) : JSON.parse(JSON.stringify(horarioPredeterminadoN)); }
 function renderizarHorarioN() {
-    let h = cargarHorarioN();
-    let dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
-    let html = '<thead><tr><th>Hora</th>';
+    let h = cargarHorarioN(), dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"], html = '<thead></table><th>Hora</th>';
     for (let d of dias) html += `<th>${d}</th>`;
     html += '</table></thead><tbody>';
     for (let i = 0; i < horasClaseN.length; i++) {
         html += `<tr><td style="background:#8b5cf6;color:white;font-weight:bold;">${horasClaseN[i]}<\/td>`;
-        for (let j = 0; j < dias.length; j++) {
-            let val = h[dias[j]][i] || "";
-            html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)">${val}<\/td>`;
-        }
+        for (let j = 0; j < dias.length; j++) { let val = h[dias[j]][i] || ""; html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)">${val}<\/td>`; }
         html += '</tr>';
     }
-    html += '</tbody>';
-    let t = document.getElementById("tablaHorario");
-    if (t) t.innerHTML = html;
+    html += '</tbody>'; let t = document.getElementById("tablaHorarioN"); if (t) t.innerHTML = html;
 }
 function actualizarCeldaN(d, i, v) { let h = cargarHorarioN(); h[d][i] = v; guardarHorarioN(h); }
 function restaurarHorarioN() { if (confirm("¿Restaurar horario original?")) { guardarHorarioN(JSON.parse(JSON.stringify(horarioPredeterminadoN))); renderizarHorarioN(); alert("✅ Horario restaurado"); } }
