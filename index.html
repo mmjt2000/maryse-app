@@ -2463,18 +2463,7 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
-    if(vn==='agenda'){ 
-        renderizarHorarioN(); 
-        actualizarStatsN(); 
-        renderizarTareasN(); 
-        renderizarExamenesN(); 
-    }
     window.scrollTo(0,0);
-    
-    // Cerrar menú
-    let menu = document.getElementById('radialMenu');
-    if (menu) menu.classList.remove('active');
-}
         // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
@@ -3039,7 +3028,16 @@ function toggleRadialMenu() {
     if (menu) {menu.classList.toggle('active');}
 }
 function goToView(viewName) {
-    showView(viewName);
+    if (viewName === 'agenda') {
+        // Mostrar la nueva Agenda
+        document.getElementById('viewAgendaNueva').classList.add('active');
+        document.getElementById('viewHome').classList.remove('active');
+        iniciarAgendaN();
+        toggleRadialMenu();
+    } else {
+        showView(viewName);
+        toggleRadialMenu();
+    }
 }
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="maryse2026"){ alert("👩‍👧 Bienvenida, padres de familia."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
 function signOutAndClose(){ if(confirm("¿Cerrar sesión y salir de la aplicación?")){ localStorage.clear(); if(typeof window.close === 'function'){ window.close(); }else{ document.body.innerHTML=`<div style="text-align:center;padding:50px;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()">Volver a entrar</button></div>`; } } }
