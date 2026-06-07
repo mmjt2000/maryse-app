@@ -500,6 +500,47 @@
     color: white;
     transition: 0.2s;
 }
+/* === FORZAR ESTILO MODERNO A LA TABLA === */
+#tablaHorarioN,
+#tablaHorario {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+#tablaHorarioN th,
+#tablaHorarioN td,
+#tablaHorario th,
+#tablaHorario td {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 10px 8px !important;
+    border: 1px solid #ddd !important;
+}
+
+#tablaHorarioN th,
+#tablaHorario th {
+    background: #8b5cf6 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+#tablaHorarioN td:first-child,
+#tablaHorario td:first-child {
+    background: #8b5cf6 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* Break con color especial */
+#tablaHorarioN td.break-cell,
+#tablaHorario td.break-cell {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+    font-weight: bold !important;
+}
     </style>
 </head>
 <body>
@@ -754,7 +795,7 @@ function renderizarHorarioN() {
         for (let j = 0; j < dias.length; j++) {
             let materia = h[dias[j]][i] || "";
             if (materia.toUpperCase() === "BREAK") {
-                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<br><span style="font-size:0.65rem;">Descansa y come algo</span><\/td>`;
+                html += `<td class="break-cell"><span class="break-emoji">🍎☕🧃</span> ¡RECREO!<br><span style="font-size:0.65rem;">Descansa</span><\/td>`;
             } else {
                 html += `<td contenteditable="true" onblur="actualizarCeldaN('${dias[j]}', ${i}, this.innerText)" style="text-align:center;">${materia}<\/td>`;
             }
@@ -762,7 +803,7 @@ function renderizarHorarioN() {
         html += '</tr>';
     }
     html += '</tbody>';
-    let t = document.getElementById("tablaHorarioN");
+    let t = document.getElementById("tablaHorario");  // ← CAMBIADO
     if (t) t.innerHTML = html;
 }
 function actualizarCeldaN(d, i, v) { let h = cargarHorarioN(); h[d][i] = v; guardarHorarioN(h); }
