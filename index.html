@@ -440,7 +440,21 @@
     background: #8b5cf6 !important;
     color: white !important;
     font-weight: bold !important;
-}       
+} 
+/* === MEJORAS VISUALES PARA LA TABLA === */
+#tablaHorarioN th, #tablaHorarioN td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px 8px;
+}
+#tablaHorarioN td[contenteditable="true"]:hover {
+    background: #e9e5ff;
+    transition: 0.2s;
+}
+#tablaHorarioN td.break-cell {
+    background: #fef3c7 !important;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
