@@ -743,6 +743,24 @@ function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== i
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
+// === RELOJ ELEGANTE ===
+function actualizarRelojElegante() {
+    const ahora = new Date();
+    const hora = ahora.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const fecha = ahora.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const dia = ahora.toLocaleDateString('es-MX', { weekday: 'long' });
+    
+    const horaElem = document.getElementById('horaElegante');
+    const fechaElem = document.getElementById('fechaElegante');
+    const diaElem = document.getElementById('diaElegante');
+    
+    if (horaElem) horaElem.textContent = hora;
+    if (fechaElem) fechaElem.textContent = fecha;
+    if (diaElem) diaElem.textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
+}
+setInterval(actualizarRelojElegante, 1000);
+actualizarRelojElegante();
+    
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
