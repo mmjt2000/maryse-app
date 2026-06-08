@@ -562,6 +562,86 @@
     font-size: 0.75rem;
     color: #a5a5d4;
 }
+        /* === RELOJ CLÁSICO ELEGANTE === */
+.reloj-clasico {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 30px;
+}
+.esfera {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    background: #fdf8f0;
+    border-radius: 50%;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1), inset 0 1px 4px rgba(255,255,255,0.8), 0 0 0 8px #e9d8c0, 0 0 0 12px #c4a56e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+.corona {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 18px;
+    background: #c4a56e;
+    border-radius: 20px 20px 6px 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.numeros-romanos {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.numeros-romanos span {
+    position: absolute;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #8b6b3d;
+    text-shadow: 0 1px 0 #fff;
+}
+.r12 { top: 12px; left: 50%; transform: translateX(-50%); }
+.r1 { top: 28px; right: 58px; }
+.r2 { top: 68px; right: 28px; }
+.r3 { top: 50%; right: 12px; transform: translateY(-50%); }
+.r4 { bottom: 68px; right: 28px; }
+.r5 { bottom: 28px; right: 58px; }
+.r6 { bottom: 12px; left: 50%; transform: translateX(-50%); }
+.r7 { bottom: 28px; left: 58px; }
+.r8 { bottom: 68px; left: 28px; }
+.r9 { top: 50%; left: 12px; transform: translateY(-50%); }
+.r10 { top: 68px; left: 28px; }
+.r11 { top: 28px; left: 58px; }
+.hora-digital {
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #3e2a1f;
+    background: #f5ede1;
+    padding: 6px 12px;
+    border-radius: 40px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05), 0 1px 2px white;
+    margin-bottom: 6px;
+    z-index: 2;
+}
+.fecha-clasica {
+    font-size: 0.7rem;
+    color: #a67c52;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+.dia-clasico {
+    font-size: 0.65rem;
+    color: #b99976;
+    margin-top: 4px;
+    z-index: 2;
+}
     </style>
 </head>
 <body>
@@ -581,14 +661,29 @@
         <div class="hero-quote">"Cada día es una nueva página."</div>
     </div>
 
-    <!-- CÍRCULO DEL TIEMPO -->
-    <div style="display: flex; justify-content: center; margin: 20px 0;">
-        <div style="background: linear-gradient(135deg, #1e1b4b, #2e2a5e); width: 200px; height: 200px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
-            <div style="font-family: monospace; font-size: 1.8rem; font-weight: bold; color: white;" id="horaCirculo">--:--:--</div>
-            <div style="font-size: 0.8rem; color: #c084fc; margin-top: 5px;" id="fechaCirculo">--/--/----</div>
-            <div style="font-size: 0.7rem; color: #a5a5d4; margin-top: 3px;" id="diaCirculo">----------</div>
+    <!-- RELOJ CLÁSICO ELEGANTE -->
+<div class="reloj-clasico">
+    <div class="esfera">
+        <div class="corona"></div>
+        <div class="numeros-romanos">
+            <span class="r12">XII</span>
+            <span class="r1">I</span>
+            <span class="r2">II</span>
+            <span class="r3">III</span>
+            <span class="r4">IV</span>
+            <span class="r5">V</span>
+            <span class="r6">VI</span>
+            <span class="r7">VII</span>
+            <span class="r8">VIII</span>
+            <span class="r9">IX</span>
+            <span class="r10">X</span>
+            <span class="r11">XI</span>
         </div>
+        <div class="hora-digital" id="horaClasica">--:--:--</div>
+        <div class="fecha-clasica" id="fechaClasica">--/--/----</div>
+        <div class="dia-clasico" id="diaClasico">----------</div>
     </div>
+</div>
 
     <!-- Selector de semana (se queda igual) -->
     <div class="week-theme-hero" id="weekThemeHero"></div>
@@ -885,22 +980,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 // === RELOJ CÍRCULO DEL TIEMPO ===
-function actualizarCirculoTiempo() {
+// === RELOJ CLÁSICO ELEGANTE ===
+function actualizarRelojClasico() {
     const ahora = new Date();
     const hora = ahora.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const fecha = ahora.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
     const dia = ahora.toLocaleDateString('es-MX', { weekday: 'long' });
     
-    const horaElem = document.getElementById('horaCirculo');
-    const fechaElem = document.getElementById('fechaCirculo');
-    const diaElem = document.getElementById('diaCirculo');
+    const horaElem = document.getElementById('horaClasica');
+    const fechaElem = document.getElementById('fechaClasica');
+    const diaElem = document.getElementById('diaClasico');
     
     if (horaElem) horaElem.textContent = hora;
     if (fechaElem) fechaElem.textContent = fecha;
     if (diaElem) diaElem.textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
 }
-setInterval(actualizarCirculoTiempo, 1000);
-actualizarCirculoTiempo();
+setInterval(actualizarRelojClasico, 1000);
+actualizarRelojClasico();
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
