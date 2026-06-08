@@ -508,6 +508,19 @@
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
+/* Estilo para el acróstico */
+.acrostico {
+    background: #fdf2f8;
+    border-radius: 28px;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    line-height: 1.8;
+    color: #831843;
+    border-left: 6px solid #db2777;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -579,10 +592,8 @@
         <div class="mood-card" data-mood="motivated"><div class="mood-emoji">🤩</div><div class="mood-label">Motivada</div></div>
         <div class="mood-card" data-mood="tired"><div class="mood-emoji">😴</div><div class="mood-label">Cansada</div></div>
     </div>
-        <!-- Mensaje según el estado de ánimo -->
-<div id="mensajeAnimo" class="mensaje-animo" style="margin: 16px 0; padding: 12px; border-radius: 24px; background: var(--card); text-align: center; font-size: 0.9rem; color: var(--text); border: 1px solid var(--border); display: none;">
-    💬 Aquí aparecerá tu mensaje...
-</div>
+<!-- Acróstico de Maryse -->
+<div id="acrosticoMaryse" class="acrostico"></div>
         <div class="card"><div class="card-title">📸 Diario</div><input type="text" id="diaryTitle" placeholder="Título..."><textarea id="diaryText" rows="3" placeholder="¿Qué pasó hoy?"></textarea><div id="photoEditor" style="display:none;"><div class="photo-canvas-container"><canvas id="photoCanvas"></canvas></div><div class="photo-editor-tools"><button class="btn" onclick="rotatePhoto(-90)">↺</button><button class="btn" onclick="rotatePhoto(90)">↻</button><button class="btn" onclick="flipPhoto('horizontal')">↔️</button><button class="btn" onclick="flipPhoto('vertical')">↕️</button><button class="btn" onclick="centerPhoto()">🎯</button><button class="btn" onclick="resetPhoto()">🔄</button><button class="btn btn-success" onclick="applyEdit()">✅ Aplicar</button></div></div><input type="file" id="diaryPhoto" accept="image/*" onchange="previewDiaryPhoto()"><img id="diaryPreview" style="display:none;"><button class="btn btn-primary" onclick="saveDiaryEntry()">💾 Guardar recuerdo</button><div id="diaryEntries" style="margin-top:16px;"></div></div></div>
     <div id="viewFriends" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">👥 Invitaciones</div><button class="btn btn-primary" onclick="generateFriendCode()">🔗 Generar código</button><input type="text" id="friendCodeInput" placeholder="Pega el código..."><button class="btn btn-success" onclick="addFriend()">➕ Enviar solicitud</button><h4>📤 Enviadas</h4><div id="sentInvitesList"></div><h4>📥 Recibidas</h4><div id="receivedInvitesList"></div><h4>✅ Amigas</h4><div id="friendsList"></div></div></div>
     <div id="viewTheme" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎨 Personalizar Tema</div><div id="themePresets"><div class="theme-preset" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div><div class="theme-preset" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div><div class="theme-preset" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div><div class="theme-preset" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div><div class="theme-preset" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div><div class="theme-preset" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div><div class="theme-preset" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div></div><label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6"><label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc"><button class="btn btn-primary" onclick="saveTheme()">💾 Guardar tema</button></div></div>
@@ -718,24 +729,64 @@ cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
     // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
+// === ACRÓSTICOS DE MARYSE ===
 function mostrarMensajeAnimo(estado) {
-    const mensajes = {
-        happy: "😊 ¡Qué bonito verte feliz! Sigue así, Maryse. 💖",
-        calm: "😌 Qué paz. Disfruta este momento de calma. 🧘‍♀️",
-        sad: "😢 Está bien estar triste a veces. Estoy aquí para ti. 🫂",
-        stressed: "😰 Respira hondo. Tómate un descanso, Maryse. 🍃",
-        motivated: "🤩 ¡Esa energía es contagiosa! A por tus metas. 🚀",
-        tired: "😴 Descansa, Maryse. Mañana será un gran día. 🌙"
+    const acrosticos = {
+        happy: `😊 <strong>FELIZ</strong><br><br>
+<strong>M</strong>is días brillan cuando el alma sonríe.<br>
+<strong>A</strong>prendo a disfrutar sin esperar nada a cambio.<br>
+<strong>R</strong>ío con ganas, porque la alegría también es valentía.<br>
+<strong>Y</strong>o elijo ver la luz incluso entre las sombras.<br>
+<strong>S</strong>er feliz no es perfecto, es simplemente ser yo.<br>
+<strong>E</strong>l presente me regala momentos que atesoro.`,
+
+        calm: `😌 <strong>CALMA</strong><br><br>
+<strong>M</strong>e permito respirar sin prisa.<br>
+<strong>A</strong>cepto el silencio como un abrazo.<br>
+<strong>R</strong>ecuerdo que no todo necesita una respuesta.<br>
+<strong>Y</strong>o decido aquietar mi mente.<br>
+<strong>S</strong>erena, como el agua cuando dejan de moverla.<br>
+<strong>E</strong>l ruido se apaga, y solo existo yo.`,
+
+        sad: `😢 <strong>TRISTE</strong><br><br>
+<strong>M</strong>e duele, y está bien sentirlo.<br>
+<strong>A</strong>unque hoy llueva, sé que escampará.<br>
+<strong>R</strong>espeto mis lágrimas, porque también hablan.<br>
+<strong>Y</strong>o no soy mi tristeza, solo la atravieso.<br>
+<strong>S</strong>aldré de esta, aunque ahora no lo vea claro.<br>
+<strong>E</strong>ste dolor también me está haciendo más fuerte.`,
+
+        stressed: `😰 <strong>ESTRESADA</strong><br><br>
+<strong>M</strong>e detengo, aunque todo grite que siga.<br>
+<strong>A</strong>prendo a soltar lo que no puedo controlar.<br>
+<strong>R</strong>espirar hondo es mi primer acto de paz.<br>
+<strong>Y</strong>o merezco descansar sin sentir culpa.<br>
+<strong>S</strong>é que no debo cargar con todo sola.<br>
+<strong>E</strong>l equilibrio empieza cuando me escucho.`,
+
+        motivated: `🤩 <strong>MOTIVADA</strong><br><br>
+<strong>M</strong>is metas no son sueños, son promesas que me hago.<br>
+<strong>A</strong>vanzo paso a paso, sin compararme con nadie.<br>
+<strong>R</strong>odeada de fuerza que nace desde dentro.<br>
+<strong>Y</strong>o tengo el poder de crear mi camino.<br>
+<strong>S</strong>é que caer no es fracasar, es aprender.<br>
+<strong>E</strong>l futuro me pertenece, y voy por él.`,
+
+        tired: `😴 <strong>CANSADA</strong><br><br>
+<strong>M</strong>e permito parar sin pedir permiso.<br>
+<strong>A</strong>unque el mundo no espere, mi cuerpo sí.<br>
+<strong>R</strong>ecargar no es rendirse, es prepararse.<br>
+<strong>Y</strong>o también necesito descansar para seguir.<br>
+<strong>S</strong>olo estar un rato sin hacer nada me cura.<br>
+<strong>E</strong>l sueño no es un lujo, es una caricia.`
     };
     
-    const mensajeDiv = document.getElementById('mensajeAnimo');
-    if (mensajeDiv) {
-        mensajeDiv.textContent = mensajes[estado] || "💬 Elige cómo te sientes hoy.";
-        mensajeDiv.style.display = 'block';
-        // El mensaje se oculta después de 15 segundos
-        setTimeout(() => {
-            mensajeDiv.style.display = 'none';
-        }, 15000);
+    const acrosticoDiv = document.getElementById('acrosticoMaryse');
+    if (acrosticoDiv) {
+        acrosticoDiv.innerHTML = acrosticos[estado] || "Elige cómo te sientes hoy.";
+        acrosticoDiv.style.display = 'block';
+        // El acróstico permanecerá visible. Si quieres que se oculte después de un tiempo, descomenta la línea siguiente:
+        // setTimeout(() => { acrosticoDiv.style.display = 'none'; }, 30000);
     }
 }
 
