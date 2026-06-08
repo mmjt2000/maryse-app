@@ -862,56 +862,65 @@
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="card">
-        <div class="card-title">🖼️ Mis Fotos</div>
-        <input type="file" id="cargarFoto" accept="image/*">
-        <button class="btn btn-primary" onclick="guardarNuevaFoto()" style="margin-top:10px;">💾 Guardar Foto</button>
-        <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+        <div class="card-title">📸 Subir foto a la nube</div>
+        <input type="file" id="fotoInput" accept="image/*">
+        <button class="btn btn-primary" onclick="subirFoto()">☁️ Subir a Supabase</button>
+    </div>
+    <div class="card">
+        <div class="card-title">🖼️ Mis fotos</div>
+        <div id="galeriaFotos" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
     </div>
 </div>
 
 <script>
-// ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
-let fotosGuardadas = [];
+    
+// ==================== FOTOS CON SUPABASE ====================
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-function cargarFotosStorage() {
-    let data = localStorage.getItem("maryse_fotos_galeria");
-    if (data) fotosGuardadas = JSON.parse(data);
-    else fotosGuardadas = [];
-    mostrarGaleria();
-}
-function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
-function guardarNuevaFoto() {
-    let input = document.getElementById("cargarFoto");
-    let archivo = input.files[0];
-    if (!archivo) { alert("📷 Selecciona una foto"); return; }
-    let lector = new FileReader();
-    lector.onload = function(e) {
-        fotosGuardadas.unshift({ id: Date.now(), data: e.target.result, fecha: new Date().toLocaleDateString() });
-        guardarFotosStorage();
-        mostrarGaleria();
-        input.value = "";
-        alert("✅ Foto guardada");
-    };
-    lector.readAsDataURL(archivo);
-}
-function mostrarGaleria() {
-    let contenedor = document.getElementById("galeriaFotos");
+async function cargarFotos() {
+    const { data, error } = await supabase
+        .from('fotos')
+        .select('*')
+        .order('fecha', { ascending: false });
+    
+    const contenedor = document.getElementById('galeriaFotos');
     if (!contenedor) return;
-    if (fotosGuardadas.length === 0) { contenedor.innerHTML = '<p style="text-align:center;width:100%;">🖼️ No hay fotos aún</p>'; return; }
-    contenedor.innerHTML = fotosGuardadas.map(f => `
+    
+    if (error || !data || data.length === 0) {
+        contenedor.innerHTML = '<p>📸 No hay fotos aún. ¡Sube la primera!</p>';
+        return;
+    }
+    
+    contenedor.innerHTML = data.map(foto => `
         <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
-            <img src="${f.data}" style="width:100%; height:120px; object-fit:cover;">
-            <div style="padding:8px; font-size:0.7rem; display:flex; justify-content:space-between;">
-                <span>📅 ${f.fecha}</span>
-                <button onclick="borrarFoto(${f.id})" style="background:none; border:none; cursor:pointer;">🗑️</button>
-            </div>
+            <img src="${foto.imagen}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:8px; font-size:0.7rem;">📅 ${new Date(foto.fecha).toLocaleDateString()}</div>
         </div>
-    `).join("");
+    `).join('');
 }
-function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== id); guardarFotosStorage(); mostrarGaleria(); }
-cargarFotosStorage();
-window.guardarNuevaFoto = guardarNuevaFoto;
-window.borrarFoto = borrarFoto;
+
+async function subirFoto() {
+    const input = document.getElementById('fotoInput');
+    const archivo = input?.files[0];
+    if (!archivo) { alert('📷 Selecciona una foto'); return; }
+    
+    const nombre = Date.now() + '_' + archivo.name;
+    const { error: uploadError } = await supabase.storage.from('fotos').upload(nombre, archivo);
+    if (uploadError) { alert('❌ Error al subir: ' + uploadError.message); return; }
+    
+    const { data: urlData } = supabase.storage.from('fotos').getPublicUrl(nombre);
+    const { error: insertError } = await supabase.from('fotos').insert([{ imagen: urlData.publicUrl }]);
+    if (insertError) { alert('❌ Error al guardar: ' + insertError.message); return; }
+    
+    input.value = '';
+    alert('✅ Foto guardada en la nube');
+    cargarFotos();
+}
+
+// Cargar fotos al iniciar
+cargarFotos();
     // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
 // === ACRÓSTICOS DE MARYSE ===
 function mostrarMensajeAnimo(estado) {
@@ -2834,6 +2843,7 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
+    if (vn === 'fotos') {cargarFotos();}
     window.scrollTo(0,0);
         // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
