@@ -910,35 +910,52 @@ async function cargarFotos() {
 }
 
 async function subirFoto() {
+    console.log("Función subirFoto ejecutándose");
     const input = document.getElementById('fotoInput');
+    if (!input) {
+        console.error("No se encontró el input #fotoInput");
+        alert("Error: no se encontró el campo de archivo");
+        return;
+    }
+    
     const archivo = input.files[0];
     if (!archivo) {
         alert('📷 Selecciona una foto primero');
         return;
     }
     
-    // Subir imagen al bucket "fotos" de Supabase
+    console.log("Archivo seleccionado:", archivo.name);
+    
+    // Subir imagen al bucket "fotos"
     const nombreArchivo = `${Date.now()}_${archivo.name}`;
+    console.log("Subiendo a Supabase Storage...");
+    
     const { data: uploadData, error: uploadError } = await supabase.storage
         .from('fotos')
         .upload(nombreArchivo, archivo);
     
     if (uploadError) {
+        console.error("Error en upload:", uploadError);
         alert('❌ Error al subir la imagen: ' + uploadError.message);
         return;
     }
+    
+    console.log("Upload exitoso:", uploadData);
     
     // Obtener URL pública
     const { data: urlData } = supabase.storage
         .from('fotos')
         .getPublicUrl(nombreArchivo);
     
+    console.log("URL pública:", urlData.publicUrl);
+    
     // Guardar la URL en la tabla "fotos"
     const { error: insertError } = await supabase
         .from('fotos')
-        .insert([{ imagen: urlData.publicUrl, usuario_email: 'maryse@example.com' }]); // Cambia el email si usas login
+        .insert([{ imagen: urlData.publicUrl, usuario_email: 'maryse@ejemplo.com' }]);
     
     if (insertError) {
+        console.error("Error en insert:", insertError);
         alert('❌ Error al guardar en base de datos: ' + insertError.message);
         return;
     }
@@ -947,9 +964,6 @@ async function subirFoto() {
     alert('✅ Foto subida a la nube correctamente');
     cargarFotos(); // Recargar galería
 }
-
-// Cargar fotos al abrir la vista Fotos
-cargarFotos();
     
     // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
 // === ACRÓSTICOS DE MARYSE ===
