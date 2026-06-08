@@ -591,7 +591,7 @@
     </div>
         <!-- Mensaje según el estado de ánimo -->
 <!-- Acróstico según el estado de ánimo -->
-<div id="acrosticoMaryse" class="acrostico" style="margin: 20px 0; padding: 20px; border-radius: 28px; background: linear-gradient(135deg, #fff0f5, #f8e8ff); text-align: left; font-size: 0.9rem; color: #4a1d6d; border: 1px solid #e9d5ff; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+<div id="acrosticoMaryse" class="acrostico" style="... display: none;">
     <div style="font-family: 'Courier New', monospace; line-height: 1.8;"></div>
 </div>
 </div>
@@ -784,14 +784,19 @@ function mostrarMensajeAnimo(estado) {
     
     const acrosticoDiv = document.getElementById('acrosticoMaryse');
     if (acrosticoDiv) {
-        acrosticoDiv.innerHTML = `<div style="font-family: 'Courier New', monospace; line-height: 1.8;">${acrosticos[estado] || "💬 Elige cómo te sientes hoy."}</div>`;
+        acrosticoDiv.innerHTML = `<div style="font-family: 'Courier New', monospace; line-height: 1.8;">${acrosticos[estado]}</div>`;
         acrosticoDiv.style.display = 'block';
+    } else {
+        console.log("No se encontró el div 'acrosticoMaryse'");
     }
 }
 
-// Asignar evento a cada emoji
+// Asignar evento a cada emoji (asegurando que los emojis existan)
 document.addEventListener('DOMContentLoaded', function() {
     const moodCards = document.querySelectorAll('#moodGridDiary .mood-card');
+    if (moodCards.length === 0) {
+        console.log("No se encontraron emojis con #moodGridDiary");
+    }
     moodCards.forEach(card => {
         card.addEventListener('click', function() {
             const mood = this.getAttribute('data-mood');
@@ -800,29 +805,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
     
-    const mensajeDiv = document.getElementById('mensajeAnimo');
-    if (mensajeDiv) {
-        mensajeDiv.textContent = mensajes[estado] || "💬 Elige cómo te sientes hoy.";
-        mensajeDiv.style.display = 'block';
-        // El mensaje se oculta después de 15 segundos
-        setTimeout(() => {
-            mensajeDiv.style.display = 'none';
-        }, 15000);
-    }
-}
-
-// Asignar evento a cada emoji
-document.addEventListener('DOMContentLoaded', function() {
-    const moodCards = document.querySelectorAll('#moodGridDiary .mood-card');
-    moodCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const mood = this.getAttribute('data-mood');
-            mostrarMensajeAnimo(mood);
-        });
-    });
-});
-</script>
-
 <!-- CÍRCULOS FLOTANTES -->
 <div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
 <div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
