@@ -503,6 +503,11 @@
     text-align: center !important;
     vertical-align: middle !important;
 }
+        /* === MENSAJE DE ÁNIMO === */
+.mensaje-animo {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
     </style>
 </head>
 <body>
@@ -574,6 +579,10 @@
         <div class="mood-card" data-mood="motivated"><div class="mood-emoji">🤩</div><div class="mood-label">Motivada</div></div>
         <div class="mood-card" data-mood="tired"><div class="mood-emoji">😴</div><div class="mood-label">Cansada</div></div>
     </div>
+        <!-- Mensaje según el estado de ánimo -->
+<div id="mensajeAnimo" class="mensaje-animo" style="margin: 16px 0; padding: 12px; border-radius: 24px; background: var(--card); text-align: center; font-size: 0.9rem; color: var(--text); border: 1px solid var(--border); display: none;">
+    💬 Aquí aparecerá tu mensaje...
+</div>
         <div class="card"><div class="card-title">📸 Diario</div><input type="text" id="diaryTitle" placeholder="Título..."><textarea id="diaryText" rows="3" placeholder="¿Qué pasó hoy?"></textarea><div id="photoEditor" style="display:none;"><div class="photo-canvas-container"><canvas id="photoCanvas"></canvas></div><div class="photo-editor-tools"><button class="btn" onclick="rotatePhoto(-90)">↺</button><button class="btn" onclick="rotatePhoto(90)">↻</button><button class="btn" onclick="flipPhoto('horizontal')">↔️</button><button class="btn" onclick="flipPhoto('vertical')">↕️</button><button class="btn" onclick="centerPhoto()">🎯</button><button class="btn" onclick="resetPhoto()">🔄</button><button class="btn btn-success" onclick="applyEdit()">✅ Aplicar</button></div></div><input type="file" id="diaryPhoto" accept="image/*" onchange="previewDiaryPhoto()"><img id="diaryPreview" style="display:none;"><button class="btn btn-primary" onclick="saveDiaryEntry()">💾 Guardar recuerdo</button><div id="diaryEntries" style="margin-top:16px;"></div></div></div>
     <div id="viewFriends" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">👥 Invitaciones</div><button class="btn btn-primary" onclick="generateFriendCode()">🔗 Generar código</button><input type="text" id="friendCodeInput" placeholder="Pega el código..."><button class="btn btn-success" onclick="addFriend()">➕ Enviar solicitud</button><h4>📤 Enviadas</h4><div id="sentInvitesList"></div><h4>📥 Recibidas</h4><div id="receivedInvitesList"></div><h4>✅ Amigas</h4><div id="friendsList"></div></div></div>
     <div id="viewTheme" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎨 Personalizar Tema</div><div id="themePresets"><div class="theme-preset" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div><div class="theme-preset" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div><div class="theme-preset" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div><div class="theme-preset" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div><div class="theme-preset" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div><div class="theme-preset" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div><div class="theme-preset" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div></div><label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6"><label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc"><button class="btn btn-primary" onclick="saveTheme()">💾 Guardar tema</button></div></div>
@@ -708,6 +717,38 @@ function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== i
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
+    // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
+function mostrarMensajeAnimo(estado) {
+    const mensajes = {
+        happy: "😊 ¡Qué bonito verte feliz! Sigue así, Maryse. 💖",
+        calm: "😌 Qué paz. Disfruta este momento de calma. 🧘‍♀️",
+        sad: "😢 Está bien estar triste a veces. Estoy aquí para ti. 🫂",
+        stressed: "😰 Respira hondo. Tómate un descanso, Maryse. 🍃",
+        motivated: "🤩 ¡Esa energía es contagiosa! A por tus metas. 🚀",
+        tired: "😴 Descansa, Maryse. Mañana será un gran día. 🌙"
+    };
+    
+    const mensajeDiv = document.getElementById('mensajeAnimo');
+    if (mensajeDiv) {
+        mensajeDiv.textContent = mensajes[estado] || "💬 Elige cómo te sientes hoy.";
+        mensajeDiv.style.display = 'block';
+        // El mensaje se oculta después de 15 segundos
+        setTimeout(() => {
+            mensajeDiv.style.display = 'none';
+        }, 15000);
+    }
+}
+
+// Asignar evento a cada emoji
+document.addEventListener('DOMContentLoaded', function() {
+    const moodCards = document.querySelectorAll('#moodGridDiary .mood-card');
+    moodCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const mood = this.getAttribute('data-mood');
+            mostrarMensajeAnimo(mood);
+        });
+    });
+});
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
