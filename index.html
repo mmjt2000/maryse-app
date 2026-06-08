@@ -516,7 +516,6 @@
         <div id="viewHome" class="view active">
         <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
         <div class="hero"><h2 id="greeting">Hola, Maryse 👋</h2><div class="hero-quote" id="dailyQuote">"Cada día es una nueva página."</div></div>
-        
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
         
         <!-- REPRODUCTOR DE MÚSICA -->
@@ -2578,28 +2577,43 @@ function renderMamaCorner() {
 }
 
 // ==================== FUNCIONES PRINCIPALES ====================
-function showView(vn){
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
-    if(target)target.classList.add('active');
-    if(vn==='home'){ renderMarysePlaylist(); }
-    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
-    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
-    if(vn==='games'){ switchGame(currentGame); }
-    if(vn==='dad'){ renderDad(); updateDadClock(); }
-    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
-    if(vn==='karaoke') renderKaraokeSongs();
-    if(vn==='diary') renderDiary();
-    if(vn==='friends') renderAllInvites();
-    if(vn==='theme') loadTheme();
-    if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
-    if(vn==='lifeskills') renderLifeSkills();
-    window.scrollTo(0,0);
-        // Ocultar la nueva Agenda
-    let agendaNueva = document.getElementById('viewAgendaNueva');
-    if (agendaNueva) agendaNueva.classList.remove('active');
+function showView(vn) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById('view' + vn.charAt(0).toUpperCase() + vn.slice(1));
+    if (target) target.classList.add('active');
+    
+    // Cargar contenido según la vista
+    if (vn === 'home') { renderMarysePlaylist(); }
+    if (vn === 'academy') { 
+        // Forzar actualización de la semana antes de cargar el contenido
+        if (typeof changeTestWeek === 'function') changeTestWeek();
+        renderVocab(); 
+        renderPronunciation(); 
+        renderPodcasts(); 
+        renderConjugation(); 
+        renderGrammar(); 
+        renderExam(); 
+        renderFlashcardModes(); 
+        loadFlashcards(); 
+        renderLessons(); 
+    }
+    if (vn === 'discover') { renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
+    if (vn === 'games') { switchGame(currentGame); }
+    if (vn === 'dad') { renderDad(); updateDadClock(); }
+    if (vn === 'mama') { updateMamaProgress(); renderMamaCorner(); }
+    if (vn === 'karaoke') renderKaraokeSongs();
+    if (vn === 'diary') renderDiary();
+    if (vn === 'friends') renderAllInvites();
+    if (vn === 'theme') loadTheme();
+    if (vn === 'profile') { updateProfile(); loadNotifSettings(); }
+    if (vn === 'lifeskills') renderLifeSkills();
+    
+    // Cerrar menú
+    const menu = document.getElementById('radialMenu');
+    if (menu) menu.classList.remove('active');
+    
+    window.scrollTo(0, 0);
 }
-
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
 function changeTestWeek(){ const v=document.getElementById("weekSelector").value; testWeekOverride=v==="auto"?null:parseInt(v); updateWeeklyDisplay(); if(document.getElementById("viewAcademy").classList.contains("active")){ renderVocab(); renderFlashcardModes(); loadFlashcards(); renderLessons(); } }
 function updateWeeklyDisplay(){ const wi=getCurrentWeekInfo(); const t=wi.theme; document.getElementById('weekThemeHero').innerHTML=`<h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3><p>${t.desc}</p>`; document.getElementById('weekThemeHero').style.background=`linear-gradient(135deg, ${t.color}, white)`; const badge=`<span class="weekly-content-badge">${t.emoji} ${t.name}</span>`; document.getElementById('academyBadge').innerHTML=badge; document.getElementById('discoverBadge').innerHTML=badge; }
