@@ -2615,9 +2615,47 @@ function showView(vn) {
     window.scrollTo(0, 0);
 }
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
-function changeTestWeek(){ const v=document.getElementById("weekSelector").value; testWeekOverride=v==="auto"?null:parseInt(v); updateWeeklyDisplay(); if(document.getElementById("viewAcademy").classList.contains("active")){ renderVocab(); renderFlashcardModes(); loadFlashcards(); renderLessons(); } }
-function updateWeeklyDisplay(){ const wi=getCurrentWeekInfo(); const t=wi.theme; document.getElementById('weekThemeHero').innerHTML=`<h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3><p>${t.desc}</p>`; document.getElementById('weekThemeHero').style.background=`linear-gradient(135deg, ${t.color}, white)`; const badge=`<span class="weekly-content-badge">${t.emoji} ${t.name}</span>`; document.getElementById('academyBadge').innerHTML=badge; document.getElementById('discoverBadge').innerHTML=badge; }
-function getVocabData(){ try{ const wv=weeklyVocab[getCurrentWeekInfo().cycleIndex]; if(wv&&wv[currentLang]) return{"Tema":wv[currentLang]}; }catch(e){} return baseVocabData[currentLang]||baseVocabData["en"]; }
+function changeTestWeek() {
+    const selector = document.getElementById('weekSelector');
+    if (!selector) return;
+    
+    const semana = selector.value;
+    if (semana === 'auto') {
+        // Calcular semana automática (puedes ajustar la lógica)
+        const fecha = new Date();
+        const semanaDelAno = Math.ceil((fecha - new Date(fecha.getFullYear(), 0, 1)) / 86400000 / 7);
+        testWeekOverride = semanaDelAno % 8;
+    } else {
+        testWeekOverride = parseInt(semana);
+    }
+    
+    // Actualizar la vista del selector
+    updateWeeklyDisplay();
+    
+    // Si la vista actual es Academy, recargar TODO el contenido
+    const vistaActiva = document.querySelector('.view.active')?.id;
+    if (vistaActiva === 'viewAcademy') {
+        renderVocab();
+        renderPronunciation();
+        renderPodcasts();
+        renderConjugation();
+        renderGrammar();
+        renderExam();
+        renderFlashcardModes();
+        loadFlashcards();
+        renderLessons();
+    }
+}
+function updateWeeklyDisplay() {
+    const semana = testWeekOverride !== null ? testWeekOverride : 0;
+    const theme = weeklyThemes[semana];
+    const heroDiv = document.getElementById('weekThemeHero');
+    if (heroDiv && theme) {
+        heroDiv.innerHTML = `<div class="badge" style="background:${theme.color}">📅 Semana ${semana+1}</div>
+                             <h3>${theme.emoji} ${theme.name}</h3>
+                             <p>${theme.desc}</p>`;
+    }
+}
 function getSlangData(){ try{ const ws=weeklySlang[getCurrentWeekInfo().cycleIndex]; if(ws&&ws[currentLang]) return ws[currentLang]; }catch(e){} return baseSlangData[currentLang]||baseSlangData["en"]; }
 function getLessons(){ try{ const wl=weeklyLessons[getCurrentWeekInfo().cycleIndex]; if(wl&&wl[currentLang]) return wl[currentLang]; }catch(e){} return currentLang==="en"?baseEnglishLessons:baseFrenchLessons; }
 function renderVocab(){ const d=getVocabData(); const packs=Object.keys(d); document.getElementById("vocabSection").innerHTML=`<div class="badge">📖 Vocabulario</div><div id="vocabPacks">${packs.map(p=>`<span class="vocab-pack" data-pack="${p}">📦 ${p}</span>`).join('')}</div><div id="vocabWords" class="vocab-words"></div>`; if(packs.length) document.getElementById("vocabWords").innerHTML=d[packs[0]].map(i=>`<span class="word-card">${i.en||i.fr} → ${i.es}</span>`).join(''); document.querySelectorAll(".vocab-pack").forEach(el=>el.addEventListener("click",()=>{ const p=el.getAttribute("data-pack"); document.getElementById("vocabWords").innerHTML=d[p].map(i=>`<span class="word-card">${i.en||i.fr} → ${i.es}</span>`).join(''); })); }
