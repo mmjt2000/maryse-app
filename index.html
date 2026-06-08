@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#8b5cf6">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -860,17 +861,16 @@
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="card">
-        <div class="card-title">📸 Subir foto a la nube</div>
+        <div class="card-title">📸 Subir foto</div>
         <input type="file" id="fotoInput" accept="image/*">
-        <button class="btn btn-primary" onclick="subirFoto()">☁️ Subir a Supabase</button>
+        <button class="btn btn-primary" onclick="subirFoto()">☁️ Subir</button>
     </div>
     <div class="card">
-        <div class="card-title">🖼️ Fotos guardadas</div>
-        <div id="galeriaFotosSupabase" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
+        <div class="card-title">🖼️ Mis fotos</div>
+        <div id="galeriaFotos" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
     </div>
-</div>    
-<script>
-    
+</div>
+<script>   
 // ==================== SUPABASE ====================
 const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
 const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
@@ -1024,6 +1024,51 @@ function actualizarRelojClasico() {
 }
 setInterval(actualizarRelojClasico, 1000);
 actualizarRelojClasico();
+// ==================== SUPABASE ====================
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+async function cargarFotos() {
+    const { data, error } = await supabase
+        .from('fotos')
+        .select('*')
+        .order('fecha', { ascending: false });
+    
+    const contenedor = document.getElementById('galeriaFotos');
+    if (!contenedor) return;
+    
+    if (error || !data || data.length === 0) {
+        contenedor.innerHTML = '<p>📸 No hay fotos aún</p>';
+        return;
+    }
+    
+    contenedor.innerHTML = data.map(foto => `
+        <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
+            <img src="${foto.imagen}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:8px; font-size:0.7rem;">📅 ${new Date(foto.fecha).toLocaleDateString()}</div>
+        </div>
+    `).join('');
+}
+
+async function subirFoto() {
+    const input = document.getElementById('fotoInput');
+    const archivo = input?.files[0];
+    if (!archivo) { alert('Selecciona una foto'); return; }
+    
+    const nombre = Date.now() + '_' + archivo.name;
+    const { error: uploadError } = await supabase.storage.from('fotos').upload(nombre, archivo);
+    if (uploadError) { alert('Error al subir: ' + uploadError.message); return; }
+    
+    const { data: urlData } = supabase.storage.from('fotos').getPublicUrl(nombre);
+    await supabase.from('fotos').insert([{ imagen: urlData.publicUrl }]);
+    
+    input.value = '';
+    alert('✅ Foto guardada en la nube');
+    cargarFotos();
+}
+
+cargarFotos();    
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -2856,7 +2901,7 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
-    if (vn === 'fotos') {cargarFotosSupabase();}
+    if (vn === 'fotos') {cargarFotos();}
     window.scrollTo(0,0);
         // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
