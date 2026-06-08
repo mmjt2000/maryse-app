@@ -638,6 +638,24 @@
     <div id="viewAcademy" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
         <div class="lang-selector"><div id="lang-en" class="lang-btn active">🇬🇧 English</div><div id="lang-fr" class="lang-btn">🇫🇷 Français</div></div>
+        <div class="week-theme-hero" id="weekThemeHero"></div>
+        <div class="week-selector-container">
+            <select id="weekSelector" onchange="changeTestWeek()">
+            <option value="auto">📅 Semana actual (auto)</option>
+            <option value="0">💭 S1: Emociones</option>
+            <option value="1">📚 S2: Escuela</option>
+            <option value="2">✈️ S3: Viajes</option>
+            <option value="3">🚀 S4: Tecnología</option>
+            <option value="4">🎵 S5: Música</option>
+            <option value="5">🍽️ S6: Comida</option>
+            <option value="6">⚽ S7: Deportes</option>
+            <option value="7">🌍 S8: Naturaleza</option>
+        </select>
+    </div>
+    
+    <!-- El resto de Academy -->
+    ...
+</div>
         <div class="grammar-section" id="grammarSection"><div class="badge">📚 GRAMÁTICA · Reglas semanales</div><div id="grammarContainer"></div></div>
         <div class="vocab-section" id="vocabSection"></div>
         <div class="lessons-grid" id="lessonsContainer"></div>
@@ -2710,7 +2728,18 @@ function showView(vn){
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
     if(vn==='home'){ renderMarysePlaylist(); }
-    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
+    if(vn==='academy'){ 
+    if (typeof changeTestWeek === 'function') changeTestWeek();
+    renderVocab(); 
+    renderPronunciation(); 
+    renderPodcasts(); 
+    renderConjugation(); 
+    renderGrammar(); 
+    renderExam(); 
+    renderFlashcardModes(); 
+    loadFlashcards(); 
+    renderLessons(); 
+}
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
