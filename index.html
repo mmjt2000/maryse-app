@@ -513,11 +513,10 @@
 <body>
 <div class="container">
     <!-- HOME -->
-    <div id="viewHome" class="view active">
+        <div id="viewHome" class="view active">
         <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
         <div class="hero"><h2 id="greeting">Hola, Maryse 👋</h2><div class="hero-quote" id="dailyQuote">"Cada día es una nueva página."</div></div>
-        <div class="week-theme-hero" id="weekThemeHero"></div>
-        <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
+        
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
         
         <!-- REPRODUCTOR DE MÚSICA -->
@@ -553,6 +552,20 @@
     <!-- ACADEMY -->
     <div id="viewAcademy" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="week-theme-hero" id="weekThemeHero"></div>
+        <div class="week-selector-container">
+        <select id="weekSelector" onchange="changeTestWeek()">
+        <option value="auto">📅 Semana actual (auto)</option>
+        <option value="0">💭 S1: Emociones</option>
+        <option value="1">📚 S2: Escuela</option>
+        <option value="2">✈️ S3: Viajes</option>
+        <option value="3">🚀 S4: Tecnología</option>
+        <option value="4">🎵 S5: Música</option>
+        <option value="5">🍽️ S6: Comida</option>
+        <option value="6">⚽ S7: Deportes</option>
+        <option value="7">🌍 S8: Naturaleza</option>
+    </select>
+</div>
         <div class="lang-selector"><div id="lang-en" class="lang-btn active">🇬🇧 English</div><div id="lang-fr" class="lang-btn">🇫🇷 Français</div></div>
         <div class="grammar-section" id="grammarSection"><div class="badge">📚 GRAMÁTICA · Reglas semanales</div><div id="grammarContainer"></div></div>
         <div class="vocab-section" id="vocabSection"></div>
