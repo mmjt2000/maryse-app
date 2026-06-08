@@ -513,9 +513,11 @@
 <body>
 <div class="container">
     <!-- HOME -->
-        <div id="viewHome" class="view active">
+    <div id="viewHome" class="view active">
         <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
         <div class="hero"><h2 id="greeting">Hola, Maryse 👋</h2><div class="hero-quote" id="dailyQuote">"Cada día es una nueva página."</div></div>
+        <div class="week-theme-hero" id="weekThemeHero"></div>
+        <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
         <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
         
         <!-- REPRODUCTOR DE MÚSICA -->
@@ -551,20 +553,6 @@
     <!-- ACADEMY -->
     <div id="viewAcademy" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="week-theme-hero" id="weekThemeHero"></div>
-        <div class="week-selector-container">
-        <select id="weekSelector" onchange="changeTestWeek()">
-        <option value="auto">📅 Semana actual (auto)</option>
-        <option value="0">💭 S1: Emociones</option>
-        <option value="1">📚 S2: Escuela</option>
-        <option value="2">✈️ S3: Viajes</option>
-        <option value="3">🚀 S4: Tecnología</option>
-        <option value="4">🎵 S5: Música</option>
-        <option value="5">🍽️ S6: Comida</option>
-        <option value="6">⚽ S7: Deportes</option>
-        <option value="7">🌍 S8: Naturaleza</option>
-    </select>
-</div>
         <div class="lang-selector"><div id="lang-en" class="lang-btn active">🇬🇧 English</div><div id="lang-fr" class="lang-btn">🇫🇷 Français</div></div>
         <div class="grammar-section" id="grammarSection"><div class="badge">📚 GRAMÁTICA · Reglas semanales</div><div id="grammarContainer"></div></div>
         <div class="vocab-section" id="vocabSection"></div>
@@ -2577,85 +2565,32 @@ function renderMamaCorner() {
 }
 
 // ==================== FUNCIONES PRINCIPALES ====================
-function showView(vn) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    const target = document.getElementById('view' + vn.charAt(0).toUpperCase() + vn.slice(1));
-    if (target) target.classList.add('active');
-    
-    // Cargar contenido según la vista
-    if (vn === 'home') { renderMarysePlaylist(); }
-    if (vn === 'academy') { 
-        // Forzar actualización de la semana antes de cargar el contenido
-        if (typeof changeTestWeek === 'function') changeTestWeek();
-        renderVocab(); 
-        renderPronunciation(); 
-        renderPodcasts(); 
-        renderConjugation(); 
-        renderGrammar(); 
-        renderExam(); 
-        renderFlashcardModes(); 
-        loadFlashcards(); 
-        renderLessons(); 
-    }
-    if (vn === 'discover') { renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
-    if (vn === 'games') { switchGame(currentGame); }
-    if (vn === 'dad') { renderDad(); updateDadClock(); }
-    if (vn === 'mama') { updateMamaProgress(); renderMamaCorner(); }
-    if (vn === 'karaoke') renderKaraokeSongs();
-    if (vn === 'diary') renderDiary();
-    if (vn === 'friends') renderAllInvites();
-    if (vn === 'theme') loadTheme();
-    if (vn === 'profile') { updateProfile(); loadNotifSettings(); }
-    if (vn === 'lifeskills') renderLifeSkills();
-    
-    // Cerrar menú
-    const menu = document.getElementById('radialMenu');
-    if (menu) menu.classList.remove('active');
-    
-    window.scrollTo(0, 0);
+function showView(vn){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
+    if(target)target.classList.add('active');
+    if(vn==='home'){ renderMarysePlaylist(); }
+    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
+    if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
+    if(vn==='games'){ switchGame(currentGame); }
+    if(vn==='dad'){ renderDad(); updateDadClock(); }
+    if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
+    if(vn==='karaoke') renderKaraokeSongs();
+    if(vn==='diary') renderDiary();
+    if(vn==='friends') renderAllInvites();
+    if(vn==='theme') loadTheme();
+    if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
+    if(vn==='lifeskills') renderLifeSkills();
+    window.scrollTo(0,0);
+        // Ocultar la nueva Agenda
+    let agendaNueva = document.getElementById('viewAgendaNueva');
+    if (agendaNueva) agendaNueva.classList.remove('active');
 }
+
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
-function changeTestWeek() {
-    const selector = document.getElementById('weekSelector');
-    if (!selector) return;
-    
-    const semana = selector.value;
-    if (semana === 'auto') {
-        // Calcular semana automática (puedes ajustar la lógica)
-        const fecha = new Date();
-        const semanaDelAno = Math.ceil((fecha - new Date(fecha.getFullYear(), 0, 1)) / 86400000 / 7);
-        testWeekOverride = semanaDelAno % 8;
-    } else {
-        testWeekOverride = parseInt(semana);
-    }
-    
-    // Actualizar la vista del selector
-    updateWeeklyDisplay();
-    
-    // Si la vista actual es Academy, recargar TODO el contenido
-    const vistaActiva = document.querySelector('.view.active')?.id;
-    if (vistaActiva === 'viewAcademy') {
-        renderVocab();
-        renderPronunciation();
-        renderPodcasts();
-        renderConjugation();
-        renderGrammar();
-        renderExam();
-        renderFlashcardModes();
-        loadFlashcards();
-        renderLessons();
-    }
-}
-function updateWeeklyDisplay() {
-    const semana = testWeekOverride !== null ? testWeekOverride : 0;
-    const theme = weeklyThemes[semana];
-    const heroDiv = document.getElementById('weekThemeHero');
-    if (heroDiv && theme) {
-        heroDiv.innerHTML = `<div class="badge" style="background:${theme.color}">📅 Semana ${semana+1}</div>
-                             <h3>${theme.emoji} ${theme.name}</h3>
-                             <p>${theme.desc}</p>`;
-    }
-}
+function changeTestWeek(){ const v=document.getElementById("weekSelector").value; testWeekOverride=v==="auto"?null:parseInt(v); updateWeeklyDisplay(); if(document.getElementById("viewAcademy").classList.contains("active")){ renderVocab(); renderFlashcardModes(); loadFlashcards(); renderLessons(); } }
+function updateWeeklyDisplay(){ const wi=getCurrentWeekInfo(); const t=wi.theme; document.getElementById('weekThemeHero').innerHTML=`<h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3><p>${t.desc}</p>`; document.getElementById('weekThemeHero').style.background=`linear-gradient(135deg, ${t.color}, white)`; const badge=`<span class="weekly-content-badge">${t.emoji} ${t.name}</span>`; document.getElementById('academyBadge').innerHTML=badge; document.getElementById('discoverBadge').innerHTML=badge; }
+function getVocabData(){ try{ const wv=weeklyVocab[getCurrentWeekInfo().cycleIndex]; if(wv&&wv[currentLang]) return{"Tema":wv[currentLang]}; }catch(e){} return baseVocabData[currentLang]||baseVocabData["en"]; }
 function getSlangData(){ try{ const ws=weeklySlang[getCurrentWeekInfo().cycleIndex]; if(ws&&ws[currentLang]) return ws[currentLang]; }catch(e){} return baseSlangData[currentLang]||baseSlangData["en"]; }
 function getLessons(){ try{ const wl=weeklyLessons[getCurrentWeekInfo().cycleIndex]; if(wl&&wl[currentLang]) return wl[currentLang]; }catch(e){} return currentLang==="en"?baseEnglishLessons:baseFrenchLessons; }
 function renderVocab(){ const d=getVocabData(); const packs=Object.keys(d); document.getElementById("vocabSection").innerHTML=`<div class="badge">📖 Vocabulario</div><div id="vocabPacks">${packs.map(p=>`<span class="vocab-pack" data-pack="${p}">📦 ${p}</span>`).join('')}</div><div id="vocabWords" class="vocab-words"></div>`; if(packs.length) document.getElementById("vocabWords").innerHTML=d[packs[0]].map(i=>`<span class="word-card">${i.en||i.fr} → ${i.es}</span>`).join(''); document.querySelectorAll(".vocab-pack").forEach(el=>el.addEventListener("click",()=>{ const p=el.getAttribute("data-pack"); document.getElementById("vocabWords").innerHTML=d[p].map(i=>`<span class="word-card">${i.en||i.fr} → ${i.es}</span>`).join(''); })); }
