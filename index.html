@@ -521,141 +521,52 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     display: none;
 }
-    /* === CÍRCULO DEL TIEMPO === */
-.circulo-tiempo {
-    display: flex;
-    justify-content: center;
-    margin: 24px 0 32px;
-}
-.reloj-circulo {
-    background: linear-gradient(135deg, #1e1b4b, #2e2a5e);
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: transform 0.3s ease;
-}
-.reloj-circulo:hover {
-    transform: scale(1.02);
-}
-.hora-circulo {
-    font-family: 'Courier New', monospace;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #f0f0ff;
-    letter-spacing: 3px;
-    text-shadow: 0 0 8px #c084fc;
-    margin-bottom: 8px;
-}
-.fecha-circulo {
-    font-size: 0.85rem;
-    color: #c084fc;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-}
-.dia-circulo {
-    font-size: 0.75rem;
-    color: #a5a5d4;
-}
     </style>
 </head>
 <body>
 <div class="container">
-    
-  <!-- HOME RENOVADO - CÍRCULO DEL TIEMPO -->
-<div id="viewHome" class="view active">
-    <div class="header">
-        <div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div>
-        <div style="display:flex;align-items:center;gap:8px;">
-            <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
-            <div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div>
-        </div>
-    </div>
-
-    <!-- Saludo -->
-    <div class="hero">
-        <h2 id="greeting">Hola, Maryse 👋</h2>
-        <div class="hero-quote">"Cada día es una nueva página."</div>
-    </div>
-
-    <!-- CÍRCULO DEL TIEMPO (reloj elegante) -->
-    <div class="circulo-tiempo">
-        <div class="reloj-circulo">
-            <div class="hora-circulo" id="horaCirculo">--:--:--</div>
-            <div class="fecha-circulo" id="fechaCirculo">--/--/----</div>
-            <div class="dia-circulo" id="diaCirculo">----------</div>
-        </div>
-    </div>
-
-    <!-- Contador de cumpleaños (movido debajo) -->
-    <div class="birthday-card">
-        <div>🎂 Tus 14 años</div>
-        <div class="countdown" id="countdown">
-            <div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div>
-            <div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div>
-            <div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div>
-            <div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div>
-        </div>
-    </div>
-
-    <!-- El resto de Home (música, footer, etc.) se mantiene igual -->
-    <!-- REPRODUCTOR DE MÚSICA -->
-    <div class="music-player">
-        <div class="now-playing" id="nowPlaying">
-            <div class="now-playing-info">
-                <div class="now-playing-title" id="nowPlayingTitle">Selecciona una canción</div>
-                <div class="now-playing-artist" id="nowPlayingArtist">🎵</div>
+    <!-- HOME -->
+    <div id="viewHome" class="view active">
+        <div class="header"><div class="logo"><h1>Maryse ✨</h1><p>private academy</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="dark-toggle" onclick="toggleDarkMode()">🌙</button><div class="avatar" onclick="changeAvatar()"><div id="avatarContent">👧</div></div></div></div>
+        <div class="hero"><h2 id="greeting">Hola, Maryse 👋</h2><div class="hero-quote" id="dailyQuote">"Cada día es una nueva página."</div></div>
+        <div class="week-theme-hero" id="weekThemeHero"></div>
+        <div class="week-selector-container"><select id="weekSelector" onchange="changeTestWeek()"><option value="auto">📅 Semana actual (auto)</option><option value="0">💭 S1: Emociones</option><option value="1">📚 S2: Escuela</option><option value="2">✈️ S3: Viajes</option><option value="3">🚀 S4: Tecnología</option><option value="4">🎵 S5: Música</option><option value="5">🍽️ S6: Comida</option><option value="6">⚽ S7: Deportes</option><option value="7">🌍 S8: Naturaleza</option></select></div>
+        <div class="birthday-card"><div>🎂 Tus 14 años</div><div class="countdown" id="countdown"><div class="countdown-item"><div class="countdown-number" id="days">0</div><div class="countdown-label">Días</div></div><div class="countdown-item"><div class="countdown-number" id="hours">0</div><div class="countdown-label">Horas</div></div><div class="countdown-item"><div class="countdown-number" id="minutes">0</div><div class="countdown-label">Min</div></div><div class="countdown-item"><div class="countdown-number" id="seconds">0</div><div class="countdown-label">Seg</div></div></div></div>
+        
+        <!-- REPRODUCTOR DE MÚSICA -->
+        <div class="music-player">
+            <div class="now-playing" id="nowPlaying">
+                <div class="now-playing-info">
+                    <div class="now-playing-title" id="nowPlayingTitle">Selecciona una canción</div>
+                    <div class="now-playing-artist" id="nowPlayingArtist">🎵</div>
+                </div>
+                <div id="nowPlayingLang" style="font-size: 1.2rem;">🎵</div>
             </div>
-            <div id="nowPlayingLang" style="font-size: 1.2rem;">🎵</div>
+            <div class="player-controls">
+                <button class="player-btn" onclick="prevSong()">◀◀</button>
+                <button class="player-btn" id="playPauseBtn" onclick="togglePlayPause()">▶️</button>
+                <button class="player-btn" onclick="nextSong()">▶▶</button>
+            </div>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="time-info">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+            <div style="margin-top: 16px; font-size: 0.7rem; text-align: center; color: var(--subtext);">
+                🎧 Toca cualquier canción para escucharla con letra (se abre YouTube)
+            </div>
+            <div class="song-list" id="marysePlaylist"></div>
         </div>
-        <div class="player-controls">
-            <button class="player-btn" onclick="prevSong()">◀◀</button>
-            <button class="player-btn" id="playPauseBtn" onclick="togglePlayPause()">▶️</button>
-            <button class="player-btn" onclick="nextSong()">▶▶</button>
-        </div>
-        <div class="progress-bar" id="progressBar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div class="time-info">
-            <span id="currentTime">0:00</span>
-            <span id="duration">0:00</span>
-        </div>
-        <div style="margin-top: 16px; font-size: 0.7rem; text-align: center; color: var(--subtext);">
-            🎧 Toca cualquier canción para escucharla con letra (se abre YouTube)
-        </div>
-        <div class="song-list" id="marysePlaylist"></div>
+        
+        <div class="footer">💜 Tu espacio para aprender</div>
     </div>
-
-    <div class="footer">💜 Tu espacio para aprender</div>
-</div>
 
     <!-- ACADEMY -->
     <div id="viewAcademy" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
         <div class="lang-selector"><div id="lang-en" class="lang-btn active">🇬🇧 English</div><div id="lang-fr" class="lang-btn">🇫🇷 Français</div></div>
-        <div class="week-theme-hero" id="weekThemeHero"></div>
-        <div class="week-selector-container">
-            <select id="weekSelector" onchange="changeTestWeek()">
-            <option value="auto">📅 Semana actual (auto)</option>
-            <option value="0">💭 S1: Emociones</option>
-            <option value="1">📚 S2: Escuela</option>
-            <option value="2">✈️ S3: Viajes</option>
-            <option value="3">🚀 S4: Tecnología</option>
-            <option value="4">🎵 S5: Música</option>
-            <option value="5">🍽️ S6: Comida</option>
-            <option value="6">⚽ S7: Deportes</option>
-            <option value="7">🌍 S8: Naturaleza</option>
-        </select>
-    </div>
-    
-    <!-- El resto de Academy -->
-    ...
-</div>
         <div class="grammar-section" id="grammarSection"><div class="badge">📚 GRAMÁTICA · Reglas semanales</div><div id="grammarContainer"></div></div>
         <div class="vocab-section" id="vocabSection"></div>
         <div class="lessons-grid" id="lessonsContainer"></div>
@@ -889,24 +800,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-// === RELOJ CÍRCULO DEL TIEMPO ===
-function actualizarCirculoTiempo() {
-    const ahora = new Date();
-    const hora = ahora.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const fecha = ahora.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const dia = ahora.toLocaleDateString('es-MX', { weekday: 'long' });
-    
-    const horaElem = document.getElementById('horaCirculo');
-    const fechaElem = document.getElementById('fechaCirculo');
-    const diaElem = document.getElementById('diaCirculo');
-    
-    if (horaElem) horaElem.textContent = hora;
-    if (fechaElem) fechaElem.textContent = fecha;
-    if (diaElem) diaElem.textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
-}
-setInterval(actualizarCirculoTiempo, 1000);
-actualizarCirculoTiempo();
-    
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -2728,18 +2621,7 @@ function showView(vn){
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
     if(vn==='home'){ renderMarysePlaylist(); }
-    if(vn==='academy'){ 
-    if (typeof changeTestWeek === 'function') changeTestWeek();
-    renderVocab(); 
-    renderPronunciation(); 
-    renderPodcasts(); 
-    renderConjugation(); 
-    renderGrammar(); 
-    renderExam(); 
-    renderFlashcardModes(); 
-    loadFlashcards(); 
-    renderLessons(); 
-}
+    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
