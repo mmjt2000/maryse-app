@@ -907,87 +907,91 @@
     <div id="viewFriends" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">👥 Invitaciones</div><button class="btn btn-primary" onclick="generateFriendCode()">🔗 Generar código</button><input type="text" id="friendCodeInput" placeholder="Pega el código..."><button class="btn btn-success" onclick="addFriend()">➕ Enviar solicitud</button><h4>📤 Enviadas</h4><div id="sentInvitesList"></div><h4>📥 Recibidas</h4><div id="receivedInvitesList"></div><h4>✅ Amigas</h4><div id="friendsList"></div></div></div>
     <div id="viewTheme" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎨 Personalizar Tema</div><div id="themePresets"><div class="theme-preset" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div><div class="theme-preset" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div><div class="theme-preset" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div><div class="theme-preset" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div><div class="theme-preset" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div><div class="theme-preset" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div><div class="theme-preset" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div></div><label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6"><label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc"><button class="btn btn-primary" onclick="saveTheme()">💾 Guardar tema</button></div></div>
     <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title">🔔 Recordatorios</div><div><span>Activar</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label>Hora:</label><input type="time" id="notifTime" value="17:00"><label>Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0">Dom</div><div class="day-chip active" data-day="1">Lun</div><div class="day-chip active" data-day="2">Mar</div><div class="day-chip active" data-day="3">Mié</div><div class="day-chip active" data-day="4">Jue</div><div class="day-chip active" data-day="5">Vie</div><div class="day-chip" data-day="6">Sáb</div></div><label>Mensaje:</label><select id="notifMessage"><option>📚 ¿Ya practicaste hoy?</option><option>🎯 ¡Hora de aprender!</option><option>💜 Mensaje de Papá</option></select><button class="btn btn-primary" onclick="testNotification()">🔔 Probar</button></div></div><div class="backup-section"><div class="card-title">💾 Copia de seguridad</div><div><button class="btn btn-warning" onclick="exportData()">📥 Exportar</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤 Importar</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"></div></div>
-    <div id="viewLifeskills" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="skills-section"><div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div><div id="lifeSkillsContainer" class="skills-grid"></div>
-    
-        <!-- ===== NUEVA SECCIÓN: CONSEJOS DE SABIDURÍA ===== -->
-<div class="sabiduria-seccion">
-    <div class="sabiduria-titulo-principal">
-        <span class="sabiduria-icono">🌟</span> 6 consejos para crecer con confianza y sabiduría
+    <div id="viewLifeskills" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div class="skills-section">
+        <div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div>
+        <div id="lifeSkillsContainer" class="skills-grid"></div>
     </div>
-    
-    <div class="sabiduria-consejos-lista">
-        <div class="consejo-sabio">
-            <div class="consejo-num">1</div>
-            <div class="consejo-info">
-                <div class="consejo-tit">🎭 Aprende a conocer tus emociones</div>
-                <div class="consejo-desc">Todos tenemos momentos en los que nos sentimos felices, tristes, estresados o confundidos. Cuando entiendes lo que sientes, puedes cuidarte mejor y tomar decisiones más inteligentes.</div>
-                <div class="consejo-leccion">💡 Conocer tus emociones es una forma de fortaleza.</div>
+
+    <!-- ===== NUEVA SECCIÓN: CONSEJOS DE SABIDURÍA ===== -->
+    <div class="sabiduria-seccion">
+        <div class="sabiduria-titulo-principal">
+            <span class="sabiduria-icono">🌟</span> 6 consejos para crecer con confianza y sabiduría
+        </div>
+        
+        <div class="sabiduria-consejos-lista">
+            <div class="consejo-sabio">
+                <div class="consejo-num">1</div>
+                <div class="consejo-info">
+                    <div class="consejo-tit">🎭 Aprende a conocer tus emociones</div>
+                    <div class="consejo-desc">Todos tenemos momentos en los que nos sentimos felices, tristes, estresados o confundidos. Cuando entiendes lo que sientes, puedes cuidarte mejor y tomar decisiones más inteligentes.</div>
+                    <div class="consejo-leccion">💡 Conocer tus emociones es una forma de fortaleza.</div>
+                </div>
+            </div>
+            
+            <div class="consejo-sabio">
+                <div class="consejo-num">2</div>
+                <div class="consejo-info">
+                    <div class="consejo-tit">🌟 Protege tus sueños y hazlos crecer</div>
+                    <div class="consejo-desc">Tus metas son valiosas. Compártelas con las personas que te apoyan y trabaja poco a poco para convertirlas en realidad.</div>
+                    <div class="consejo-leccion">💡 Los sueños se construyen con acciones diarias.</div>
+                </div>
+            </div>
+            
+            <div class="consejo-sabio">
+                <div class="consejo-num">3</div>
+                <div class="consejo-info">
+                    <div class="consejo-tit">💪 Confía en ti, incluso cuando estés aprendiendo</div>
+                    <div class="consejo-desc">Nadie tiene todas las respuestas. La confianza no significa ser perfecta; significa seguir adelante aunque existan desafíos.</div>
+                    <div class="consejo-leccion">💡 El valor es avanzar aun cuando tienes dudas.</div>
+                </div>
+            </div>
+            
+            <div class="consejo-sabio">
+                <div class="consejo-num">4</div>
+                <div class="consejo-info">
+                    <div class="consejo-tit">💰 Desarrolla buenos hábitos con el dinero</div>
+                    <div class="consejo-desc">Aprende a ahorrar, planificar y usar tus recursos con responsabilidad.</div>
+                    <div class="consejo-leccion">💡 Las pequeñas decisiones de hoy crean grandes oportunidades mañana.</div>
+                </div>
+            </div>
+            
+            <div class="consejo-sabio">
+                <div class="consejo-num">5</div>
+                <div class="consejo-info">
+                    <div class="consejo-tit">💜 Cuida a las personas que son importantes para ti</div>
+                    <div class="consejo-desc">Tu familia, tus amigos y las personas que te guían son un regalo. Valora su confianza y demuestra gratitud por su apoyo.</div>
+                    <div class="consejo-leccion">💡 Las relaciones sinceras son una de las mayores riquezas de la vida.</div>
+                </div>
+            </div>
+            
+            <div class="consejo-sabio">
+                <div class="consejo-num">6</div>
+                <div class="consejo-info">
+                    <div class="consejo-tit">📖 Convierte los errores en lecciones</div>
+                    <div class="consejo-desc">Tu pasado no define quién eres. Cada error puede enseñarte algo nuevo y ayudarte a crecer.</div>
+                    <div class="consejo-leccion">💡 Las personas más fuertes no son las que nunca caen, sino las que siempre se levantan.</div>
+                </div>
             </div>
         </div>
         
-        <div class="consejo-sabio">
-            <div class="consejo-num">2</div>
-            <div class="consejo-info">
-                <div class="consejo-tit">🌟 Protege tus sueños y hazlos crecer</div>
-                <div class="consejo-desc">Tus metas son valiosas. Compártelas con las personas que te apoyan y trabaja poco a poco para convertirlas en realidad.</div>
-                <div class="consejo-leccion">💡 Los sueños se construyen con acciones diarias.</div>
+        <div class="sabiduria-elementos">
+            <div class="elementos-titulo">🌎 La sabiduría de los 4 elementos</div>
+            <div class="elementos-grid-simple">
+                <div class="elemento-item">🔥 Fuego: sigue tus pasiones con entusiasmo y determinación.</div>
+                <div class="elemento-item">🌊 Agua: adáptate a los cambios con calma y flexibilidad.</div>
+                <div class="elemento-item">🌱 Tierra: mantente firme en tus valores y principios.</div>
+                <div class="elemento-item">🌬️ Aire: conserva una mente abierta, curiosa y llena de ideas.</div>
             </div>
         </div>
         
-        <div class="consejo-sabio">
-            <div class="consejo-num">3</div>
-            <div class="consejo-info">
-                <div class="consejo-tit">💪 Confía en ti, incluso cuando estés aprendiendo</div>
-                <div class="consejo-desc">Nadie tiene todas las respuestas. La confianza no significa ser perfecta; significa seguir adelante aunque existan desafíos.</div>
-                <div class="consejo-leccion">💡 El valor es avanzar aun cuando tienes dudas.</div>
-            </div>
+        <div class="sabiduria-footer-mensaje">
+            ✨ Recuerda, Maryse: cada día es una nueva oportunidad para aprender, crecer y brillar.<br>
+            Sé fuerte como la Tierra, libre como el Aire, adaptable como el Agua y valiente como el Fuego. 💜🌟
         </div>
-        
-        <div class="consejo-sabio">
-            <div class="consejo-num">4</div>
-            <div class="consejo-info">
-                <div class="consejo-tit">💰 Desarrolla buenos hábitos con el dinero</div>
-                <div class="consejo-desc">Aprende a ahorrar, planificar y usar tus recursos con responsabilidad.</div>
-                <div class="consejo-leccion">💡 Las pequeñas decisiones de hoy crean grandes oportunidades mañana.</div>
-            </div>
-        </div>
-        
-        <div class="consejo-sabio">
-            <div class="consejo-num">5</div>
-            <div class="consejo-info">
-                <div class="consejo-tit">💜 Cuida a las personas que son importantes para ti</div>
-                <div class="consejo-desc">Tu familia, tus amigos y las personas que te guían son un regalo. Valora su confianza y demuestra gratitud por su apoyo.</div>
-                <div class="consejo-leccion">💡 Las relaciones sinceras son una de las mayores riquezas de la vida.</div>
-            </div>
-        </div>
-        
-        <div class="consejo-sabio">
-            <div class="consejo-num">6</div>
-            <div class="consejo-info">
-                <div class="consejo-tit">📖 Convierte los errores en lecciones</div>
-                <div class="consejo-desc">Tu pasado no define quién eres. Cada error puede enseñarte algo nuevo y ayudarte a crecer.</div>
-                <div class="consejo-leccion">💡 Las personas más fuertes no son las que nunca caen, sino las que siempre se levantan.</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="sabiduria-elementos">
-        <div class="elementos-titulo">🌎 La sabiduría de los 4 elementos</div>
-        <div class="elementos-grid-simple">
-            <div class="elemento-item">🔥 Fuego: sigue tus pasiones con entusiasmo y determinación.</div>
-            <div class="elemento-item">🌊 Agua: adáptate a los cambios con calma y flexibilidad.</div>
-            <div class="elemento-item">🌱 Tierra: mantente firme en tus valores y principios.</div>
-            <div class="elemento-item">🌬️ Aire: conserva una mente abierta, curiosa y llena de ideas.</div>
-        </div>
-    </div>
-    
-    <div class="sabiduria-footer-mensaje">
-        ✨ Recuerda, Maryse: cada día es una nueva oportunidad para aprender, crecer y brillar.<br>
-        Sé fuerte como la Tierra, libre como el Aire, adaptable como el Agua y valiente como el Fuego. 💜🌟
     </div>
 </div>
-    </div></div>
-    
         <!-- RINCÓN DE MAMÁ -->
     <div id="viewMama" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
