@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Maryse">
     <title>Maryse · Aprende, Crece, Conecta</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #8b5cf6; --primary-light: #c084fc; --bg: #f5f3ff; --card: white; --text: #1e1b4b; --subtext: #8b79c9; --border: #eeeef7; --accent: #10b981; }
@@ -1070,10 +1071,13 @@
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="card">
-        <div class="card-title">🖼️ Mis Fotos</div>
-        <input type="file" id="cargarFoto" accept="image/*">
-        <button class="btn btn-primary" onclick="guardarNuevaFoto()" style="margin-top:10px;">💾 Guardar Foto</button>
-        <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+        <div class="card-title">📸 Subir foto a la nube</div>
+        <input type="file" id="fotoInput" accept="image/*">
+        <button class="btn btn-primary" onclick="subirFoto()">☁️ Subir a Supabase</button>
+    </div>
+    <div class="card">
+        <div class="card-title">🖼️ Fotos en la nube</div>
+        <div id="galeriaFotos" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
     </div>
 </div>
 
@@ -3041,6 +3045,7 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
+    if (vn === 'fotos') {cargarFotos();}
     window.scrollTo(0,0);
         // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
@@ -3984,7 +3989,56 @@ document.addEventListener('keydown', function(e) {
         cerrarTodosModales();
     }
 });
+// ==================== SUPABASE ====================
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+async function cargarFotos() {
+    const { data, error } = await supabase
+        .from('maryse_contenido')
+        .select('*')
+        .eq('tipo', 'foto')
+        .order('fecha', { ascending: false });
+    
+    const contenedor = document.getElementById('galeriaFotos');
+    if (!contenedor) return;
+    
+    if (error || !data || data.length === 0) {
+        contenedor.innerHTML = '<p>📸 No hay fotos en la nube</p>';
+        return;
+    }
+    
+    contenedor.innerHTML = data.map(foto => `
+        <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
+            <img src="${foto.imagen}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:8px;">📅 ${new Date(foto.fecha).toLocaleDateString()}</div>
+        </div>
+    `).join('');
+}
+
+async function subirFoto() {
+    const input = document.getElementById('fotoInput');
+    const archivo = input?.files[0];
+    if (!archivo) { alert('Selecciona una foto'); return; }
+    
+    const nombre = Date.now() + '_' + archivo.name;
+    const { error: uploadError } = await supabase.storage.from('maryse-fotos').upload(nombre, archivo);
+    if (uploadError) { alert('Error al subir: ' + uploadError.message); return; }
+    
+    const { data: urlData } = supabase.storage.from('maryse-fotos').getPublicUrl(nombre);
+    await supabase.from('maryse_contenido').insert([{ imagen: urlData.publicUrl, tipo: 'foto' }]);
+    
+    input.value = '';
+    alert('✅ Foto guardada en la nube');
+    cargarFotos();
+}
+
+// Cargar fotos al abrir la vista
+cargarFotos();
+
+// Exponer función global
+window.subirFoto = subirFoto;
 </script>
 </body>
 </html>
