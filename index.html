@@ -1081,6 +1081,7 @@
 </div>
 
 <script>
+    
  // ==================== FOTOS EN LA NUBE (UNIFICADO) ====================
 const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
 const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
@@ -1259,32 +1260,7 @@ function actualizarRelojClasico() {
 }
 setInterval(actualizarRelojClasico, 1000);
 actualizarRelojClasico();
-</script>
 
-<!-- CÍRCULOS FLOTANTES -->
-<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
-<div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
-<div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
-
-<!-- MENÚ RADIAL -->
-    <div id="radialMenu" class="radial-menu">
-    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
-    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
-    <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
-    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
-    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
-    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
-    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
-    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
-    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
-    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
-    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
-    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
-</div>
-
-<button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
-
-<script>
 // ==================== FUNCIONES DE AGENDA (NUEVA) ====================
 
 const horarioPredeterminadoN = {
@@ -4035,7 +4011,31 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-</script>
+</script>    
+<!-- CÍRCULOS FLOTANTES -->
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
+<div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
+<div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
+
+<!-- MENÚ RADIAL -->
+    <div id="radialMenu" class="radial-menu">
+    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
+    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
+    <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
+    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
+    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
+    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
+    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
+    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
+    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
+    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
+    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
+    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
+</div>
+
+<button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
+
+
 </body>
 </html>
 
