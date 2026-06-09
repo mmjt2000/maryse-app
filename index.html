@@ -1046,6 +1046,7 @@ function mostrarMensajeAnimo(estado) {
 
 // Asignar evento a cada emoji
 document.addEventListener('DOMContentLoaded', function() {
+    cargarRecuerdos();
     const moodCards = document.querySelectorAll('#moodGridDiary .mood-card');
     moodCards.forEach(card => {
         card.addEventListener('click', function() {
@@ -2904,6 +2905,8 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
+    if (vn === 'fotos') cargarFotos();
+    if (vn === 'diary') cargarRecuerdos();
     window.scrollTo(0,0);
         // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
@@ -3110,10 +3113,11 @@ async function saveDiaryEntry() {
         imagenUrl = url.publicUrl;
     }
     
-    const { error } = await supabase.from('maryse_contenido').insert([{
-        imagen: imagenUrl,
-        texto: `${titulo ? '📌 ' + titulo + '\n\n' : ''}${texto}`,
-        tipo: 'diario'
+    const textoCompleto = titulo ? `📌 ${titulo}\n\n${texto}` : texto;
+    const { error } = await supabase.from('maryse_contenido').insert([{ 
+        imagen: imagenUrl, 
+        texto: textoCompleto, 
+        tipo: 'diario' 
     }]);
     
     if (error) { alert('Error al guardar: ' + error.message); return; }
@@ -3121,6 +3125,7 @@ async function saveDiaryEntry() {
     document.getElementById('diaryTitle').value = '';
     document.getElementById('diaryText').value = '';
     document.getElementById('diaryPhoto').value = '';
+    alert('✅ Recuerdo guardado');
     cargarRecuerdos();
 }
 function renderDiary(){ document.getElementById("diaryEntries").innerHTML=diaryEntries.length===0?"<p>No hay recuerdos aún</p>":diaryEntries.map(e=>`<div class="diary-entry"><strong>${e.title}</strong><br><small>${new Date(e.date).toLocaleDateString()}</small>${e.text?'<p>'+e.text+'</p>':''}${e.photo?'<img src="'+e.photo+'">':''}</div>`).join(''); }
