@@ -1070,103 +1070,147 @@
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="card">
-        <div class="card-title">📸 Subir foto a la nube</div>
-        <input type="file" id="fotoInput" accept="image/*">
-        <button class="btn btn-primary" onclick="subirFotoANube()">☁️ Subir</button>
-    </div>
-    <div class="card">
-        <div class="card-title">🖼️ Fotos en la nube</div>
-        <div id="galeriaNube" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
+        <div class="card-title">🖼️ Mis Fotos</div>
+        <input type="file" id="cargarFoto" accept="image/*">
+        <button class="btn btn-primary" onclick="guardarNuevaFoto()" style="margin-top:10px;">💾 Guardar Foto</button>
+        <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 </div>
 
 <script>
-// ==================== FOTOS EN LA NUBE ====================
-async function cargarFotosNube() {
-    const { data, error } = await supabase
-        .from('maryse_contenido')
-        .select('*')
-        .eq('tipo', 'foto')
-        .order('fecha', { ascending: false });
-    
-    const contenedor = document.getElementById('galeriaNube');
+// ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
+let fotosGuardadas = [];
+
+function cargarFotosStorage() {
+    let data = localStorage.getItem("maryse_fotos_galeria");
+    if (data) fotosGuardadas = JSON.parse(data);
+    else fotosGuardadas = [];
+    mostrarGaleria();
+}
+function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
+function guardarNuevaFoto() {
+    let input = document.getElementById("cargarFoto");
+    let archivo = input.files[0];
+    if (!archivo) { alert("📷 Selecciona una foto"); return; }
+    let lector = new FileReader();
+    lector.onload = function(e) {
+        fotosGuardadas.unshift({ id: Date.now(), data: e.target.result, fecha: new Date().toLocaleDateString() });
+        guardarFotosStorage();
+        mostrarGaleria();
+        input.value = "";
+        alert("✅ Foto guardada");
+    };
+    lector.readAsDataURL(archivo);
+}
+function mostrarGaleria() {
+    let contenedor = document.getElementById("galeriaFotos");
     if (!contenedor) return;
-    
-    if (error || !data || data.length === 0) {
-        contenedor.innerHTML = '<p>📸 No hay fotos en la nube</p>';
-        return;
-    }
-    
-    contenedor.innerHTML = data.map(foto => `
+    if (fotosGuardadas.length === 0) { contenedor.innerHTML = '<p style="text-align:center;width:100%;">🖼️ No hay fotos aún</p>'; return; }
+    contenedor.innerHTML = fotosGuardadas.map(f => `
         <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
-            <img src="${foto.imagen}" style="width:100%; height:120px; object-fit:cover;">
-            <div style="padding:8px;">📅 ${new Date(foto.fecha).toLocaleDateString()}</div>
+            <img src="${f.data}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:8px; font-size:0.7rem; display:flex; justify-content:space-between;">
+                <span>📅 ${f.fecha}</span>
+                <button onclick="borrarFoto(${f.id})" style="background:none; border:none; cursor:pointer;">🗑️</button>
+            </div>
         </div>
-    `).join('');
+    `).join("");
+}
+function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== id); guardarFotosStorage(); mostrarGaleria(); }
+cargarFotosStorage();
+window.guardarNuevaFoto = guardarNuevaFoto;
+window.borrarFoto = borrarFoto;
+    // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
+// === ACRÓSTICOS DE MARYSE ===
+function mostrarMensajeAnimo(estado) {
+    const acrosticos = {
+        happy: `😊 <strong>FELIZ</strong><br><br>
+<strong>M</strong>is días brillan cuando el alma sonríe.<br>
+<strong>A</strong>prendo a disfrutar sin esperar nada a cambio.<br>
+<strong>R</strong>ío con ganas, porque la alegría también es valentía.<br>
+<strong>Y</strong>o elijo ver la luz incluso entre las sombras.<br>
+<strong>S</strong>er feliz no es perfecto, es simplemente ser yo.<br>
+<strong>E</strong>l presente me regala momentos que atesoro.`,
+
+        calm: `😌 <strong>CALMA</strong><br><br>
+<strong>M</strong>e permito respirar sin prisa.<br>
+<strong>A</strong>cepto el silencio como un abrazo.<br>
+<strong>R</strong>ecuerdo que no todo necesita una respuesta.<br>
+<strong>Y</strong>o decido aquietar mi mente.<br>
+<strong>S</strong>erena, como el agua cuando dejan de moverla.<br>
+<strong>E</strong>l ruido se apaga, y solo existo yo.`,
+
+        sad: `😢 <strong>TRISTE</strong><br><br>
+<strong>M</strong>e duele, y está bien sentirlo.<br>
+<strong>A</strong>unque hoy llueva, sé que escampará.<br>
+<strong>R</strong>espeto mis lágrimas, porque también hablan.<br>
+<strong>Y</strong>o no soy mi tristeza, solo la atravieso.<br>
+<strong>S</strong>aldré de esta, aunque ahora no lo vea claro.<br>
+<strong>E</strong>ste dolor también me está haciendo más fuerte.`,
+
+        stressed: `😰 <strong>ESTRESADA</strong><br><br>
+<strong>M</strong>e detengo, aunque todo grite que siga.<br>
+<strong>A</strong>prendo a soltar lo que no puedo controlar.<br>
+<strong>R</strong>espirar hondo es mi primer acto de paz.<br>
+<strong>Y</strong>o merezco descansar sin sentir culpa.<br>
+<strong>S</strong>é que no debo cargar con todo sola.<br>
+<strong>E</strong>l equilibrio empieza cuando me escucho.`,
+
+        motivated: `🤩 <strong>MOTIVADA</strong><br><br>
+<strong>M</strong>is metas no son sueños, son promesas que me hago.<br>
+<strong>A</strong>vanzo paso a paso, sin compararme con nadie.<br>
+<strong>R</strong>odeada de fuerza que nace desde dentro.<br>
+<strong>Y</strong>o tengo el poder de crear mi camino.<br>
+<strong>S</strong>é que caer no es fracasar, es aprender.<br>
+<strong>E</strong>l futuro me pertenece, y voy por él.`,
+
+        tired: `😴 <strong>CANSADA</strong><br><br>
+<strong>M</strong>e permito parar sin pedir permiso.<br>
+<strong>A</strong>unque el mundo no espere, mi cuerpo sí.<br>
+<strong>R</strong>ecargar no es rendirse, es prepararse.<br>
+<strong>Y</strong>o también necesito descansar para seguir.<br>
+<strong>S</strong>olo estar un rato sin hacer nada me cura.<br>
+<strong>E</strong>l sueño no es un lujo, es una caricia.`
+    };
+    
+    const acrosticoDiv = document.getElementById('acrosticoMaryse');
+    if (acrosticoDiv) {
+        acrosticoDiv.innerHTML = acrosticos[estado] || "Elige cómo te sientes hoy.";
+        acrosticoDiv.style.display = 'block';
+        // El acróstico permanecerá visible. Si quieres que se oculte después de un tiempo, descomenta la línea siguiente:
+        // setTimeout(() => { acrosticoDiv.style.display = 'none'; }, 30000);
+    }
 }
 
-async function subirFotoANube() {
-    const input = document.getElementById('fotoInput');
-    const archivo = input?.files[0];
-    if (!archivo) { alert('Selecciona una foto'); return; }
-    
-    const nombre = Date.now() + '_' + archivo.name;
-    const { error: uploadError } = await supabase.storage.from('maryse-fotos').upload(nombre, archivo);
-    if (uploadError) { alert('Error al subir: ' + uploadError.message); return; }
-    
-    const { data: urlData } = supabase.storage.from('maryse-fotos').getPublicUrl(nombre);
-    await supabase.from('maryse_contenido').insert([{ imagen: urlData.publicUrl, tipo: 'foto' }]);
-    
-    input.value = '';
-    alert('✅ Foto guardada en la nube');
-    cargarFotosNube();
-}
-
-// ==================== RELOJ ====================
+// Asignar evento a cada emoji
+document.addEventListener('DOMContentLoaded', function() {
+    const moodCards = document.querySelectorAll('#moodGridDiary .mood-card');
+    moodCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const mood = this.getAttribute('data-mood');
+            mostrarMensajeAnimo(mood);
+        });
+    });
+});
+// === RELOJ CÍRCULO DEL TIEMPO ===
+// === RELOJ CLÁSICO ELEGANTE ===
 function actualizarRelojClasico() {
     const ahora = new Date();
     const hora = ahora.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const fecha = ahora.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
     const dia = ahora.toLocaleDateString('es-MX', { weekday: 'long' });
+    
     const horaElem = document.getElementById('horaClasica');
     const fechaElem = document.getElementById('fechaClasica');
     const diaElem = document.getElementById('diaClasico');
+    
     if (horaElem) horaElem.textContent = hora;
     if (fechaElem) fechaElem.textContent = fecha;
     if (diaElem) diaElem.textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
 }
 setInterval(actualizarRelojClasico, 1000);
 actualizarRelojClasico();
-
-// ==================== ACRÓSTICOS ====================
-function mostrarMensajeAnimo(estado) {
-    const acrosticos = {
-        happy: '😊 FELIZ\n\nM mis días brillan.\nA aprendo a disfrutar.\nR río con ganas.\nY yo elijo ser feliz.\nS ser feliz es ser yo.\nE el presente me regala alegría.',
-        calm: '😌 CALMA\n\nM me permito respirar.\nA acepto el silencio.\nR recuerdo que no todo necesita respuesta.\nY yo decido aquietar mi mente.\nS serena como el agua.\nE el ruido se apaga.',
-        sad: '😢 TRISTE\n\nM me duele, está bien.\nA aunque hoy llueva, escampará.\nR respeto mis lágrimas.\nY yo no soy mi tristeza.\nS saldré de esta.\nE este dolor me hace fuerte.',
-        stressed: '😰 ESTRESADA\n\nM me detengo.\nA aprendo a soltar.\nR respirar hondo es paz.\nY yo merezco descansar.\nS sé que no debo cargar sola.\nE el equilibrio empieza cuando me escucho.',
-        motivated: '🤩 MOTIVADA\n\nM mis metas son promesas.\nA avanzo paso a paso.\nR rodeada de fuerza interior.\nY yo tengo el poder.\nS sé que caer es aprender.\nE el futuro me pertenece.',
-        tired: '😴 CANSADA\n\nM me permito parar.\nA aunque el mundo no espere.\nR recargar no es rendirse.\nY yo también necesito descansar.\nS solo estar un rato sin hacer nada me cura.\nE el sueño es una caricia.'
-    };
-    const div = document.getElementById('acrosticoMaryse');
-    if (div) {
-        div.innerHTML = acrosticos[estado] || 'Elige cómo te sientes hoy.';
-        div.style.display = 'block';
-    }
-}
-
-// ==================== EVENTOS ====================
-document.addEventListener('DOMContentLoaded', function() {
-    cargarFotosNube();
-    document.querySelectorAll('#moodGridDiary .mood-card').forEach(card => {
-        card.addEventListener('click', function() {
-            mostrarMensajeAnimo(this.getAttribute('data-mood'));
-        });
-    });
-});
-
-// Funciones globales para los botones
-window.subirFotoANube = subirFotoANube;
+</script>
 
 <!-- CÍRCULOS FLOTANTES -->
 <div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
@@ -3941,58 +3985,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-</script>
-<script>
-// ==================== SUPABASE PARA FOTOS ====================
-const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
-const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-async function cargarFotosNube() {
-    const { data, error } = await supabase
-        .from('maryse_contenido')
-        .select('*')
-        .eq('tipo', 'foto')
-        .order('fecha', { ascending: false });
-    
-    const contenedor = document.getElementById('galeriaNube');
-    if (!contenedor) return;
-    
-    if (error || !data || data.length === 0) {
-        contenedor.innerHTML = '<p>📸 No hay fotos en la nube</p>';
-        return;
-    }
-    
-    contenedor.innerHTML = data.map(foto => `
-        <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
-            <img src="${foto.imagen}" style="width:100%; height:120px; object-fit:cover;">
-            <div style="padding:8px;">📅 ${new Date(foto.fecha).toLocaleDateString()}</div>
-        </div>
-    `).join('');
-}
-
-async function subirFotoANube() {
-    const input = document.getElementById('fotoInput');
-    const archivo = input?.files[0];
-    if (!archivo) { alert('Selecciona una foto'); return; }
-    
-    const nombre = Date.now() + '_' + archivo.name;
-    const { error: uploadError } = await supabase.storage.from('maryse-fotos').upload(nombre, archivo);
-    if (uploadError) { alert('Error al subir: ' + uploadError.message); return; }
-    
-    const { data: urlData } = supabase.storage.from('maryse-fotos').getPublicUrl(nombre);
-    await supabase.from('maryse_contenido').insert([{ imagen: urlData.publicUrl, tipo: 'foto' }]);
-    
-    input.value = '';
-    alert('✅ Foto guardada en la nube');
-    cargarFotosNube();
-}
-
-// Cargar fotos al iniciar
-cargarFotosNube();
-
-// Exponer función global
-window.subirFotoANube = subirFotoANube;
 </script>
 </body>
 </html>
