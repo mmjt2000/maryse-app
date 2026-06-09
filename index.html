@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#8b5cf6">
@@ -886,56 +887,101 @@
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="card">
-        <div class="card-title">🖼️ Mis Fotos</div>
-        <input type="file" id="cargarFoto" accept="image/*">
-        <button class="btn btn-primary" onclick="guardarNuevaFoto()" style="margin-top:10px;">💾 Guardar Foto</button>
-        <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+        <div class="card-title">📸 Subir foto a la nube</div>
+        <input type="file" id="fotoInput" accept="image/*">
+        <button class="btn btn-primary" onclick="subirFotoUnificada(document.getElementById('fotoInput').files[0], '', 'foto')">☁️ Subir</button>
+    </div>
+    <div class="card">
+        <div class="card-title">🖼️ Mis fotos</div>
+        <div id="galeriaFotos"></div>
     </div>
 </div>
 
 <script>
-// ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
-let fotosGuardadas = [];
+// ==================== SUPABASE UNIFICADO ====================
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-function cargarFotosStorage() {
-    let data = localStorage.getItem("maryse_fotos_galeria");
-    if (data) fotosGuardadas = JSON.parse(data);
-    else fotosGuardadas = [];
-    mostrarGaleria();
+// Función para subir cualquier foto (desde Fotos o Diario)
+async function subirFotoUnificada(archivo, texto = '', tipo = 'foto') {
+    if (!archivo) { alert('Selecciona una foto'); return false; }
+    
+    const nombreArchivo = `${Date.now()}_${archivo.name}`;
+    const { error: uploadError } = await supabase.storage
+        .from('maryse-fotos')
+        .upload(nombreArchivo, archivo);
+    
+    if (uploadError) {
+        alert('❌ Error al subir la imagen: ' + uploadError.message);
+        return false;
+    }
+    
+    const { data: urlData } = supabase.storage
+        .from('maryse-fotos')
+        .getPublicUrl(nombreArchivo);
+    
+    const { error: insertError } = await supabase
+        .from('maryse_contenido')
+        .insert([{ imagen: urlData.publicUrl, texto: texto, tipo: tipo }]);
+    
+    if (insertError) {
+        alert('❌ Error al guardar: ' + insertError.message);
+        return false;
+    }
+    
+    alert('✅ Foto guardada en la nube');
+    return true;
 }
-function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
-function guardarNuevaFoto() {
-    let input = document.getElementById("cargarFoto");
-    let archivo = input.files[0];
-    if (!archivo) { alert("📷 Selecciona una foto"); return; }
-    let lector = new FileReader();
-    lector.onload = function(e) {
-        fotosGuardadas.unshift({ id: Date.now(), data: e.target.result, fecha: new Date().toLocaleDateString() });
-        guardarFotosStorage();
-        mostrarGaleria();
-        input.value = "";
-        alert("✅ Foto guardada");
-    };
-    lector.readAsDataURL(archivo);
-}
-function mostrarGaleria() {
-    let contenedor = document.getElementById("galeriaFotos");
+
+// Cargar fotos de la sección "Fotos" (tipo = 'foto')
+async function cargarFotos() {
+    const { data, error } = await supabase
+        .from('maryse_contenido')
+        .select('*')
+        .eq('tipo', 'foto')
+        .order('fecha', { ascending: false });
+    
+    const contenedor = document.getElementById('galeriaFotos');
     if (!contenedor) return;
-    if (fotosGuardadas.length === 0) { contenedor.innerHTML = '<p style="text-align:center;width:100%;">🖼️ No hay fotos aún</p>'; return; }
-    contenedor.innerHTML = fotosGuardadas.map(f => `
+    
+    if (error || !data || data.length === 0) {
+        contenedor.innerHTML = '<p>📸 No hay fotos aún</p>';
+        return;
+    }
+    
+    contenedor.innerHTML = data.map(item => `
         <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
-            <img src="${f.data}" style="width:100%; height:120px; object-fit:cover;">
-            <div style="padding:8px; font-size:0.7rem; display:flex; justify-content:space-between;">
-                <span>📅 ${f.fecha}</span>
-                <button onclick="borrarFoto(${f.id})" style="background:none; border:none; cursor:pointer;">🗑️</button>
-            </div>
+            <img src="${item.imagen}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:8px; font-size:0.7rem;">📅 ${new Date(item.fecha).toLocaleDateString()}</div>
         </div>
-    `).join("");
+    `).join('');
 }
-function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== id); guardarFotosStorage(); mostrarGaleria(); }
-cargarFotosStorage();
-window.guardarNuevaFoto = guardarNuevaFoto;
-window.borrarFoto = borrarFoto;
+
+// Cargar recuerdos del Diario (tipo = 'diario')
+async function cargarRecuerdos() {
+    const { data, error } = await supabase
+        .from('maryse_contenido')
+        .select('*')
+        .eq('tipo', 'diario')
+        .order('fecha', { ascending: false });
+    
+    const contenedor = document.getElementById('diaryEntries');
+    if (!contenedor) return;
+    
+    if (error || !data || data.length === 0) {
+        contenedor.innerHTML = '<p>📔 No hay recuerdos aún</p>';
+        return;
+    }
+    
+    contenedor.innerHTML = data.map(item => `
+        <div class="diary-entry" style="margin-bottom: 16px; padding: 12px; border-radius: 20px; background: var(--card);">
+            ${item.imagen ? `<img src="${item.imagen}" style="max-width: 100%; border-radius: 16px; margin-bottom: 8px;">` : ''}
+            <p>${item.texto || ''}</p>
+            <small>📅 ${new Date(item.fecha).toLocaleDateString()}</small>
+        </div>
+    `).join('');
+}
     // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
 // === ACRÓSTICOS DE MARYSE ===
 function mostrarMensajeAnimo(estado) {
@@ -3048,7 +3094,35 @@ function flipPhoto(d){ if(d==='horizontal') photoFlipH=!photoFlipH; if(d==='vert
 function centerPhoto(){ photoRotation=0; photoFlipH=false; photoFlipV=false; loadImageToCanvas(originalPhotoData); }
 function resetPhoto(){ centerPhoto(); }
 function applyEdit(){ const c=document.getElementById("photoCanvas"); diaryPhotoData=c.toDataURL("image/jpeg",0.9); document.getElementById("photoEditor").style.display="none"; document.getElementById("diaryPreview").src=diaryPhotoData; document.getElementById("diaryPreview").style.display="block"; }
-function saveDiaryEntry(){ const t=document.getElementById("diaryTitle").value||"Sin título"; const txt=document.getElementById("diaryText").value; if(!txt&&!diaryPhotoData)return alert("Escribe algo o sube una foto"); diaryEntries.unshift({title:t,text:txt,photo:diaryPhotoData,date:new Date().toISOString()}); localStorage.setItem("maryse_diary",JSON.stringify(diaryEntries)); document.getElementById("diaryTitle").value=""; document.getElementById("diaryText").value=""; document.getElementById("diaryPhoto").value=""; document.getElementById("diaryPreview").style.display="none"; document.getElementById("photoEditor").style.display="none"; diaryPhotoData=null; originalPhotoData=null; renderDiary(); }
+async function saveDiaryEntry() {
+    const titulo = document.getElementById('diaryTitle').value;
+    const texto = document.getElementById('diaryText').value;
+    const archivo = document.getElementById('diaryPhoto').files[0];
+    
+    if (!texto && !archivo) { alert('Escribe algo o selecciona una foto'); return; }
+    
+    let imagenUrl = null;
+    if (archivo) {
+        const nombre = Date.now() + '_' + archivo.name;
+        const { error: subida } = await supabase.storage.from('maryse-fotos').upload(nombre, archivo);
+        if (subida) { alert('Error al subir imagen'); return; }
+        const { data: url } = supabase.storage.from('maryse-fotos').getPublicUrl(nombre);
+        imagenUrl = url.publicUrl;
+    }
+    
+    const { error } = await supabase.from('maryse_contenido').insert([{
+        imagen: imagenUrl,
+        texto: `${titulo ? '📌 ' + titulo + '\n\n' : ''}${texto}`,
+        tipo: 'diario'
+    }]);
+    
+    if (error) { alert('Error al guardar: ' + error.message); return; }
+    
+    document.getElementById('diaryTitle').value = '';
+    document.getElementById('diaryText').value = '';
+    document.getElementById('diaryPhoto').value = '';
+    cargarRecuerdos();
+}
 function renderDiary(){ document.getElementById("diaryEntries").innerHTML=diaryEntries.length===0?"<p>No hay recuerdos aún</p>":diaryEntries.map(e=>`<div class="diary-entry"><strong>${e.title}</strong><br><small>${new Date(e.date).toLocaleDateString()}</small>${e.text?'<p>'+e.text+'</p>':''}${e.photo?'<img src="'+e.photo+'">':''}</div>`).join(''); }
 function generateFriendCode(){ const c="MARYSE-"+Math.random().toString(36).substring(2,8).toUpperCase(); sentInvites.unshift({code:c,createdAt:new Date().toISOString(),status:"pending"}); localStorage.setItem("maryse_sent_invites",JSON.stringify(sentInvites)); renderAllInvites(); alert("✅ Código: "+c); }
 function addFriend(){ const c=document.getElementById("friendCodeInput").value.trim(); if(!c)return alert("Pega un código"); if(receivedInvites.find(i=>i.code===c))return alert("Ya enviaste solicitud"); if(friends.find(f=>f.code===c))return alert("Ya está conectada"); receivedInvites.unshift({code:c,createdAt:new Date().toISOString(),status:"pending"}); localStorage.setItem("maryse_received_invites",JSON.stringify(receivedInvites)); document.getElementById("friendCodeInput").value=""; renderAllInvites(); alert("✅ Solicitud enviada"); }
