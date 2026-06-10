@@ -768,35 +768,6 @@
 </head>
 <body>
 <div class="container">
-<!-- Pantalla de Inicio de Sesión y Registro -->
-<div id="loginSection" class="card">
-    <div class="card-title">🔐 Iniciar sesión</div>
-    <input type="email" id="loginEmail" placeholder="Correo electrónico">
-    <input type="password" id="loginPassword" placeholder="Contraseña">
-    <button class="btn btn-primary" onclick="iniciarSesion()">Iniciar sesión</button>
-    <button class="btn" onclick="mostrarRegistro()">Registrarse</button>
-    <div id="mensajeLogin" style="margin-top: 12px;"></div>
-</div>
-
-<div id="registroSection" class="card" style="display: none;">
-    <div class="card-title">📝 Registrarse</div>
-    <input type="email" id="regEmail" placeholder="Correo electrónico">
-    <input type="password" id="regPassword" placeholder="Contraseña">
-    <select id="regRol">
-        <option value="amiga">Amiga</option>
-        <option value="mama">Mamá</option>
-        <option value="maryse">Maryse</option>
-        <option value="papa">Papá</option>
-    </select>
-    <button class="btn btn-primary" onclick="registrarse()">Registrarse</button>
-    <button class="btn" onclick="mostrarLogin()">Volver al login</button>
-    <div id="mensajeRegistro" style="margin-top: 12px;"></div>
-</div>
-
-<!-- Contenedor de la app (todo tu contenido actual irá aquí dentro) -->
-<div id="contenidoApp" style="display: none;">
-    <!-- AQUÍ VA TODO TU CONTENIDO ACTUAL: viewHome, viewAcademy, viewAgendaNueva, viewFotos, etc. -->
-</div>
     <!-- HOME -->
     <div id="viewHome" class="view active">
     <div class="header">
@@ -1105,83 +1076,7 @@
         <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 </div>
-// ==================== SUPABASE (YA DEBE ESTAR AL PRINCIPIO) ====================
-// Si no tienes supabase inicializado, agrega esto al principio del script:
-// const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
-// const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
-// const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// ==================== AUTENTICACIÓN Y ROLES ====================
-async function iniciarSesion() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-        document.getElementById('mensajeLogin').innerHTML = '❌ ' + error.message;
-        return;
-    }
-    document.getElementById('mensajeLogin').innerHTML = '✅ Bienvenido/a';
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('registroSection').style.display = 'none';
-    document.getElementById('contenidoApp').style.display = 'block';
-    await cargarPerfil(data.user);
-}
-
-async function registrarse() {
-    const email = document.getElementById('regEmail').value;
-    const password = document.getElementById('regPassword').value;
-    const rol = document.getElementById('regRol').value;
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-        document.getElementById('mensajeRegistro').innerHTML = '❌ ' + error.message;
-        return;
-    }
-    await supabase.from('perfiles').insert([{ id: data.user.id, email: email, rol: rol }]);
-    document.getElementById('mensajeRegistro').innerHTML = '✅ Registrado. Inicia sesión.';
-    mostrarLogin();
-}
-
-function mostrarRegistro() {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('registroSection').style.display = 'block';
-}
-
-function mostrarLogin() {
-    document.getElementById('registroSection').style.display = 'none';
-    document.getElementById('loginSection').style.display = 'block';
-}
-
-async function cargarPerfil(user) {
-    const { data } = await supabase.from('perfiles').select('rol').eq('id', user.id).single();
-    const rol = data?.rol || 'amiga';
-    
-    // Control de acceso basado en roles
-    if (rol === 'maryse' || rol === 'mama' || rol === 'papa') {
-        // Administradores: ven todo
-        document.getElementById('viewAgendaNueva')?.style.display = 'block';
-        document.getElementById('viewAdminPanel')?.style.display = 'block';
-    } else {
-        // Amigas: no ven Agenda ni panel de admin
-        document.getElementById('viewAgendaNueva')?.style.display = 'none';
-        document.getElementById('viewAdminPanel')?.style.display = 'none';
-    }
-}
-
-async function verificarSesion() {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('registroSection').style.display = 'none';
-        document.getElementById('contenidoApp').style.display = 'block';
-        await cargarPerfil(data.session.user);
-    } else {
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('contenidoApp').style.display = 'none';
-    }
-}
-
-// Inicializar verificación de sesión al cargar
-verificarSesion();
 <script>
 // ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
 let fotosGuardadas = [];
