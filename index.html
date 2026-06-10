@@ -763,10 +763,51 @@
     color: white;
     font-size: 0.85rem;
     line-height: 1.5;
-}        
+} 
+/* ===== LOGIN ===== */
+.login-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #F2EEE9; z-index: 20000; display: flex;
+    align-items: center; justify-content: center;
+}
+.login-card {
+    background: #FFFDF9; border-radius: 48px; padding: 40px 28px;
+    text-align: center; max-width: 400px;
+}
+.login-card h1 { font-size: 28px; margin-bottom: 32px; }
+.input-field { text-align: left; margin-bottom: 20px; }
+.input-field input {
+    width: 100%; padding: 14px; border-radius: 30px;
+    border: 1px solid #E0DCD5; background: white;
+}
+.academy-badge {
+    background: #F0EBE4; display: inline-block; padding: 6px 18px;
+    border-radius: 40px; margin: 12px 0;
+}
+.login-btn {
+    background: #1A1A1A; color: white; width: 100%;
+    padding: 14px; border-radius: 40px; cursor: pointer;
+}
+.login-error { color: #c44; font-size: 13px; margin-top: 8px; }
     </style>
 </head>
 <body>
+    <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <h1>Iniciar sesión</h1>
+        <div class="input-field">
+            <label>Correo electrónico</label>
+            <input type="email" id="loginEmail" placeholder="usuario@maryse.com">
+        </div>
+        <div class="input-field">
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword" placeholder="contraseña">
+        </div>
+        <div class="academy-badge">Academy</div>
+        <button class="login-btn" id="doLoginBtn">Iniciar sesión</button>
+        <div id="loginErrorMsg" class="login-error"></div>
+    </div>
+</div>
 <div class="container">
     <!-- HOME -->
     <div id="viewHome" class="view active">
@@ -1078,6 +1119,43 @@
 </div>
 
 <script>
+    // ========== LOGIN ==========
+(function() {
+    const VALID_USERS = {
+        "maryse@academy.com": "1234",
+        "alumna@maryse.com": "academy"
+    };
+
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginBtn = document.getElementById('doLoginBtn');
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPass = document.getElementById('loginPassword');
+    const loginError = document.getElementById('loginErrorMsg');
+
+    if (sessionStorage.getItem('maryse_logged') === 'true') {
+        if (loginOverlay) loginOverlay.style.display = 'none';
+        return;
+    }
+
+    if (loginBtn) {
+        loginBtn.onclick = function() {
+            const email = loginEmail.value.trim();
+            const pass = loginPass.value;
+
+            if (!email || !pass) {
+                loginError.innerText = "❌ Correo y contraseña requeridos";
+                return;
+            }
+
+            if (VALID_USERS[email] && VALID_USERS[email] === pass) {
+                loginOverlay.style.display = 'none';
+                sessionStorage.setItem('maryse_logged', 'true');
+            } else {
+                loginError.innerText = "Acceso denegado";
+            }
+        };
+    }
+})();
 // ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
 let fotosGuardadas = [];
 
