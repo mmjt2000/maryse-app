@@ -3147,6 +3147,17 @@ function showView(vn){
         // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
+    function showView(viewId) {
+    // Oculta todas las vistas
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    // Muestra la vista seleccionada
+    document.getElementById(`view${viewId.charAt(0).toUpperCase() + viewId.slice(1)}`).classList.add('active');
+    
+    // 👇 ESTA ES LA LÍNEA QUE FALTA: asegura que el login no reaparezca
+    const loginOverlay = document.getElementById('loginOverlay');
+    if (loginOverlay && loginOverlay.style.display !== 'none') {
+        // Si el login ya fue ocultado, no hacemos nada
+    }
 }
 
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
