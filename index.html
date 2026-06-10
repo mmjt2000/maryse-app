@@ -9,6 +9,94 @@
     <meta name="apple-mobile-web-app-title" content="Maryse">
     <title>Maryse · Aprende, Crece, Conecta</title>
     <style>
+/* ===== LOGIN OVERLAY ===== */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #F2EEE9;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+.login-overlay.hidden {
+    display: none;
+}
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: #FFFDF9;
+    border-radius: 48px;
+    padding: 40px 28px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    text-align: center;
+}
+.login-card h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 32px;
+    color: #1A1A1A;
+}
+.input-field {
+    text-align: left;
+    margin-bottom: 20px;
+}
+.input-field label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 6px;
+    display: block;
+}
+.input-field input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #E0DCD5;
+    border-radius: 30px;
+    font-size: 15px;
+    background: white;
+    outline: none;
+}
+.academy-badge {
+    background: #F0EBE4;
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #8B5A3C;
+    margin: 12px 0 20px;
+}
+.login-btn {
+    background: #1A1A1A;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 14px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.login-footer {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 14px;
+    color: #8B5A3C;
+    font-weight: 500;
+}
+.login-error {
+    color: #c44;
+    font-size: 13px;
+    margin-top: 8px;
+}
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #8b5cf6; --primary-light: #c084fc; --bg: #f5f3ff; --card: white; --text: #1e1b4b; --subtext: #8b79c9; --border: #eeeef7; --accent: #10b981; }
         body { background: var(--bg); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 80px; color: var(--text); transition: background 0.3s, color 0.3s; }
@@ -767,7 +855,29 @@
     </style>
 </head>
 <body>
-<div class="container">
+    <!-- PANTALLA DE LOGIN -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <h1>Iniciar sesión</h1>
+        <div class="input-field">
+            <label>Correo electrónico</label>
+            <input type="email" id="loginEmail" placeholder="usuario@maryse.com">
+        </div>
+        <div class="input-field">
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword" placeholder="contraseña">
+        </div>
+        <div class="academy-badge">Academy</div>
+        <button class="login-btn" id="doLoginBtn">Iniciar sesión</button>
+        <div class="login-footer">
+            <span>Registrarse</span>
+        </div>
+        <div id="loginErrorMsg" class="login-error"></div>
+    </div>
+</div>
+<div id="appContainer" style="display: none;">
+    <!-- TODO TU CONTENIDO ACTUAL (container, views, etc.) VA AQUÍ DENTRO -->
+</div>
     <!-- HOME -->
     <div id="viewHome" class="view active">
     <div class="header">
@@ -4037,6 +4147,43 @@ cargarFotosNube();
 
 // Exponer función global
 window.subirFotoANube = subirFotoANube;
+// ========== LOGIN ==========
+const VALID_USERS = {
+    "maryse@academy.com": "1234",
+    "alumna@maryse.com": "academy",
+    "demo@maryse.com": "demo"
+};
+
+const loginOverlay = document.getElementById('loginOverlay');
+const appContainer = document.getElementById('appContainer');
+const loginBtn = document.getElementById('doLoginBtn');
+const loginEmail = document.getElementById('loginEmail');
+const loginPass = document.getElementById('loginPassword');
+const loginError = document.getElementById('loginErrorMsg');
+
+function entrarApp() {
+    loginOverlay.classList.add('hidden');
+    appContainer.style.display = 'block';
+}
+
+loginBtn.addEventListener('click', () => {
+    const email = loginEmail.value.trim();
+    const pass = loginPass.value;
+
+    if (!email || !pass) {
+        loginError.innerText = "❌ Correo y contraseña requeridos";
+        return;
+    }
+
+    if (VALID_USERS[email] && VALID_USERS[email] === pass) {
+        entrarApp();
+    } else {
+        loginError.innerText = "Acceso denegado. Credenciales incorrectas.";
+    }
+});
+
+loginEmail.addEventListener('keypress', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+loginPass.addEventListener('keypress', (e) => { if (e.key === 'Enter') loginBtn.click(); });
 </script>
 </body>
 </html>
