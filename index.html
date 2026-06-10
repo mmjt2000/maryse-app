@@ -4184,6 +4184,64 @@ loginBtn.addEventListener('click', () => {
 
 loginEmail.addEventListener('keypress', (e) => { if (e.key === 'Enter') loginBtn.click(); });
 loginPass.addEventListener('keypress', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+// ========== LOGIN INDEPENDIENTE (no se rompe por otros errores) ==========
+(function() {
+    // Esperar a que el DOM esté listo
+    function iniciarLogin() {
+        const VALID_USERS = {
+            "maryse@academy.com": "1234",
+            "alumna@maryse.com": "academy",
+            "demo@maryse.com": "demo"
+        };
+
+        const loginOverlay = document.getElementById('loginOverlay');
+        const appContainer = document.getElementById('appContainer');
+        const loginBtn = document.getElementById('doLoginBtn');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPass = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginErrorMsg');
+
+        // Si no encuentra los elementos, el login no está en la página
+        if (!loginBtn || !loginOverlay || !appContainer) {
+            console.log("Login no encontrado, revisa el HTML");
+            return;
+        }
+
+        // Función para entrar a la app
+        function entrarApp() {
+            loginOverlay.classList.add('hidden');
+            appContainer.style.display = 'block';
+        }
+
+        // Evento del botón
+        loginBtn.onclick = function() {
+            const email = loginEmail.value.trim();
+            const pass = loginPass.value;
+
+            if (!email || !pass) {
+                if (loginError) loginError.innerText = "❌ Correo y contraseña requeridos";
+                return;
+            }
+
+            if (VALID_USERS[email] && VALID_USERS[email] === pass) {
+                entrarApp();
+            } else {
+                if (loginError) loginError.innerText = "Acceso denegado. Credenciales incorrectas.";
+            }
+        };
+
+        // Enter para login
+        if (loginEmail) loginEmail.onkeypress = function(e) { if (e.key === 'Enter') loginBtn.click(); };
+        if (loginPass) loginPass.onkeypress = function(e) { if (e.key === 'Enter') loginBtn.click(); };
+    }
+
+    // Ejecutar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciarLogin);
+    } else {
+        iniciarLogin();
+    }
+})();
 </script>
 </body>
 </html>
