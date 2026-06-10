@@ -767,10 +767,15 @@
     </style>
 </head>
 <body>
-    <div id="contenidoApp">
-    <div class="container">
+   <div id="contenidoApp" style="display: none;">
+    <!-- Aquí está vacío -->
+</div>
+<div id="viewHome" class="view active">
+    <!-- Todo tu contenido real -->
+</div>
     <!-- HOME -->
-    <div id="loginSection" class="card">
+
+<div id="loginSection" class="card" style="display: block;">
     <div class="card-title">🔐 Iniciar sesión</div>
     <input type="email" id="loginEmail" placeholder="Correo electrónico">
     <input type="password" id="loginPassword" placeholder="Contraseña">
@@ -794,7 +799,7 @@
 </div>
 
 <div id="contenidoApp" style="display: none;">
-    <!-- Aquí va TODO el contenido actual de tu app (Home, Academy, Agenda, etc.) -->
+    <!-- TODO el contenido actual de la app (HOME, ACADEMY, AGENDA, etc.) va aquí -->
 </div>
     <div id="viewHome" class="view active">
     <div class="header">
@@ -1105,6 +1110,42 @@
 </div>
 
 <script>
+function mostrarRegistro() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('registroSection').style.display = 'block';
+}
+
+function mostrarLogin() {
+    document.getElementById('registroSection').style.display = 'none';
+    document.getElementById('loginSection').style.display = 'block';
+}
+
+async function cargarPerfil(user) {
+    const { data } = await supabase.from('perfiles').select('rol').eq('id', user.id).single();
+    const rol = data?.rol || 'amiga';
+    
+    if (rol === 'maryse' || rol === 'mama') {
+        // Mostrar todas las vistas (Agenda, Academy, etc.)
+        document.getElementById('viewAgendaNueva')?.classList.remove('hidden');
+    } else {
+        // Ocultar Agenda y otras vistas sensibles
+        document.getElementById('viewAgendaNueva')?.classList.add('hidden');
+    }
+}
+
+async function verificarSesion() {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('registroSection').style.display = 'none';
+        document.getElementById('contenidoApp').style.display = 'block';
+        cargarPerfil(data.session.user);
+    }
+}
+
+// Llamar a verificar sesión al cargar
+verificarSesion();
+
 // ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
 let fotosGuardadas = [];
 
