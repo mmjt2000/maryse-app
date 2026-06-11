@@ -4386,6 +4386,29 @@ window.entrarApp = function(email) {
     originalEntrarApp(email);
     controlarCirculoAdmin();
 };
+// ========== CONTROL VISIBILIDAD DEL CÍRCULO ADMIN ==========
+function controlarCirculoAdmin() {
+    const currentUser = sessionStorage.getItem('maryse_user');
+    const adminCircle = document.querySelector('.circle-admin');
+    if (!adminCircle) return;
+
+    // Mostrar círculo SOLO para los correos de admin
+    if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
+        adminCircle.style.display = 'flex';
+    } else {
+        adminCircle.style.display = 'none';
+    }
+}
+
+// Modificar la función entrarApp para que también controle el círculo
+const originalEntrarApp = entrarApp;
+window.entrarApp = function(email) {
+    originalEntrarApp(email);
+    controlarCirculoAdmin();
+};
+
+// También ejecutar al cargar la página por si ya hay sesión
+controlarCirculoAdmin();    
 </script>
 </body>
 </html>
