@@ -1580,6 +1580,7 @@ setInterval(actualizarBloqueDinamico, 3600000);
     <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
     <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
     <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
+    <div class="radial-item" onclick="mostrarMundoReal()"><span>🌍</span><span>Mundo Real</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
     <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
@@ -1592,8 +1593,8 @@ setInterval(actualizarBloqueDinamico, 3600000);
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 
 <script>
+    
 // ==================== FUNCIONES DE AGENDA (NUEVA) ====================
-
 const horarioPredeterminadoN = {
     "Lunes": ["OFIMATICA", "OFIMATICA", "HISTORIA", "ESPAÑOL", "BREAK", "OFIMATICA", "ESPAÑOL", "MATEMATICAS", "ARTES"],
     "Martes": ["EDUCACION FISICA", "EDUCACION FISICA", "FORMACION CIVICA Y ETICA", "FORMACION CIVICA Y ETICA", "BREAK", "FISICA", "FISICA", "ESPAÑOL", "MATEMATICAS"],
@@ -4443,6 +4444,10 @@ if (typeof toggleRadialMenu === 'undefined') {
 
 // Ejecutar control al cargar
 controlarCirculoAdmin();  
+
+function mostrarMundoReal() {
+    alert("🌍 MUNDO REAL - Próximamente: seguridad personal, primeros auxilios, finanzas, salud, autonomía y más para la vida real.");
+}
 </script>
 </body>
 </html>
