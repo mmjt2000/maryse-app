@@ -4343,66 +4343,64 @@ document.addEventListener('keydown', function(e) {
         cerrarTodosModales();
     }
 });
-
-</script>
-<!-- MODAL ADMIN (solo visible para admins) -->
-<div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:30000; align-items:center; justify-content:center;">
-    <div style="background:var(--card); border-radius:48px; max-width:600px; width:90%; max-height:85vh; overflow-y:auto; padding:24px; position:relative;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2>👑 Administración</h2>
-            <button id="closeAdminBtn" style="background:#dc2626; color:white; border:none; border-radius:40px; padding:8px 20px; cursor:pointer;">Volver</button>
-        </div>
-        
-        <!-- Estadísticas de uso -->
-        <div style="background:var(--bg); border-radius:28px; padding:16px; margin-bottom:20px;">
-            <h3>📊 Estadísticas de uso</h3>
-            <div id="adminStats"></div>
-        </div>
-        
-        <!-- Estadísticas generales (XP, nivel, etc.) -->
-        <div style="background:var(--bg); border-radius:28px; padding:16px; margin-bottom:20px;">
-            <h3>🏆 Progreso general</h3>
-            <div id="generalStats"></div>
-        </div>
-        
-        <!-- Recordatorios -->
-        <div style="background:var(--bg); border-radius:28px; padding:16px; margin-bottom:20px;">
-            <h3>🔔 Recordatorios</h3>
-            <label><input type="checkbox" id="notifEnabled"> Activar</label><br><br>
-            <label>Hora: <input type="time" id="notifTime" value="17:00"></label><br><br>
-            <label>Días:</label>
-            <div id="notifDays" style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;">
-                <span class="day-chip" data-day="0">Dom</span><span class="day-chip" data-day="1">Lun</span><span class="day-chip" data-day="2">Mar</span>
-                <span class="day-chip" data-day="3">Mié</span><span class="day-chip" data-day="4">Jue</span><span class="day-chip" data-day="5">Vie</span>
-                <span class="day-chip" data-day="6">Sáb</span>
+// ========== PANEL ADMIN - FIX ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Crear modal si no existe
+    if (!document.getElementById('adminModal')) {
+        const modalHTML = `
+            <div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:30000; align-items:center; justify-content:center;">
+                <div style="background:white; border-radius:48px; max-width:600px; width:90%; padding:24px;">
+                    <div style="display:flex; justify-content:space-between;">
+                        <h2>👑 Administración</h2>
+                        <button id="closeAdminBtn" style="background:#dc2626; color:white; border:none; border-radius:40px; padding:8px 20px;">Volver</button>
+                    </div>
+                    <div id="adminStatsContainer"></div>
+                    <hr>
+                    <button id="exportDataBtn">📥 Exportar</button>
+                    <button id="importDataBtn">📤 Importar</button>
+                    <input type="file" id="importFile" style="display:none;">
+                </div>
             </div>
-            <label>Mensaje: <select id="notifMessage"><option>📚 ¿Ya practicaste hoy?</option><option>🎯 ¡Hora de aprender!</option></select></label><br><br>
-            <button class="btn btn-primary" id="testNotifBtn">Probar</button>
-        </div>
-        
-        <!-- Copia de seguridad -->
-        <div style="background:var(--bg); border-radius:28px; padding:16px;">
-            <h3>💾 Copia de seguridad</h3>
-            <button class="btn btn-warning" id="exportDataBtn">📥 Exportar</button>
-            <button class="btn btn-success" id="importDataBtn">📤 Importar</button>
-            <input type="file" id="importFile" accept=".json" style="display:none;">
-        </div>
-    </div>
-</div>
-<!-- MODAL ADMIN -->
-<div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:30000; align-items:center; justify-content:center;">
-    <div style="background:var(--card); border-radius:48px; max-width:600px; width:90%; padding:24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2>👑 Administración</h2>
-            <button id="closeAdminBtn" style="background:#dc2626; color:white; border:none; border-radius:40px; padding:8px 20px;">Volver</button>
-        </div>
-        <div id="adminStatsContainer"></div>
-        <hr style="margin:20px 0;">
-        <button id="exportDataBtn" class="btn btn-warning">📥 Exportar datos</button>
-        <button id="importDataBtn" class="btn btn-success">📤 Importar datos</button>
-        <input type="file" id="importFile" accept=".json" style="display:none;">
-    </div>
-</div>    
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    // Función global para abrir panel
+    window.openAdminPanel = function() {
+        const modal = document.getElementById('adminModal');
+        if (!modal) return;
+        const stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
+        let html = '<h3>📊 Estadísticas</h3><ul>';
+        for (const [email, data] of Object.entries(stats)) {
+            let name = email;
+            if (email === 'jeant.montreuil@gmail.com') name = 'Admin I';
+            else if (email === 'maryseadelekevin@gmail.com') name = 'Admin II';
+            else if (email === 'maryse@academy.com') name = 'Maryse';
+            html += `<li><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
+        }
+        html += '</ul>';
+        const container = document.getElementById('adminStatsContainer');
+        if (container) container.innerHTML = html;
+        modal.style.display = 'flex';
+    };
+
+    // Cerrar modal
+    const closeBtn = document.getElementById('closeAdminBtn');
+    if (closeBtn) closeBtn.onclick = () => document.getElementById('adminModal').style.display = 'none';
+
+    // Mostrar/ocultar círculo según rol
+    const currentUser = sessionStorage.getItem('maryse_user');
+    const adminCircle = document.querySelector('.circle-admin');
+    if (adminCircle) {
+        if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
+            adminCircle.style.display = 'flex';
+        } else {
+            adminCircle.style.display = 'none';
+        }
+    }
+});
+    
+</script>    
 </body>
 </html>
 
