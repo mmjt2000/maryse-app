@@ -4458,6 +4458,14 @@ controlarCirculoAdmin();
 function mostrarMundoReal() {
     alert("🌍 MUNDO REAL - Próximamente: seguridad personal, primeros auxilios, finanzas, salud, autonomía y más para la vida real.");
 }
+// Forzar la función goToView si no existe
+if (typeof goToView === 'undefined') {
+    window.goToView = function(viewId) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        const targetView = document.getElementById('view' + viewId.charAt(0).toUpperCase() + viewId.slice(1));
+        if (targetView) targetView.classList.add('active');
+    };
+}   
 </script>
 </body>
 </html>
