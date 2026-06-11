@@ -792,7 +792,7 @@
     </style>
 </head>
 <body>
-    <div id="loginOverlay" class="login-overlay">
+<div id="loginOverlay" class="login-overlay">
     <div class="login-card">
         <h1>Iniciar sesión</h1>
         <div class="input-field">
@@ -806,9 +806,31 @@
         <div class="academy-badge">Academy</div>
         <button class="login-btn" id="doLoginBtn">Iniciar sesión</button>
         <div id="loginErrorMsg" class="login-error"></div>
+        <hr style="margin: 20px 0;">
+        <button class="login-btn" id="showRegisterBtn" style="background:#8b5cf6;">📝 Registrarse como invitado</button>
+    </div>
+</div>
+
+<!-- Modal de registro de invitado -->
+<div id="registerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20001; align-items:center; justify-content:center;">
+    <div style="background:#FFFDF9; border-radius:48px; padding:40px 28px; text-align:center; max-width:400px; margin:auto; margin-top:10%;">
+        <h2>Registrarse como invitado</h2>
+        <div class="input-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@email.com"></div>
+        <div class="input-field"><label>Contraseña</label><input type="password" id="regPass" placeholder="contraseña"></div>
+        <div class="input-field"><label>Repetir contraseña</label><input type="password" id="regPass2" placeholder="repite contraseña"></div>
+        <button class="login-btn" id="doRegisterBtn" style="background:#8b5cf6;">Registrarse</button>
+        <button class="login-btn" id="closeRegisterBtn" style="background:#aaa;">Cancelar</button>
+        <div id="registerErrorMsg" class="login-error"></div>
     </div>
 </div>
 <div class="container">
+<!-- PANEL DE ADMIN (solo visible para admins) -->
+<div id="adminPanel" style="display:none; margin-top:30px; padding:20px; background:var(--card); border-radius:28px; border:1px solid var(--border);">
+    <h2>👑 Panel de Administración</h2>
+    <div id="statsContainer"></div>
+    <h3>📋 Invitados registrados (<span id="guestCount">0</span>/25)</h3>
+    <div id="guestList"></div>
+</div>
     <!-- HOME -->
     <div id="viewHome" class="view active">
     <div class="header">
@@ -1119,43 +1141,167 @@
 </div>
 
 <script>
-    // ========== LOGIN ==========
-(function() {
-    const VALID_USERS = {
-        "maryse@academy.com": "1234",
-        "alumna@maryse.com": "academy"
-    };
+// ========== LOGIN COMPLETO ==========
+const FIXED_USERS = {
+    "jeant.montreuil@gmail.com": { pass: "coulou2026", role: "admin", name: "Admin I" },
+    "maryseadelekevin@gmail.com": { pass: "fiona2026", role: "admin", name: "Admin II" },
+    "maryse@academy.com": { pass: "maryse2026", role: "maryse", name: "Maryse" },
+    "alumna@maryse.com": { pass: "academy", role: "guest", name: "Invitado de prueba" }
+};
 
-    const loginOverlay = document.getElementById('loginOverlay');
-    const loginBtn = document.getElementById('doLoginBtn');
-    const loginEmail = document.getElementById('loginEmail');
-    const loginPass = document.getElementById('loginPassword');
-    const loginError = document.getElementById('loginErrorMsg');
+let guests = JSON.parse(localStorage.getItem('maryse_guests') || '[]');
+let stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
 
-    if (sessionStorage.getItem('maryse_logged') === 'true') {
-        if (loginOverlay) loginOverlay.style.display = 'none';
+function saveGuests() { localStorage.setItem('maryse_guests', JSON.stringify(guests)); }
+function saveStats() { localStorage.setItem('maryse_stats', JSON.stringify(stats)); }
+
+function updateStats(email) {
+    if (!stats[email]) stats[email] = { count: 0, lastAccess: null, totalTime: 0 };
+    stats[email].count++;
+    stats[email].lastAccess = new Date().toLocaleString();
+    saveStats();
+}
+
+function isValidUser(email, pass) {
+    if (FIXED_USERS[email] && FIXED_USERS[email].pass === pass) return true;
+    const guest = guests.find(g => g.email === email && g.pass === pass);
+    return !!guest;
+}
+
+function getUserRole(email) {
+    if (FIXED_USERS[email]) return FIXED_USERS[email].role;
+    return "guest";
+}
+
+function showAdminPanel() {
+    const panel = document.getElementById('adminPanel');
+    const currentUser = sessionStorage.getItem('maryse_user');
+    if (panel && currentUser && (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com')) {
+        panel.style.display = 'block';
+        renderStats();
+        renderGuestList();
+    } else if (panel) {
+        panel.style.display = 'none';
+    }
+}
+
+function renderStats() {
+    const container = document.getElementById('statsContainer');
+    if (!container) return;
+    let html = '<h3>📊 Estadísticas de uso</h3><table style="width:100%; border-collapse:collapse;"><tr><th>Usuario</th><th>Veces entró</th><th>Último acceso</th></tr>';
+    for (const [email, data] of Object.entries(stats)) {
+        let name = email;
+        if (FIXED_USERS[email]) name = FIXED_USERS[email].name;
+        html += `<tr><td>${name}</td><td>${data.count}</td><td>${data.lastAccess || '-'}</td></tr>`;
+    }
+    html += '</table>';
+    container.innerHTML = html;
+}
+
+function renderGuestList() {
+    const container = document.getElementById('guestList');
+    const countSpan = document.getElementById('guestCount');
+    if (!container) return;
+    if (guests.length === 0) {
+        container.innerHTML = '<p>No hay invitados registrados.</p>';
+        if (countSpan) countSpan.innerText = '0';
         return;
     }
+    if (countSpan) countSpan.innerText = guests.length;
+    let html = '<ul style="list-style:none; padding:0;">';
+    guests.forEach((g, idx) => {
+        const guestStats = stats[g.email] || { count: 0, lastAccess: '-' };
+        html += `<li style="padding:10px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                    <div><strong>${g.email}</strong><br><small>Entradas: ${guestStats.count} | Último: ${guestStats.lastAccess || '-'}</small></div>
+                    <button onclick="removeGuest(${idx})" style="background:#dc2626; color:white; border:none; border-radius:30px; padding:5px 15px; cursor:pointer;">Eliminar</button>
+                 </li>`;
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+}
 
-    if (loginBtn) {
-        loginBtn.onclick = function() {
-            const email = loginEmail.value.trim();
-            const pass = loginPass.value;
-
-            if (!email || !pass) {
-                loginError.innerText = "❌ Correo y contraseña requeridos";
-                return;
-            }
-
-            if (VALID_USERS[email] && VALID_USERS[email] === pass) {
-                loginOverlay.style.display = 'none';
-                sessionStorage.setItem('maryse_logged', 'true');
-            } else {
-                loginError.innerText = "Acceso denegado";
-            }
-        };
+function removeGuest(index) {
+    if (confirm('¿Eliminar este invitado?')) {
+        const removed = guests.splice(index, 1)[0];
+        if (removed && stats[removed.email]) delete stats[removed.email];
+        saveGuests();
+        saveStats();
+        renderGuestList();
+        renderStats();
     }
-})();
+}
+
+function registerGuest(email, pass) {
+    email = email.trim().toLowerCase();
+    if (guests.length >= 25) return { success: false, msg: "Máximo 25 invitados. Contacta al admin." };
+    if (FIXED_USERS[email]) return { success: false, msg: "Este correo ya está registrado como usuario fijo." };
+    if (guests.find(g => g.email === email)) return { success: false, msg: "Este correo ya está registrado como invitado." };
+    if (!email.includes('@') || pass.length < 3) return { success: false, msg: "Correo válido y contraseña de mínimo 3 caracteres." };
+    guests.push({ email, pass });
+    saveGuests();
+    return { success: true };
+}
+
+// Mostrar/ocultar login y entrar app
+function entrarApp(email) {
+    updateStats(email);
+    sessionStorage.setItem('maryse_user', email);
+    sessionStorage.setItem('maryse_logged', 'true');
+    document.getElementById('loginOverlay').style.display = 'none';
+    showAdminPanel();
+}
+
+// Eventos login
+document.getElementById('doLoginBtn').onclick = function() {
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPassword').value;
+    const errorDiv = document.getElementById('loginErrorMsg');
+    if (!email || !pass) { errorDiv.innerText = "❌ Correo y contraseña requeridos"; return; }
+    if (isValidUser(email, pass)) {
+        entrarApp(email);
+    } else {
+        errorDiv.innerText = "Acceso denegado. Credenciales incorrectas.";
+    }
+};
+
+// Registro de invitados
+const modal = document.getElementById('registerModal');
+document.getElementById('showRegisterBtn').onclick = () => modal.style.display = 'flex';
+document.getElementById('closeRegisterBtn').onclick = () => modal.style.display = 'none';
+document.getElementById('doRegisterBtn').onclick = function() {
+    const email = document.getElementById('regEmail').value.trim().toLowerCase();
+    const pass = document.getElementById('regPass').value;
+    const pass2 = document.getElementById('regPass2').value;
+    const errorDiv = document.getElementById('registerErrorMsg');
+    if (!email || !pass) { errorDiv.innerText = "Completa todos los campos"; return; }
+    if (pass !== pass2) { errorDiv.innerText = "Las contraseñas no coinciden"; return; }
+    const result = registerGuest(email, pass);
+    if (result.success) {
+        modal.style.display = 'none';
+        alert("✅ Registro exitoso. Ahora inicia sesión con tus credenciales.");
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPass').value = '';
+        document.getElementById('regPass2').value = '';
+        errorDiv.innerText = '';
+    } else {
+        errorDiv.innerText = result.msg;
+    }
+};
+
+// Cerrar modal si hacen clic fuera
+window.onclick = function(e) { if (e.target === modal) modal.style.display = 'none'; };
+
+// Si ya había sesión activa
+if (sessionStorage.getItem('maryse_logged') === 'true') {
+    const userEmail = sessionStorage.getItem('maryse_user');
+    if (userEmail && isValidUser(userEmail, FIXED_USERS[userEmail]?.pass || guests.find(g=>g.email===userEmail)?.pass)) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        showAdminPanel();
+    } else {
+        sessionStorage.removeItem('maryse_logged');
+        sessionStorage.removeItem('maryse_user');
+    }
+}
 // ==================== GALERIA DE FOTOS SIMPLE Y FUNCIONAL ====================
 let fotosGuardadas = [];
 
@@ -3696,7 +3842,11 @@ function goToView(viewName) {
     }
 }
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="maryse2026"){ alert("👩‍👧 Bienvenida, padres de familia."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
-function signOutAndClose(){ if(confirm("¿Cerrar sesión y salir de la aplicación?")){ localStorage.clear(); if(typeof window.close === 'function'){ window.close(); }else{ document.body.innerHTML=`<div style="text-align:center;padding:50px;"><h2>🔒 Sesión cerrada</h2><p>Puedes cerrar esta pestaña.</p><button onclick="location.reload()">Volver a entrar</button></div>`; } } }
+function signOutAndClose() {
+    sessionStorage.removeItem('maryse_logged');
+    sessionStorage.removeItem('maryse_user');
+    location.reload();
+}
 function checkSession(){ const logged=localStorage.getItem("maryse_logged_in"); if(!logged && window.location.hash!=="#nologin"){ const email=prompt("📧 Introduce tu email para continuar:"); if(email && email.includes("@")){ localStorage.setItem("maryse_logged_in","true"); localStorage.setItem("maryse_user_email",email); }else if(email!==null){ alert("Email no válido"); location.reload(); } } }
 // ==================== COSAS DE LA VIDA - 10 SUPERPODERES SIN XP ====================
 const lifeSkills = [
