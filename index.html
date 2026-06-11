@@ -4386,29 +4386,63 @@ window.entrarApp = function(email) {
     originalEntrarApp(email);
     controlarCirculoAdmin();
 };
-// ========== CONTROL VISIBILIDAD DEL CÍRCULO ADMIN ==========
-function controlarCirculoAdmin() {
-    const currentUser = sessionStorage.getItem('maryse_user');
-    const adminCircle = document.querySelector('.circle-admin');
-    if (!adminCircle) return;
-
-    // Mostrar círculo SOLO para los correos de admin
-    if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
-        adminCircle.style.display = 'flex';
-    } else {
-        adminCircle.style.display = 'none';
+// ========== CONTROL CÍRCULO ADMIN (sin duplicar) ==========
+if (typeof controlarCirculoAdmin === 'undefined') {
+    function controlarCirculoAdmin() {
+        const currentUser = sessionStorage.getItem('maryse_user');
+        const adminCircle = document.querySelector('.circle-admin');
+        if (!adminCircle) return;
+        if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
+            adminCircle.style.display = 'flex';
+        } else {
+            adminCircle.style.display = 'none';
+        }
     }
 }
 
-// Modificar la función entrarApp para que también controle el círculo
-const originalEntrarApp = entrarApp;
-window.entrarApp = function(email) {
-    originalEntrarApp(email);
-    controlarCirculoAdmin();
-};
+// Sobrescribir entrarApp solo si no se ha sobrescrito ya
+if (typeof window.entrarAppOriginal === 'undefined') {
+    window.entrarAppOriginal = entrarApp;
+    window.entrarApp = function(email) {
+        window.entrarAppOriginal(email);
+        controlarCirculoAdmin();
+    };
+}
 
-// También ejecutar al cargar la página por si ya hay sesión
-controlarCirculoAdmin();    
+// ========== FUNCIONES DE CÍRCULOS FLOTANTES ==========
+if (typeof openAdminPanel === 'undefined') {
+    window.openAdminPanel = function() {
+        const currentUser = sessionStorage.getItem('maryse_user');
+        if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
+            const panel = document.getElementById('adminPanel');
+            if (panel) {
+                panel.style.display = 'block';
+                if (typeof renderStats === 'function') renderStats();
+                if (typeof renderGuestList === 'function') renderGuestList();
+            }
+        } else {
+            alert("Acceso denegado. Solo administradores.");
+        }
+    };
+}
+
+if (typeof signOutAndClose === 'undefined') {
+    window.signOutAndClose = function() {
+        sessionStorage.removeItem('maryse_user');
+        sessionStorage.removeItem('maryse_logged');
+        location.reload();
+    };
+}
+
+if (typeof toggleRadialMenu === 'undefined') {
+    window.toggleRadialMenu = function() {
+        const menu = document.getElementById('radialMenu');
+        if (menu) menu.classList.toggle('active');
+    };
+}
+
+// Ejecutar control al cargar
+controlarCirculoAdmin();  
 </script>
 </body>
 </html>
