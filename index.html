@@ -4212,7 +4212,48 @@ document.addEventListener('keydown', function(e) {
         cerrarTodosModales();
     }
 });
+// ========== CONTROL DEL CÍRCULO ADMIN ==========
+function controlarCirculoAdmin() {
+    const currentUser = sessionStorage.getItem('maryse_user');
+    const adminCircle = document.querySelector('.circle-admin');
+    if (!adminCircle) return;
+    
+    // Mostrar círculo SOLO para admins
+    if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
+        adminCircle.style.display = 'flex';
+    } else {
+        adminCircle.style.display = 'none';
+    }
+}
 
+// Función para abrir el panel de admin (ya existe, pero la renombramos)
+window.abrirPanelAdmin = function() {
+    const panel = document.getElementById('adminPanel');
+    if (panel) {
+        panel.style.display = 'block';
+        renderStats();
+        renderGuestList();
+    }
+};
+
+// Asignar la función al círculo
+document.querySelector('.circle-admin')?.addEventListener('click', function() {
+    const currentUser = sessionStorage.getItem('maryse_user');
+    if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
+        abrirPanelAdmin();
+    } else {
+        alert("Acceso denegado. Solo administradores.");
+    }
+});
+
+// Ejecutar al cargar y después de cada login
+controlarCirculoAdmin();
+// También modificar entrarApp para que lo ejecute
+const originalEntrarApp = entrarApp;
+window.entrarApp = function(email) {
+    originalEntrarApp(email);
+    controlarCirculoAdmin();
+};
 </script>
 </body>
 </html>
