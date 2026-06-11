@@ -1510,6 +1510,62 @@ actualizarBloqueDinamico();
 
 // Actualizar cada hora (por si cambia mientras la app está abierta)
 setInterval(actualizarBloqueDinamico, 3600000);
+// ========== HOME DINÁMICO (recordatorios según hora) ==========
+function actualizarBloqueDinamico() {
+    const ahora = new Date();
+    const hora = ahora.getHours();
+    
+    let titulo = "";
+    let contenido = [];
+    
+    if (hora >= 5 && hora < 9) {
+        titulo = "🌅 Inicio del día · Agua + cuerpo + enfoque";
+        contenido = [
+            "💧 Bebe un vaso de agua",
+            "🤸‍♀️ Muévete 3–5 minutos",
+            "🧠 Define una intención simple del día"
+        ];
+    } else if (hora >= 9 && hora < 12) {
+        titulo = "🏫 Durante la mañana · Cuerpo activo, mente clara";
+        contenido = [
+            "🚶‍♀️ Levántate y muévete cada cierto tiempo",
+            "💧 Toma agua regularmente",
+            "🧘‍♀️ Respira si sientes estrés o presión"
+        ];
+    } else if (hora >= 12 && hora < 15) {
+        titulo = "🍽️ Mediodía · Nutrición básica";
+        contenido = [
+            "🥗 Come algo con proteína + fruta/verdura",
+            "🍞 Incluye energía (carbohidrato simple)",
+            "🚫 Evita exceso de azúcar o comida pesada"
+        ];
+    } else if (hora >= 15 && hora < 19) {
+        titulo = "🌤️ Tarde · Movimiento obligatorio del día";
+        contenido = [
+            "🏃‍♀️ 20–40 min de actividad física",
+            "📱 Reduce tiempo pasivo en pantalla"
+        ];
+    } else {
+        titulo = "🌙 Noche · Calma y recuperación";
+        contenido = [
+            "📵 Baja pantallas 30–60 min antes de dormir",
+            "📖 Haz algo tranquilo (leer, música, respirar)",
+            "😴 Prepárate para dormir 8–10 horas"
+        ];
+    }
+    
+    const titleElem = document.getElementById('blockTitle');
+    const contentElem = document.getElementById('blockContent');
+    
+    if (titleElem) titleElem.innerHTML = titulo;
+    if (contentElem) contentElem.innerHTML = contenido.map(texto => `<span>${texto}</span>`).join('');
+}
+
+// Ejecutar al cargar la página
+actualizarBloqueDinamico();
+
+// Actualizar cada hora (por si cambia mientras la app está abierta)
+setInterval(actualizarBloqueDinamico, 3600000);
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
