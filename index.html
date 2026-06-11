@@ -1140,29 +1140,6 @@
     </div>
 </div>
 
-
-<!-- CÍRCULOS FLOTANTES -->
-<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Admin">👑</div>
-<div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
-<div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
-
-<!-- MENÚ RADIAL -->
-    <div id="radialMenu" class="radial-menu">
-    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
-    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
-    <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
-    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
-    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
-    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
-    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
-    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
-    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
-    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
-    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
-    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
-</div>
-
-<button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 <script>
 // ========== LOGIN COMPLETO ==========
 const FIXED_USERS = {
@@ -1189,15 +1166,6 @@ function isValidUser(email, pass) {
     if (FIXED_USERS[email] && FIXED_USERS[email].pass === pass) return true;
     const guest = guests.find(g => g.email === email && g.pass === pass);
     return !!guest;
-    // Ocultar/mostrar círculo de admin según el rol
-    const adminCircle = document.querySelector('.circle-admin');
-    if (adminCircle) {
-        if (email === 'jeant.montreuil@gmail.com' || email === 'maryseadelekevin@gmail.com') {
-            adminCircle.style.display = 'flex';
-        } else {
-            adminCircle.style.display = 'none';
-        }
-    }
 }
 
 function getUserRole(email) {
@@ -1209,6 +1177,7 @@ function showAdminPanel() {
     const panel = document.getElementById('adminPanel');
     const currentUser = sessionStorage.getItem('maryse_user');
     if (panel && currentUser && (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com')) {
+        panel.style.display = 'block';
         renderStats();
         renderGuestList();
     } else if (panel) {
@@ -1280,15 +1249,6 @@ function entrarApp(email) {
     sessionStorage.setItem('maryse_logged', 'true');
     document.getElementById('loginOverlay').style.display = 'none';
     showAdminPanel();
-        // Mostrar círculo de admin solo para admins
-    const adminCircle = document.querySelector('.circle-admin');
-    if (adminCircle) {
-        if (email === 'jeant.montreuil@gmail.com' || email === 'maryseadelekevin@gmail.com') {
-            adminCircle.style.display = 'flex';
-        } else {
-            adminCircle.style.display = 'none';
-        }
-    }
 }
 
 // Eventos login
@@ -1474,120 +1434,32 @@ function actualizarRelojClasico() {
 }
 setInterval(actualizarRelojClasico, 1000);
 actualizarRelojClasico();
-// ========== MODAL ADMIN ==========
-const adminModal = document.getElementById('adminModal');
-const closeAdminBtn = document.getElementById('closeAdminBtn');
-function openAdminPanel() {
-    const modal = document.getElementById('adminModal');
-    if (!modal) return;
-    
-    // Cargar estadísticas
-    const stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
-    let html = '<h3>📊 Estadísticas de uso</h3><ul>';
-    for (const [email, data] of Object.entries(stats)) {
-        let nombre = email;
-        if (email === 'jeant.montreuil@gmail.com') nombre = 'Admin I';
-        else if (email === 'maryseadelekevin@gmail.com') nombre = 'Admin II';
-        else if (email === 'maryse@academy.com') nombre = 'Maryse';
-        html += `<li><strong>${nombre}</strong>: ${data.count} veces | Último acceso: ${data.lastAccess || '-'}</li>`;
-    }
-    html += '</ul>';
-    document.getElementById('adminStatsContainer').innerHTML = html;
-    
-    modal.style.display = 'flex';
-}
+</script>
 
-// Cerrar modal
-document.getElementById('closeAdminBtn')?.addEventListener('click', () => {
-    document.getElementById('adminModal').style.display = 'none';
-});
+<!-- CÍRCULOS FLOTANTES -->
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
+<div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
+<div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
-// Exportar datos
-document.getElementById('exportDataBtn')?.addEventListener('click', () => {
-    const data = {
-        stats: localStorage.getItem('maryse_stats'),
-        guests: localStorage.getItem('maryse_guests')
-    };
-    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'maryse_backup.json';
-    a.click();
-});
+<!-- MENÚ RADIAL -->
+    <div id="radialMenu" class="radial-menu">
+    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>Academy</span></div>
+    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>Discover</span></div>
+    <div class="radial-item" onclick="goToView('games')"><span>🎮</span><span>Games</span></div>
+    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>Papá</span></div>
+    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>Mamá</span></div>
+    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
+    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
+    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
+    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
+    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
+    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
+    <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>Agenda</span></div>
+</div>
 
-// Importar datos
-document.getElementById('importDataBtn')?.addEventListener('click', () => {
-    document.getElementById('importFile').click();
-});
-document.getElementById('importFile')?.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        const data = JSON.parse(ev.target.result);
-        if (data.stats) localStorage.setItem('maryse_stats', data.stats);
-        if (data.guests) localStorage.setItem('maryse_guests', data.guests);
-        alert('✅ Datos restaurados. Recarga la página.');
-        location.reload();
-    };
-    reader.readAsText(file);
-});
+<button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
 
-closeAdminBtn.onclick = () => adminModal.style.display = 'none';
-
-window.onclick = function(e) { if (e.target === adminModal) adminModal.style.display = 'none'; };
-
-function cargarEstadisticasAdmin() {
-    const stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
-    const usuarios = {
-        "jeant.montreuil@gmail.com": "Admin I",
-        "maryseadelekevin@gmail.com": "Admin II",
-        "maryse@academy.com": "Maryse"
-    };
-    let html = '<table style="width:100%;"><tr><th>Usuario</th><th>Veces entró</th><th>Último acceso</th></tr>';
-    for (const [email, data] of Object.entries(stats)) {
-        let nombre = usuarios[email] || email;
-        html += `<tr><td>${nombre}</td><td>${data.count || 0}</td><td>${data.lastAccess || '-'}</td></tr>`;
-    }
-    html += '</table>';
-    document.getElementById('adminStats').innerHTML = html;
-    
-    // Estadísticas generales (ejemplo)
-    document.getElementById('generalStats').innerHTML = `
-        <p>🎯 XP: 0 &nbsp;|&nbsp; 📊 Nivel: 1</p>
-        <p>📚 Lecciones: 0/16 &nbsp;|&nbsp; 👨 Papá: 0/5 &nbsp;|&nbsp; 📖 Gramática: 0/8</p>
-        <p>🏅 Logros: 0 &nbsp;|&nbsp; ✅ Completa actividades: 0</p>
-    `;
-}
-
-// Recordatorios
-const dayChips = document.querySelectorAll('#notifDays .day-chip');
-dayChips.forEach(chip => {
-    chip.onclick = () => chip.classList.toggle('active');
-});
-document.getElementById('testNotifBtn').onclick = () => alert("🔔 Recordatorio: " + document.getElementById('notifMessage').value);
-
-// Copia de seguridad
-document.getElementById('exportDataBtn').onclick = () => {
-    const data = { stats: localStorage.getItem('maryse_stats'), guests: localStorage.getItem('maryse_guests') };
-    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'maryse_backup.json';
-    a.click();
-};
-document.getElementById('importDataBtn').onclick = () => document.getElementById('importFile').click();
-document.getElementById('importFile').onchange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        const data = JSON.parse(ev.target.result);
-        if (data.stats) localStorage.setItem('maryse_stats', data.stats);
-        if (data.guests) localStorage.setItem('maryse_guests', data.guests);
-        alert("✅ Copia restaurada. Recarga la página.");
-        location.reload();
-    };
-    reader.readAsText(file);
-}; 
+<script>
 // ==================== FUNCIONES DE AGENDA (NUEVA) ====================
 
 const horarioPredeterminadoN = {
@@ -4340,79 +4212,7 @@ document.addEventListener('keydown', function(e) {
         cerrarTodosModales();
     }
 });
-// ========== PANEL ADMIN - FIX ==========
-document.addEventListener('DOMContentLoaded', function() {
-    // Crear modal si no existe
-    if (!document.getElementById('adminModal')) {
-        const modalHTML = `
-            <div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:30000; align-items:center; justify-content:center;">
-                <div style="background:white; border-radius:48px; max-width:600px; width:90%; padding:24px;">
-                    <div style="display:flex; justify-content:space-between;">
-                        <h2>👑 Administración</h2>
-                        <button id="closeAdminBtn" style="background:#dc2626; color:white; border:none; border-radius:40px; padding:8px 20px;">Volver</button>
-                    </div>
-                    <div id="adminStatsContainer"></div>
-                    <hr>
-                    <button id="exportDataBtn">📥 Exportar</button>
-                    <button id="importDataBtn">📤 Importar</button>
-                    <input type="file" id="importFile" style="display:none;">
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-    }
 
-    // Función global para abrir panel
-    window.openAdminPanel = function() {
-        const modal = document.getElementById('adminModal');
-        if (!modal) return;
-        const stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
-        let html = '<h3>📊 Estadísticas</h3><ul>';
-        for (const [email, data] of Object.entries(stats)) {
-            let name = email;
-            if (email === 'jeant.montreuil@gmail.com') name = 'Admin I';
-            else if (email === 'maryseadelekevin@gmail.com') name = 'Admin II';
-            else if (email === 'maryse@academy.com') name = 'Maryse';
-            html += `<li><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
-        }
-        html += '</ul>';
-        const container = document.getElementById('adminStatsContainer');
-        if (container) container.innerHTML = html;
-        modal.style.display = 'flex';
-    };
-
-    // Cerrar modal
-    const closeBtn = document.getElementById('closeAdminBtn');
-    if (closeBtn) closeBtn.onclick = () => document.getElementById('adminModal').style.display = 'none';
-
-  // Forzar control de círculo admin
-function controlarCirculoAdmin() {
-    const currentUser = sessionStorage.getItem('maryse_user');
-    const adminCircle = document.querySelector('.circle-admin');
-    if (!adminCircle) return;
-    
-    if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
-        adminCircle.style.display = 'flex';
-    } else {
-        adminCircle.style.display = 'none';
-    }
-}
-controlarCirculoAdmin();
-});    
-</script>    
-<script>
-// FORZAR CONTROL DEL CÍRCULO ADMIN
-setTimeout(function() {
-    const user = sessionStorage.getItem('maryse_user');
-    const circulo = document.querySelector('.circle-admin');
-    if (circulo) {
-        if (user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com') {
-            circulo.style.display = 'flex';
-        } else {
-            circulo.style.display = 'none';
-        }
-    }
-}, 500);
 </script>
 </body>
 </html>
