@@ -1166,6 +1166,15 @@ function isValidUser(email, pass) {
     if (FIXED_USERS[email] && FIXED_USERS[email].pass === pass) return true;
     const guest = guests.find(g => g.email === email && g.pass === pass);
     return !!guest;
+    // Ocultar/mostrar círculo de admin según el rol
+    const adminCircle = document.querySelector('.circle-admin');
+    if (adminCircle) {
+        if (email === 'jeant.montreuil@gmail.com' || email === 'maryseadelekevin@gmail.com') {
+            adminCircle.style.display = 'flex';
+        } else {
+            adminCircle.style.display = 'none';
+        }
+    }
 }
 
 function getUserRole(email) {
@@ -1177,7 +1186,6 @@ function showAdminPanel() {
     const panel = document.getElementById('adminPanel');
     const currentUser = sessionStorage.getItem('maryse_user');
     if (panel && currentUser && (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com')) {
-        panel.style.display = 'block';
         renderStats();
         renderGuestList();
     } else if (panel) {
@@ -1434,6 +1442,73 @@ function actualizarRelojClasico() {
 }
 setInterval(actualizarRelojClasico, 1000);
 actualizarRelojClasico();
+// ========== MODAL ADMIN ==========
+const adminModal = document.getElementById('adminModal');
+const closeAdminBtn = document.getElementById('closeAdminBtn');
+
+function openAdminPanel() {
+    if (adminModal) {
+        adminModal.style.display = 'flex';
+        cargarEstadisticasAdmin();
+    }
+}
+
+closeAdminBtn.onclick = () => adminModal.style.display = 'none';
+
+window.onclick = function(e) { if (e.target === adminModal) adminModal.style.display = 'none'; };
+
+function cargarEstadisticasAdmin() {
+    const stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
+    const usuarios = {
+        "jeant.montreuil@gmail.com": "Admin I",
+        "maryseadelekevin@gmail.com": "Admin II",
+        "maryse@academy.com": "Maryse"
+    };
+    let html = '<table style="width:100%;"><tr><th>Usuario</th><th>Veces entró</th><th>Último acceso</th></tr>';
+    for (const [email, data] of Object.entries(stats)) {
+        let nombre = usuarios[email] || email;
+        html += `<tr><td>${nombre}</td><td>${data.count || 0}</td><td>${data.lastAccess || '-'}</td></tr>`;
+    }
+    html += '</table>';
+    document.getElementById('adminStats').innerHTML = html;
+    
+    // Estadísticas generales (ejemplo)
+    document.getElementById('generalStats').innerHTML = `
+        <p>🎯 XP: 0 &nbsp;|&nbsp; 📊 Nivel: 1</p>
+        <p>📚 Lecciones: 0/16 &nbsp;|&nbsp; 👨 Papá: 0/5 &nbsp;|&nbsp; 📖 Gramática: 0/8</p>
+        <p>🏅 Logros: 0 &nbsp;|&nbsp; ✅ Completa actividades: 0</p>
+    `;
+}
+
+// Recordatorios
+const dayChips = document.querySelectorAll('#notifDays .day-chip');
+dayChips.forEach(chip => {
+    chip.onclick = () => chip.classList.toggle('active');
+});
+document.getElementById('testNotifBtn').onclick = () => alert("🔔 Recordatorio: " + document.getElementById('notifMessage').value);
+
+// Copia de seguridad
+document.getElementById('exportDataBtn').onclick = () => {
+    const data = { stats: localStorage.getItem('maryse_stats'), guests: localStorage.getItem('maryse_guests') };
+    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'maryse_backup.json';
+    a.click();
+};
+document.getElementById('importDataBtn').onclick = () => document.getElementById('importFile').click();
+document.getElementById('importFile').onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        const data = JSON.parse(ev.target.result);
+        if (data.stats) localStorage.setItem('maryse_stats', data.stats);
+        if (data.guests) localStorage.setItem('maryse_guests', data.guests);
+        alert("✅ Copia restaurada. Recarga la página.");
+        location.reload();
+    };
+    reader.readAsText(file);
+}; 
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -4214,6 +4289,50 @@ document.addEventListener('keydown', function(e) {
 });
 
 </script>
+<!-- MODAL ADMIN (solo visible para admins) -->
+<div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:30000; align-items:center; justify-content:center;">
+    <div style="background:var(--card); border-radius:48px; max-width:600px; width:90%; max-height:85vh; overflow-y:auto; padding:24px; position:relative;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2>👑 Administración</h2>
+            <button id="closeAdminBtn" style="background:#dc2626; color:white; border:none; border-radius:40px; padding:8px 20px; cursor:pointer;">Volver</button>
+        </div>
+        
+        <!-- Estadísticas de uso -->
+        <div style="background:var(--bg); border-radius:28px; padding:16px; margin-bottom:20px;">
+            <h3>📊 Estadísticas de uso</h3>
+            <div id="adminStats"></div>
+        </div>
+        
+        <!-- Estadísticas generales (XP, nivel, etc.) -->
+        <div style="background:var(--bg); border-radius:28px; padding:16px; margin-bottom:20px;">
+            <h3>🏆 Progreso general</h3>
+            <div id="generalStats"></div>
+        </div>
+        
+        <!-- Recordatorios -->
+        <div style="background:var(--bg); border-radius:28px; padding:16px; margin-bottom:20px;">
+            <h3>🔔 Recordatorios</h3>
+            <label><input type="checkbox" id="notifEnabled"> Activar</label><br><br>
+            <label>Hora: <input type="time" id="notifTime" value="17:00"></label><br><br>
+            <label>Días:</label>
+            <div id="notifDays" style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;">
+                <span class="day-chip" data-day="0">Dom</span><span class="day-chip" data-day="1">Lun</span><span class="day-chip" data-day="2">Mar</span>
+                <span class="day-chip" data-day="3">Mié</span><span class="day-chip" data-day="4">Jue</span><span class="day-chip" data-day="5">Vie</span>
+                <span class="day-chip" data-day="6">Sáb</span>
+            </div>
+            <label>Mensaje: <select id="notifMessage"><option>📚 ¿Ya practicaste hoy?</option><option>🎯 ¡Hora de aprender!</option></select></label><br><br>
+            <button class="btn btn-primary" id="testNotifBtn">Probar</button>
+        </div>
+        
+        <!-- Copia de seguridad -->
+        <div style="background:var(--bg); border-radius:28px; padding:16px;">
+            <h3>💾 Copia de seguridad</h3>
+            <button class="btn btn-warning" id="exportDataBtn">📥 Exportar</button>
+            <button class="btn btn-success" id="importDataBtn">📤 Importar</button>
+            <input type="file" id="importFile" accept=".json" style="display:none;">
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
