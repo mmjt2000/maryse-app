@@ -789,6 +789,15 @@
     padding: 14px; border-radius: 40px; cursor: pointer;
 }
 .login-error { color: #c44; font-size: 13px; margin-top: 8px; }
+.dynamic-block span {
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+.dynamic-block span:last-child {
+    border-bottom: none;
+}
     </style>
 </head>
 <body>
@@ -892,7 +901,15 @@
             <option value="7">🌍 S8: Naturaleza</option>
         </select>
     </div>
-
+<!-- Bloque dinámico según hora del día -->
+<div id="dynamicBlock" class="dynamic-block" style="background: var(--card); border-radius: 28px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border);">
+    <h3 id="blockTitle" style="margin-bottom: 12px;">🌅 Inicio del día</h3>
+    <div id="blockContent" style="display: flex; flex-direction: column; gap: 8px;">
+        <span>💧 Bebe un vaso de agua</span>
+        <span>🤸‍♀️ Muévete 3–5 minutos</span>
+        <span>🧠 Define una intención simple del día</span>
+    </div>
+</div>
     <!-- Contador de cumpleaños -->
     <div class="birthday-card">
         <div>🎂 Tus 14 años</div>
@@ -1434,6 +1451,65 @@ function actualizarRelojClasico() {
 }
 setInterval(actualizarRelojClasico, 1000);
 actualizarRelojClasico();
+    // ========== HOME DINÁMICO (según hora) ==========
+function actualizarBloqueDinamico() {
+    const ahora = new Date();
+    const hora = ahora.getHours();
+    
+    let titulo = "";
+    let contenido = [];
+    
+    if (hora >= 5 && hora < 9) {
+        // 🌅 Mañana (inicio)
+        titulo = "🌅 Inicio del día · Agua + cuerpo + enfoque";
+        contenido = [
+            "💧 Bebe un vaso de agua",
+            "🤸‍♀️ Muévete 3–5 minutos",
+            "🧠 Define una intención simple del día"
+        ];
+    } else if (hora >= 9 && hora < 12) {
+        // 🏫 Durante la mañana / escuela
+        titulo = "🏫 Durante la mañana · Cuerpo activo, mente clara";
+        contenido = [
+            "🚶‍♀️ Levántate y muévete cada cierto tiempo",
+            "💧 Toma agua regularmente",
+            "🧘‍♀️ Respira si sientes estrés o presión"
+        ];
+    } else if (hora >= 12 && hora < 15) {
+        // 🍽️ Mediodía
+        titulo = "🍽️ Mediodía · Nutrición básica";
+        contenido = [
+            "🥗 Come algo con proteína + fruta/verdura",
+            "🍞 Incluye energía (carbohidrato simple)",
+            "🚫 Evita exceso de azúcar o comida pesada"
+        ];
+    } else if (hora >= 15 && hora < 19) {
+        // 🌤️ Tarde
+        titulo = "🌤️ Tarde · Movimiento obligatorio del día";
+        contenido = [
+            "🏃‍♀️ 20–40 min de actividad física",
+            "📱 Reduce tiempo pasivo en pantalla"
+        ];
+    } else {
+        // 🌙 Noche
+        titulo = "🌙 Noche · Calma y recuperación";
+        contenido = [
+            "📵 Baja pantallas 30–60 min antes de dormir",
+            "📖 Haz algo tranquilo (leer, música, respirar)",
+            "😴 Prepárate para dormir 8–10 horas"
+        ];
+    }
+    
+    document.getElementById('blockTitle').innerHTML = titulo;
+    const container = document.getElementById('blockContent');
+    container.innerHTML = contenido.map(texto => `<span>${texto}</span>`).join('');
+}
+
+// Ejecutar al cargar
+actualizarBloqueDinamico();
+
+// Actualizar cada hora (por si cambia mientras la app está abierta)
+setInterval(actualizarBloqueDinamico, 3600000);
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
