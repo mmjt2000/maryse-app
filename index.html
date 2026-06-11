@@ -1148,14 +1148,185 @@
 <!-- VISTA MUNDO REAL -->
 <div id="viewMundoreal" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
-    <div class="card">
-        <div class="card-title">🌍 MUNDO REAL · Lo que hay que saber</div>
-        <div id="mundoRealContent">
-            <p style="color: var(--primary); font-weight: bold;">✨ Contenido en desarrollo</p>
-            <p>Próximamente: seguridad personal, primeros auxilios, finanzas, salud, autonomía y más.</p>
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: var(--primary);">🌍 MUNDO REAL</h2>
+        <p style="color: var(--subtext);">Lo que toda adolescente debe saber para la vida</p>
+    </div>
+    
+    <div class="super-section" style="background: var(--card); border-radius: 28px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 16px;">🛡️ SEGURIDAD PERSONAL</h3>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">📞 Números de emergencia <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p><strong>📌 España:</strong> 112 (general), 091 (policía), 061 (ambulancia)</p>
+                <p><strong>📌 México / Argentina / Colombia / Chile:</strong> 911</p>
+                <p>💡 Guarda estos números en tu teléfono y memoriza el 112 o 911.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">📍 Tu dirección y contactos de confianza <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p><strong>Memoriza:</strong> tu dirección completa, teléfono de tus padres, nombre completo de tus padres y un contacto alternativo.</p>
+                <p>💡 Escribe tu dirección en un papel y llévalo en tu mochila.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🚫 No compartir información personal <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p><strong>No compartas:</strong> dirección, teléfono, colegio y horario, fotos íntimas, contraseñas, ubicación en tiempo real.</p>
+                <p>🔑 Si un desconocido te pide info personal, NO la des. Consulta con un adulto.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🗣️ Saber decir NO <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>El "NO" es una palabra completa. No necesitas dar explicaciones.</p>
+                <p><strong>Cuándo decir NO:</strong> si te piden una foto que no quieres, si te piden algo que te da miedo, si alguien te toca como no te gusta.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🎭 Reconocer manipulación <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p><strong>Señales:</strong> te hacen sentir culpable, te aíslan, te amenazan, te hacen dudar de ti misma.</p>
+                <p>💡 Si reconoces alguna señal, aléjate y cuéntaselo a un adulto de confianza.</p>
+            </div>
         </div>
     </div>
-</div> 
+    
+    <div class="super-section" style="background: var(--card); border-radius: 28px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 16px;">🚑 PRIMEROS AUXILIOS BÁSICOS</h3>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🩹 Limpiar una herida pequeña <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <ol>
+                    <li>Lávate las manos</li>
+                    <li>Limpia con agua y jabón suave</li>
+                    <li>Seca con una gasa</li>
+                    <li>Cubre con una curita o venda</li>
+                </ol>
+                <p>⚠️ Si es profunda o no para de sangrar → ve al médico.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🔥 Quemadura leve <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <ol>
+                    <li>Enfría con agua fría 10-15 minutos</li>
+                    <li>No uses hielo directo</li>
+                    <li>No revientes ampollas</li>
+                    <li>Cubre con gasa estéril</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">📞 Cuándo llamar a emergencias <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>Llama al 112/911 si hay: problemas para respirar, pérdida de conciencia, sangrado grave, dolor en el pecho, reacción alérgica grave, convulsiones, ahogamiento.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="super-section" style="background: var(--card); border-radius: 28px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 16px;">💻 SEGURIDAD DIGITAL</h3>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🔐 Contraseñas seguras <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>✅ Larga (12+ caracteres) · Mayúsculas, minúsculas, números y símbolos · No uses tu nombre o fecha de nacimiento.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">📸 Privacidad en redes <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p><strong>No compartas:</strong> ubicación en tiempo real, fotos íntimas, número de teléfono, horario del colegio.</p>
+                <p>🔑 Cuenta privada, no aceptes desconocidos, bloquea a quienes te hagan sentir incómoda.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="super-section" style="background: var(--card); border-radius: 28px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 16px;">💰 EDUCACIÓN FINANCIERA</h3>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🆚 Necesidad vs deseo <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p><strong>Necesidad:</strong> comida, vivienda, ropa básica, material escolar.</p>
+                <p><strong>Deseo:</strong> ropa de marca, videojuegos, el último móvil.</p>
+                <p>💡 Antes de gastar, pregúntate: ¿realmente lo necesito?</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">💰 Ahorrar <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>Regla 50-30-20: 50% necesidades, 30% caprichos, 20% ahorro.</p>
+                <p>💡 Usa una hucha o cuenta de ahorros, pon una meta.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="super-section" style="background: var(--card); border-radius: 28px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 16px;">🍎 SALUD Y BIENESTAR</h3>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">😴 Dormir bien <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>🛌 Duerme 8-10 horas. Apaga pantallas 1 hora antes, acuéstate siempre a la misma hora.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🥗 Comer equilibrado <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>🥗 Plato saludable: ½ verduras/frutas, ¼ proteínas, ¼ carbohidratos. No te saltes el desayuno.</p>
+            </div>
+        </div>
+        
+        <div class="super-topic" onclick="toggleTopic(this)" style="background: var(--bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid var(--primary);">
+            <div class="super-topic-title" style="font-weight: 700; display: flex; justify-content: space-between;">🧠 Salud mental <span>▼</span></div>
+            <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <p>💬 Si te sientes triste, ansiosa o sola, pide ayuda. Habla con tus padres, un profesor o un adulto de confianza. Pedir ayuda es de valientes.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="super-section" style="background: linear-gradient(135deg, var(--primary-light), var(--primary)); border-radius: 28px; padding: 20px; text-align: center; color: white;">
+        <h3 style="color: white; margin-bottom: 16px;">🌟 LA REGLA MÁS IMPORTANTE</h3>
+        <p style="font-size: 1.2rem; font-weight: bold;">Mantén la calma, observa, piensa y actúa.</p>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px;">
+            <div>🧘 Respira</div>
+            <div>👀 Observa</div>
+            <div>🧠 Piensa</div>
+            <div>💪 Actúa</div>
+        </div>
+        <p style="margin-top: 16px;">✨ No estás sola. Siempre puedes pedir ayuda.</p>
+    </div>
+</div>
+
+<style>
+.super-topic-content {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text);
+}
+.super-topic-content ul, .super-topic-content ol {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+.super-topic-content li {
+    margin: 8px 0;
+}
+</style> 
     <!-- FOTOS (version corrigée et fonctionnelle) -->
 <div id="viewFotos" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -1276,6 +1447,18 @@ function entrarApp(email) {
     sessionStorage.setItem('maryse_logged', 'true');
     document.getElementById('loginOverlay').style.display = 'none';
     showAdminPanel();
+}
+
+function toggleTopic(element) {
+    const content = element.querySelector('.super-topic-content');
+    const arrow = element.querySelector('.super-topic-title span');
+    if (content.style.display === 'block') {
+        content.style.display = 'none';
+        if (arrow) arrow.innerHTML = '▼';
+    } else {
+        content.style.display = 'block';
+        if (arrow) arrow.innerHTML = '▲';
+    }
 }
 
 // Eventos login
