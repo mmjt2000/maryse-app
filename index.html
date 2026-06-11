@@ -1257,6 +1257,15 @@ function entrarApp(email) {
     sessionStorage.setItem('maryse_logged', 'true');
     document.getElementById('loginOverlay').style.display = 'none';
     showAdminPanel();
+        // Mostrar círculo de admin solo para admins
+    const adminCircle = document.querySelector('.circle-admin');
+    if (adminCircle) {
+        if (email === 'jeant.montreuil@gmail.com' || email === 'maryseadelekevin@gmail.com') {
+            adminCircle.style.display = 'flex';
+        } else {
+            adminCircle.style.display = 'none';
+        }
+    }
 }
 
 // Eventos login
@@ -1445,13 +1454,60 @@ actualizarRelojClasico();
 // ========== MODAL ADMIN ==========
 const adminModal = document.getElementById('adminModal');
 const closeAdminBtn = document.getElementById('closeAdminBtn');
-
 function openAdminPanel() {
-    if (adminModal) {
-        adminModal.style.display = 'flex';
-        cargarEstadisticasAdmin();
+    const modal = document.getElementById('adminModal');
+    if (!modal) return;
+    
+    // Cargar estadísticas
+    const stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
+    let html = '<h3>📊 Estadísticas de uso</h3><ul>';
+    for (const [email, data] of Object.entries(stats)) {
+        let nombre = email;
+        if (email === 'jeant.montreuil@gmail.com') nombre = 'Admin I';
+        else if (email === 'maryseadelekevin@gmail.com') nombre = 'Admin II';
+        else if (email === 'maryse@academy.com') nombre = 'Maryse';
+        html += `<li><strong>${nombre}</strong>: ${data.count} veces | Último acceso: ${data.lastAccess || '-'}</li>`;
     }
+    html += '</ul>';
+    document.getElementById('adminStatsContainer').innerHTML = html;
+    
+    modal.style.display = 'flex';
 }
+
+// Cerrar modal
+document.getElementById('closeAdminBtn')?.addEventListener('click', () => {
+    document.getElementById('adminModal').style.display = 'none';
+});
+
+// Exportar datos
+document.getElementById('exportDataBtn')?.addEventListener('click', () => {
+    const data = {
+        stats: localStorage.getItem('maryse_stats'),
+        guests: localStorage.getItem('maryse_guests')
+    };
+    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'maryse_backup.json';
+    a.click();
+});
+
+// Importar datos
+document.getElementById('importDataBtn')?.addEventListener('click', () => {
+    document.getElementById('importFile').click();
+});
+document.getElementById('importFile')?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        const data = JSON.parse(ev.target.result);
+        if (data.stats) localStorage.setItem('maryse_stats', data.stats);
+        if (data.guests) localStorage.setItem('maryse_guests', data.guests);
+        alert('✅ Datos restaurados. Recarga la página.');
+        location.reload();
+    };
+    reader.readAsText(file);
+});
 
 closeAdminBtn.onclick = () => adminModal.style.display = 'none';
 
@@ -1512,7 +1568,7 @@ document.getElementById('importFile').onchange = (e) => {
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
-<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Admin">👑</div>
 <div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
@@ -4333,6 +4389,20 @@ document.addEventListener('keydown', function(e) {
         </div>
     </div>
 </div>
+<!-- MODAL ADMIN -->
+<div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:30000; align-items:center; justify-content:center;">
+    <div style="background:var(--card); border-radius:48px; max-width:600px; width:90%; padding:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2>👑 Administración</h2>
+            <button id="closeAdminBtn" style="background:#dc2626; color:white; border:none; border-radius:40px; padding:8px 20px;">Volver</button>
+        </div>
+        <div id="adminStatsContainer"></div>
+        <hr style="margin:20px 0;">
+        <button id="exportDataBtn" class="btn btn-warning">📥 Exportar datos</button>
+        <button id="importDataBtn" class="btn btn-success">📤 Importar datos</button>
+        <input type="file" id="importFile" accept=".json" style="display:none;">
+    </div>
+</div>    
 </body>
 </html>
 
