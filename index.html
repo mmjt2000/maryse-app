@@ -4400,6 +4400,20 @@ function controlarCirculoAdmin() {
 controlarCirculoAdmin();
 });    
 </script>    
+<script>
+// FORZAR CONTROL DEL CÍRCULO ADMIN
+setTimeout(function() {
+    const user = sessionStorage.getItem('maryse_user');
+    const circulo = document.querySelector('.circle-admin');
+    if (circulo) {
+        if (user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com') {
+            circulo.style.display = 'flex';
+        } else {
+            circulo.style.display = 'none';
+        }
+    }
+}, 500);
+</script>
 </body>
 </html>
 
