@@ -961,7 +961,34 @@
         <div class="flashcard-section"><div class="badge">📇 FLASHCARDS · Practica</div><div class="flashcard-mode-selector" id="flashcardModes"></div><div style="display:flex;justify-content:space-between;margin-top:8px;"><span id="flashScore">Score: 0/0</span><button class="back-btn" onclick="nextFlashcard()">⏭️</button></div><div id="flashcardContainer" style="margin-top:16px;text-align:center;"></div></div>
         <div class="podcast-section" id="podcastSection"></div>
         <div class="pronunciation-section" id="pronunciationSection"></div>
-        <div class="conjugation-section" id="conjugationSection"><div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div><div class="conjugation-grid" id="conjugationGrid"></div></div>
+        <div class="conjugation-section" id="conjugationSection"><div class="badge">📖 CONJUGACIÓN · Verbos esenciales</div><div class="conjugation-grid" id="conjugationGrid"></div>
+        <!-- TO THINK / PENSER -->
+<div class="conjugation-card" onclick="showVerbModal('to think', 'en')">
+    <div class="conjugation-title">TO THINK · PENSAR</div>
+    <div class="conjugation-lang">🇬🇧 English · 🇫🇷 Français</div>
+    <div class="conjugation-preview">to think · pensar</div>
+</div>
+
+<!-- TO COME / VENIR -->
+<div class="conjugation-card" onclick="showVerbModal('to come', 'en')">
+    <div class="conjugation-title">TO COME · VENIR</div>
+    <div class="conjugation-lang">🇬🇧 English · 🇫🇷 Français</div>
+    <div class="conjugation-preview">to come · venir</div>
+</div>
+
+<!-- TO PUT / METTRE -->
+<div class="conjugation-card" onclick="showVerbModal('to put', 'en')">
+    <div class="conjugation-title">TO PUT · METTRE</div>
+    <div class="conjugation-lang">🇬🇧 English · 🇫🇷 Français</div>
+    <div class="conjugation-preview">to put · mettre</div>
+</div>
+
+<!-- TO TAKE / PRENDRE -->
+<div class="conjugation-card" onclick="showVerbModal('to take', 'en')">
+    <div class="conjugation-title">TO TAKE · PRENDRE</div>
+    <div class="conjugation-lang">🇬🇧 English · 🇫🇷 Français</div>
+    <div class="conjugation-preview">to take · prendre</div>
+</div></div>
         <div class="exam-section" id="examSection"><div class="badge">📝 EXAMEN FINAL · Semana actual</div><div id="examContainer"></div></div>
     </div>
 
@@ -2462,6 +2489,82 @@ const conjugationData = {
                 { prompt: "She ___ how to cook", answer: "knows" },
                 { prompt: "We ___ each other for years", answer: "knew" },
                 { prompt: "They ___ the results soon", answer: "will know" }
+            ] 
+        },
+                { 
+            verb: "to think", 
+            title: "TO THINK · Pensar", 
+            tenses: { 
+                present: { "I": "think", "You": "think", "He/She/It": "thinks", "We": "think", "You (pl)": "think", "They": "think" }, 
+                past: { "I": "thought", "You": "thought", "He/She/It": "thought", "We": "thought", "You (pl)": "thought", "They": "thought" }, 
+                future: { "I": "will think", "You": "will think", "He/She/It": "will think", "We": "will think", "You (pl)": "will think", "They": "will think" } 
+            }, 
+            examples: ["I think about you every day", "I thought about my homework", "I will think about tomorrow"],
+            color: "#f59e0b",
+            exercises: [
+                { prompt: "I ___ about you every day", answer: "think" }, 
+                { prompt: "I ___ about my homework (past)", answer: "thought" }, 
+                { prompt: "I ___ about tomorrow (future)", answer: "will think" },
+                { prompt: "She ___ she is right", answer: "thinks" },
+                { prompt: "We ___ we can win", answer: "think" },
+                { prompt: "They ___ about the future", answer: "will think" }
+            ] 
+        },
+        { 
+            verb: "to come", 
+            title: "TO COME · Venir", 
+            tenses: { 
+                present: { "I": "come", "You": "come", "He/She/It": "comes", "We": "come", "You (pl)": "come", "They": "come" }, 
+                past: { "I": "came", "You": "came", "He/She/It": "came", "We": "came", "You (pl)": "came", "They": "came" }, 
+                future: { "I": "will come", "You": "will come", "He/She/It": "will come", "We": "will come", "You (pl)": "will come", "They": "will come" } 
+            }, 
+            examples: ["I come to school every day", "I came to the party yesterday", "I will come to your house tomorrow"],
+            color: "#10b981",
+            exercises: [
+                { prompt: "I ___ to school every day", answer: "come" }, 
+                { prompt: "I ___ to the party yesterday (past)", answer: "came" }, 
+                { prompt: "I ___ to your house tomorrow (future)", answer: "will come" },
+                { prompt: "She ___ from France", answer: "comes" },
+                { prompt: "We ___ together", answer: "come" },
+                { prompt: "They ___ to visit us soon", answer: "will come" }
+            ] 
+        },
+        { 
+            verb: "to put", 
+            title: "TO PUT · Poner / Colocar", 
+            tenses: { 
+                present: { "I": "put", "You": "put", "He/She/It": "puts", "We": "put", "You (pl)": "put", "They": "put" }, 
+                past: { "I": "put", "You": "put", "He/She/It": "put", "We": "put", "You (pl)": "put", "They": "put" }, 
+                future: { "I": "will put", "You": "will put", "He/She/It": "will put", "We": "will put", "You (pl)": "will put", "They": "will put" } 
+            }, 
+            examples: ["I put my keys on the table", "I put my coat on yesterday", "I will put the books in my bag"],
+            color: "#ef4444",
+            exercises: [
+                { prompt: "I ___ my keys on the table", answer: "put" }, 
+                { prompt: "I ___ my coat on yesterday (past)", answer: "put" }, 
+                { prompt: "I ___ the books in my bag (future)", answer: "will put" },
+                { prompt: "She ___ sugar in her coffee", answer: "puts" },
+                { prompt: "We ___ our phones on silent", answer: "put" },
+                { prompt: "They ___ the groceries away later", answer: "will put" }
+            ] 
+        },
+        { 
+            verb: "to take", 
+            title: "TO TAKE · Tomar / Llevar", 
+            tenses: { 
+                present: { "I": "take", "You": "take", "He/She/It": "takes", "We": "take", "You (pl)": "take", "They": "take" }, 
+                past: { "I": "took", "You": "took", "He/She/It": "took", "We": "took", "You (pl)": "took", "They": "took" }, 
+                future: { "I": "will take", "You": "will take", "He/She/It": "will take", "We": "will take", "You (pl)": "will take", "They": "will take" } 
+            }, 
+            examples: ["I take the bus to school", "I took a photo yesterday", "I will take a break soon"],
+            color: "#3b82f6",
+            exercises: [
+                { prompt: "I ___ the bus to school", answer: "take" }, 
+                { prompt: "I ___ a photo yesterday (past)", answer: "took" }, 
+                { prompt: "I ___ a break soon (future)", answer: "will take" },
+                { prompt: "She ___ her medicine every day", answer: "takes" },
+                { prompt: "We ___ the train", answer: "take" },
+                { prompt: "They ___ the exam next week", answer: "will take" }
             ] 
         }
     ],
