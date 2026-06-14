@@ -5208,6 +5208,34 @@ if (sessionStorage.getItem('maryse_logged') === 'true') {
 
 // Exponer función global
 window.eliminarInvitadoAdmin = eliminarInvitadoAdmin;
+    // ========== ADMIN FORZADO ==========
+setTimeout(function() {
+    // Mostrar estadísticas
+    const statsContainer = document.getElementById('adminStatsContainer');
+    if (statsContainer && window.stats) {
+        let html = '<ul>';
+        for (const [email, data] of Object.entries(stats)) {
+            let name = email;
+            if (email === 'jeant.montreuil@gmail.com') name = 'Admin I';
+            else if (email === 'maryseadelekevin@gmail.com') name = 'Admin II';
+            else if (email === 'maryse@academy.com') name = 'Maryse';
+            html += `<li><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
+        }
+        html += '</ul>';
+        statsContainer.innerHTML = html;
+    }
+    
+    // Ocultar botón Admin para Maryse
+    const user = sessionStorage.getItem('maryse_user');
+    const adminBtn = document.getElementById('adminMenuBtn');
+    if (adminBtn) {
+        if (user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com') {
+            adminBtn.style.display = 'flex';
+        } else {
+            adminBtn.style.display = 'none';
+        }
+    }
+}, 1000);
 </script>
 </body>
 </html>
