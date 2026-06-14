@@ -1316,7 +1316,16 @@
         <p style="margin-top: 16px;">✨ No estás sola. Siempre puedes pedir ayuda.</p>
     </div>
 </div>
-
+<!-- VISTA ADMIN -->
+<div id="viewAdmin" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div id="adminPanel" style="display:block;">
+        <h2>👑 Administración</h2>
+        <div id="statsContainer"></div>
+        <h3>📋 Invitados registrados (<span id="guestCount">0</span>/25)</h3>
+        <div id="guestList"></div>
+    </div>
+</div>
 <style>
 .super-topic-content {
     font-size: 0.9rem;
@@ -1794,7 +1803,7 @@ setInterval(actualizarBloqueDinamico, 3600000);
     <div class="radial-item" onclick="showView('mundoreal')"><span>🌍</span><span>Mundo Real</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
-    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
+    <div class="radial-item" id="adminMenuBtn" onclick="showView('admin')"><span>👑</span><span>Admin</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
     <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
@@ -3745,10 +3754,20 @@ function renderMamaCorner() {
 }
 
 // ==================== FUNCIONES PRINCIPALES ====================
-function showView(vn){
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
-    if(target)target.classList.add('active');
+function showView(vn) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById('view' + vn.charAt(0).toUpperCase() + vn.slice(1));
+    if (target) target.classList.add('active');
+    
+    // ===== NUEVO: cargar estadísticas al abrir Admin =====
+    if (vn === 'admin') {
+        if (typeof renderStats === 'function') renderStats();
+        if (typeof renderGuestList === 'function') renderGuestList();
+    }
+    // ===== FIN NUEVO =====
+    
+    // el resto de tu código (renderMarysePlaylist, etc.)
+}
     if(vn==='home'){ renderMarysePlaylist(); }
     if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
@@ -4818,7 +4837,15 @@ if (typeof goToView === 'undefined') {
         const targetView = document.getElementById('view' + viewId.charAt(0).toUpperCase() + viewId.slice(1));
         if (targetView) targetView.classList.add('active');
     };
-}   
+}  
+function ocultarAdminMenu() {
+    const btn = document.getElementById('adminMenuBtn');
+    if (!btn) return;
+    const user = sessionStorage.getItem('maryse_user');
+    const isAdmin = user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com';
+    btn.style.display = isAdmin ? 'flex' : 'none';
+}
+ocultarAdminMenu();
 </script>
 </body>
 </html>
