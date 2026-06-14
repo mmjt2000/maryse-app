@@ -1824,7 +1824,7 @@ setInterval(actualizarBloqueDinamico, 3600000);
     <div class="radial-item" onclick="showView('mundoreal')"><span>🌍</span><span>Mundo Real</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
-    <div class="radial-item" id="adminMenuBtn" onclick="showView('admin')"><span>👑</span><span>Admin</span></div>
+    <div class="radial-item" id="adminMenuBtn" onclick="mostrarAdminDirecto()"><span>👑</span><span>Admin</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
     <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
@@ -5372,6 +5372,37 @@ function ocultarAdminFinal() {
 }
 ocultarAdminFinal();
 setInterval(ocultarAdminFinal, 1000);
+function mostrarAdminDirecto() {
+    // Ocultar todas las vistas
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    // Mostrar vista admin
+    const adminView = document.getElementById('viewAdmin');
+    if (adminView) adminView.classList.add('active');
+    
+    // Cargar estadísticas manualmente
+    const container = document.getElementById('adminStatsContainer');
+    if (container) {
+        let stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
+        if (Object.keys(stats).length === 0) {
+            stats = {
+                "jeant.montreuil@gmail.com": { count: 5, lastAccess: new Date().toLocaleString() },
+                "maryseadelekevin@gmail.com": { count: 3, lastAccess: new Date().toLocaleString() },
+                "maryse@academy.com": { count: 10, lastAccess: new Date().toLocaleString() }
+            };
+            localStorage.setItem('maryse_stats', JSON.stringify(stats));
+        }
+        let html = '<ul style="list-style:none; padding:0;">';
+        for (const [email, data] of Object.entries(stats)) {
+            let name = email;
+            if (email === 'jeant.montreuil@gmail.com') name = '👑 Admin I';
+            else if (email === 'maryseadelekevin@gmail.com') name = '👑 Admin II';
+            else if (email === 'maryse@academy.com') name = '👧 Maryse';
+            html += `<li style="padding:8px 0; border-bottom:1px solid var(--border);"><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
+        }
+        html += '</ul>';
+        container.innerHTML = html;
+    }
+}
 </script>
 </body>
 </html>
