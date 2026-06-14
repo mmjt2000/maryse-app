@@ -3789,7 +3789,7 @@ function showView(vn){
     
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
-    if(target)target.classList.add('active');
+    if(target)target.classList.add('active');    if (vn === 'admin') {if (typeof initAdminView === 'function') initAdminView(); }
     if(vn==='home'){ renderMarysePlaylist(); }
     if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
@@ -4905,8 +4905,46 @@ function removeGuestAdmin(index) {
 }
 
 function initAdminView() {
+    console.log("Inicializando vista Admin...");
     cargarStatsAdmin();
     cargarGuestListAdmin();
+    
+    // Recordatorios
+    const notifToggle = document.getElementById('notifEnabledAdmin');
+    const notifTime = document.getElementById('notifTimeAdmin');
+    const notifMsg = document.getElementById('notifMessageAdmin');
+    const testBtn = document.getElementById('testNotifAdminBtn');
+    
+    if (localStorage.getItem('notifEnabled') === 'true') notifToggle.checked = true;
+    if (localStorage.getItem('notifTime')) notifTime.value = localStorage.getItem('notifTime');
+    
+    notifToggle.onchange = () => localStorage.setItem('notifEnabled', notifToggle.checked);
+    notifTime.onchange = () => localStorage.setItem('notifTime', notifTime.value);
+    testBtn.onclick = () => alert(`🔔 Recordatorio: ${notifMsg.value} a las ${notifTime.value}`);
+    
+    // Copia de seguridad
+    document.getElementById('exportDataAdminBtn').onclick = () => {
+        const data = { stats: localStorage.getItem('maryse_stats'), guests: localStorage.getItem('maryse_guests') };
+        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'maryse_backup.json';
+        a.click();
+    };
+    document.getElementById('importDataAdminBtn').onclick = () => document.getElementById('importFileAdmin').click();
+    document.getElementById('importFileAdmin').onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const data = JSON.parse(ev.target.result);
+            if (data.stats) localStorage.setItem('maryse_stats', data.stats);
+            if (data.guests) localStorage.setItem('maryse_guests', data.guests);
+            alert('✅ Datos restaurados. Recarga la página.');
+            location.reload();
+        };
+        reader.readAsText(file);
+    };
+}
     
     // Recordatorios
     const notifToggle = document.getElementById('notifEnabledAdmin');
