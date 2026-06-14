@@ -4894,9 +4894,22 @@ function removeGuestAdmin(index) {
 }
 
 function initAdminView() {
+    inicializarStatsDePrueba();
     cargarStatsAdmin();
     cargarGuestListAdmin();
-    
+    }
+function inicializarStatsDePrueba() {
+    if (Object.keys(stats).length === 0) {
+        stats = {
+            "jeant.montreuil@gmail.com": { count: 5, lastAccess: new Date().toLocaleString() },
+            "maryseadelekevin@gmail.com": { count: 3, lastAccess: new Date().toLocaleString() },
+            "maryse@academy.com": { count: 10, lastAccess: new Date().toLocaleString() },
+            "alumna@maryse.com": { count: 2, lastAccess: new Date().toLocaleString() }
+        };
+        saveStats();
+    }
+}
+
     // Recordatorios
     const notifToggle = document.getElementById('notifEnabledAdmin');
     const notifTime = document.getElementById('notifTimeAdmin');
@@ -4945,13 +4958,17 @@ window.showView = function(viewId) {
 function ocultarAdminMenu() {
     const adminBtn = document.getElementById('adminMenuBtn');
     if (!adminBtn) return;
+    
     const currentUser = sessionStorage.getItem('maryse_user');
+    
     if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
         adminBtn.style.display = 'flex';
     } else {
         adminBtn.style.display = 'none';
     }
 }
+ ocultarAdminMenu();
+setInterval(ocultarAdminMenu, 1000);   
 
 // Agregar ocultarAdminMenu a entrarApp
 if (typeof entrarApp === 'function') {
