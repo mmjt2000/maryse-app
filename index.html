@@ -1495,7 +1495,7 @@ function entrarApp(email) {
     sessionStorage.setItem('maryse_user', email);
     sessionStorage.setItem('maryse_logged', 'true');
     document.getElementById('loginOverlay').style.display = 'none';
-    showAdminPanel();
+    showView('home');
 }
 
 function toggleTopic(element) {
@@ -4962,6 +4962,29 @@ if (typeof entrarApp === 'function') {
     };
 }
 ocultarAdminMenu();
+// Forzar que el login guarde la sesión
+const originalDoLogin = document.getElementById('doLoginBtn').onclick;
+document.getElementById('doLoginBtn').onclick = function() {
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPassword').value;
+    
+    if (isValidUser(email, pass)) {
+        updateStats(email);
+        sessionStorage.setItem('maryse_user', email);
+        sessionStorage.setItem('maryse_logged', 'true');
+        document.getElementById('loginOverlay').style.display = 'none';
+        
+        // Ocultar/mostrar botón Admin
+        const adminBtn = document.getElementById('adminMenuBtn');
+        if (adminBtn) {
+            const isAdmin = (email === 'jeant.montreuil@gmail.com' || email === 'maryseadelekevin@gmail.com');
+            adminBtn.style.display = isAdmin ? 'flex' : 'none';
+        }
+        showView('home');
+    } else {
+        document.getElementById('loginErrorMsg').innerText = "Credenciales incorrectas";
+    }
+};
 </script>
 </body>
 </html>
