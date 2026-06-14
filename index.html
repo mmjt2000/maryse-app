@@ -833,7 +833,13 @@
     </div>
 </div>
 <div class="container">
-
+<!-- PANEL DE ADMIN (solo visible para admins) -->
+<div id="adminPanel" style="display:none; margin-top:30px; padding:20px; background:var(--card); border-radius:28px; border:1px solid var(--border);">
+    <h2>👑 Panel de Administración</h2>
+    <div id="statsContainer"></div>
+    <h3>📋 Invitados registrados (<span id="guestCount">0</span>/25)</h3>
+    <div id="guestList"></div>
+</div>
     <!-- HOME -->
     <div id="viewHome" class="view active">
     <div class="header">
@@ -1310,38 +1316,6 @@
         <p style="margin-top: 16px;">✨ No estás sola. Siempre puedes pedir ayuda.</p>
     </div>
 </div>
-<!-- VISTA ADMIN -->
-<div id="viewAdmin" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    <div class="card">
-        <div class="card-title">👑 Administración</div>
-        
-        <h3>📊 Estadísticas de uso</h3>
-        <div id="adminStatsContainer"></div>
-        
-        <h3>📋 Invitados registrados (<span id="guestCountAdmin">0</span>/25)</h3>
-        <div id="guestListAdmin"></div>
-        
-        <hr>
-        <h3>🔔 Recordatorios</h3>
-        <label><input type="checkbox" id="notifEnabledAdmin"> Activar</label><br>
-        <label>Hora: <input type="time" id="notifTimeAdmin" value="17:00"></label><br>
-        <label>Mensaje: 
-            <select id="notifMessageAdmin">
-                <option>📚 ¿Ya practicaste hoy?</option>
-                <option>🎯 ¡Hora de aprender!</option>
-                <option>💜 Mensaje de Papá</option>
-            </select>
-        </label><br>
-        <button id="testNotifAdminBtn" class="btn btn-primary" style="margin-top: 10px;">Probar recordatorio</button>
-        
-        <hr>
-        <h3>💾 Copia de seguridad</h3>
-        <button id="exportDataAdminBtn" class="btn btn-warning">📥 Exportar datos</button>
-        <button id="importDataAdminBtn" class="btn btn-success">📤 Importar datos</button>
-        <input type="file" id="importFileAdmin" accept=".json" style="display:none;">
-    </div>
-</div>
 
 <style>
 .super-topic-content {
@@ -1806,6 +1780,7 @@ setInterval(actualizarBloqueDinamico, 3600000);
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
+<div class="float-circle circle-admin" onclick="openAdminPanel()" title="Panel de mamá">👩👧</div>
 <div class="float-circle circle-signout" onclick="signOutAndClose()" title="Cerrar sesión y salir">🚪</div>
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
@@ -1819,7 +1794,7 @@ setInterval(actualizarBloqueDinamico, 3600000);
     <div class="radial-item" onclick="showView('mundoreal')"><span>🌍</span><span>Mundo Real</span></div>
     <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>Karaoke</span></div>
     <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>Diario</span></div>
-    <div class="radial-item" id="adminMenuBtn" onclick="showView('admin')"><span>👑</span><span>Admin</span></div>
+    <div class="radial-item" onclick="goToView('friends')"><span>👥</span><span>Invitaciones</span></div>
     <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>Tema</span></div>
     <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>Vida</span></div>
     <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>Fotos</span></div>
@@ -3771,25 +3746,9 @@ function renderMamaCorner() {
 
 // ==================== FUNCIONES PRINCIPALES ====================
 function showView(vn){
-    // ========== NUEVO: CONTROL DE ADMIN ==========
-    const currentUser = sessionStorage.getItem('maryse_user');
-    const isAdmin = currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com';
-    
-    // Si no es admin y quiere entrar a Admin, redirigir a home
-    if (vn === 'admin' && !isAdmin) {
-        vn = 'home';
-    }
-    
-    // Mostrar/ocultar botón Admin en menú radial
-    const adminBtn = document.getElementById('adminMenuBtn');
-    if (adminBtn) {
-        adminBtn.style.display = isAdmin ? 'flex' : 'none';
-    }
-    // ========== FIN NUEVO ==========
-    
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
-    if(target)target.classList.add('active');    if (vn === 'admin') {if (typeof initAdminView === 'function') initAdminView(); }
+    if(target)target.classList.add('active');
     if(vn==='home'){ renderMarysePlaylist(); }
     if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
@@ -3803,7 +3762,7 @@ function showView(vn){
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
     window.scrollTo(0,0);
-    // Ocultar la nueva Agenda
+        // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
 }
@@ -4859,168 +4818,7 @@ if (typeof goToView === 'undefined') {
         const targetView = document.getElementById('view' + viewId.charAt(0).toUpperCase() + viewId.slice(1));
         if (targetView) targetView.classList.add('active');
     };
-} 
-// ========== NUEVO ADMIN ==========
-function cargarStatsAdmin() {
-    const container = document.getElementById('adminStatsContainer');
-    if (!container) return;
-    let html = '<ul>';
-    for (const [email, data] of Object.entries(stats)) {
-        let name = email;
-        if (FIXED_USERS[email]) name = FIXED_USERS[email].name;
-        html += `<li><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
-    }
-    html += '</ul>';
-    container.innerHTML = html;
-}
-
-function cargarGuestListAdmin() {
-    const container = document.getElementById('guestListAdmin');
-    const countSpan = document.getElementById('guestCountAdmin');
-    if (!container) return;
-    if (guests.length === 0) {
-        container.innerHTML = '<p>No hay invitados registrados.</p>';
-        if (countSpan) countSpan.innerText = '0';
-        return;
-    }
-    if (countSpan) countSpan.innerText = guests.length;
-    let html = '<ul>';
-    guests.forEach((g, idx) => {
-        const guestStats = stats[g.email] || { count: 0, lastAccess: '-' };
-        html += `<li><strong>${g.email}</strong> - Entradas: ${guestStats.count} | Último: ${guestStats.lastAccess || '-'} <button onclick="removeGuestAdmin(${idx})" style="background:#dc2626; color:white; border:none; border-radius:20px; padding:2px 10px;">Eliminar</button></li>`;
-    });
-    html += '</ul>';
-    container.innerHTML = html;
-}
-
-function removeGuestAdmin(index) {
-    if (confirm('¿Eliminar este invitado?')) {
-        const removed = guests.splice(index, 1)[0];
-        if (removed && stats[removed.email]) delete stats[removed.email];
-        saveGuests();
-        saveStats();
-        cargarGuestListAdmin();
-        cargarStatsAdmin();
-    }
-}
-
-function initAdminView() {
-    console.log("Inicializando vista Admin...");
-    cargarStatsAdmin();
-    cargarGuestListAdmin();
-    
-    // Recordatorios
-    const notifToggle = document.getElementById('notifEnabledAdmin');
-    const notifTime = document.getElementById('notifTimeAdmin');
-    const notifMsg = document.getElementById('notifMessageAdmin');
-    const testBtn = document.getElementById('testNotifAdminBtn');
-    
-    if (localStorage.getItem('notifEnabled') === 'true') notifToggle.checked = true;
-    if (localStorage.getItem('notifTime')) notifTime.value = localStorage.getItem('notifTime');
-    
-    notifToggle.onchange = () => localStorage.setItem('notifEnabled', notifToggle.checked);
-    notifTime.onchange = () => localStorage.setItem('notifTime', notifTime.value);
-    testBtn.onclick = () => alert(`🔔 Recordatorio: ${notifMsg.value} a las ${notifTime.value}`);
-    
-    // Copia de seguridad
-    document.getElementById('exportDataAdminBtn').onclick = () => {
-        const data = { stats: localStorage.getItem('maryse_stats'), guests: localStorage.getItem('maryse_guests') };
-        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'maryse_backup.json';
-        a.click();
-    };
-    document.getElementById('importDataAdminBtn').onclick = () => document.getElementById('importFileAdmin').click();
-    document.getElementById('importFileAdmin').onchange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            const data = JSON.parse(ev.target.result);
-            if (data.stats) localStorage.setItem('maryse_stats', data.stats);
-            if (data.guests) localStorage.setItem('maryse_guests', data.guests);
-            alert('✅ Datos restaurados. Recarga la página.');
-            location.reload();
-        };
-        reader.readAsText(file);
-    };
-}
-    
-    // Recordatorios
-    const notifToggle = document.getElementById('notifEnabledAdmin');
-    const notifTime = document.getElementById('notifTimeAdmin');
-    const notifMsg = document.getElementById('notifMessageAdmin');
-    const testBtn = document.getElementById('testNotifAdminBtn');
-    
-    if (localStorage.getItem('notifEnabled') === 'true') notifToggle.checked = true;
-    if (localStorage.getItem('notifTime')) notifTime.value = localStorage.getItem('notifTime');
-    
-    notifToggle.onchange = () => localStorage.setItem('notifEnabled', notifToggle.checked);
-    notifTime.onchange = () => localStorage.setItem('notifTime', notifTime.value);
-    testBtn.onclick = () => alert(`🔔 Recordatorio: ${notifMsg.value} a las ${notifTime.value}`);
-    
-    // Copia de seguridad
-    document.getElementById('exportDataAdminBtn').onclick = () => {
-        const data = { stats: localStorage.getItem('maryse_stats'), guests: localStorage.getItem('maryse_guests') };
-        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'maryse_backup.json';
-        a.click();
-    };
-    document.getElementById('importDataAdminBtn').onclick = () => document.getElementById('importFileAdmin').click();
-    document.getElementById('importFileAdmin').onchange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            const data = JSON.parse(ev.target.result);
-            if (data.stats) localStorage.setItem('maryse_stats', data.stats);
-            if (data.guests) localStorage.setItem('maryse_guests', data.guests);
-            alert('✅ Datos restaurados. Recarga la página.');
-            location.reload();
-        };
-        reader.readAsText(file);
-    };
-}
-
-// Modificar showView para que al abrir Admin ejecute la carga
-const originalShowView = showView;
-window.showView = function(viewId) {
-    originalShowView(viewId);
-    if (viewId === 'admin') initAdminView();
-};
-
-// Ocultar botón Admin para Maryse e invitados
-function ocultarAdminMenu() {
-    const adminBtn = document.getElementById('adminMenuBtn');
-    if (!adminBtn) return;
-    const currentUser = sessionStorage.getItem('maryse_user');
-    if (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com') {
-        adminBtn.style.display = 'flex';
-    } else {
-        adminBtn.style.display = 'none';
-    }
-}
-
-// Agregar ocultarAdminMenu a entrarApp
-if (typeof entrarApp === 'function') {
-    const originalEntrarApp = entrarApp;
-    window.entrarApp = function(email) {
-        originalEntrarApp(email);
-        ocultarAdminMenu();
-    };
-}
-ocultarAdminMenu();
-// Ocultar botón Admin al cargar la página si no es admin
-(function() {
-    const currentUser = sessionStorage.getItem('maryse_user');
-    const isAdmin = currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com';
-    const adminBtn = document.getElementById('adminMenuBtn');
-    if (adminBtn) {
-        adminBtn.style.display = isAdmin ? 'flex' : 'none';
-    }
-})();
+}   
 </script>
 </body>
 </html>
-
