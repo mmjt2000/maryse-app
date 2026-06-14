@@ -833,13 +833,7 @@
     </div>
 </div>
 <div class="container">
-<!-- PANEL DE ADMIN (solo visible para admins) -->
-<div id="adminPanel" style="display:none; margin-top:30px; padding:20px; background:var(--card); border-radius:28px; border:1px solid var(--border);">
-    <h2>👑 Panel de Administración</h2>
-    <div id="statsContainer"></div>
-    <h3>📋 Invitados registrados (<span id="guestCount">0</span>/25)</h3>
-    <div id="guestList"></div>
-</div>
+
     <!-- HOME -->
     <div id="viewHome" class="view active">
     <div class="header">
@@ -1324,7 +1318,13 @@
         
         <h3>📊 Estadísticas de uso</h3>
         <div id="adminStatsContainer"></div>
-        
+        <!-- PANEL DE ADMIN (solo visible para admins) -->
+<div id="adminPanel" style="display:none; margin-top:30px; padding:20px; background:var(--card); border-radius:28px; border:1px solid var(--border);">
+    <h2>👑 Panel de Administración</h2>
+    <div id="statsContainer"></div>
+    <h3>📋 Invitados registrados (<span id="guestCount">0</span>/25)</h3>
+    <div id="guestList"></div>
+</div>  
         <h3>📋 Invitados registrados (<span id="guestCountAdmin">0</span>/25)</h3>
         <div id="guestListAdmin"></div>
         
@@ -3787,7 +3787,7 @@ function showView(vn){
     if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
     if(vn==='karaoke') renderKaraokeSongs();
     if(vn==='diary') renderDiary();
-    if(vn==='friends') renderAllInvites();
+    if (vn === 'admin') {if (typeof renderStats === 'function') renderStats();if (typeof renderGuestList === 'function') renderGuestList();}
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
