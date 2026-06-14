@@ -960,7 +960,48 @@
     </div>
 
     <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
-    <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
+    <div id="viewGames" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    
+    <!-- Juegos existentes -->
+    <div class="card">
+        <div class="card-title">🎮 Games</div>
+        <div class="game-selector" id="gameSelector">
+            <button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button>
+            <button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button>
+            <button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button>
+        </div>
+        <div id="gameContainer"></div>
+    </div>
+    
+    <!-- SECCIÓN YOGA Y RESPIRACIÓN -->
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-title">🧘 YOGA · RESPIRACIÓN · ESTIRAMIENTOS</div>
+        <div id="yogaContainer">
+            <div class="yoga-card" onclick="abrirYoga('respira')">
+                <div class="yoga-emoji">🌬️</div>
+                <div class="yoga-title">Respiración profunda</div>
+                <div class="yoga-desc">Técnica 4-7-8 para calmar la mente</div>
+            </div>
+            <div class="yoga-card" onclick="abrirYoga('estiramiento')">
+                <div class="yoga-emoji">🤸</div>
+                <div class="yoga-title">Estiramientos diarios</div>
+                <div class="yoga-desc">5 minutos para despertar el cuerpo</div>
+            </div>
+            <div class="yoga-card" onclick="abrirYoga('yoga')">
+                <div class="yoga-emoji">🧘</div>
+                <div class="yoga-title">Yoga para adolescentes</div>
+                <div class="yoga-desc">Posturas suaves para flexibilidad</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SECCIÓN AUDIOLIBROS -->
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-title">📚 20 AUDIOLIBROS RECOMENDADOS · EN ESPAÑOL</div>
+        <div id="audiolibrosContainer" style="max-height: 400px; overflow-y: auto;"></div>
+    </div>
+</div>
     <div id="viewDad" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="clock-card"><div class="clock-time" id="dadLiveClock">--:--:--</div><div class="clock-date" id="dadLiveDate"></div></div><div id="dadContainer"></div></div>
     <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" onclick="filterKaraokeSongs('en')">🇬🇧 English (24)</button><button class="btn" onclick="filterKaraokeSongs('fr')">🇫🇷 Français (12)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
     <div id="viewDiary" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -1360,6 +1401,61 @@
 }
 .super-topic-content li {
     margin: 8px 0;
+}
+/* Yoga y audiolibros */
+.yoga-card {
+    background: var(--bg);
+    border-radius: 24px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.yoga-card:hover {
+    transform: translateX(5px);
+    background: var(--card);
+    border-color: var(--primary);
+}
+.yoga-emoji {
+    font-size: 2rem;
+}
+.yoga-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.yoga-desc {
+    font-size: 0.75rem;
+    color: var(--subtext);
+}
+.audiolibro-item {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+}
+.audiolibro-item:hover {
+    transform: translateX(5px);
+    background: var(--card);
+    border-color: var(--primary);
+}
+.audiolibro-titulo {
+    font-weight: 700;
+}
+.audiolibro-autor {
+    font-size: 0.7rem;
+    color: var(--subtext);
+}
+.audiolibro-desc {
+    font-size: 0.75rem;
+    margin-top: 6px;
+    color: var(--text);
 }
 </style>
 <style>
@@ -5411,6 +5507,119 @@ function mostrarAdminDirecto() {
         html += '</ul>';
         container.innerHTML = html;
     }
+}
+// ========== YOGA ==========
+function abrirYoga(tipo) {
+    const contenidos = {
+        respira: {
+            titulo: "🌬️ Respiración profunda (4-7-8)",
+            pasos: [
+                "1. Siéntate cómodamente con la espalda recta",
+                "2. Inhala por la nariz durante 4 segundos",
+                "3. Mantén el aire 7 segundos",
+                "4. Exhala lentamente por la boca durante 8 segundos",
+                "5. Repite 4-5 veces",
+                "✨ Beneficio: Reduce la ansiedad y calma el sistema nervioso"
+            ],
+            video: "https://www.youtube.com/results?search_query=respiración+4-7-8+para+ansiedad"
+        },
+        estiramiento: {
+            titulo: "🤸 Estiramientos diarios (5 minutos)",
+            pasos: [
+                "1. Estiramiento de cuello (lado a lado)",
+                "2. Apertura de brazos y hombros",
+                "3. Giro de columna suave",
+                "4. Estiramiento de piernas (tocarse los pies)",
+                "5. Postura del gato-vaca (espalda)",
+                "🧘 Haz cada estiramiento 15-30 segundos"
+            ],
+            video: "https://www.youtube.com/results?search_query=estiramientos+para+adolescentes+5+minutos"
+        },
+        yoga: {
+            titulo: "🧘 Yoga para adolescentes",
+            pasos: [
+                "1. Postura de la montaña (Tadasana) - equilibrio",
+                "2. Perro boca abajo (Adho Mukha Svanasana) - estiramiento completo",
+                "3. Postura del árbol (Vrksasana) - concentración",
+                "4. Postura del niño (Balasana) - descanso",
+                "5. Mariposa (Baddha Konasana) - apertura de cadera",
+                "🕊️ Mantén cada postura 3-5 respiraciones"
+            ],
+            video: "https://www.youtube.com/results?search_query=yoga+para+principiantes+adolescentes"
+        }
+    };
+    
+    const c = contenidos[tipo];
+    if (!c) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div>${c.titulo}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div style="margin: 16px 0;">
+                ${c.pasos.map(p => `<p>${p}</p>`).join('')}
+            </div>
+            <div style="margin-top: 16px; text-align: center;">
+                <button class="btn btn-primary" onclick="window.open('${c.video}', '_blank')">🎬 Ver video guía</button>
+                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// ========== AUDIOLIBROS ==========
+const audiolibros = [
+    { titulo: "El principito", autor: "Antoine de Saint-Exupéry", desc: "Un clásico sobre la amistad, el amor y el sentido de la vida.", link: "https://www.youtube.com/results?search_query=el+principito+audiolibro+completo" },
+    { titulo: "La vuelta al mundo en 80 días", autor: "Julio Verne", desc: "Aventura clásica con la que viajarás sin moverte.", link: "https://www.youtube.com/results?search_query=la+vuelta+al+mundo+en+80+dias+audiolibro" },
+    { titulo: "Cuentos de la selva", autor: "Horacio Quiroga", desc: "Historias cortas de animales con grandes enseñanzas.", link: "https://www.youtube.com/results?search_query=cuentos+de+la+selva+audiolibro" },
+    { titulo: "Alicia en el país de las maravillas", autor: "Lewis Carroll", desc: "Fantasía y enseñanzas sobre crecer.", link: "https://www.youtube.com/results?search_query=alicia+en+el+pais+de+las+maravillas+audiolibro" },
+    { titulo: "Platero y yo", autor: "Juan Ramón Jiménez", desc: "Poemas en prosa que celebran la amistad.", link: "https://www.youtube.com/results?search_query=platero+y+yo+audiolibro" },
+    { titulo: "El llamado de la selva", autor: "Jack London", desc: "Aventura, supervivencia y libertad.", link: "https://www.youtube.com/results?search_query=el+llamado+de+la+selva+audiolibro" },
+    { titulo: "Momo", autor: "Michael Ende", desc: "Una niña que lucha contra los ladrones de tiempo.", link: "https://www.youtube.com/results?search_query=momo+audiolibro+completo" },
+    { titulo: "Las aventuras de Tom Sawyer", autor: "Mark Twain", desc: "Infancia, travesuras y amistad.", link: "https://www.youtube.com/results?search_query=tom+sawyer+audiolibro" },
+    { titulo: "El fantasma de la ópera", autor: "Gastón Leroux", desc: "Romance, misterio y drama.", link: "https://www.youtube.com/results?search_query=el+fantasma+de+la+opera+audiolibro" },
+    { titulo: "Cuentos de amor, locura y muerte", autor: "Horacio Quiroga", desc: "Relatos intensos que te atraparán.", link: "https://www.youtube.com/results?search_query=cuentos+de+amor+locura+y+muerte+audiolibro" },
+    { titulo: "Historia de una gaviota y del gato que le enseñó a volar", autor: "Luis Sepúlveda", desc: "Una hermosa historia de amistad entre animales.", link: "https://www.youtube.com/results?search_query=historia+de+una+gaviota+audiolibro" },
+    { titulo: "La isla del tesoro", autor: "Robert Louis Stevenson", desc: "Piratas, mapas y aventura.", link: "https://www.youtube.com/results?search_query=la+isla+del+tesoro+audiolibro" },
+    { titulo: "El maravilloso viaje de Nils Holgersson", autor: "Selma Lagerlöf", desc: "Viaje fantástico por Suecia.", link: "https://www.youtube.com/results?search_query=nils+holgersson+audiolibro" },
+    { titulo: "Frankenstein", autor: "Mary Shelley", desc: "Clásico de terror y reflexión.", link: "https://www.youtube.com/results?search_query=frankenstein+audiolibro" },
+    { titulo: "Drácula", autor: "Bram Stoker", desc: "El vampiro más famoso de la literatura.", link: "https://www.youtube.com/results?search_query=dracula+audiolibro" },
+    { titulo: "El jardín secreto", autor: "Frances Hodgson Burnett", desc: "Una niña, un jardín y una transformación.", link: "https://www.youtube.com/results?search_query=el+jardin+secreto+audiolibro" },
+    { titulo: "La historia interminable", autor: "Michael Ende", desc: "Un viaje a través de la imaginación.", link: "https://www.youtube.com/results?search_query=la+historia+interminable+audiolibro" },
+    { titulo: "El libro de la selva", autor: "Rudyard Kipling", desc: "Mowgli y sus amigos animales.", link: "https://www.youtube.com/results?search_query=el+libro+de+la+selva+audiolibro" },
+    { titulo: "Cumbres borrascosas", autor: "Emily Brontë", desc: "Romance oscuro y pasión.", link: "https://www.youtube.com/results?search_query=cumbres+borrascosas+audiolibro" }
+];
+
+function cargarAudiolibros() {
+    const container = document.getElementById('audiolibrosContainer');
+    if (!container) return;
+    
+    container.innerHTML = audiolibros.map(libro => `
+        <div class="audiolibro-item" onclick="window.open('${libro.link}', '_blank')">
+            <div class="audiolibro-titulo">📖 ${libro.titulo}</div>
+            <div class="audiolibro-autor">✍️ ${libro.autor}</div>
+            <div class="audiolibro-desc">${libro.desc}</div>
+        </div>
+    `).join('');
+}
+
+// Cargar audiolibros cuando se abre la vista Games
+const showViewOriginalGames = window.showView;
+window.showView = function(vn) {
+    showViewOriginalGames(vn);
+    if (vn === 'games') {
+        setTimeout(cargarAudiolibros, 100);
+    }
+};
+
+// Si ya estamos en games al cargar, cargar también
+if (document.getElementById('viewGames').classList.contains('active')) {
+    cargarAudiolibros();
 }
 </script>
 </body>
