@@ -5119,6 +5119,95 @@ setInterval(ocultarAdminMenuCorregido, 1000);
 if (sessionStorage.getItem('maryse_logged') === 'true') {
     ocultarAdminMenuCorregido();
 }
+// ========== REPARACIÓN FINAL ADMIN ==========
+function iniciarAdmin() {
+    // Crear estadísticas si no existen
+    if (typeof stats === 'undefined' || Object.keys(stats).length === 0) {
+        window.stats = {
+            "jeant.montreuil@gmail.com": { count: 5, lastAccess: new Date().toLocaleString() },
+            "maryseadelekevin@gmail.com": { count: 3, lastAccess: new Date().toLocaleString() },
+            "maryse@academy.com": { count: 10, lastAccess: new Date().toLocaleString() }
+        };
+        if (typeof saveStats === 'function') saveStats();
+        else localStorage.setItem('maryse_stats', JSON.stringify(stats));
+    }
+    
+    // Mostrar estadísticas en el panel
+    const container = document.getElementById('adminStatsContainer');
+    if (container) {
+        let html = '<ul style="list-style:none; padding:0;">';
+        for (const [email, data] of Object.entries(stats)) {
+            let name = email;
+            if (email === 'jeant.montreuil@gmail.com') name = 'Admin I';
+            else if (email === 'maryseadelekevin@gmail.com') name = 'Admin II';
+            else if (email === 'maryse@academy.com') name = 'Maryse';
+            html += `<li style="padding:8px 0; border-bottom:1px solid var(--border);"><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
+        }
+        html += '</ul>';
+        container.innerHTML = html;
+    }
+    
+    // Cargar lista de invitados
+    const guestContainer = document.getElementById('guestListAdmin');
+    if (guestContainer && typeof guests !== 'undefined') {
+        if (guests.length === 0) {
+            guestContainer.innerHTML = '<p>No hay invitados registrados.</p>';
+            const countSpan = document.getElementById('guestCountAdmin');
+            if (countSpan) countSpan.innerText = '0';
+        } else {
+            const countSpan = document.getElementById('guestCountAdmin');
+            if (countSpan) countSpan.innerText = guests.length;
+            let guestHtml = '<ul style="list-style:none; padding:0;">';
+            guests.forEach((g, idx) => {
+                const gStats = stats[g.email] || { count: 0, lastAccess: '-' };
+                guestHtml += `<li style="padding:8px 0; border-bottom:1px solid var(--border);"><strong>${g.email}</strong> - Entradas: ${gStats.count} | Último: ${gStats.lastAccess} <button onclick="eliminarInvitadoAdmin(${idx})" style="background:#dc2626; color:white; border:none; border-radius:20px; padding:2px 10px; margin-left:10px;">Eliminar</button></li>`;
+            });
+            guestHtml += '</ul>';
+            guestContainer.innerHTML = guestHtml;
+        }
+    }
+}
+
+function eliminarInvitadoAdmin(index) {
+    if (confirm('¿Eliminar este invitado?')) {
+        const removed = guests.splice(index, 1)[0];
+        if (removed && stats[removed.email]) delete stats[removed.email];
+        if (typeof saveGuests === 'function') saveGuests();
+        else localStorage.setItem('maryse_guests', JSON.stringify(guests));
+        if (typeof saveStats === 'function') saveStats();
+        else localStorage.setItem('maryse_stats', JSON.stringify(stats));
+        iniciarAdmin();
+    }
+}
+
+// Ejecutar al abrir Admin
+const showViewOriginalAdmin = window.showView;
+window.showView = function(vn) {
+    showViewOriginalAdmin(vn);
+    if (vn === 'admin') iniciarAdmin();
+};
+
+// Ocultar botón Admin para Maryse
+function ocultarAdmin() {
+    const btn = document.getElementById('adminMenuBtn');
+    if (!btn) return;
+    const user = sessionStorage.getItem('maryse_user');
+    if (user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com') {
+        btn.style.display = 'flex';
+    } else {
+        btn.style.display = 'none';
+    }
+}
+ocultarAdmin();
+setInterval(ocultarAdmin, 1000);
+
+// Si ya hay sesión, ejecutar
+if (sessionStorage.getItem('maryse_logged') === 'true') {
+    ocultarAdmin();
+}
+
+// Exponer función global
+window.eliminarInvitadoAdmin = eliminarInvitadoAdmin;
 </script>
 </body>
 </html>
