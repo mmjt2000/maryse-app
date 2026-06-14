@@ -3771,6 +3771,22 @@ function renderMamaCorner() {
 
 // ==================== FUNCIONES PRINCIPALES ====================
 function showView(vn){
+    // ========== NUEVO: CONTROL DE ADMIN ==========
+    const currentUser = sessionStorage.getItem('maryse_user');
+    const isAdmin = currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com';
+    
+    // Si no es admin y quiere entrar a Admin, redirigir a home
+    if (vn === 'admin' && !isAdmin) {
+        vn = 'home';
+    }
+    
+    // Mostrar/ocultar botón Admin en menú radial
+    const adminBtn = document.getElementById('adminMenuBtn');
+    if (adminBtn) {
+        adminBtn.style.display = isAdmin ? 'flex' : 'none';
+    }
+    // ========== FIN NUEVO ==========
+    
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
@@ -3787,7 +3803,7 @@ function showView(vn){
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
     window.scrollTo(0,0);
-        // Ocultar la nueva Agenda
+    // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
 }
@@ -4957,6 +4973,15 @@ if (typeof entrarApp === 'function') {
     };
 }
 ocultarAdminMenu();
+// Ocultar botón Admin al cargar la página si no es admin
+(function() {
+    const currentUser = sessionStorage.getItem('maryse_user');
+    const isAdmin = currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com';
+    const adminBtn = document.getElementById('adminMenuBtn');
+    if (adminBtn) {
+        adminBtn.style.display = isAdmin ? 'flex' : 'none';
+    }
+})();
 </script>
 </body>
 </html>
