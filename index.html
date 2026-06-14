@@ -5322,6 +5322,56 @@ function ocultarAdminAhora() {
 }
 ocultarAdminAhora();
 setInterval(ocultarAdminAhora, 1000);
+// ========== ADMIN CORREGIDO ==========
+function cargarStatsAdminFinal() {
+    const container = document.getElementById('adminStatsContainer');
+    if (!container) return;
+    
+    let stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
+    
+    if (Object.keys(stats).length === 0) {
+        stats = {
+            "jeant.montreuil@gmail.com": { count: 5, lastAccess: new Date().toLocaleString() },
+            "maryseadelekevin@gmail.com": { count: 3, lastAccess: new Date().toLocaleString() },
+            "maryse@academy.com": { count: 10, lastAccess: new Date().toLocaleString() }
+        };
+        localStorage.setItem('maryse_stats', JSON.stringify(stats));
+    }
+    
+    let html = '<ul style="list-style:none; padding:0;">';
+    for (const [email, data] of Object.entries(stats)) {
+        let name = email;
+        if (email === 'jeant.montreuil@gmail.com') name = '👑 Admin I';
+        else if (email === 'maryseadelekevin@gmail.com') name = '👑 Admin II';
+        else if (email === 'maryse@academy.com') name = '👧 Maryse';
+        html += `<li style="padding:8px 0; border-bottom:1px solid var(--border);"><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
+    }
+    html += '</ul>';
+    container.innerHTML = html;
+}
+
+// Ejecutar al abrir Admin
+const showViewFinal = window.showView;
+window.showView = function(vn) {
+    showViewFinal(vn);
+    if (vn === 'admin') {
+        setTimeout(cargarStatsAdminFinal, 100);
+    }
+};
+
+// Ocultar botón Admin para Maryse
+function ocultarAdminFinal() {
+    const btn = document.getElementById('adminMenuBtn');
+    if (!btn) return;
+    const user = sessionStorage.getItem('maryse_user');
+    if (user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com') {
+        btn.style.display = 'flex';
+    } else {
+        btn.style.display = 'none';
+    }
+}
+ocultarAdminFinal();
+setInterval(ocultarAdminFinal, 1000);
 </script>
 </body>
 </html>
