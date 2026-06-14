@@ -5373,13 +5373,22 @@ function ocultarAdminFinal() {
 ocultarAdminFinal();
 setInterval(ocultarAdminFinal, 1000);
 function mostrarAdminDirecto() {
+    // Verificar si el usuario es admin
+    const currentUser = sessionStorage.getItem('maryse_user');
+    const esAdmin = (currentUser === 'jeant.montreuil@gmail.com' || currentUser === 'maryseadelekevin@gmail.com');
+    
+    if (!esAdmin) {
+        alert("⛔ Acceso denegado. Solo administradores.");
+        return;
+    }
+    
     // Ocultar todas las vistas
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     // Mostrar vista admin
     const adminView = document.getElementById('viewAdmin');
     if (adminView) adminView.classList.add('active');
     
-    // Cargar estadísticas manualmente
+    // Cargar estadísticas
     const container = document.getElementById('adminStatsContainer');
     if (container) {
         let stats = JSON.parse(localStorage.getItem('maryse_stats') || '{}');
