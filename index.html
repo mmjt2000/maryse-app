@@ -4979,7 +4979,7 @@ if (typeof entrarApp === 'function') {
     };
 }
 ocultarAdminMenu();
-// Forzar que el login guarde la sesión
+// ========== LOGIN CORREGIDO ==========
 const originalDoLogin = document.getElementById('doLoginBtn').onclick;
 document.getElementById('doLoginBtn').onclick = function() {
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
@@ -5001,7 +5001,6 @@ document.getElementById('doLoginBtn').onclick = function() {
     } else {
         document.getElementById('loginErrorMsg').innerText = "Credenciales incorrectas";
     }
- }
 };
 </script>
 </body>
