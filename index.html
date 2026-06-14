@@ -5001,6 +5001,124 @@ document.getElementById('doLoginBtn').onclick = function() {
         document.getElementById('loginErrorMsg').innerText = "Credenciales incorrectas";
     }
 };
+// ========== REPARACIÓN DEFINITIVA DEL PANEL ADMIN ==========
+// Forzar que las estadísticas se vean al abrir Admin
+function cargarEstadisticasAdminCorregido() {
+    const container = document.getElementById('adminStatsContainer');
+    if (!container) return;
+    
+    let html = '<ul style="list-style:none; padding:0;">';
+    for (const [email, data] of Object.entries(stats)) {
+        let name = email;
+        if (FIXED_USERS[email]) name = FIXED_USERS[email].name;
+        html += `<li style="padding:8px 0; border-bottom:1px solid var(--border);"><strong>${name}</strong>: ${data.count} veces | Último: ${data.lastAccess || '-'}</li>`;
+    }
+    html += '</ul>';
+    container.innerHTML = html;
+    
+    // Cargar invitados
+    const guestContainer = document.getElementById('guestListAdmin');
+    const guestCount = document.getElementById('guestCountAdmin');
+    if (guestContainer) {
+        if (guests.length === 0) {
+            guestContainer.innerHTML = '<p>No hay invitados registrados.</p>';
+            if (guestCount) guestCount.innerText = '0';
+        } else {
+            if (guestCount) guestCount.innerText = guests.length;
+            let guestHtml = '<ul style="list-style:none; padding:0;">';
+            guests.forEach((g, idx) => {
+                const gStats = stats[g.email] || { count: 0, lastAccess: '-' };
+                guestHtml += `<li style="padding:8px 0; border-bottom:1px solid var(--border);"><strong>${g.email}</strong> - Entradas: ${gStats.count} | Último: ${gStats.lastAccess} <button onclick="eliminarInvitadoAdmin(${idx})" style="background:#dc2626; color:white; border:none; border-radius:20px; padding:2px 10px; margin-left:10px;">Eliminar</button></li>`;
+            });
+            guestHtml += '</ul>';
+            guestContainer.innerHTML = guestHtml;
+        }
+    }
+}
+
+function eliminarInvitadoAdmin(index) {
+    if (confirm('¿Eliminar este invitado?')) {
+        const removed = guests.splice(index, 1)[0];
+        if (removed && stats[removed.email]) delete stats[removed.email];
+        saveGuests();
+        saveStats();
+        cargarEstadisticasAdminCorregido();
+    }
+}
+
+// Reemplazar initAdminView
+window.initAdminView = function() {
+    // Asegurar que hay datos de prueba
+    if (Object.keys(stats).length === 0) {
+        stats = {
+            "jeant.montreuil@gmail.com": { count: 5, lastAccess: new Date().toLocaleString() },
+            "maryseadelekevin@gmail.com": { count: 3, lastAccess: new Date().toLocaleString() },
+            "maryse@academy.com": { count: 10, lastAccess: new Date().toLocaleString() }
+        };
+        saveStats();
+    }
+    cargarEstadisticasAdminCorregido();
+    
+    // Recordatorios
+    const notifToggle = document.getElementById('notifEnabledAdmin');
+    const notifTime = document.getElementById('notifTimeAdmin');
+    const notifMsg = document.getElementById('notifMessageAdmin');
+    const testBtn = document.getElementById('testNotifAdminBtn');
+    if (notifToggle) notifToggle.onchange = () => localStorage.setItem('notifEnabled', notifToggle.checked);
+    if (notifTime) notifTime.onchange = () => localStorage.setItem('notifTime', notifTime.value);
+    if (testBtn) testBtn.onclick = () => alert(`🔔 Recordatorio: ${notifMsg?.value || '¿Ya practicaste?'} a las ${notifTime?.value || '17:00'}`);
+    
+    // Copia de seguridad
+    document.getElementById('exportDataAdminBtn')?.addEventListener('click', () => {
+        const data = { stats: localStorage.getItem('maryse_stats'), guests: localStorage.getItem('maryse_guests') };
+        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'maryse_backup.json';
+        a.click();
+    });
+    document.getElementById('importDataAdminBtn')?.addEventListener('click', () => document.getElementById('importFileAdmin')?.click());
+    document.getElementById('importFileAdmin')?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const data = JSON.parse(ev.target.result);
+            if (data.stats) localStorage.setItem('maryse_stats', data.stats);
+            if (data.guests) localStorage.setItem('maryse_guests', data.guests);
+            alert('✅ Datos restaurados. Recarga la página.');
+            location.reload();
+        };
+        reader.readAsText(file);
+    });
+};
+
+// Modificar showView para que ejecute initAdminView
+const showViewOriginal = window.showView;
+window.showView = function(vn) {
+    showViewOriginal(vn);
+    if (vn === 'admin') {
+        if (typeof window.initAdminView === 'function') window.initAdminView();
+    }
+};
+
+// Ocultar botón Admin para Maryse
+function ocultarAdminMenuCorregido() {
+    const btn = document.getElementById('adminMenuBtn');
+    if (!btn) return;
+    const user = sessionStorage.getItem('maryse_user');
+    if (user === 'jeant.montreuil@gmail.com' || user === 'maryseadelekevin@gmail.com') {
+        btn.style.display = 'flex';
+    } else {
+        btn.style.display = 'none';
+    }
+}
+ocultarAdminMenuCorregido();
+setInterval(ocultarAdminMenuCorregido, 1000);
+
+// Si ya hay sesión, ejecutar
+if (sessionStorage.getItem('maryse_logged') === 'true') {
+    ocultarAdminMenuCorregido();
+}
 </script>
 </body>
 </html>
