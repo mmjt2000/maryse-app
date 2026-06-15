@@ -1386,7 +1386,12 @@
         <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+// ========== SUPABASE ==========
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    
 <script>
 // ========== LOGIN COMPLETO ==========
 const FIXED_USERS = {
@@ -1571,19 +1576,52 @@ function cargarFotosStorage() {
     mostrarGaleria();
 }
 function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
-function guardarNuevaFoto() {
-    let input = document.getElementById("cargarFoto");
-    let archivo = input.files[0];
-    if (!archivo) { alert("📷 Selecciona una foto"); return; }
-    let lector = new FileReader();
-    lector.onload = function(e) {
-        fotosGuardadas.unshift({ id: Date.now(), data: e.target.result, fecha: new Date().toLocaleDateString() });
+async function guardarNuevaFoto() {
+    const input = document.getElementById("cargarFoto");
+    const archivo = input.files[0];
+    if (!archivo) {
+        alert("📷 Selecciona una foto");
+        return;
+    }
+    
+    const nombreUnico = Date.now() + '_' + archivo.name;
+    const btn = event.target;
+    const textoOriginal = btn.innerText;
+    btn.innerText = "⏳ Subiendo...";
+    btn.disabled = true;
+    
+    try {
+        const { data, error } = await supabase.storage
+            .from('maryse-fotos')  // <-- NOMBRE CORREGIDO
+            .upload(nombreUnico, archivo);
+        
+        if (error) throw error;
+        
+        const { data: publicUrlData } = supabase.storage
+            .from('maryse-fotos')  // <-- NOMBRE CORREGIDO
+            .getPublicUrl(nombreUnico);
+        
+        const urlPublica = publicUrlData.publicUrl;
+        
+        fotosGuardadas.unshift({ 
+            id: Date.now(), 
+            data: urlPublica, 
+            fecha: new Date().toLocaleDateString(),
+            supabasePath: nombreUnico
+        });
         guardarFotosStorage();
         mostrarGaleria();
+        
         input.value = "";
-        alert("✅ Foto guardada");
-    };
-    lector.readAsDataURL(archivo);
+        alert("✅ Foto guardada en la nube");
+        
+    } catch (error) {
+        console.error("Error:", error);
+        alert("❌ Error al subir: " + error.message);
+    } finally {
+        btn.innerText = textoOriginal;
+        btn.disabled = false;
+    }
 }
 function mostrarGaleria() {
     let contenedor = document.getElementById("galeriaFotos");
@@ -1599,7 +1637,19 @@ function mostrarGaleria() {
         </div>
     `).join("");
 }
-function borrarFoto(id) { fotosGuardadas = fotosGuardadas.filter(f => f.id !== id); guardarFotosStorage(); mostrarGaleria(); }
+async function borrarFoto(id) {
+    const foto = fotosGuardadas.find(f => f.id === id);
+    if (foto && foto.supabasePath) {
+        const { error } = await supabase.storage
+            .from('maryse-fotos')  // <-- NOMBRE CORREGIDO
+            .remove([foto.supabasePath]);
+        if (error) console.error("Error al eliminar de Supabase:", error);
+    }
+    
+    fotosGuardadas = fotosGuardadas.filter(f => f.id !== id);
+    guardarFotosStorage();
+    mostrarGaleria();
+}
 cargarFotosStorage();
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
