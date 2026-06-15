@@ -1387,21 +1387,21 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 // ========== SUPABASE ========== 
 const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
 const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
 
-// Esperar a que el script de Supabase se cargue
-if (typeof supabase === 'undefined') { 
-    console.log('Esperando SDK de Supabase...'); 
-    setTimeout(() => { 
-        window.supabase = supabase; 
-    }, 1000); 
-}
-
-// Crear el cliente con las credenciales correctas
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-<script>
+// Inicializar después de que cargue el script
+setTimeout(() => {
+    if (typeof supabase !== 'undefined') {
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        console.log('✅ Supabase conectado correctamente');
+    } else {
+        console.log('❌ Supabase no disponible');
+    }
+}, 1000);
+</script>
 // ========== LOGIN COMPLETO ==========
 const FIXED_USERS = {
     "jeant.montreuil@gmail.com": { pass: "coulou2026", role: "admin", name: "Admin I" },
