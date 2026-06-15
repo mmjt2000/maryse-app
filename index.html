@@ -1479,25 +1479,8 @@
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="card">
         <div class="card-title">🖼️ Mis Fotos</div>
-        <input type="file" id="cargarFoto" accept="image/*" onchange="previewFotosPhoto()">
-        
-        <!-- Editor de fotos (aparece al seleccionar una imagen) -->
-        <div id="photoEditorFotos" style="display:none; margin-top: 16px;">
-            <div class="photo-canvas-container" style="background: #000; border-radius: 16px; display: flex; justify-content: center; align-items: center; min-height: 200px;">
-                <canvas id="photoCanvasFotos" style="max-width: 100%; max-height: 250px;"></canvas>
-            </div>
-            <div class="photo-editor-tools" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px;">
-                <button class="btn" onclick="rotatePhotoFotos(-90)">↺ Girar</button>
-                <button class="btn" onclick="rotatePhotoFotos(90)">↻ Girar</button>
-                <button class="btn" onclick="flipPhotoFotos('horizontal')">↔️ Voltear</button>
-                <button class="btn" onclick="flipPhotoFotos('vertical')">↕️ Voltear</button>
-                <button class="btn" onclick="centerPhotoFotos()">🎯 Centrar</button>
-                <button class="btn" onclick="resetPhotoFotos()">🔄 Reset</button>
-                <button class="btn btn-success" onclick="applyEditFotos()">✅ Aplicar y guardar</button>
-                <button class="btn" onclick="cancelarEdicionFotos()">❌ Cancelar</button>
-            </div>
-        </div>
-        
+        <input type="file" id="cargarFoto" accept="image/*">
+        <button class="btn btn-primary" onclick="guardarNuevaFoto()" style="margin-top:10px;">💾 Guardar Foto</button>
         <div id="galeriaFotos" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 </div>
@@ -1840,40 +1823,6 @@ async function cargarFotosDesdeSupabase() {
             supabasePath: file.name
         });
     }
-    async function subirFotoASupabase(base64Data) {
-    if (!supabaseClient) {
-        console.warn("⚠️ Supabase no disponible");
-        return null;
-    }
-    
-    try {
-        // Convertir base64 a Blob
-        const blob = await (await fetch(base64Data)).blob();
-        const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 8) + '.jpg';
-        
-        // Subir a Supabase
-        const { data, error } = await supabaseClient.storage
-            .from('maryse-fotos')
-            .upload(fileName, blob);
-        
-        if (error) {
-            console.error("Error Supabase:", error);
-            return null;
-        }
-        
-        // Obtener URL pública
-        const { data: urlData } = supabaseClient.storage
-            .from('maryse-fotos')
-            .getPublicUrl(fileName);
-        
-        console.log("✅ Foto subida a Supabase:", urlData.publicUrl);
-        return urlData.publicUrl;
-        
-    } catch (error) {
-        console.error("Error al subir:", error);
-        return null;
-    }
-}
     
     // Combinar con fotos locales (las que no están en la nube)
     const fotosLocales = fotosGuardadas.filter(f => !f.supabasePath);
@@ -3799,21 +3748,21 @@ const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
 const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
 let supabaseClient = null;
 
-// Inicializar Supabase
+// Inicializar Supabase y cargar fotos
 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
     supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    console.log("✅ Supabase inicializado");
+    console.log("✅ Supabase listo");
+    cargarFotosStorage();
 } else {
-    // Esperar a que cargue el SDK
-    window.addEventListener('load', function() {
-        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+    console.log("⏳ Esperando SDK de Supabase...");
+    setTimeout(() => {
+        if (window.supabase && window.supabase.createClient) {
             supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-            console.log("✅ Supabase inicializado (after load)");
-        } else {
-            console.error("❌ SDK de Supabase no cargado");
+            console.log("✅ Supabase listo (después de esperar)");
+            cargarFotosStorage();
         }
-    });
-} 
+    }, 500);
+}  
 // ==================== RINCÓN DE PAPÁ ====================
 const dadWeek = [
     { 
@@ -5822,125 +5771,6 @@ function mostrarAdminDirecto() {
         html += '</ul>';
         container.innerHTML = html;
     }
-}
-// ========== EDITOR DE FOTOS PARA VIEWFOTOS (CORREGIDO) ==========
-function previewFotosPhoto() {
-    const input = document.getElementById("cargarFoto");
-    const file = input.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        window.fotosOriginalData = e.target.result;
-        window.fotosPhotoRotation = 0;
-        window.fotosPhotoFlipH = false;
-        window.fotosPhotoFlipV = false;
-        const editorDiv = document.getElementById("photoEditorFotos");
-        if (editorDiv) editorDiv.style.display = "block";
-        loadImageToCanvasFotos(window.fotosOriginalData);
-    };
-    reader.readAsDataURL(file);
-}
-
-function loadImageToCanvasFotos(src) {
-    const canvas = document.getElementById("photoCanvasFotos");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    img.onload = () => {
-        let w = img.width, h = img.height;
-        const maxW = 400, maxH = 300;
-        if (w > maxW) { h = h * (maxW / w); w = maxW; }
-        if (h > maxH) { w = w * (maxH / h); h = maxH; }
-        canvas.width = w;
-        canvas.height = h;
-        ctx.save();
-        ctx.translate(w/2, h/2);
-        ctx.rotate((window.fotosPhotoRotation || 0) * Math.PI / 180);
-        if (window.fotosPhotoFlipH) ctx.scale(-1, 1);
-        if (window.fotosPhotoFlipV) ctx.scale(1, -1);
-        ctx.drawImage(img, -w/2, -h/2, w, h);
-        ctx.restore();
-    };
-    img.src = src;
-}
-
-function rotatePhotoFotos(deg) {
-    window.fotosPhotoRotation = (window.fotosPhotoRotation || 0) + deg;
-    if (window.fotosOriginalData) loadImageToCanvasFotos(window.fotosOriginalData);
-}
-
-function flipPhotoFotos(direction) {
-    if (direction === 'horizontal') window.fotosPhotoFlipH = !window.fotosPhotoFlipH;
-    if (direction === 'vertical') window.fotosPhotoFlipV = !window.fotosPhotoFlipV;
-    if (window.fotosOriginalData) loadImageToCanvasFotos(window.fotosOriginalData);
-}
-
-function centerPhotoFotos() {
-    window.fotosPhotoRotation = 0;
-    window.fotosPhotoFlipH = false;
-    window.fotosPhotoFlipV = false;
-    if (window.fotosOriginalData) loadImageToCanvasFotos(window.fotosOriginalData);
-}
-
-function resetPhotoFotos() {
-    centerPhotoFotos();
-}
-
-async function applyEditFotos() {
-    const canvas = document.getElementById("photoCanvasFotos");
-    if (!canvas) {
-        alert("No hay imagen para guardar");
-        return;
-    }
-    
-    const editedImage = canvas.toDataURL("image/jpeg", 0.9);
-    
-    // Cambiar texto del botón mientras sube
-    const btn = document.querySelector('#viewFotos .btn-success');
-    const textoOriginal = btn ? btn.innerText : "";
-    if (btn) {
-        btn.innerText = "⏳ Subiendo...";
-        btn.disabled = true;
-    }
-    
-    // Intentar subir a Supabase
-    let urlPublica = null;
-    if (supabaseClient) {
-        urlPublica = await subirFotoASupabase(editedImage);
-    }
-    
-    // Guardar en localStorage (si no se pudo subir, guarda la imagen local)
-    fotosGuardadas.unshift({ 
-        id: Date.now(), 
-        data: urlPublica || editedImage, 
-        fecha: new Date().toLocaleDateString(),
-        supabasePath: urlPublica ? Date.now() + '.jpg' : null
-    });
-    
-    guardarFotosStorage();
-    mostrarGaleria();
-    
-    // Limpiar editor
-    const editorDiv = document.getElementById("photoEditorFotos");
-    if (editorDiv) editorDiv.style.display = "none";
-    const input = document.getElementById("cargarFoto");
-    if (input) input.value = "";
-    
-    if (btn) {
-        btn.innerText = textoOriginal;
-        btn.disabled = false;
-    }
-    
-    alert(urlPublica ? "✅ Foto guardada en la nube ☁️" : "✅ Foto guardada localmente (nube no disponible)");
-}
-
-function cancelarEdicionFotos() {
-    const editorDiv = document.getElementById("photoEditorFotos");
-    if (editorDiv) editorDiv.style.display = "none";
-    const input = document.getElementById("cargarFoto");
-    if (input) input.value = "";
-    window.fotosOriginalData = null;
 }
 </script>
 </body>
