@@ -1387,32 +1387,20 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// ========== SUPABASE ========== 
+    // ========== SUPABASE ==========
 const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
 const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
 
-// Inicializar después de que cargue el script
-setTimeout(() => {
-    if (typeof supabase !== 'undefined') {
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-        console.log('✅ Supabase conectado correctamente');
-    } else {
-        console.log('❌ Supabase no disponible');
-    }
-}, 1000);
-// ELIMINAR BANNER AMARILLO
-setInterval(function() {
-    var divs = document.querySelectorAll('div');
-    for(var i = 0; i < divs.length; i++) {
-        var estilo = divs[i].style.backgroundColor;
-        if(estilo === 'rgb(251, 191, 36)' || estilo === '#fbae18') {
-            divs[i].remove();
-        }
-    }
-}, 100);
-
-</script>
+// Esperar a que el script de Supabase se cargue
+if (typeof supabase === 'undefined') {
+    console.log("Esperando SDK de Supabase...");
+    setTimeout(() => {
+        window.supabase = supabase;
+    }, 100);
+}
+    
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+<script>
 // ========== LOGIN COMPLETO ==========
 const FIXED_USERS = {
     "jeant.montreuil@gmail.com": { pass: "coulou2026", role: "admin", name: "Admin I" },
@@ -3974,8 +3962,6 @@ function showView(vn){
 
 function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
 function changeTestWeek(){ const v=document.getElementById("weekSelector").value; testWeekOverride=v==="auto"?null:parseInt(v); updateWeeklyDisplay(); if(document.getElementById("viewAcademy").classList.contains("active")){ renderVocab(); renderFlashcardModes(); loadFlashcards(); renderLessons(); } }
-var elemento = document.getElementById('el-id-que-sea');
-if(!elemento) return;
 function updateWeeklyDisplay(){ const wi=getCurrentWeekInfo(); const t=wi.theme; document.getElementById('weekThemeHero').innerHTML=`<h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3><p>${t.desc}</p>`; document.getElementById('weekThemeHero').style.background=`linear-gradient(135deg, ${t.color}, white)`; const badge=`<span class="weekly-content-badge">${t.emoji} ${t.name}</span>`; document.getElementById('academyBadge').innerHTML=badge; document.getElementById('discoverBadge').innerHTML=badge; }
 function getVocabData(){ try{ const wv=weeklyVocab[getCurrentWeekInfo().cycleIndex]; if(wv&&wv[currentLang]) return{"Tema":wv[currentLang]}; }catch(e){} return baseVocabData[currentLang]||baseVocabData["en"]; }
 function getSlangData(){ try{ const ws=weeklySlang[getCurrentWeekInfo().cycleIndex]; if(ws&&ws[currentLang]) return ws[currentLang]; }catch(e){} return baseSlangData[currentLang]||baseSlangData["en"]; }
