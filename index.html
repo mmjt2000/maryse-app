@@ -1585,6 +1585,11 @@ function cargarFotosStorage() {
 }
 function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
 async function guardarNuevaFoto() {
+    if (!supabaseClient) {
+        alert("⏳ Supabase no está listo. Espera unos segundos y vuelve a intentar.");
+        return;
+    }
+    
     const input = document.getElementById("cargarFoto");
     const archivo = input.files[0];
     if (!archivo) {
