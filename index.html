@@ -1586,7 +1586,8 @@ function cargarFotosStorage() {
 function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
 async function guardarNuevaFoto() {
     if (!supabaseClient) {
-        alert("⏳ Supabase no está listo. Espera unos segundos y vuelve a intentar.");
+        alert("⏳ Supabase no está listo. Espera 5 segundos y recarga la página.");
+        console.error("supabaseClient no inicializado");
         return;
     }
     
@@ -1598,7 +1599,8 @@ async function guardarNuevaFoto() {
     }
     
     const nombreUnico = Date.now() + '_' + archivo.name;
-    const btn = event.target;
+    const btn = document.querySelector('#viewFotos .btn-primary');
+    if (!btn) return;
     const textoOriginal = btn.innerText;
     btn.innerText = "⏳ Subiendo...";
     btn.disabled = true;
@@ -3466,6 +3468,24 @@ let notifSettings=JSON.parse(localStorage.getItem("maryse_notif_settings")||'{"e
 const BACKUP_KEYS=["maryse_completed","maryse_xp","maryse_level","maryse_streak","maryse_diary","maryse_sent_invites","maryse_received_invites","maryse_friends","maryse_theme","maryse_dark_mode","maryse_avatar","maryse_last_mood","maryse_mama_playlist","maryse_notif_settings","maryse_dad_completadas","maryse_grammar"];
 const TOTAL_LESSONS=16;
 
+ // ========== SUPABASE ==========
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+let supabaseClient = null;
+
+// Inicializar inmediatamente si el SDK ya está cargado
+if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+    supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    console.log("✅ Supabase listo");
+} else {
+    // Esperar a que cargue el SDK
+    window.addEventListener('load', function() {
+        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            console.log("✅ Supabase listo (after load)");
+        }
+    });
+}   
 // ==================== RINCÓN DE PAPÁ ====================
 const dadWeek = [
     { 
