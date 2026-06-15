@@ -1078,7 +1078,12 @@
     <div class="card"><div class="card-title">📸 Diario</div><input type="text" id="diaryTitle" placeholder="Título..."><textarea id="diaryText" rows="3" placeholder="¿Qué pasó hoy?"></textarea><div id="photoEditor" style="display:none;"><div class="photo-canvas-container"><canvas id="photoCanvas"></canvas></div><div class="photo-editor-tools"><button class="btn" onclick="rotatePhoto(-90)">↺</button><button class="btn" onclick="rotatePhoto(90)">↻</button><button class="btn" onclick="flipPhoto('horizontal')">↔️</button><button class="btn" onclick="flipPhoto('vertical')">↕️</button><button class="btn" onclick="centerPhoto()">🎯</button><button class="btn" onclick="resetPhoto()">🔄</button><button class="btn btn-success" onclick="applyEdit()">✅ Aplicar</button></div></div><input type="file" id="diaryPhoto" accept="image/*" onchange="previewDiaryPhoto()"><img id="diaryPreview" style="display:none;"><button class="btn btn-primary" onclick="saveDiaryEntry()">💾 Guardar recuerdo</button><div id="diaryEntries" style="margin-top:16px;"></div></div></div>
     <div id="viewFriends" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">👥 Invitaciones</div><button class="btn btn-primary" onclick="generateFriendCode()">🔗 Generar código</button><input type="text" id="friendCodeInput" placeholder="Pega el código..."><button class="btn btn-success" onclick="addFriend()">➕ Enviar solicitud</button><h4>📤 Enviadas</h4><div id="sentInvitesList"></div><h4>📥 Recibidas</h4><div id="receivedInvitesList"></div><h4>✅ Amigas</h4><div id="friendsList"></div></div></div>
     <div id="viewTheme" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎨 Personalizar Tema</div><div id="themePresets"><div class="theme-preset" onclick="applyPreset('💜','#8b5cf6','#c084fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"></div><span>💜 Lavande</span></div><div class="theme-preset" onclick="applyPreset('🌸','#ec4899','#f472b6')"><div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6);"></div><span>🌸 Rose</span></div><div class="theme-preset" onclick="applyPreset('🌊','#06b6d4','#67e8f9')"><div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9);"></div><span>🌊 Ocean</span></div><div class="theme-preset" onclick="applyPreset('🌿','#10b981','#6ee7b7')"><div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7);"></div><span>🌿 Forest</span></div><div class="theme-preset" onclick="applyPreset('🍑','#f97316','#fdba74')"><div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74);"></div><span>🍑 Peach</span></div><div class="theme-preset" onclick="applyPreset('🌙','#6366f1','#a5b4fc')"><div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc);"></div><span>🌙 Midnight</span></div><div class="theme-preset" onclick="applyPreset('🍂','#d4a574','#e6c9a8')"><div class="preset-circle" style="background:linear-gradient(135deg,#d4a574,#e6c9a8);"></div><span>🍂 Caramel</span></div></div><label>Color principal:</label><input type="color" id="themeColor" onchange="updateTheme()" value="#8b5cf6"><label>Color secundario:</label><input type="color" id="themeColor2" onchange="updateTheme()" value="#c084fc"><button class="btn btn-primary" onclick="saveTheme()">💾 Guardar tema</button></div></div>
-    <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title">🔔 Recordatorios</div><div><span>Activar</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label>Hora:</label><input type="time" id="notifTime" value="17:00"><label>Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0">Dom</div><div class="day-chip active" data-day="1">Lun</div><div class="day-chip active" data-day="2">Mar</div><div class="day-chip active" data-day="3">Mié</div><div class="day-chip active" data-day="4">Jue</div><div class="day-chip active" data-day="5">Vie</div><div class="day-chip" data-day="6">Sáb</div></div><label>Mensaje:</label><select id="notifMessage"><option>📚 ¿Ya practicaste hoy?</option><option>🎯 ¡Hora de aprender!</option><option>💜 Mensaje de Papá</option></select><button class="btn btn-primary" onclick="testNotification()">🔔 Probar</button></div></div><div class="backup-section"><div class="card-title">💾 Copia de seguridad</div><div><button class="btn btn-warning" onclick="exportData()">📥 Exportar</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤 Importar</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)"></div></div>
+    <div id="viewProfile" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">📊 Estadísticas</div><div id="profileStats"></div></div><div class="card"><div class="card-title">🏆 Logros</div><div id="badgesList"></div></div><div class="notification-section"><div class="card-title">🔔 Recordatorios</div><div><span>Activar</span><label class="toggle-switch"><input type="checkbox" id="notifEnabled" onchange="toggleNotifications()"><span class="toggle-slider"></span></label></div><div id="notifSettings" style="display:none;"><label>Hora:</label><input type="time" id="notifTime" value="17:00"><label>Días:</label><div class="day-selector" id="notifDays"><div class="day-chip" data-day="0">Dom</div><div class="day-chip active" data-day="1">Lun</div><div class="day-chip active" data-day="2">Mar</div><div class="day-chip active" data-day="3">Mié</div><div class="day-chip active" data-day="4">Jue</div><div class="day-chip active" data-day="5">Vie</div><div class="day-chip" data-day="6">Sáb</div></div><label>Mensaje:</label><select id="notifMessage"><option>📚 ¿Ya practicaste hoy?</option><option>🎯 ¡Hora de aprender!</option><option>💜 Mensaje de Papá</option></select><button class="btn btn-primary" onclick="testNotification()">🔔 Probar</button></div></div><div class="backup-section"><div class="card-title">💾 Copia de seguridad</div><div><button class="btn btn-warning" onclick="exportData()">📥 Exportar</button><button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤 Importar</button></div><input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)">
+    <div class="card">
+    <div class="card-title">🎨 Personalizar Tema</div>
+    <button class="btn btn-primary" onclick="abrirSelectorTema()">🎨 Cambiar colores</button>
+     </div>
+    </div></div>
     <div id="viewLifeskills" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="skills-section">
@@ -1832,6 +1837,90 @@ async function cargarFotosDesdeSupabase() {
 }
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
+function abrirSelectorTema() {
+    // Cerrar modales existentes
+    const existingModals = document.querySelectorAll('.modal-overlay');
+    existingModals.forEach(modal => modal.remove());
+    
+    // Crear modal con los presets de tema
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>🎨 Personalizar Tema</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div id="themePresets" style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 20px;">
+                <div class="theme-preset" onclick="applyPreset('💜','#8b5cf6','#c084fc')">
+                    <div class="preset-circle" style="background:linear-gradient(135deg,#8b5cf6,#c084fc); width:50px; height:50px; border-radius:50%; margin:0 auto 8px;"></div>
+                    <span>💜 Lavanda</span>
+                </div>
+                <div class="theme-preset" onclick="applyPreset('🌸','#ec4899','#f472b6')">
+                    <div class="preset-circle" style="background:linear-gradient(135deg,#ec4899,#f472b6); width:50px; height:50px; border-radius:50%; margin:0 auto 8px;"></div>
+                    <span>🌸 Rosa</span>
+                </div>
+                <div class="theme-preset" onclick="applyPreset('🌊','#06b6d4','#67e8f9')">
+                    <div class="preset-circle" style="background:linear-gradient(135deg,#06b6d4,#67e8f9); width:50px; height:50px; border-radius:50%; margin:0 auto 8px;"></div>
+                    <span>🌊 Océano</span>
+                </div>
+                <div class="theme-preset" onclick="applyPreset('🌿','#10b981','#6ee7b7')">
+                    <div class="preset-circle" style="background:linear-gradient(135deg,#10b981,#6ee7b7); width:50px; height:50px; border-radius:50%; margin:0 auto 8px;"></div>
+                    <span>🌿 Bosque</span>
+                </div>
+                <div class="theme-preset" onclick="applyPreset('🍑','#f97316','#fdba74')">
+                    <div class="preset-circle" style="background:linear-gradient(135deg,#f97316,#fdba74); width:50px; height:50px; border-radius:50%; margin:0 auto 8px;"></div>
+                    <span>🍑 Melocotón</span>
+                </div>
+                <div class="theme-preset" onclick="applyPreset('🌙','#6366f1','#a5b4fc')">
+                    <div class="preset-circle" style="background:linear-gradient(135deg,#6366f1,#a5b4fc); width:50px; height:50px; border-radius:50%; margin:0 auto 8px;"></div>
+                    <span>🌙 Medianoche</span>
+                </div>
+            </div>
+            <label>Color principal:</label>
+            <input type="color" id="themeColorPicker" onchange="cambiarColorPrincipal()" value="#8b5cf6" style="width:100%; margin:8px 0;">
+            <label>Color secundario:</label>
+            <input type="color" id="themeColorSecondary" onchange="cambiarColorSecundario()" value="#c084fc" style="width:100%; margin:8px 0;">
+            <button class="btn btn-primary" onclick="guardarTemaPersonalizado()" style="width:100%; margin-top:12px;">💾 Guardar tema</button>
+            <button class="btn" onclick="this.closest('.modal-overlay').remove()" style="width:100%; margin-top:8px;">Cerrar</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Cargar colores guardados
+    const savedTheme = JSON.parse(localStorage.getItem('maryse_theme') || '{}');
+    if (savedTheme.primary) {
+        document.getElementById('themeColorPicker').value = savedTheme.primary;
+        document.getElementById('themeColorSecondary').value = savedTheme.secondary || savedTheme.primary;
+    }
+}
+
+function cambiarColorPrincipal() {
+    const color = document.getElementById('themeColorPicker').value;
+    document.documentElement.style.setProperty('--primary', color);
+}
+
+function cambiarColorSecundario() {
+    const color = document.getElementById('themeColorSecondary').value;
+    document.documentElement.style.setProperty('--primary-light', color);
+}
+
+function guardarTemaPersonalizado() {
+    const primary = document.getElementById('themeColorPicker').value;
+    const secondary = document.getElementById('themeColorSecondary').value;
+    localStorage.setItem('maryse_theme', JSON.stringify({ primary: primary, secondary: secondary }));
+    alert("✅ Tema guardado");
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) modal.remove();
+}
+
+function applyPreset(emoji, primary, secondary) {
+    document.documentElement.style.setProperty('--primary', primary);
+    document.documentElement.style.setProperty('--primary-light', secondary);
+    document.getElementById('themeColorPicker').value = primary;
+    document.getElementById('themeColorSecondary').value = secondary;
+    localStorage.setItem('maryse_theme', JSON.stringify({ primary: primary, secondary: secondary }));
+}
     // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
 // === ACRÓSTICOS DE MARYSE ===
 function mostrarMensajeAnimo(estado) {
@@ -2155,24 +2244,18 @@ window.showView = function(vn) {
 <div class="float-circle circle-menu" onclick="toggleRadialMenu()" title="Menú">📱</div>
 
 <!-- MENÚ RADIAL -->
-    <div id="radialMenu" class="radial-menu">
-    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>ACADEMY</span></div>
-    <div class="radial-item" onclick="goToView('discover')"><span>🔭</span><span>DISCOVER</span></div>
+   <div id="radialMenu" class="radial-menu">
+    <div class="radial-item" onclick="goToView('academy')"><span>🎓</span><span>APRENDER</span></div>
     <div class="radial-item" onclick="goToView('games')"><span>🌱</span><span>CRECER</span></div>
-    <div class="radial-item" onclick="goToView('dad')"><span>👨‍👧</span><span>PAPA</span></div>
-    <div class="radial-item" onclick="goToView('mama')"><span>👩‍👧</span><span>MAMA</span></div>
-    <div class="radial-item" onclick="showView('mundoreal')"><span>🌍</span><span>MUNDO REAL</span></div>
-    <div class="radial-item" onclick="goToView('karaoke')"><span>🎤</span><span>KARAOKE</span></div>
-    <div class="radial-item" onclick="goToView('diary')"><span>📸</span><span>DIARIO</span></div>
-    <div class="radial-item" id="adminMenuBtn" onclick="mostrarAdminDirecto()"><span>👑</span><span>ADMIN</span></div>
-    <div class="radial-item" onclick="goToView('theme')"><span>🎨</span><span>THEMES</span></div>
-    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>VIDA</span></div>
-    <div class="radial-item" onclick="goToView('fotos')"><span>🖼️</span><span>PHOTOS</span></div>
+    <div class="radial-item" onclick="goToView('dad')"><span>👨</span><span>PAPÁ</span></div>
+    <div class="radial-item" onclick="goToView('mama')"><span>👩</span><span>MAMÁ</span></div>
+    <div class="radial-item" onclick="goToView('diary')"><span>📓</span><span>DIARIO</span></div>
+    <div class="radial-item" id="adminMenuBtn" onclick="goToView('admin')"><span>👑</span><span>ADMIN</span></div>
+    <div class="radial-item" onclick="goToView('lifeskills')"><span>💪</span><span>VIDA REAL</span></div>
+    <div class="radial-item" onclick="goToView('fotos')"><span>📸</span><span>FOTOS</span></div>
     <div class="radial-item" onclick="goToView('agenda')"><span>📅</span><span>AGENDA</span></div>
 </div>
-
 <button class="install-btn" id="installBtn" onclick="installPWA()">📱 Instalar app</button>
-
 <script>
     
 // ==================== FUNCIONES DE AGENDA (NUEVA) ====================
