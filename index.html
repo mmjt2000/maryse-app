@@ -2105,14 +2105,28 @@ function abrirYoga(tipo) {
 function cargarAudiolibrosGames() {
     const container = document.getElementById('audiolibrosContainer');
     if (!container) return;
-    
     const audiolibros = [
-        { titulo: "El principito", autor: "Antoine de Saint-Exupéry", desc: "Un clásico sobre la amistad.", link: "https://www.youtube.com/results?search_query=el+principito+audiolibro+completo+español" },
-        { titulo: "Platero y yo", autor: "Juan Ramón Jiménez", desc: "Poemas en prosa.", link: "https://www.youtube.com/results?search_query=platero+y+yo+audiolibro+completo" },
-        { titulo: "Tom Sawyer", autor: "Mark Twain", desc: "Infancia y travesuras.", link: "https://www.youtube.com/results?search_query=tom+sawyer+audiolibro+completo+español" },
-        { titulo: "Cuentos de la selva", autor: "Horacio Quiroga", desc: "Historias de animales.", link: "https://www.youtube.com/results?search_query=cuentos+de+la+selva+audiolibro+completo" },
-        { titulo: "Alicia", autor: "Lewis Carroll", desc: "Fantasía.", link: "https://www.youtube.com/results?search_query=alicia+en+el+pais+de+las+maravillas+audiolibro" }
-    ];
+    { titulo: "El principito", autor: "Antoine de Saint-Exupéry", desc: "Un clásico sobre la amistad y el sentido de la vida.", link: "https://www.youtube.com/results?search_query=el+principito+audiolibro+completo+español" },
+    { titulo: "Platero y yo", autor: "Juan Ramón Jiménez", desc: "Poemas en prosa que celebran la amistad.", link: "https://www.youtube.com/results?search_query=platero+y+yo+audiolibro+completo" },
+    { titulo: "Las aventuras de Tom Sawyer", autor: "Mark Twain", desc: "Infancia, travesuras y amistad.", link: "https://www.youtube.com/results?search_query=tom+sawyer+audiolibro+completo+español" },
+    { titulo: "Cuentos de la selva", autor: "Horacio Quiroga", desc: "Historias de animales con grandes enseñanzas.", link: "https://www.youtube.com/results?search_query=cuentos+de+la+selva+audiolibro+completo" },
+    { titulo: "Alicia en el país de las maravillas", autor: "Lewis Carroll", desc: "Fantasía y enseñanzas sobre crecer.", link: "https://www.youtube.com/results?search_query=alicia+en+el+pais+de+las+maravillas+audiolibro" },
+    { titulo: "El llamado de la selva", autor: "Jack London", desc: "Aventura, supervivencia y libertad.", link: "https://www.youtube.com/results?search_query=el+llamado+de+la+selva+audiolibro+español" },
+    { titulo: "Momo", autor: "Michael Ende", desc: "Una niña que lucha contra los ladrones de tiempo.", link: "https://www.youtube.com/results?search_query=momo+audiolibro+completo+español" },
+    { titulo: "La isla del tesoro", autor: "Robert Louis Stevenson", desc: "Piratas, mapas y aventura.", link: "https://www.youtube.com/results?search_query=la+isla+del+tesoro+audiolibro+completo" },
+    { titulo: "El fantasma de la ópera", autor: "Gastón Leroux", desc: "Romance, misterio y drama.", link: "https://www.youtube.com/results?search_query=el+fantasma+de+la+opera+audiolibro+español" },
+    { titulo: "Frankenstein", autor: "Mary Shelley", desc: "Clásico de terror y reflexión.", link: "https://www.youtube.com/results?search_query=frankenstein+audiolibro+completo+español" },
+    { titulo: "El jardín secreto", autor: "Frances Hodgson Burnett", desc: "Una niña, un jardín y una transformación.", link: "https://www.youtube.com/results?search_query=el+jardin+secreto+audiolibro+completo" },
+    { titulo: "La historia interminable", autor: "Michael Ende", desc: "Un viaje a través de la imaginación.", link: "https://www.youtube.com/results?search_query=la+historia+interminable+audiolibro+español" },
+    { titulo: "El libro de la selva", autor: "Rudyard Kipling", desc: "Mowgli y sus amigos animales.", link: "https://www.youtube.com/results?search_query=el+libro+de+la+selva+audiolibro+completo" },
+    { titulo: "Cumbres borrascosas", autor: "Emily Brontë", desc: "Romance oscuro y pasión.", link: "https://www.youtube.com/results?search_query=cumbres+borrascosas+audiolibro+español" },
+    { titulo: "El retrato de Dorian Gray", autor: "Oscar Wilde", desc: "Un hombre que no envejece.", link: "https://www.youtube.com/results?search_query=el+retrato+de+dorian+gray+audiolibro" },
+    { titulo: "Orgullo y prejuicio", autor: "Jane Austen", desc: "Romance y crítica social.", link: "https://www.youtube.com/results?search_query=orgullo+y+prejuicio+audiolibro+completo" },
+    { titulo: "Veinte mil leguas de viaje submarino", autor: "Julio Verne", desc: "Aventura bajo el mar.", link: "https://www.youtube.com/results?search_query=veinte+mil+leguas+de+viaje+submarino+audiolibro" },
+    { titulo: "El conde de Montecristo", autor: "Alejandro Dumas", desc: "Venganza y justicia.", link: "https://www.youtube.com/results?search_query=conde+de+montecristo+audiolibro+español" },
+    { titulo: "Los viajes de Gulliver", autor: "Jonathan Swift", desc: "Aventuras fantásticas.", link: "https://www.youtube.com/results?search_query=viajes+de+gulliver+audiolibro+español" },
+    { titulo: "Don Quijote de la Mancha", autor: "Miguel de Cervantes", desc: "El caballero de la triste figura.", link: "https://www.youtube.com/results?search_query=don+quijote+audiolibro+completo+español" }
+];
     
     container.innerHTML = audiolibros.map(libro => `
         <div class="audiolibro-item" onclick="window.open('${libro.link}', '_blank')">
