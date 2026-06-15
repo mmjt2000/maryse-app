@@ -1387,9 +1387,9 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-// ========= SUPABASE ========== 
-const supabaseUrl = 'https://overtbl2gxsmmmfqgxpiw.supabase.co'; 
-const supabaseKey = 'sb_publishable_02w0P8n-9SokQ84mplCkmw_2RUsVsAT'; 
+// ========== SUPABASE ========== 
+const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
+const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
 
 // Esperar a que el script de Supabase se cargue
 if (typeof supabase === 'undefined') { 
@@ -1397,9 +1397,9 @@ if (typeof supabase === 'undefined') {
     setTimeout(() => { 
         window.supabase = supabase; 
     }, 1000); 
-} 
+}
 
-// 👇 ESTA ES LA LÍNEA CORREGIDA (sin comillas en supabaseUrl)
+// Crear el cliente con las credenciales correctas
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 <script>
 // ========== LOGIN COMPLETO ==========
