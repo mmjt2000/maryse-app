@@ -5621,6 +5621,58 @@ window.showView = function(vn) {
 if (document.getElementById('viewGames').classList.contains('active')) {
     cargarAudiolibros();
 }
+// ========== FORZAR CARGA DE AUDIOLIBROS EN GAMES ==========
+function cargarAudiolibrosEnGames() {
+    const container = document.getElementById('audiolibrosContainer');
+    if (!container) return;
+    
+    const audiolibros = [
+        { titulo: "El principito", autor: "Antoine de Saint-Exupéry", desc: "Un clásico sobre la amistad y el sentido de la vida.", link: "https://youtu.be/5w6Yy0gF8r4" },
+        { titulo: "Platero y yo", autor: "Juan Ramón Jiménez", desc: "Poemas en prosa que celebran la amistad.", link: "https://youtu.be/XDQYkUZdqN4" },
+        { titulo: "Las aventuras de Tom Sawyer", autor: "Mark Twain", desc: "Infancia, travesuras y amistad.", link: "https://youtu.be/8nCexB5dFy0" },
+        { titulo: "Cuentos de la selva", autor: "Horacio Quiroga", desc: "Historias de animales con grandes enseñanzas.", link: "https://youtu.be/G6U6VJzLXyk" },
+        { titulo: "Alicia en el país de las maravillas", autor: "Lewis Carroll", desc: "Fantasía y enseñanzas sobre crecer.", link: "https://youtu.be/1nDgNp4Zq-E" },
+        { titulo: "El llamado de la selva", autor: "Jack London", desc: "Aventura, supervivencia y libertad.", link: "https://youtu.be/t4kG5JXwQdA" },
+        { titulo: "Momo", autor: "Michael Ende", desc: "Una niña que lucha contra los ladrones de tiempo.", link: "https://youtu.be/DhNQWixh-kY" },
+        { titulo: "La isla del tesoro", autor: "Robert Louis Stevenson", desc: "Piratas, mapas y aventura.", link: "https://youtu.be/gvWb7QjHvC0" },
+        { titulo: "El fantasma de la ópera", autor: "Gastón Leroux", desc: "Romance, misterio y drama.", link: "https://youtu.be/8dQ8PRN_mBA" },
+        { titulo: "Frankenstein", autor: "Mary Shelley", desc: "Clásico de terror y reflexión.", link: "https://youtu.be/X-SUfE3fjCI" },
+        { titulo: "El jardín secreto", autor: "Frances Hodgson Burnett", desc: "Una niña, un jardín y una transformación.", link: "https://youtu.be/7WkLgDGuBYY" },
+        { titulo: "La historia interminable", autor: "Michael Ende", desc: "Un viaje a través de la imaginación.", link: "https://youtu.be/7frRkS2C3t4" },
+        { titulo: "El libro de la selva", autor: "Rudyard Kipling", desc: "Mowgli y sus amigos animales.", link: "https://youtu.be/4FjF2kg7mB8" },
+        { titulo: "Cumbres borrascosas", autor: "Emily Brontë", desc: "Romance oscuro y pasión.", link: "https://youtu.be/6yMtoNnYVp8" },
+        { titulo: "El retrato de Dorian Gray", autor: "Oscar Wilde", desc: "Un hombre que no envejece.", link: "https://youtu.be/twMAksL8K0E" },
+        { titulo: "Orgullo y prejuicio", autor: "Jane Austen", desc: "Romance y crítica social.", link: "https://youtu.be/9QjXzI5c9lU" },
+        { titulo: "Veinte mil leguas de viaje submarino", autor: "Julio Verne", desc: "Aventura bajo el mar.", link: "https://youtu.be/3e5w7b4gXgE" },
+        { titulo: "El conde de Montecristo", autor: "Alejandro Dumas", desc: "Venganza y justicia.", link: "https://youtu.be/1yT4uY8Qflc" },
+        { titulo: "Los viajes de Gulliver", autor: "Jonathan Swift", desc: "Aventuras fantásticas.", link: "https://youtu.be/9JcLk8GkH_s" },
+        { titulo: "Don Quijote de la Mancha", autor: "Miguel de Cervantes", desc: "Las aventuras del caballero de la triste figura.", link: "https://youtu.be/VYp8pWQC0A0" }
+    ];
+    
+    container.innerHTML = audiolibros.map(libro => `
+        <div class="audiolibro-item" onclick="window.open('${libro.link}', '_blank')" style="cursor: pointer;">
+            <div class="audiolibro-titulo">📖 ${libro.titulo}</div>
+            <div class="audiolibro-autor">✍️ ${libro.autor}</div>
+            <div class="audiolibro-desc">${libro.desc}</div>
+        </div>
+    `).join('');
+    
+    console.log("✅ Audiolibros cargados");
+}
+
+// Ejecutar cada vez que se abre la vista Games
+const showViewOriginalConAudios = window.showView;
+window.showView = function(vn) {
+    showViewOriginalConAudios(vn);
+    if (vn === 'games') {
+        setTimeout(cargarAudiolibrosEnGames, 100);
+    }
+};
+
+// Si ya estás en Games, cargar ahora
+if (document.getElementById('viewGames').classList.contains('active')) {
+    cargarAudiolibrosEnGames();
+}
 </script>
 </body>
 </html>
