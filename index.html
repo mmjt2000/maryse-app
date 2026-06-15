@@ -1387,19 +1387,20 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    // ========== SUPABASE ==========
-const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
-const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
+// ========= SUPABASE ========== 
+const supabaseUrl = 'https://overtbl2gxsmmmfqgxpiw.supabase.co'; 
+const supabaseKey = 'sb_publishable_02w0P8n-9SokQ84mplCkmw_2RUsVsAT'; 
 
 // Esperar a que el script de Supabase se cargue
-if (typeof supabase === 'undefined') {
-    console.log("Esperando SDK de Supabase...");
-    setTimeout(() => {
-        window.supabase = supabase;
-    }, 100);
-}
-    
-const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+if (typeof supabase === 'undefined') { 
+    console.log('Esperando SDK de Supabase...'); 
+    setTimeout(() => { 
+        window.supabase = supabase; 
+    }, 1000); 
+} 
+
+// 👇 ESTA ES LA LÍNEA CORREGIDA (sin comillas en supabaseUrl)
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 <script>
 // ========== LOGIN COMPLETO ==========
 const FIXED_USERS = {
