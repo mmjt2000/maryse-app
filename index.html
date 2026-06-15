@@ -5673,6 +5673,59 @@ window.showView = function(vn) {
 if (document.getElementById('viewGames').classList.contains('active')) {
     cargarAudiolibrosEnGames();
 }
+// ========== FORZAR AUDIOLIBROS EN GAMES ==========
+const audiolibrosLista = [
+    { titulo: "El principito", autor: "Antoine de Saint-Exupéry", desc: "Un clásico sobre la amistad.", link: "https://youtu.be/5w6Yy0gF8r4" },
+    { titulo: "Platero y yo", autor: "Juan Ramón Jiménez", desc: "Poemas en prosa.", link: "https://youtu.be/XDQYkUZdqN4" },
+    { titulo: "Las aventuras de Tom Sawyer", autor: "Mark Twain", desc: "Infancia y travesuras.", link: "https://youtu.be/8nCexB5dFy0" },
+    { titulo: "Cuentos de la selva", autor: "Horacio Quiroga", desc: "Historias de animales.", link: "https://youtu.be/G6U6VJzLXyk" },
+    { titulo: "Alicia en el país de las maravillas", autor: "Lewis Carroll", desc: "Fantasía.", link: "https://youtu.be/1nDgNp4Zq-E" },
+    { titulo: "El llamado de la selva", autor: "Jack London", desc: "Aventura y libertad.", link: "https://youtu.be/t4kG5JXwQdA" },
+    { titulo: "Momo", autor: "Michael Ende", desc: "Ladrones de tiempo.", link: "https://youtu.be/DhNQWixh-kY" },
+    { titulo: "La isla del tesoro", autor: "Robert Louis Stevenson", desc: "Piratas y mapas.", link: "https://youtu.be/gvWb7QjHvC0" },
+    { titulo: "El fantasma de la ópera", autor: "Gastón Leroux", desc: "Romance y misterio.", link: "https://youtu.be/8dQ8PRN_mBA" },
+    { titulo: "Frankenstein", autor: "Mary Shelley", desc: "Clásico de terror.", link: "https://youtu.be/X-SUfE3fjCI" },
+    { titulo: "El jardín secreto", autor: "Frances Hodgson Burnett", desc: "Transformación.", link: "https://youtu.be/7WkLgDGuBYY" },
+    { titulo: "La historia interminable", autor: "Michael Ende", desc: "Viaje imaginario.", link: "https://youtu.be/7frRkS2C3t4" },
+    { titulo: "El libro de la selva", autor: "Rudyard Kipling", desc: "Mowgli y sus amigos.", link: "https://youtu.be/4FjF2kg7mB8" },
+    { titulo: "Cumbres borrascosas", autor: "Emily Brontë", desc: "Romance oscuro.", link: "https://youtu.be/6yMtoNnYVp8" },
+    { titulo: "El retrato de Dorian Gray", autor: "Oscar Wilde", desc: "Un hombre que no envejece.", link: "https://youtu.be/twMAksL8K0E" },
+    { titulo: "Orgullo y prejuicio", autor: "Jane Austen", desc: "Romance y crítica social.", link: "https://youtu.be/9QjXzI5c9lU" },
+    { titulo: "Veinte mil leguas", autor: "Julio Verne", desc: "Aventura submarina.", link: "https://youtu.be/3e5w7b4gXgE" },
+    { titulo: "El conde de Montecristo", autor: "Alejandro Dumas", desc: "Venganza y justicia.", link: "https://youtu.be/1yT4uY8Qflc" },
+    { titulo: "Los viajes de Gulliver", autor: "Jonathan Swift", desc: "Aventuras fantásticas.", link: "https://youtu.be/9JcLk8GkH_s" },
+    { titulo: "Don Quijote", autor: "Miguel de Cervantes", desc: "El caballero de la triste figura.", link: "https://youtu.be/VYp8pWQC0A0" }
+];
+
+function forzarAudiolibros() {
+    const container = document.getElementById('audiolibrosContainer');
+    if (container && audiolibrosLista.length > 0) {
+        container.innerHTML = audiolibrosLista.map(libro => `
+            <div class="audiolibro-item" onclick="window.open('${libro.link}', '_blank')" style="cursor: pointer; background: var(--bg); border-radius: 16px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border);">
+                <div style="font-weight: 700;">📖 ${libro.titulo}</div>
+                <div style="font-size: 0.7rem;">✍️ ${libro.autor}</div>
+                <div style="font-size: 0.75rem; margin-top: 6px;">${libro.desc}</div>
+            </div>
+        `).join('');
+        console.log("✅ Audiolibros cargados correctamente");
+    } else {
+        console.log("❌ Contenedor no encontrado");
+    }
+}
+
+// Ejecutar al cargar la página y cuando se abra Games
+forzarAudiolibros();
+
+// Modificar showView para que al abrir Games cargue los audiolibros
+if (typeof showView === 'function') {
+    const showViewOriginalAudio = showView;
+    window.showView = function(vn) {
+        showViewOriginalAudio(vn);
+        if (vn === 'games') {
+            setTimeout(forzarAudiolibros, 50);
+        }
+    };
+}
 </script>
 </body>
 </html>
