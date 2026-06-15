@@ -1586,8 +1586,7 @@ function cargarFotosStorage() {
 function guardarFotosStorage() { localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas)); }
 async function guardarNuevaFoto() {
     if (!supabaseClient) {
-        alert("⏳ Supabase no está listo. Espera 5 segundos y recarga la página.");
-        console.error("supabaseClient no inicializado");
+        alert("⏳ Supabase no está listo. Espera unos segundos y vuelve a intentar.");
         return;
     }
     
@@ -1630,6 +1629,9 @@ async function guardarNuevaFoto() {
         input.value = "";
         alert("✅ Foto guardada en la nube");
         
+        // Recargar fotos desde Supabase para sincronizar
+        await cargarFotosDesdeSupabase();
+        
     } catch (error) {
         console.error("Error:", error);
         alert("❌ Error al subir: " + error.message);
@@ -1637,6 +1639,37 @@ async function guardarNuevaFoto() {
         btn.innerText = textoOriginal;
         btn.disabled = false;
     }
+}
+async function cargarFotosDesdeSupabase() {
+    const { data, error } = await supabaseClient.storage
+        .from('maryse-fotos')
+        .list('', { limit: 100 });
+    
+    if (error) {
+        console.error("Error al listar fotos:", error);
+        return;
+    }
+    
+    // Convertir los archivos a objetos como los de localStorage
+    const nuevasFotos = [];
+    for (const file of data) {
+        const { data: publicUrlData } = supabaseClient.storage
+            .from('maryse-fotos')
+            .getPublicUrl(file.name);
+        
+        nuevasFotos.push({
+            id: Date.now() + Math.random(),
+            data: publicUrlData.publicUrl,
+            fecha: new Date(file.created_at).toLocaleDateString(),
+            supabasePath: file.name
+        });
+    }
+    
+    // Combinar con fotos locales (para no perder las que ya tenías)
+    const fotosLocales = fotosGuardadas.filter(f => !f.supabasePath);
+    fotosGuardadas = [...nuevasFotos, ...fotosLocales];
+    guardarFotosStorage();
+    mostrarGaleria();
 }
 function mostrarGaleria() {
     let contenedor = document.getElementById("galeriaFotos");
@@ -1665,7 +1698,53 @@ async function borrarFoto(id) {
     guardarFotosStorage();
     mostrarGaleria();
 }
-cargarFotosStorage();
+async function cargarFotosStorage() {
+    let data = localStorage.getItem("maryse_fotos_galeria");
+    if (data) {
+        fotosGuardadas = JSON.parse(data);
+    } else {
+        fotosGuardadas = [];
+    }
+    
+    // Si Supabase está listo, cargar fotos desde la nube
+    if (supabaseClient) {
+        await cargarFotosDesdeSupabase();
+    } else {
+        mostrarGaleria();
+    }
+}
+async function cargarFotosDesdeSupabase() {
+    if (!supabaseClient) return;
+    
+    const { data, error } = await supabaseClient.storage
+        .from('maryse-fotos')
+        .list('', { limit: 100 });
+    
+    if (error) {
+        console.error("Error al listar fotos:", error);
+        return;
+    }
+    
+    const nuevasFotos = [];
+    for (const file of data) {
+        const { data: publicUrlData } = supabaseClient.storage
+            .from('maryse-fotos')
+            .getPublicUrl(file.name);
+        
+        nuevasFotos.push({
+            id: Date.now() + Math.random(),
+            data: publicUrlData.publicUrl,
+            fecha: new Date(file.created_at).toLocaleDateString(),
+            supabasePath: file.name
+        });
+    }
+    
+    // Combinar con fotos locales (las que no están en la nube)
+    const fotosLocales = fotosGuardadas.filter(f => !f.supabasePath);
+    fotosGuardadas = [...nuevasFotos, ...fotosLocales];
+    guardarFotosStorage();
+    mostrarGaleria();
+}
 window.guardarNuevaFoto = guardarNuevaFoto;
 window.borrarFoto = borrarFoto;
     // === MENSAJES SEGÚN EL ESTADO DE ÁNIMO ===
@@ -3468,24 +3547,25 @@ let notifSettings=JSON.parse(localStorage.getItem("maryse_notif_settings")||'{"e
 const BACKUP_KEYS=["maryse_completed","maryse_xp","maryse_level","maryse_streak","maryse_diary","maryse_sent_invites","maryse_received_invites","maryse_friends","maryse_theme","maryse_dark_mode","maryse_avatar","maryse_last_mood","maryse_mama_playlist","maryse_notif_settings","maryse_dad_completadas","maryse_grammar"];
 const TOTAL_LESSONS=16;
 
- // ========== SUPABASE ==========
+// ========== SUPABASE ==========
 const supabaseUrl = 'https://cwetrblkzgsmmmfgxpiv.supabase.co';
 const supabaseKey = 'sb_publishable_02w0PBn-9SokQ84mpLCknw_2RUsVSaT';
 let supabaseClient = null;
 
-// Inicializar inmediatamente si el SDK ya está cargado
+// Inicializar Supabase y cargar fotos
 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
     supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     console.log("✅ Supabase listo");
+    cargarFotosStorage(); // <-- Cargar fotos al iniciar
 } else {
-    // Esperar a que cargue el SDK
     window.addEventListener('load', function() {
         if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
             supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
             console.log("✅ Supabase listo (after load)");
+            cargarFotosStorage(); // <-- Cargar fotos al iniciar
         }
     });
-}   
+}  
 // ==================== RINCÓN DE PAPÁ ====================
 const dadWeek = [
     { 
