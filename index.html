@@ -5805,6 +5805,23 @@ if (typeof showView === 'function') {
         if (vn === 'games') cargarAudiolibrosCompletos();
     };
 }
+// ========== AUDIOLIBROS 20 COMPLETOS ==========
+function cargarAudiolibrosCompletos() {
+    const container = document.getElementById('audiolibrosContainer');
+    if (!container) return;
+    container.innerHTML = `(aquí pegas todo el contenido de los 20 libros que funcionó en la consola)`;
+}
+
+// Ejecutar al abrir Games
+cargarAudiolibrosCompletos();
+
+if (typeof showView === 'function') {
+    const showViewOriginal = showView;
+    window.showView = function(vn) {
+        showViewOriginal(vn);
+        if (vn === 'games') cargarAudiolibrosCompletos();
+    };
+}
 </script>
 </body>
 </html>
