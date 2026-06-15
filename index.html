@@ -5789,12 +5789,7 @@ function mostrarAdminDirecto() {
         container.innerHTML = html;
     }
 }
-// ========== EDITOR DE FOTOS PARA VIEWFOTOS ==========
-let fotosOriginalData = null;
-let fotosPhotoRotation = 0;
-let fotosPhotoFlipH = false;
-let fotosPhotoFlipV = false;
-
+// ========== EDITOR DE FOTOS PARA VIEWFOTOS (CORREGIDO) ==========
 function previewFotosPhoto() {
     const input = document.getElementById("cargarFoto");
     const file = input.files[0];
@@ -5802,12 +5797,13 @@ function previewFotosPhoto() {
     
     const reader = new FileReader();
     reader.onload = function(e) {
-        fotosOriginalData = e.target.result;
-        fotosPhotoRotation = 0;
-        fotosPhotoFlipH = false;
-        fotosPhotoFlipV = false;
-        document.getElementById("photoEditorFotos").style.display = "block";
-        loadImageToCanvasFotos(fotosOriginalData);
+        window.fotosOriginalData = e.target.result;
+        window.fotosPhotoRotation = 0;
+        window.fotosPhotoFlipH = false;
+        window.fotosPhotoFlipV = false;
+        const editorDiv = document.getElementById("photoEditorFotos");
+        if (editorDiv) editorDiv.style.display = "block";
+        loadImageToCanvasFotos(window.fotosOriginalData);
     };
     reader.readAsDataURL(file);
 }
@@ -5826,9 +5822,9 @@ function loadImageToCanvasFotos(src) {
         canvas.height = h;
         ctx.save();
         ctx.translate(w/2, h/2);
-        ctx.rotate(fotosPhotoRotation * Math.PI / 180);
-        if (fotosPhotoFlipH) ctx.scale(-1, 1);
-        if (fotosPhotoFlipV) ctx.scale(1, -1);
+        ctx.rotate((window.fotosPhotoRotation || 0) * Math.PI / 180);
+        if (window.fotosPhotoFlipH) ctx.scale(-1, 1);
+        if (window.fotosPhotoFlipV) ctx.scale(1, -1);
         ctx.drawImage(img, -w/2, -h/2, w, h);
         ctx.restore();
     };
@@ -5836,21 +5832,21 @@ function loadImageToCanvasFotos(src) {
 }
 
 function rotatePhotoFotos(deg) {
-    fotosPhotoRotation += deg;
-    loadImageToCanvasFotos(fotosOriginalData);
+    window.fotosPhotoRotation = (window.fotosPhotoRotation || 0) + deg;
+    if (window.fotosOriginalData) loadImageToCanvasFotos(window.fotosOriginalData);
 }
 
 function flipPhotoFotos(direction) {
-    if (direction === 'horizontal') fotosPhotoFlipH = !fotosPhotoFlipH;
-    if (direction === 'vertical') fotosPhotoFlipV = !fotosPhotoFlipV;
-    loadImageToCanvasFotos(fotosOriginalData);
+    if (direction === 'horizontal') window.fotosPhotoFlipH = !window.fotosPhotoFlipH;
+    if (direction === 'vertical') window.fotosPhotoFlipV = !window.fotosPhotoFlipV;
+    if (window.fotosOriginalData) loadImageToCanvasFotos(window.fotosOriginalData);
 }
 
 function centerPhotoFotos() {
-    fotosPhotoRotation = 0;
-    fotosPhotoFlipH = false;
-    fotosPhotoFlipV = false;
-    loadImageToCanvasFotos(fotosOriginalData);
+    window.fotosPhotoRotation = 0;
+    window.fotosPhotoFlipH = false;
+    window.fotosPhotoFlipV = false;
+    if (window.fotosOriginalData) loadImageToCanvasFotos(window.fotosOriginalData);
 }
 
 function resetPhotoFotos() {
@@ -5862,26 +5858,31 @@ function applyEditFotos() {
     if (!canvas) return;
     const editedImage = canvas.toDataURL("image/jpeg", 0.9);
     
-    fotosGuardadas.unshift({ 
-        id: Date.now(), 
-        data: editedImage, 
-        fecha: new Date().toLocaleDateString() 
-    });
-    guardarFotosStorage();
-    mostrarGaleria();
+    if (typeof fotosGuardadas !== 'undefined') {
+        fotosGuardadas.unshift({ 
+            id: Date.now(), 
+            data: editedImage, 
+            fecha: new Date().toLocaleDateString() 
+        });
+        if (typeof guardarFotosStorage === 'function') guardarFotosStorage();
+        if (typeof mostrarGaleria === 'function') mostrarGaleria();
+    }
     
-    // Limpiar y ocultar editor
-    document.getElementById("photoEditorFotos").style.display = "none";
-    document.getElementById("cargarFoto").value = "";
-    fotosOriginalData = null;
+    const editorDiv = document.getElementById("photoEditorFotos");
+    if (editorDiv) editorDiv.style.display = "none";
+    const input = document.getElementById("cargarFoto");
+    if (input) input.value = "";
+    window.fotosOriginalData = null;
     alert("✅ Foto guardada con edición");
 }
 
 function cancelarEdicionFotos() {
-    document.getElementById("photoEditorFotos").style.display = "none";
-    document.getElementById("cargarFoto").value = "";
-    fotosOriginalData = null;
-}   
+    const editorDiv = document.getElementById("photoEditorFotos");
+    if (editorDiv) editorDiv.style.display = "none";
+    const input = document.getElementById("cargarFoto");
+    if (input) input.value = "";
+    window.fotosOriginalData = null;
+}
 </script>
 </body>
 </html>
