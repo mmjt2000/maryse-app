@@ -798,6 +798,61 @@
 .dynamic-block span:last-child {
     border-bottom: none;
 }
+/* Yoga y audiolibros */
+.yoga-card {
+    background: var(--bg);
+    border-radius: 24px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.yoga-card:hover {
+    transform: translateX(5px);
+    background: var(--card);
+    border-color: var(--primary);
+}
+.yoga-emoji {
+    font-size: 2rem;
+}
+.yoga-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.yoga-desc {
+    font-size: 0.75rem;
+    color: var(--subtext);
+}
+.audiolibro-item {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+}
+.audiolibro-item:hover {
+    transform: translateX(5px);
+    background: var(--card);
+    border-color: var(--primary);
+}
+.audiolibro-titulo {
+    font-weight: 700;
+}
+.audiolibro-autor {
+    font-size: 0.7rem;
+    color: var(--subtext);
+}
+.audiolibro-desc {
+    font-size: 0.75rem;
+    margin-top: 6px;
+    color: var(--text);
+}
     </style>
 </head>
 <body>
@@ -960,7 +1015,50 @@
     </div>
 
     <div id="viewDiscover" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="discover-filters" id="discoverFilters"></div><div class="articles-grid" id="articlesContainer"></div><div class="mom-section" id="momSection"></div></div>
-    <div id="viewGames" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎮 Games</div><div class="game-selector" id="gameSelector"><button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button><button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button><button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button></div><div id="gameContainer"></div></div></div>
+    <div id="viewGames" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+
+    <!-- Juegos originales -->
+    <div class="card">
+        <div class="card-title">🎮 Games</div>
+        <div class="game-selector" id="gameSelector">
+            <button class="game-btn active" onclick="switchGame('memory')">🧠 Memory</button>
+            <button class="game-btn" onclick="switchGame('quiz')">⚡ Speed Quiz</button>
+            <button class="game-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button>
+        </div>
+        <div id="gameContainer"></div>
+    </div>
+
+    <!-- YOGA Y RESPIRACIÓN -->
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-title">🧘 YOGA · RESPIRACIÓN · ESTIRAMIENTOS</div>
+        <div id="yogaContainer">
+            <div class="yoga-card" onclick="abrirYoga('respira')">
+                <div class="yoga-emoji">🌬️</div>
+                <div class="yoga-title">Respiración profunda</div>
+                <div class="yoga-desc">Técnica 4-7-8 para calmar la mente</div>
+            </div>
+            <div class="yoga-card" onclick="abrirYoga('estiramiento')">
+                <div class="yoga-emoji">🤸</div>
+                <div class="yoga-title">Estiramientos diarios</div>
+                <div class="yoga-desc">5 minutos para despertar el cuerpo</div>
+            </div>
+            <div class="yoga-card" onclick="abrirYoga('yoga')">
+                <div class="yoga-emoji">🧘</div>
+                <div class="yoga-title">Yoga para adolescentes</div>
+                <div class="yoga-desc">Posturas suaves para flexibilidad</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIOLIBROS -->
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-title">📚 20 AUDIOLIBROS RECOMENDADOS · EN ESPAÑOL</div>
+        <div id="audiolibrosContainer" style="max-height: 400px; overflow-y: auto;">
+            <!-- Los 20 audiolibros se cargarán aquí automáticamente -->
+        </div>
+    </div>
+</div>
     <div id="viewDad" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="clock-card"><div class="clock-time" id="dadLiveClock">--:--:--</div><div class="clock-date" id="dadLiveDate"></div></div><div id="dadContainer"></div></div>
     <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" onclick="filterKaraokeSongs('en')">🇬🇧 English (24)</button><button class="btn" onclick="filterKaraokeSongs('fr')">🇫🇷 Français (12)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
     <div id="viewDiary" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button>
@@ -1939,6 +2037,103 @@ actualizarBloqueDinamico();
 
 // Actualizar cada hora (por si cambia mientras la app está abierta)
 setInterval(actualizarBloqueDinamico, 3600000);
+// ========== YOGA ==========
+function abrirYoga(tipo) {
+    const contenidos = {
+        respira: {
+            titulo: "🌬️ Respiración profunda (4-7-8)",
+            pasos: [
+                "1. Siéntate cómodamente con la espalda recta",
+                "2. Inhala por la nariz durante 4 segundos",
+                "3. Mantén el aire 7 segundos",
+                "4. Exhala lentamente por la boca durante 8 segundos",
+                "5. Repite 4-5 veces",
+                "✨ Beneficio: Reduce la ansiedad y calma el sistema nervioso"
+            ],
+            video: "https://www.youtube.com/results?search_query=respiración+4-7-8+para+ansiedad"
+        },
+        estiramiento: {
+            titulo: "🤸 Estiramientos diarios (5 minutos)",
+            pasos: [
+                "1. Estiramiento de cuello (lado a lado)",
+                "2. Apertura de brazos y hombros",
+                "3. Giro de columna suave",
+                "4. Estiramiento de piernas (tocarse los pies)",
+                "5. Postura del gato-vaca (espalda)",
+                "🧘 Haz cada estiramiento 15-30 segundos"
+            ],
+            video: "https://www.youtube.com/results?search_query=estiramientos+para+adolescentes+5+minutos"
+        },
+        yoga: {
+            titulo: "🧘 Yoga para adolescentes",
+            pasos: [
+                "1. Postura de la montaña (Tadasana) - equilibrio",
+                "2. Perro boca abajo (Adho Mukha Svanasana) - estiramiento completo",
+                "3. Postura del árbol (Vrksasana) - concentración",
+                "4. Postura del niño (Balasana) - descanso",
+                "5. Mariposa (Baddha Konasana) - apertura de cadera",
+                "🕊️ Mantén cada postura 3-5 respiraciones"
+            ],
+            video: "https://www.youtube.com/results?search_query=yoga+para+principiantes+adolescentes"
+        }
+    };
+    
+    const c = contenidos[tipo];
+    if (!c) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div>${c.titulo}</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div style="margin: 16px 0;">
+                ${c.pasos.map(p => `<p>${p}</p>`).join('')}
+            </div>
+            <div style="margin-top: 16px; text-align: center;">
+                <button class="btn btn-primary" onclick="window.open('${c.video}', '_blank')">🎬 Ver video guía</button>
+                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Cerrar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// ========== AUDIOLIBROS ==========
+function cargarAudiolibrosGames() {
+    const container = document.getElementById('audiolibrosContainer');
+    if (!container) return;
+    
+    const audiolibros = [
+        { titulo: "El principito", autor: "Antoine de Saint-Exupéry", desc: "Un clásico sobre la amistad.", link: "https://www.youtube.com/results?search_query=el+principito+audiolibro+completo+español" },
+        { titulo: "Platero y yo", autor: "Juan Ramón Jiménez", desc: "Poemas en prosa.", link: "https://www.youtube.com/results?search_query=platero+y+yo+audiolibro+completo" },
+        { titulo: "Tom Sawyer", autor: "Mark Twain", desc: "Infancia y travesuras.", link: "https://www.youtube.com/results?search_query=tom+sawyer+audiolibro+completo+español" },
+        { titulo: "Cuentos de la selva", autor: "Horacio Quiroga", desc: "Historias de animales.", link: "https://www.youtube.com/results?search_query=cuentos+de+la+selva+audiolibro+completo" },
+        { titulo: "Alicia", autor: "Lewis Carroll", desc: "Fantasía.", link: "https://www.youtube.com/results?search_query=alicia+en+el+pais+de+las+maravillas+audiolibro" }
+    ];
+    
+    container.innerHTML = audiolibros.map(libro => `
+        <div class="audiolibro-item" onclick="window.open('${libro.link}', '_blank')">
+            <div class="audiolibro-titulo">📖 ${libro.titulo}</div>
+            <div class="audiolibro-autor">✍️ ${libro.autor}</div>
+            <div class="audiolibro-desc">${libro.desc}</div>
+        </div>
+    `).join('');
+}
+
+// Ejecutar al cargar la página y al abrir Games
+cargarAudiolibrosGames();
+
+// Modificar showView para que al abrir Games recargue los audiolibros
+const showViewOriginalGames = window.showView;
+window.showView = function(vn) {
+    showViewOriginalGames(vn);
+    if (vn === 'games') {
+        setTimeout(cargarAudiolibrosGames, 100);
+    }
+};
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
