@@ -1759,29 +1759,64 @@ async function cargarFotosDesdeSupabase() {
 function mostrarGaleria() {
     let contenedor = document.getElementById("galeriaFotos");
     if (!contenedor) return;
-    if (fotosGuardadas.length === 0) { contenedor.innerHTML = '<p style="text-align:center;width:100%;">🖼️ No hay fotos aún</p>'; return; }
+    
+    if (fotosGuardadas.length === 0) { 
+        contenedor.innerHTML = '<p style="text-align:center;width:100%;">🖼️ No hay fotos aún</p>'; 
+        return; 
+    }
+    
     contenedor.innerHTML = fotosGuardadas.map(f => `
-        <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card);">
+        <div style="width:150px; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--card); position:relative;">
             <img src="${f.data}" style="width:100%; height:120px; object-fit:cover;">
-            <div style="padding:8px; font-size:0.7rem; display:flex; justify-content:space-between;">
+            <div style="padding:8px; font-size:0.7rem; display:flex; justify-content:space-between; align-items:center;">
                 <span>📅 ${f.fecha}</span>
-                <button onclick="borrarFoto(${f.id})" style="background:none; border:none; cursor:pointer;">🗑️</button>
+                <button onclick="borrarFoto(${f.id})" style="background:#dc2626; color:white; border:none; border-radius:20px; padding:4px 12px; cursor:pointer; font-size:0.7rem;">
+                    🗑️ Eliminar
+                </button>
             </div>
         </div>
     `).join("");
 }
 async function borrarFoto(id) {
+    // 1. Pide confirmación
+    if (!confirm("¿Estás segura de que quieres eliminar esta foto?")) return;
+    
+    // 2. Busca la foto en el array
     const foto = fotosGuardadas.find(f => f.id === id);
-    if (foto && foto.supabasePath) {
-        const { error } = await supabase.storage
-            .from('maryse-fotos')  // <-- NOMBRE CORREGIDO
-            .remove([foto.supabasePath]);
-        if (error) console.error("Error al eliminar de Supabase:", error);
+    if (!foto) {
+        alert("❌ Foto no encontrada");
+        return;
     }
     
+    // 3. Si está en Supabase (nube), la elimina de allí
+    if (foto.supabasePath && supabaseClient) {
+        try {
+            const { error } = await supabaseClient.storage
+                .from('maryse-fotos')
+                .remove([foto.supabasePath]);
+            if (error) {
+                console.error("Error al eliminar de Supabase:", error);
+                alert("❌ Error al eliminar de la nube: " + error.message);
+                return;
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("❌ Error al eliminar de la nube: " + error.message);
+            return;
+        }
+    }
+    
+    // 4. La elimina del array local
     fotosGuardadas = fotosGuardadas.filter(f => f.id !== id);
+    
+    // 5. Guarda el array actualizado en localStorage
     guardarFotosStorage();
+    
+    // 6. Vuelve a mostrar la galería (sin la foto eliminada)
     mostrarGaleria();
+    
+    // 7. Muestra mensaje de éxito
+    alert("✅ Foto eliminada correctamente");
 }
 async function cargarFotosStorage() {
     let data = localStorage.getItem("maryse_fotos_galeria");
