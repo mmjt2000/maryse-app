@@ -1663,14 +1663,14 @@ if (sessionStorage.getItem('maryse_logged') === 'true') {
 let fotosGuardadas = [];
 
 function cargarFotosStorage() {
-    let data = localStorage.getItem("maryse_fotos_galeria");  // 👈 UNIQUE
+    let data = localStorage.getItem("maryse_fotos_galeria");  // 👈 SEUL CHANGEMENT
     if (data) fotosGuardadas = JSON.parse(data);
     else fotosGuardadas = [];
     mostrarGaleria();
 }
 
 function guardarFotosStorage() { 
-    localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas));  // 👈 UNIQUE
+    localStorage.setItem("maryse_fotos_galeria", JSON.stringify(fotosGuardadas));  // 👈 SEUL CHANGEMENT
 }
 async function guardarNuevaFoto() {
     if (!supabaseClient) {
