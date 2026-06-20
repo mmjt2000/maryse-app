@@ -4751,16 +4751,26 @@ function toggleRadialMenu() {
     if (menu) {menu.classList.toggle('active');}
 }
 function goToView(viewName) {
-    if (viewName === 'agenda') {
-        // Mostrar la nueva Agenda
-        document.getElementById('viewAgendaNueva').classList.add('active');
-        document.getElementById('viewHome').classList.remove('active');
-        iniciarAgendaN();
-        toggleRadialMenu();
-    } else {
-        showView(viewName);
-        toggleRadialMenu();
+    // 1. Cerrar el menú inmediatamente
+    const menu = document.getElementById('radialMenu');
+    if (menu) {
+        menu.classList.remove('active');
     }
+    
+    // 2. Si es la agenda, manejar caso especial
+    if (viewName === 'agenda') {
+        setTimeout(() => {
+            document.getElementById('viewAgendaNueva').classList.add('active');
+            document.getElementById('viewHome').classList.remove('active');
+            iniciarAgendaN();
+        }, 300); // 0.3 segundos para agenda (más rápido)
+        return;
+    }
+    
+    // 3. Para las demás vistas, esperar 3 segundos
+    setTimeout(() => {
+        showView(viewName);
+    }, 500); // 0.5 segundos de espera
 }
 function openAdminPanel(){ const code=prompt("🔐 Panel de administración · Introduce el código secreto:"); if(code==="maryse2026"){ alert("👩‍👧 Bienvenida, padres de familia."); showView('profile'); }else if(code!==null){ alert("❌ Código incorrecto"); } }
 function signOutAndClose() {
