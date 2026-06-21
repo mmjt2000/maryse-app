@@ -1003,6 +1003,7 @@
     <!-- ACADEMY -->
     <div id="viewAcademy" class="view">
         <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div id="academyProgress"></div>
         <div class="lang-selector"><div id="lang-en" class="lang-btn active">🇬🇧 English</div><div id="lang-fr" class="lang-btn">🇫🇷 Français</div></div>
         <div class="grammar-section" id="grammarSection"><div class="badge">📚 GRAMÁTICA · Reglas semanales</div><div id="grammarContainer"></div></div>
         <div class="vocab-section" id="vocabSection"></div>
@@ -2186,6 +2187,65 @@ window.showView = function(vn) {
         setTimeout(cargarAudiolibrosGames, 100);
     }
 };
+// ============================================================
+// 🎯 SYSTÈME DE PROGRESSION ACADEMY - AJOUTER CE BLOC
+// ============================================================
+
+// 1. Récupérer le niveau actuel (stocké dans localStorage)
+function getCurrentAcademyLevel() {
+    let level = localStorage.getItem('academy_level');
+    if (!level) {
+        level = 0; // Commence à la semaine 0
+        localStorage.setItem('academy_level', '0');
+    }
+    return parseInt(level);
+}
+
+// 2. Sauvegarder le niveau
+function setAcademyLevel(level) {
+    localStorage.setItem('academy_level', String(level));
+}
+
+// 3. Vérifier si une semaine est débloquée
+function isWeekUnlocked(weekIndex) {
+    const currentLevel = getCurrentAcademyLevel();
+    return weekIndex <= currentLevel;
+}
+
+// 4. Afficher le progrès dans l'Academy
+function renderAcademyProgress() {
+    const currentLevel = getCurrentAcademyLevel();
+    const totalWeeks = 8;
+    const progress = document.getElementById('academyProgress');
+    if (!progress) return;
+    
+    let html = `
+        <div style="background: var(--card); border-radius: 28px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>📚 Progression Academy</strong>
+                    <div style="font-size: 0.8rem; color: var(--subtext);">
+                        Semaine ${currentLevel + 1} / ${totalWeeks}
+                    </div>
+                </div>
+                <div style="font-size: 1.5rem;">
+                    ${'⭐'.repeat(currentLevel + 1)}${'☆'.repeat(totalWeeks - currentLevel - 1)}
+                </div>
+            </div>
+            <div class="progress-bar-container" style="margin: 8px 0;">
+                <div class="progress-bar-fill" style="width: ${((currentLevel + 1) / totalWeeks) * 100}%; background: var(--primary);"></div>
+            </div>
+            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; font-size: 0.7rem; margin-top: 8px;">
+                ${Array.from({length: totalWeeks}, (_, i) => `
+                    <span style="padding: 2px 8px; border-radius: 12px; background: ${i <= currentLevel ? 'var(--primary)' : 'var(--border)'}; color: ${i <= currentLevel ? 'white' : 'var(--subtext)'};">
+                        S${i + 1} ${i <= currentLevel ? '✅' : '🔒'}
+                    </span>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    progress.innerHTML = html;
+}
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -3768,6 +3828,10 @@ let completedLessons=JSON.parse(localStorage.getItem("maryse_completed")||"[]");
 let userXP=parseInt(localStorage.getItem("maryse_xp")||"0");
 let userLevel=parseInt(localStorage.getItem("maryse_level")||"1");
 let diaryEntries=JSON.parse(localStorage.getItem("maryse_diary")||"[]");
+    // Initialiser le niveau Academy au démarrage
+if (!localStorage.getItem('academy_level')) {
+    localStorage.setItem('academy_level', '0');
+}
 let sentInvites=JSON.parse(localStorage.getItem("maryse_sent_invites")||"[]");
 let receivedInvites=JSON.parse(localStorage.getItem("maryse_received_invites")||"[]");
 let friends=JSON.parse(localStorage.getItem("maryse_friends")||"[]");
@@ -4179,7 +4243,7 @@ function showView(vn){
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
     if(vn==='home'){ renderMarysePlaylist(); }
-    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); }
+    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons();renderAcademyProgress(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
@@ -4554,7 +4618,23 @@ function renderExam() {
     if (!c || !ex) return;
     
     const isCompleted = examCompleted.includes(w);
+    const isUnlocked = isWeekUnlocked(w);
     
+    // Si la semaine n'est pas débloquée, afficher un message
+    if (!isUnlocked) {
+        c.innerHTML = `
+            <div class="exam-card" style="opacity: 0.5; cursor: not-allowed;">
+                <div class="exam-title">🔒 Semaine ${w + 1} : ${ex.title}</div>
+                <div class="exam-preview">⚠️ Termine d'abord la semaine ${w} pour débloquer celle-ci</div>
+                <div style="margin-top: 8px;">
+                    <span class="badge">🔒 Verrouillé</span>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    // Si la semaine est débloquée
     c.innerHTML = `
         <div class="exam-card" onclick="startExam(${w})">
             <div class="exam-title">${ex.title}</div>
@@ -4563,6 +4643,7 @@ function renderExam() {
                 <span class="badge">⭐ ${ex.xpReward} XP</span>
                 <span class="badge">✅ Mínimo ${ex.passingScore}/25</span>
                 ${isCompleted ? '<span class="badge">🏆 COMPLETADO</span>' : ''}
+                ${isCompleted ? '<span class="badge">✅ Semaine débloquée</span>' : ''}
             </div>
         </div>
     `;
@@ -4686,54 +4767,62 @@ function startExam(weekIndex) {
         return correct;
     }
     
-    function finishExam(isTimeout) {
-        clearInterval(timer);
-        
-        const score = calculateScore();
-        const passed = score >= exam.passingScore;
-        
-        let resultHtml = `
-            <div class="modal-content" style="max-width: 600px; text-align: center;">
-                <div class="modal-header">
-                    <div>📊 Resultado del Examen</div>
-                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+function finishExam(isTimeout) {
+    clearInterval(timer);
+    
+    const score = calculateScore();
+    const passed = score >= exam.passingScore;
+    
+    let resultHtml = `
+        <div class="modal-content" style="max-width: 600px; text-align: center;">
+            <div class="modal-header">
+                <div>📊 Resultado del Examen</div>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div style="padding: 20px;">
+                ${isTimeout ? '<div style="color: #dc2626;">⏰ ¡TIEMPO AGOTADO!</div>' : ''}
+                <div style="font-size: 2rem; margin: 16px 0;">📝</div>
+                <div><strong>Puntuación:</strong> ${score}/${exam.questions.length}</div>
+                <div><strong>Necesitabas:</strong> ${exam.passingScore}/${exam.questions.length}</div>
+                <div style="margin: 16px 0;">
+                    ${passed ? '🎉 <strong style="color: #10b981;">¡FELICIDADES! ¡APROBASTE! 🎉</strong>' : '😢 <strong style="color: #dc2626;">No alcanzaste la puntuación mínima. ¡Puedes intentarlo de nuevo!</strong>'}
                 </div>
-                <div style="padding: 20px;">
-                    ${isTimeout ? '<div style="color: #dc2626;">⏰ ¡TIEMPO AGOTADO!</div>' : ''}
-                    <div style="font-size: 2rem; margin: 16px 0;">📝</div>
-                    <div><strong>Puntuación:</strong> ${score}/${exam.questions.length}</div>
-                    <div><strong>Necesitabas:</strong> ${exam.passingScore}/${exam.questions.length}</div>
-                    <div style="margin: 16px 0;">
-                        ${passed ? '🎉 <strong style="color: #10b981;">¡FELICIDADES! ¡APROBASTE! 🎉</strong>' : '😢 <strong style="color: #dc2626;">No alcanzaste la puntuación mínima. ¡Puedes intentarlo de nuevo!</strong>'}
-                    </div>
-        `;
+    `;
+    
+    if (passed && !examCompleted.includes(weekIndex)) {
+        examCompleted.push(weekIndex);
+        localStorage.setItem("laeticia_exam_completed", JSON.stringify(examCompleted));
         
-        if (passed && !examCompleted.includes(weekIndex)) {
-            examCompleted.push(weekIndex);
-            localStorage.setItem("maryse_exam_completed", JSON.stringify(examCompleted));
-            userXP += exam.xpReward;
-            if (userXP >= userLevel * 100) {
-                userLevel++;
-            }
-            localStorage.setItem("maryse_xp", userXP);
-            localStorage.setItem("maryse_level", userLevel);
-            updateProfile();
-            resultHtml += `<div style="margin: 16px 0; padding: 12px; background: #d1fae5; border-radius: 16px;">⭐ +${exam.xpReward} XP ⭐</div>`;
-            renderExam(); // Actualizar para mostrar completado
+        // 🎯 DÉBLOQUER LA SEMAINE SUIVANTE
+        const newLevel = weekIndex + 1;
+        setAcademyLevel(newLevel);
+        
+        userXP += exam.xpReward;
+        if (userXP >= userLevel * 100) {
+            userLevel++;
         }
+        localStorage.setItem("laeticia_xp", userXP);
+        localStorage.setItem("laeticia_level", userLevel);
+        updateProfile();
         
-        resultHtml += `
-                    <div style="margin-top: 20px;">
-                        <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove(); ${passed ? '' : 'startExam(' + weekIndex + ')'}">
-                            ${passed ? '✅ Cerrar' : '🔄 Intentar de nuevo'}
-                        </button>
-                    </div>
+        resultHtml += `<div style="margin: 16px 0; padding: 12px; background: #d1fae5; border-radius: 16px;">⭐ +${exam.xpReward} XP ⭐</div>`;
+        resultHtml += `<div style="margin: 16px 0; padding: 12px; background: #fef3c7; border-radius: 16px;">🎉 Semaine ${newLevel + 1} débloquée ! 🎉</div>`;
+        renderExam();
+        renderAcademyProgress(); // 👈 AJOUTE CETTE LIGNE
+    }
+    
+    resultHtml += `
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove(); ${passed ? '' : 'startExam(' + weekIndex + ')'}">
+                        ${passed ? '✅ Cerrar' : '🔄 Intentar de nuevo'}
+                    </button>
                 </div>
             </div>
-        `;
-        
-        modal.innerHTML = resultHtml;
-    }
+        </div>
+    `;
+    
+    modal.innerHTML = resultHtml;
+}
     
     document.body.appendChild(modal);
     renderQuestion();
