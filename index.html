@@ -2246,6 +2246,9 @@ function renderAcademyProgress() {
     `;
     progress.innerHTML = html;
 }
+// Initialiser le sélecteur de semaine au chargement
+renderWeekSelector();
+updateWeeklyDisplay();
 </script>
 
 <!-- CÍRCULOS FLOTANTES -->
@@ -4242,7 +4245,31 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
-    if(vn==='home'){ renderMarysePlaylist(); }
+    function showView(vn) {
+    // ... code existant ...
+    
+    if (vn === 'home') {
+        renderMarysePlaylist();
+        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
+        updateWeeklyDisplay();
+    }
+    
+    if (vn === 'academy') {
+        renderVocab();
+        renderPronunciation();
+        renderPodcasts();
+        renderConjugation();
+        renderGrammar();
+        renderExam();
+        renderFlashcardModes();
+        loadFlashcards();
+        renderLessons();
+        renderAcademyProgress();
+        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
+    }
+    
+    // ... suite du code ...
+}
     if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons();renderAcademyProgress(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
@@ -4260,9 +4287,105 @@ function showView(vn){
     if (agendaNueva) agendaNueva.classList.remove('active');
 }
 
-function getCurrentWeekInfo(){ const start=new Date(2025,5,1); const diffWeeks=Math.floor((new Date()-start)/(1000*60*60*24*7)); let w=testWeekOverride!==null?testWeekOverride:(diffWeeks%8); return {weekNumber:w+1,cycleIndex:w,theme:weeklyThemes[w]}; }
+function getCurrentWeekInfo() {
+    // Si l'utilisateur a forcé une semaine
+    if (testWeekOverride !== null) {
+        // Vérifier si la semaine forcée est débloquée
+        if (isWeekUnlocked(testWeekOverride)) {
+            return { weekNumber: testWeekOverride + 1, cycleIndex: testWeekOverride, theme: weeklyThemes[testWeekOverride] };
+        } else {
+            // Si la semaine n'est pas débloquée, revenir à la semaine actuelle
+            testWeekOverride = null;
+        }
+    }
+    
+    // Semaine actuelle = la plus haute débloquée
+    const currentLevel = getCurrentAcademyLevel();
+    const w = Math.min(currentLevel, weeklyThemes.length - 1);
+    return { weekNumber: w + 1, cycleIndex: w, theme: weeklyThemes[w] };
+}
 function changeTestWeek(){ const v=document.getElementById("weekSelector").value; testWeekOverride=v==="auto"?null:parseInt(v); updateWeeklyDisplay(); if(document.getElementById("viewAcademy").classList.contains("active")){ renderVocab(); renderFlashcardModes(); loadFlashcards(); renderLessons(); } }
-function updateWeeklyDisplay(){ const wi=getCurrentWeekInfo(); const t=wi.theme; document.getElementById('weekThemeHero').innerHTML=`<h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3><p>${t.desc}</p>`; document.getElementById('weekThemeHero').style.background=`linear-gradient(135deg, ${t.color}, white)`; const badge=`<span class="weekly-content-badge">${t.emoji} ${t.name}</span>`; document.getElementById('academyBadge').innerHTML=badge; document.getElementById('discoverBadge').innerHTML=badge; }
+// ============================================================
+// 🎯 GÉNÉRER LE SÉLECTEUR DE SEMAINE (HOME)
+// ============================================================
+
+function renderWeekSelector() {
+    const currentLevel = getCurrentAcademyLevel(); // 0 = semaine 1 débloquée
+    const totalWeeks = 8;
+    const select = document.getElementById("weekSelector");
+    if (!select) return;
+    
+    // Garder l'option "auto"
+    let html = `<option value="auto">📅 Semana actual (auto)</option>`;
+    
+    // Ajouter UNIQUEMENT les semaines débloquées
+    for (let i = 0; i <= currentLevel && i < totalWeeks; i++) {
+        const week = weeklyThemes[i];
+        const isUnlocked = i <= currentLevel;
+        html += `
+            <option value="${i}" ${testWeekOverride === i ? 'selected' : ''}>
+                ${week.emoji} S${i + 1}: ${week.name}
+                ${isUnlocked ? '✅' : '🔒'}
+            </option>
+        `;
+    }
+    
+    // Si toutes les semaines sont débloquées, afficher un message
+    if (currentLevel >= totalWeeks - 1) {
+        html += `<option disabled>🎉 ¡Todas las semanas desbloqueadas!</option>`;
+    } else {
+        // Afficher les semaines verrouillées (en grisé)
+        for (let i = currentLevel + 1; i < totalWeeks; i++) {
+            const week = weeklyThemes[i];
+            html += `
+                <option value="${i}" disabled style="color: #999; opacity: 0.5;">
+                    🔒 S${i + 1}: ${week.name} (Bloqueada)
+                </option>
+            `;
+        }
+    }
+    
+    select.innerHTML = html;
+}
+function updateWeeklyDisplay() {
+    const wi = getCurrentWeekInfo();
+    const t = wi.theme;
+    
+    // Vérifier si la semaine est débloquée
+    const isUnlocked = isWeekUnlocked(wi.cycleIndex);
+    
+    const hero = document.getElementById('weekThemeHero');
+    if (hero) {
+        if (isUnlocked) {
+            hero.innerHTML = `
+                <h3>${t.emoji} Semana ${wi.weekNumber} : ${t.name}</h3>
+                <p>${t.desc}</p>
+                <div style="font-size: 0.7rem; margin-top: 8px; color: #10b981;">✅ Semana desbloqueada</div>
+            `;
+            hero.style.background = `linear-gradient(135deg, ${t.color}, white)`;
+            hero.style.opacity = '1';
+        } else {
+            hero.innerHTML = `
+                <h3>🔒 Semana ${wi.weekNumber} : ${t.name}</h3>
+                <p>${t.desc}</p>
+                <div style="font-size: 0.7rem; margin-top: 8px; color: #dc2626;">🔒 Completa la semana anterior para desbloquear</div>
+            `;
+            hero.style.background = `linear-gradient(135deg, #e5e7eb, #f3f4f6)`;
+            hero.style.opacity = '0.6';
+        }
+    }
+    
+    // Mettre à jour les badges
+    const academyBadge = document.getElementById('academyBadge');
+    if (academyBadge) {
+        academyBadge.innerHTML = `<span class="weekly-content-badge">${t.emoji} ${t.name} ${isUnlocked ? '✅' : '🔒'}</span>`;
+    }
+    
+    const discoverBadge = document.getElementById('discoverBadge');
+    if (discoverBadge) {
+        discoverBadge.innerHTML = `<span class="weekly-content-badge">${t.emoji} ${t.name} ${isUnlocked ? '✅' : '🔒'}</span>`;
+    }
+}
 function getVocabData(){ try{ const wv=weeklyVocab[getCurrentWeekInfo().cycleIndex]; if(wv&&wv[currentLang]) return{"Tema":wv[currentLang]}; }catch(e){} return baseVocabData[currentLang]||baseVocabData["en"]; }
 function getSlangData(){ try{ const ws=weeklySlang[getCurrentWeekInfo().cycleIndex]; if(ws&&ws[currentLang]) return ws[currentLang]; }catch(e){} return baseSlangData[currentLang]||baseSlangData["en"]; }
 function getLessons(){ try{ const wl=weeklyLessons[getCurrentWeekInfo().cycleIndex]; if(wl&&wl[currentLang]) return wl[currentLang]; }catch(e){} return currentLang==="en"?baseEnglishLessons:baseFrenchLessons; }
