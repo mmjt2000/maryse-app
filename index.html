@@ -6831,5 +6831,75 @@ function renderCuriosities() {
   });
 }
 </script>
+<script>
+// CORRECTION D'URGENCE (Ne pas toucher au reste du code)
+if (typeof getStorage === 'undefined') {
+    function getStorage(key, defaultVal) { try { const data = localStorage.getItem(key); return data ? JSON.parse(data) : defaultVal; } catch { return defaultVal; } }
+    function setStorage(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+}
+if (typeof loadDiary === 'undefined') {
+    function loadDiary() {
+        const text = localStorage.getItem('diary_text') || '';
+        const textarea = document.getElementById('diaryText');
+        if (textarea) textarea.value = text;
+        renderDiaryEntries();
+    }
+    function renderDiaryEntries() {
+        const entries = getStorage('diary_entries', []);
+        const list = document.getElementById('diaryEntriesList');
+        if (!list) return;
+        if (entries.length === 0) { list.innerHTML = '<span style="color:var(--text-secondary);">No hay entradas anteriores.</span>'; return; }
+        list.innerHTML = entries.slice(0, 10).map(e => `<div style="padding:8px 0; border-bottom:1px solid var(--border-color);"><span style="font-size:0.8rem; color:var(--text-secondary);">${e.date}</span><span style="margin-left:12px;">${e.mood || ''}</span><div>${e.text}</div></div>`).join('');
+    }
+}
+
+// Correction de la fonction showView (pour éviter le crash de renderWeekSelector)
+window.showView = function(vn) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById('view' + vn.charAt(0).toUpperCase() + vn.slice(1));
+    if (target) target.classList.add('active');
+    if (vn === 'home' && typeof renderMarysePlaylist === 'function') renderMarysePlaylist();
+    if (vn === 'academy' && typeof renderAcademyProgress === 'function') renderAcademyProgress();
+    if (vn === 'diary') loadDiary();
+};
+
+// Forcer les onglets Diario / Mi Estilo à fonctionner
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.diary-tabs:not(.sub) button');
+    if (!btn) return;
+    const tabId = btn.getAttribute('data-tab');
+    document.querySelectorAll('.diary-tabs:not(.sub) button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.diary-tab-content').forEach(c => c.classList.remove('active'));
+    const target = document.getElementById(tabId);
+    if (target) target.classList.add('active');
+
+    if (tabId === 'beauty') {
+        const subContents = target.querySelectorAll('.diary-tab-content');
+        subContents.forEach(c => c.classList.remove('active'));
+        let firstSub = target.querySelector('.diary-tabs button[data-subtab="hairstyles"]');
+        if (firstSub) {
+            firstSub.classList.add('active');
+            const subTarget = document.getElementById('sub-hairstyles');
+            if (subTarget) subTarget.classList.add('active');
+        }
+    }
+});
+
+// Réparer l'erreur TypeError à la ligne 6428 (bouton null)
+if (document.getElementById('saveDiary')) {
+    document.getElementById('saveDiary').addEventListener('click', function() {
+        const textarea = document.getElementById('diaryText');
+        if (!textarea) return;
+        const text = textarea.value;
+        const mood = document.querySelector('.mood-selector .active')?.dataset.mood || '';
+        localStorage.setItem('diary_text', text);
+        localStorage.setItem('diary_mood', mood);
+        const entries = getStorage('diary_entries', []);
+        if (text.trim()) { entries.unshift({ date: new Date().toLocaleString(), text: text.substring(0, 80), mood: mood }); setStorage('diary_entries', entries); }
+        renderDiaryEntries();
+    });
+}
+</script>
 </body>
 </html>
