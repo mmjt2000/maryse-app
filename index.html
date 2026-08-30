@@ -4593,32 +4593,17 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
-    function showView(vn) {
-    // ... code existant ...
     
-    if (vn === 'home') {
+    if(vn==='home'){
         renderMarysePlaylist();
-        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
+        renderWeekSelector(); 
         updateWeeklyDisplay();
     }
-    
-    if (vn === 'academy') {
-        renderVocab();
-        renderPronunciation();
-        renderPodcasts();
-        renderConjugation();
-        renderGrammar();
-        renderExam();
-        renderFlashcardModes();
-        loadFlashcards();
-        renderLessons();
-        renderAcademyProgress();
-        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
+    if(vn==='academy'){
+        renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation();
+        renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards();
+        renderLessons(); renderAcademyProgress(); renderWeekSelector();
     }
-    
-    // ... suite du code ...
-}
-    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons();renderAcademyProgress(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
@@ -4629,8 +4614,8 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
+    
     window.scrollTo(0,0);
-        // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
 }
