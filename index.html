@@ -8,7 +8,21 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Maryse">
     <title>Maryse · Aprende, Crece, Conecta</title>
-    <style>
+<style>
+    /* ORACIÓN DE LA MAÑANA */
+.oracion-card {
+    background: linear-gradient(135deg, #fdf2f8, #f8e8ff);
+    border-radius: 32px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    text-align: center;
+    border-left: 6px solid #db2777;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    font-size: 1rem;
+    font-style: italic;
+    color: #4a1d6d;
+    line-height: 1.5;
+}
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #8b5cf6; --primary-light: #c084fc; --bg: #f5f3ff; --card: white; --text: #1e1b4b; --subtext: #8b79c9; --border: #eeeef7; --accent: #10b981; }
         body { background: var(--bg); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 80px; color: var(--text); transition: background 0.3s, color 0.3s; }
@@ -562,14 +576,7 @@
     font-size: 0.75rem;
     color: #a5a5d4;
 }
-<!-- ORACIÓN DE LA MAÑANA -->
-<div class="oracion-card" style="background: linear-gradient(135deg, #fdf2f8, #f8e8ff); border-radius: 32px; padding: 20px 24px; margin: 20px 0; text-align: center; border-left: 6px solid #db2777; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-    <div style="font-size: 1rem; font-style: italic; color: #4a1d6d; line-height: 1.5;">
-        🙏 Buenos días, Dios.<br>
-        Te entrego mi día. Avanzo paso a paso, me cuido, me conecto y respiro.<br>
-        Estoy en paz y lista para lo que venga, con tu guía, Señor.
-    </div>
-</div>
+
         /* === RELOJ CLÁSICO ELEGANTE === */
 .reloj-clasico {
     display: flex;
@@ -6482,6 +6489,10 @@ if (activeTab && activeTab.dataset.tab === 'beauty') {
   }
 }
 console.log('✨ Sección de estilo cargada sin presión.');
+// Add this function to make the button work
+function marcarActividadDad(dia) {
+    completarActividadPapa(dia);
+}
 </script>
 <!-- MODAL PARA DETALLE -->
 <div class="modal-overlay" id="detailModal">
