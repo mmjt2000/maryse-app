@@ -1148,6 +1148,45 @@ body.dark .tag-experta { background: #ad1457; color: #f8bbd0; }
     <button class="active" data-tab="diary">📖 Diario</button>
     <button data-tab="beauty">💅 Mi Estilo</button>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.diary-tabs:not(.sub) button');
+    const contents = document.querySelectorAll('.diary-tab-content');
+
+    tabs.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabs.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            const targetId = this.getAttribute('data-tab');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+
+                // Gérer l'affichage par défaut de "Mi Estilo"
+                if (targetId === 'beauty') {
+                    const activeSubTab = document.querySelector('#beauty .diary-tabs .active');
+                    if (activeSubTab) {
+                        showSubTab(activeSubTab.dataset.subtab);
+                    } else {
+                        const firstSubTab = document.querySelector('#beauty .diary-tabs button[data-subtab="hairstyles"]');
+                        if (firstSubTab) firstSubTab.classList.add('active');
+                        showSubTab('hairstyles');
+                    }
+                }
+            }
+        });
+    });
+
+    // Déclencher l'onglet actif au chargement
+    const initialTab = document.querySelector('.diary-tabs:not(.sub) button.active');
+    if (initialTab) {
+        const initialContent = document.getElementById(initialTab.dataset.tab);
+        if (initialContent) initialContent.classList.add('active');
+    }
+});
+</script>
         <!-- === ESTADO DE ÁNIMO (movido del Home) === -->
     <div class="section-title">😊 ¿Cómo te sientes?</div>
     <div class="mood-grid" id="moodGridDiary">
