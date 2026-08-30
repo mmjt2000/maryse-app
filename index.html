@@ -6901,5 +6901,51 @@ if (document.getElementById('saveDiary')) {
     });
 }
 </script>
+<script>
+// PATCH ULTIME - NE PAS TOUCHER AU VIEUX CODE
+if (typeof getStorage === 'undefined') {
+    function getStorage(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e) { return d; } }
+    function setStorage(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+}
+if (typeof renderDiaryEntries === 'undefined') {
+    function renderDiaryEntries() {
+        var list = document.getElementById('diaryEntriesList');
+        if (!list) return;
+        var entries = getStorage('diary_entries', []);
+        if (entries.length === 0) { list.innerHTML = '<p>No hay entradas anteriores.</p>'; return; }
+        list.innerHTML = entries.map(function(e) { return '<div style="padding:8px 0; border-bottom:1px solid #ccc;"><span>'+e.date+'</span><span> '+e.mood+'</span><div>'+e.text+'</div></div>'; }).join('');
+    }
+    function loadDiary() {
+        var textarea = document.getElementById('diaryText');
+        if (textarea) textarea.value = localStorage.getItem('diary_text') || '';
+        renderDiaryEntries();
+    }
+}
+
+// Forcer les boutons Diario / Mi Estilo à fonctionner
+document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.diary-tabs:not(.sub) button');
+    if (!btn) return;
+    var tab = btn.getAttribute('data-tab');
+    document.querySelectorAll('.diary-tabs:not(.sub) button').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.diary-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    var target = document.getElementById(tab);
+    if (target) target.classList.add('active');
+
+    // Afficher coiffures par défaut si Mi Estilo
+    if (tab === 'beauty') {
+        var sub = target.querySelector('.diary-tabs button[data-subtab="hairstyles"]');
+        if (sub) sub.classList.add('active');
+        var subTarget = document.getElementById('sub-hairstyles');
+        if (subTarget) subTarget.classList.add('active');
+    }
+});
+
+// Charger le journal immédiatement
+document.addEventListener('DOMContentLoaded', function() {
+    loadDiary();
+});
+</script>
 </body>
 </html>
