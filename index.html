@@ -6832,5 +6832,73 @@ document.addEventListener('DOMContentLoaded', function() {
     loadDiary();
 });
 </script>
+<script>
+// Réactivation des onglets Diario / Mi Estilo
+document.addEventListener('DOMContentLoaded', function() {
+    // Gérer l'onglet principal (Diario vs Mi Estilo)
+    const mainTabs = document.querySelectorAll('.diary-tabs:not(.sub) button');
+    const mainContents = document.querySelectorAll('.diary-tab-content');
+
+    mainTabs.forEach(btn => {
+        btn.addEventListener('click', function() {
+            mainTabs.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            mainContents.forEach(c => c.classList.remove('active'));
+            
+            const targetId = this.getAttribute('data-tab');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+
+                // Si on ouvre "Mi Estilo", on affiche les coiffures par défaut
+                if (targetId === 'beauty') {
+                    const subTabs = targetContent.querySelectorAll('.diary-tabs button');
+                    const subContents = targetContent.querySelectorAll('.diary-tab-content');
+                    
+                    subContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Activer le premier onglet (Cabello) et afficher son contenu
+                    if (subTabs.length > 0) {
+                        subTabs.forEach(b => b.classList.remove('active'));
+                        subTabs[0].classList.add('active');
+                        const firstSub = document.getElementById('sub-hairstyles');
+                        if (firstSub) firstSub.classList.add('active');
+                        renderHairstyles();
+                    }
+                }
+            }
+        });
+    });
+
+    // Gérer les sous-onglets à l'intérieur de "Mi Estilo"
+    const subTabs = document.querySelectorAll('#beauty .diary-tabs button');
+    const subContents = document.querySelectorAll('#beauty .diary-tab-content');
+
+    subTabs.forEach(btn => {
+        btn.addEventListener('click', function() {
+            subTabs.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            subContents.forEach(c => c.classList.remove('active'));
+            
+            const subId = this.getAttribute('data-subtab');
+            const targetSub = document.getElementById('sub-' + subId);
+            if (targetSub) targetSub.classList.add('active');
+
+            // Charger le bon contenu selon l'onglet
+            if (subId === 'hairstyles') renderHairstyles();
+            else if (subId === 'makeup') renderMakeup();
+            else if (subId === 'care') renderCare();
+            else if (subId === 'album') renderAlbum();
+            else if (subId === 'look') { populateLookSelects(); renderSavedLooks(); }
+        });
+    });
+
+    // Charger les données au démarrage
+    if (document.getElementById('beauty')) {
+        renderHairstyles();
+        renderCuriosities();
+    }
+});
+</script>
 </body>
 </html>
