@@ -6900,5 +6900,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<script>
+// FONCTIONS MANQUANTES (Ne pas toucher au reste)
+function renderWeekSelector() {
+    var select = document.getElementById("weekSelector");
+    if (!select) return;
+    // On garde le select tel quel pour ne pas casser le choix de la semaine
+    console.log("renderWeekSelector chargé");
+}
+
+function showSubTab(sub) {
+    // Cacher tous les sous-onglets de Mi Estilo
+    document.querySelectorAll('#beauty .diary-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    
+    // Afficher le bon sous-onglet
+    var target = document.getElementById('sub-' + sub);
+    if (target) target.classList.add('active');
+
+    // Charger les données si les fonctions existent
+    if (typeof renderHairstyles === 'function' && sub === 'hairstyles') renderHairstyles();
+    else if (typeof renderMakeup === 'function' && sub === 'makeup') renderMakeup();
+    else if (typeof renderCare === 'function' && sub === 'care') renderCare();
+    else if (typeof renderAlbum === 'function' && sub === 'album') renderAlbum();
+    else if (typeof populateLookSelects === 'function' && sub === 'look') populateLookSelects();
+    
+    if (typeof renderCuriosities === 'function') renderCuriosities();
+}
+</script>
 </body>
 </html>
