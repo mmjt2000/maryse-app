@@ -1144,6 +1144,10 @@ body.dark .tag-experta { background: #ad1457; color: #f8bbd0; }
     <div id="viewDad" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="clock-card"><div class="clock-time" id="dadLiveClock">--:--:--</div><div class="clock-date" id="dadLiveDate"></div></div><div id="dadContainer"></div></div>
     <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" onclick="filterKaraokeSongs('en')">🇬🇧 English (24)</button><button class="btn" onclick="filterKaraokeSongs('fr')">🇫🇷 Français (12)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
     <div id="viewDiary" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button>
+        <div class="diary-tabs">
+    <button class="active" data-tab="diary">📖 Diario</button>
+    <button data-tab="beauty">💅 Mi Estilo</button>
+</div>
         <!-- === ESTADO DE ÁNIMO (movido del Home) === -->
     <div class="section-title">😊 ¿Cómo te sientes?</div>
     <div class="mood-grid" id="moodGridDiary">
