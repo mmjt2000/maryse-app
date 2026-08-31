@@ -4446,18 +4446,44 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
-    if(vn==='home'){ renderMarysePlaylist(); updateWeeklyDisplay(); }
-    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons(); renderAcademyProgress(); }
+    function showView(vn) {
+    // ... code existant ...
+    
+    if (vn === 'home') {
+        renderMarysePlaylist();
+        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
+        updateWeeklyDisplay();
+    }
+    
+    if (vn === 'academy') {
+        renderVocab();
+        renderPronunciation();
+        renderPodcasts();
+        renderConjugation();
+        renderGrammar();
+        renderExam();
+        renderFlashcardModes();
+        loadFlashcards();
+        renderLessons();
+        renderAcademyProgress();
+        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
+    }
+    
+    // ... suite du code ...
+}
+    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons();renderAcademyProgress(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
     if(vn==='mama'){ updateMamaProgress(); renderMamaCorner(); }
     if(vn==='karaoke') renderKaraokeSongs();
     if(vn==='diary') renderDiary();
+    if (vn === 'admin') {if (typeof renderStats === 'function') renderStats();if (typeof renderGuestList === 'function') renderGuestList();}
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
     window.scrollTo(0,0);
+        // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
 }
@@ -5688,11 +5714,11 @@ function removeGuestAdmin(index) {
         cargarStatsAdmin();
     }
 }
+
 function initAdminView() {
     inicializarStatsDePrueba();
     cargarStatsAdmin();
     cargarGuestListAdmin();
-}
 function inicializarStatsDePrueba() {
     if (Object.keys(stats).length === 0) {
         stats = {
@@ -5704,6 +5730,7 @@ function inicializarStatsDePrueba() {
         saveStats();
     }
 }
+
     // Recordatorios
     const notifToggle = document.getElementById('notifEnabledAdmin');
     const notifTime = document.getElementById('notifTimeAdmin');
@@ -6207,39 +6234,6 @@ function mostrarAdminDirecto() {
         container.innerHTML = html;
     }
 }
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.diary-tabs:not(.sub) button');
-    const contents = document.querySelectorAll('.diary-tab-content');
-
-    tabs.forEach(btn => {
-        btn.addEventListener('click', function() {
-            tabs.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            contents.forEach(c => c.classList.remove('active'));
-            const targetId = this.getAttribute('data-tab');
-            const targetContent = document.getElementById(targetId);
-            if (targetContent) {
-                targetContent.classList.add('active');
-                if (targetId === 'beauty') {
-                    const subBtns = targetContent.querySelectorAll('.diary-tabs button');
-                    if (subBtns.length > 0) {
-                        subBtns[0].classList.add('active');
-                        const subTarget = document.getElementById('sub-' + subBtns[0].dataset.subtab);
-                        if (subTarget) subTarget.classList.add('active');
-                    }
-                }
-            }
-        });
-    });
-
-    const activeTab = document.querySelector('.diary-tabs:not(.sub) button.active');
-    if (activeTab) {
-        const initialContent = document.getElementById(activeTab.dataset.tab);
-        if (initialContent) initialContent.classList.add('active');
-    }
-});
 </script>
 </body>
 </html>
