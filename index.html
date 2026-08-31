@@ -6503,5 +6503,39 @@ window.saveLook = function() {
 
 // Au chargement, ne rien faire de spécial, tout est déjà prêt
 </script>
+<script>
+// FORCE L'AFFICHAGE DU MAQUILLAGE
+window.showBeautySub = function(sub) {
+  // Cacher tous les contenus
+  document.querySelectorAll('#viewBeauty .beauty-content').forEach(c => c.classList.remove('active'));
+  // Retirer la classe active de tous les boutons
+  document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(b => b.classList.remove('active'));
+  
+  // Activer le bon bouton
+  const buttons = document.querySelectorAll('#viewBeauty .diary-tabs button');
+  const subNames = ['hairstyles', 'makeup', 'care', 'look', 'album'];
+  const index = subNames.indexOf(sub);
+  if (index !== -1) buttons[index].classList.add('active');
+
+  // Afficher le bon contenu
+  const content = document.getElementById('sub-' + sub);
+  if (content) content.classList.add('active');
+
+  // Rendre le contenu (partie importante)
+  if (sub === 'hairstyles') renderHairstyles();
+  if (sub === 'makeup') {
+    console.log("MAKEUP est appelé");
+    const grid = document.getElementById('makeupGrid');
+    if (grid) {
+      grid.innerHTML = MAKEUP.map(m => `<div style="background: white; padding:15px; border-radius:15px; text-align:center;"><div style="font-size:3rem;">${m.image}</div><h4>${m.name}</h4></div>`).join('');
+    } else {
+      console.log("ERREUR: makeupGrid introuvable");
+    }
+  }
+  if (sub === 'care') renderCare();
+  if (sub === 'look') populateLook();
+  if (sub === 'album') renderAlbum();
+};
+</script>
 </body>
 </html>
