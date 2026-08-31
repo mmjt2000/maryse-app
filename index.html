@@ -179,22 +179,7 @@
         .skill-subtitle { font-size: 0.7rem; color: var(--subtext); margin-bottom: 8px; }
         .skill-preview { font-size: 0.7rem; color: var(--text); margin-top: 8px; }
         .skill-explanation { font-size: 0.9rem; line-height: 1.4; margin: 12px 0; padding: 12px; background: #f8f6ff; border-radius: 16px; }
-/* Estilo para la ocasión en las tarjetas */
-.card-ocasion {
-    font-size: 0.75rem;
-    color: #8b79c9;
-    margin-top: 6px;
-    font-style: italic;
-}
-/* Modal de pasos */
-.modal-pasos-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 10000; }
-.modal-pasos-overlay.active { display: flex; }
-.modal-pasos-content { background: white; border-radius: 20px; padding: 20px; max-width: 400px; width: 90%; max-height: 80vh; overflow-y: auto; }
-.modal-pasos-content h3 { margin-bottom: 10px; color: #8b5cf6; }
-.occ-sug { background: #f0ecff; padding: 10px; border-radius: 10px; margin-bottom: 15px; color: #5e3ab6; font-weight: bold; font-size: 0.9rem; }
-.modal-pasos-content ol { margin-left: 20px; margin-bottom: 20px; }
-.modal-pasos-content li { margin-bottom: 8px; font-size: 0.95rem; color: #333; }
-.modal-pasos-close { background: #8b5cf6; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; }
+
     /* ===== CÍRCULOS FLOTANTES ===== */
 /* Menú radial */
 .radial-menu {
@@ -1466,7 +1451,7 @@
         <input type="file" id="importFileAdmin" accept=".json" style="display:none;">
     </div>
 </div>
-
+<style>
 .super-topic-content {
     font-size: 0.9rem;
     line-height: 1.5;
@@ -1487,7 +1472,7 @@
 .diary-tab-content.active { display: block; }
 .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 16px; }
 </style>
-
+<style>
 /* Styles Beauty */
 .beauty-content { display: none; }
 .beauty-content.active { display: block; }
@@ -2281,15 +2266,7 @@ function renderAcademyProgress() {
     progress.innerHTML = html;
 }
 // Initialiser le sélecteur de semaine au chargement
-function renderWeekSelector() {
-    var select = document.getElementById("weekSelector");
-    if (select) {
-        // Esta función mantiene el selector de semanas funcionando sin errores
-        select.innerHTML = select.innerHTML; 
-    }
-}
 renderWeekSelector();
-    
 updateWeeklyDisplay();
 </script>
 
@@ -4282,9 +4259,6 @@ function completarActividadPapa(dia) {
         fecha: new Date().toISOString(),
         dia: dia
     };
-    function marcarActividadDad(dia) {
-    completarActividadPapa(dia);
-}
     
     localStorage.setItem("maryse_dad_progress", JSON.stringify(dadProgress));
     
@@ -6268,102 +6242,165 @@ function mostrarAdminDirecto() {
     }
 }
 </script>
+<!-- NOUVELLE VUE BEAUTY (SÉPARÉE) -->
+<div id="viewBeauty" class="view">
+    <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div class="diary-tabs">
+        <button class="active" onclick="showBeautySub('hairstyles')">💇‍♀️ Cabello</button>
+        <button onclick="showBeautySub('makeup')">💄 Maquillaje</button>
+        <button onclick="showBeautySub('care')">🧴 Cuidado</button>
+        <button onclick="showBeautySub('nails')">💅 Uñas</button>
+        <button onclick="showBeautySub('look')">🎨 Mi look</button>
+        <button onclick="showBeautySub('album')">🌟 Álbum</button>
+    </div>
+
+    <div id="sub-hairstyles" class="beauty-content active">
+        <div id="hairstyleGrid" class="style-grid"></div>
+    </div>
+
+    <div id="sub-makeup" class="beauty-content">
+        <div id="makeupGrid" class="style-grid"></div>
+    </div>
+
+    <div id="sub-care" class="beauty-content">
+        <div id="careGrid" class="style-grid"></div>
+    </div>
+
+    <div id="sub-nails" class="beauty-content">
+    <div id="nailsGrid" class="style-grid"></div>
+</div>
+
+    <div id="sub-look" class="beauty-content">
+        <select id="lookHairstyle"></select>
+        <select id="lookMakeup"></select>
+        <button id="saveLookBtn" onclick="saveLook()">💾 Guardar</button>
+        <div id="savedLooksList"></div>
+    </div>
+
+    <div id="sub-album" class="beauty-content">
+        <div id="albumGrid"></div>
+    </div>
+</div>
+
+<!-- Bouton flottant pour ouvrir Beauty -->
+<button class="btn" style="position: fixed; bottom: 120px; right: 16px; z-index: 9999; background: #ec4899; color: white;" onclick="showBeauty()">💅 Mi Estilo</button>
 <script>
-// ======== SCRIPT UNIQUE BEAUTY (OCCASIONS + PASOS) ========
+// ======== SCRIPT AUTONOME POUR BEAUTY ========
+// Données complètes
 const HAIR = [
-  { id:1, name: 'Rizos definidos', image: '🌊', ocasion: 'Escuela o día casual', pasos: ['Moja tu cabello ligeramente.', 'Aplica crema para rizos.', 'Usa un difusor.'] },
-  { id:2, name: 'Media coleta', image: '🎀', ocasion: 'Deporte o actividades físicas', pasos: ['Desenreda.', 'Separa la parte superior.', 'Recoge con una liga.'] },
-  { id:3, name: 'Trenza lateral', image: '🌾', ocasion: 'Salida con amigas o día de campo', pasos: ['Peina hacia un lado.', 'Haz la trenza.', 'Asegura con liga.'] },
-  { id:4, name: 'Dos trenzas', image: '👧', ocasion: 'Escuela o día tranquilo', pasos: ['Divide en dos.', 'Haz trenzas.', 'Asegura.'] },
-  { id:5, name: 'Chongo bajo', image: '🎩', ocasion: 'Cena familiar o evento formal', pasos: ['Coleta baja.', 'Gira y enrolla.', 'Asegura con horquillas.'] },
-  { id:6, name: 'Space buns', image: '🚀', ocasion: 'Conciertos, fiestas o festivales', pasos: ['Divide en dos.', 'Haz coletas altas.', 'Enrolla en moños.'] },
-  { id:7, name: 'Corona trenzada', image: '👸', ocasion: 'Bodas, quinceañera o eventos especiales', pasos: ['Divide en dos.', 'Haz trenzas laterales.', 'Cruza sobre la cabeza.'] },
-  { id:8, name: 'Moño despeinado', image: '🩰', ocasion: 'Fin de semana o café con amigas', pasos: ['Coleta baja.', 'Saca por el centro.', 'Ajusta.'] }
+  { id:1, name: 'Rizos definidos', image: '🌊', desc: 'Aplica crema de peinado en cabello húmedo y seca con difusor.' },
+  { id:2, name: 'Media coleta', image: '🎀', desc: 'Separa la parte superior del cabello y recógela con una liga.' },
+  { id:3, name: 'Trenza lateral', image: '🌾', desc: 'Recoge el cabello hacia un lado y haz una trenza simple.' },
+  { id:4, name: 'Dos trenzas', image: '👧', desc: 'Divide el cabello en dos partes y haz una trenza en cada lado.' },
+  { id:5, name: 'Chongo bajo', image: '🎩', desc: 'Haz una coleta baja, enróllala y sujeta con horquillas.' },
+  { id:6, name: 'Space buns', image: '🚀', desc: 'Haz dos coletas altas y enróllalas en forma de moño.' },
+  { id:7, name: 'Corona trenzada', image: '👸', desc: 'Haz dos trenzas laterales y crúzalas sobre la cabeza.' },
+  { id:8, name: 'Moño despeinado', image: '🩰', desc: 'Haz una coleta baja, saca el cabello por el centro de la liga y ajusta.' }
 ];
 
+function renderHairstyles() {
+  const grid = document.getElementById('hairstyleGrid');
+  if (!grid) return;
+  grid.innerHTML = HAIR.map(h => `
+    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
+      <div style="font-size:3rem;">${h.image}</div>
+      <h4>${h.name}</h4>
+      <p style="font-size:0.8rem; color:#666;">${h.desc}</p>
+    </div>`).join('');
+}
 const MAKEUP = [
-  { id:1, name: 'Look natural', image: '🏫', ocasion: 'Escuela, clases o trámites', pasos: ['Limpia e hidrata.', 'Aplica corrector.', 'Máscara ligera y bálsamo.'] },
-  { id:2, name: 'Cejas naturales', image: '✏️', ocasion: 'Todos los días', pasos: ['Cepilla.', 'Rellena.', 'Difumina.'] },
-  { id:3, name: 'Máscara de pestañas', image: '👁️', ocasion: 'Salidas sencillas', pasos: ['Raíz.', 'Zigzag.', 'Dos capas.'] },
-  { id:4, name: 'Sombra de ojos', image: '🎨', ocasion: 'Juntas escolares o reuniones', pasos: ['Sombra clara.', 'Oscura en cuenca.', 'Difumina.'] },
-  { id:5, name: 'Blush natural', image: '🍑', ocasion: 'Todos los días', pasos: ['Sonríe.', 'Aplica círculos.', 'Difumina.'] },
-  { id:6, name: 'Labios naturales', image: '💋', ocasion: 'Escuela', pasos: ['Hidrata.', 'Gloss o tono nude.'] },
-  { id:7, name: 'Look fiesta', image: '🎉', ocasion: 'Cumpleaños o fiestas escolares', pasos: ['Base ligera.', 'Sombras doradas.', 'Delineado y labial.'] },
-  { id:8, name: 'Retirar maquillaje', image: '🧽', ocasion: 'Noche, antes de dormir', pasos: ['Agua micelar.', 'Disco de algodón.', 'Pasa suavemente.'] }
+  { id:1, name: 'Look natural', image: '🏫', desc: 'Limpia e hidrata. Aplica un toque de corrector y bálsamo labial.' },
+  { id:2, name: 'Cejas naturales', image: '✏️', desc: 'Cepilla, rellena suavemente y difumina para un look natural.' },
+  { id:3, name: 'Máscara de pestañas', image: '👁️', desc: 'Aplica en zigzag desde la raíz para más volumen.' },
+  { id:4, name: 'Sombra de ojos', image: '🎨', desc: 'Usa un tono claro en el párpado y uno oscuro en la cuenca.' },
+  { id:5, name: 'Blush natural', image: '🍑', desc: 'Sonríe y aplica el rubor en círculos sobre las mejillas.' },
+  { id:6, name: 'Labios naturales', image: '💋', desc: 'Hidrata y aplica un gloss o tono nude.' },
+  { id:7, name: 'Look fiesta', image: '🎉', desc: 'Base ligera, sombras doradas, delineado y labial vibrante.' },
+  { id:8, name: 'Retirar maquillaje', image: '🧽', desc: 'Usa agua micelar con un disco de algodón y pasa suavemente.' }
 ];
+
+function renderMakeup() {
+  const grid = document.getElementById('makeupGrid');
+  if (!grid) return;
+  grid.innerHTML = MAKEUP.map(m => `
+    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
+      <div style="font-size:3rem;">${m.image}</div>
+      <h4>${m.name}</h4>
+      <p style="font-size:0.8rem; color:#666;">${m.desc}</p>
+    </div>`).join('');
+}
 
 const CARE = [
-  { id:1, name: 'Desenredar', image: '🔀', ocasion: 'Justo después de lavarse', pasos: ['Aplica acondicionador.', 'Usa peine ancho.', 'Empieza por puntas.'] },
-  { id:2, name: 'Hidratar', image: '💧', ocasion: 'Una vez por semana', pasos: ['Aplica mascarilla.', 'Deja actuar 15 min.', 'Enjuaga.'] },
-  { id:3, name: 'Reducir frizz', image: '🌀', ocasion: 'Días de humedad', pasos: ['No toques mientras seca.', 'Aplica suero.'] },
-  { id:4, name: 'Dormir con rizos', image: '🌙', ocasion: 'Cada noche', pasos: ['Usa funda de seda.', 'Recoge en piña.'] },
-  { id:5, name: 'Proteger del sol', image: '☀️', ocasion: 'Verano, piscina o playa', pasos: ['Usa sombrero.', 'Aplica protección UV.'] },
-  { id:6, name: 'Después de lavar', image: '🚿', ocasion: 'Después de cada ducha', pasos: ['Presiona con toalla.', 'Aplica productos en húmedo.'] }
+  { id:1, name: 'Cómo desenredar el cabello', image: '🔀', desc: 'Usa un peine de dientes anchos, comienza desde las puntas.' },
+  { id:2, name: 'Cómo hidratar los rizos', image: '💧', desc: 'Aplica una mascarilla hidratante una vez por semana.' },
+  { id:3, name: 'Cómo reducir el frizz', image: '🌀', desc: 'Evita tocar el cabello mientras se seca, usa un suero ligero.' },
+  { id:4, name: 'Cómo dormir con cabello rizado', image: '🌙', desc: 'Usa una funda de seda o satén, recoge el cabello en una piña.' },
+  { id:5, name: 'Cómo proteger los rizos del sol', image: '☀️', desc: 'Usa sombrero o productos con protección UV.' },
+  { id:6, name: 'Qué hacer después de lavarse', image: '🚿', desc: 'Presiona suavemente con una toalla, no frotes.' }
 ];
 
 const NAILS = [
-  { id:1, name: 'Francesitas', image: '🤍', ocasion: 'Escuela o eventos formales', pasos: ['Base transparente.', 'Puntas blancas.', 'Sella con brillo.'] },
-  { id:2, name: 'Colores pastel', image: '💅', ocasion: 'Escuela o día casual', pasos: ['Lima.', 'Aplica color pastel.', 'Brillo.'] },
-  { id:3, name: 'Brillo glam', image: '✨', ocasion: 'Fiestas', pasos: ['Base.', 'Glitter.', 'Top coat.'] },
-  { id:4, name: 'Puntitos', image: '🎨', ocasion: 'Día con amigas', pasos: ['Color liso.', 'Puntitos con palillo.', 'Sella.'] },
-  { id:5, name: 'Corazones', image: '💖', ocasion: 'San Valentín u ocasión especial', pasos: ['Pincel fino.', 'Dibuja el corazón.', 'Rellena y sella.'] },
-  { id:6, name: 'Flores', image: '🌸', ocasion: 'Primavera o eventos diurnos', pasos: ['Cinco puntitos.', 'Une con línea.', 'Brillo.'] },
-  { id:7, name: 'Efecto mármol', image: '🌀', ocasion: 'Looks modernos y juveniles', pasos: ['Base blanca.', 'Gotas grises.', 'Mezcla con palillo.'] },
-  { id:8, name: 'Uñas de gel', image: '🌟', ocasion: 'Viajes o vacaciones largas', pasos: ['Pide ayuda profesional.', 'Sigue cuidados.'] }
+  { id:1, name: 'Francesitas', image: '🤍', desc: 'Base transparente y puntas blancas. ¡Un clásico elegante!' },
+  { id:2, name: 'Colores pastel', image: '💅', desc: 'Rosa, lavanda o menta. Suaves y perfectas para la escuela.' },
+  { id:3, name: 'Brillo glam', image: '✨', desc: 'Esmalte con glitter o purpurina. Ideal para fiestas.' },
+  { id:4, name: 'Puntitos divertidos', image: '🎨', desc: 'Decora con un palillo y puntos de colores sobre esmalte liso.' },
+  { id:5, name: 'Corazones', image: '💖', desc: 'Dibuja pequeños corazones con un pincel fino.' },
+  { id:6, name: 'Flores sencillas', image: '🌸', desc: 'Cinco puntitos hacen una flor. ¡Muy fácil y adorable!' },
+  { id:7, name: 'Efecto mármol', image: '🌀', desc: 'Mezcla esmaltes blanco y gris, pasa un palillo para el efecto.' },
+  { id:8, name: 'Uñas de gel', image: '🌟', desc: 'Más duraderas y brillantes. Pide ayuda profesional.' }
 ];
 
-function abrirPasos(titulo, ocasion, pasos) {
-    document.getElementById('modalPasosTitulo').textContent = titulo;
-    document.getElementById('modalPasosOcasion').textContent = "💡 Ocasión perfecta: " + ocasion;
-    const lista = document.getElementById('modalPasosLista');
-    lista.innerHTML = '';
-    pasos.forEach(paso => {
-        const li = document.createElement('li');
-        li.textContent = paso;
-        lista.appendChild(li);
-    });
-    document.getElementById('modalPasos').classList.add('active');
-}
-
-function renderHairstyles() {
-  const grid = document.getElementById('hairstyleGrid'); if (!grid) return;
-  grid.innerHTML = HAIR.map(h => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${h.name}', '${h.ocasion}', ${JSON.stringify(h.pasos)})"><div style="font-size:3rem;">${h.image}</div><h4>${h.name}</h4><div class="card-ocasion">✨ ${h.ocasion}</div></div>`).join('');
-}
-function renderMakeup() {
-  const grid = document.getElementById('makeupGrid'); if (!grid) return;
-  grid.innerHTML = MAKEUP.map(m => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${m.name}', '${m.ocasion}', ${JSON.stringify(m.pasos)})"><div style="font-size:3rem;">${m.image}</div><h4>${m.name}</h4><div class="card-ocasion">✨ ${m.ocasion}</div></div>`).join('');
-}
-function renderCare() {
-  const grid = document.getElementById('careGrid'); if (!grid) return;
-  grid.innerHTML = CARE.map(c => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${c.name}', '${c.ocasion}', ${JSON.stringify(c.pasos)})"><div style="font-size:3rem;">${c.image}</div><h4>${c.name}</h4><div class="card-ocasion">✨ ${c.ocasion}</div></div>`).join('');
-}
 function renderNails() {
-  const grid = document.getElementById('nailsGrid'); if (!grid) return;
-  grid.innerHTML = NAILS.map(n => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${n.name}', '${n.ocasion}', ${JSON.stringify(n.pasos)})"><div style="font-size:3rem;">${n.image}</div><h4>${n.name}</h4><div class="card-ocasion">✨ ${n.ocasion}</div></div>`).join('');
+  const grid = document.getElementById('nailsGrid');
+  if (!grid) return;
+  grid.innerHTML = NAILS.map(n => `
+    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
+      <div style="font-size:3rem;">${n.image}</div>
+      <h4>${n.name}</h4>
+      <p style="font-size:0.8rem; color:#666;">${n.desc}</p>
+    </div>`).join('');
 }
 
+// Fonctions globales (pour qu'elles soient accessibles partout)
 window.showBeauty = function() {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('viewBeauty').classList.add('active');
-  showBeautySub('hairstyles');
+  showBeautySub('hairstyles'); // Affiche par défaut Cabello
 };
 
+
+
 window.showBeautySub = function(sub) {
+  // Cacher tous les contenus
   document.querySelectorAll('#viewBeauty .beauty-content').forEach(c => c.classList.remove('active'));
+  // Retirer la classe active de tous les boutons
   document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(b => b.classList.remove('active'));
+  
+  // Activer le bon bouton (le premier bouton correspond au sub passé)
   const buttons = document.querySelectorAll('#viewBeauty .diary-tabs button');
-  const subNames = ['hairstyles', 'makeup', 'care', 'nails', 'look', 'album'];
+  const subNames = ['hairstyles', 'makeup', 'care', 'look', 'album'];
   const index = subNames.indexOf(sub);
   if (index !== -1) buttons[index].classList.add('active');
+
+  // Afficher le bon contenu
   const content = document.getElementById('sub-' + sub);
   if (content) content.classList.add('active');
+
+  // Rendre le contenu
   if (sub === 'hairstyles') renderHairstyles();
   if (sub === 'makeup') renderMakeup();
   if (sub === 'care') renderCare();
-  if (sub === 'nails') renderNails();
+  if (sub === 'nails') renderNails();  // <-- ESTA LÍNEA ES NUEVA
   if (sub === 'look') populateLook();
   if (sub === 'album') renderAlbum();
 };
+
+// Fonctions de rendu
+function renderCare() {
+  const grid = document.getElementById('careGrid');
+  if (!grid) return;
+  grid.innerHTML = CARE.map(c => `<div style="background: white; padding:15px; border-radius:15px; text-align:center;"><div style="font-size:3rem;">${c.image}</div><h4>${c.name}</h4><p>${c.desc}</p></div>`).join('');
+}
 
 function populateLook() {
   const hs = document.getElementById('lookHairstyle');
@@ -6381,9 +6418,10 @@ window.saveLook = function() {
   const h = document.getElementById('lookHairstyle')?.value;
   const m = document.getElementById('lookMakeup')?.value;
   const list = document.getElementById('savedLooksList');
-  if (list) list.innerHTML += `<div style="border:1px solid #ccc;padding:10px;border-radius:10px;margin-top:10px;">${h} + ${m}</div>`;
+  if (list) list.innerHTML += `<div style="background: white; padding:10px; border-radius:10px; margin-top:10px;">${h} + ${m}</div>`;
 };
+
+// Au chargement, ne rien faire de spécial, tout est déjà prêt
 </script>
-<button class="btn" style="position: fixed; bottom: 120px; right: 16px; z-index: 9999; background: #ec4899; color: white;" onclick="showBeauty()">💅 Mi Estilo</button>
 </body>
 </html>
