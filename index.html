@@ -5690,11 +5690,12 @@ function removeGuestAdmin(index) {
         cargarStatsAdmin();
     }
 }
-
 function initAdminView() {
     inicializarStatsDePrueba();
     cargarStatsAdmin();
     cargarGuestListAdmin();
+}
+
 function inicializarStatsDePrueba() {
     if (Object.keys(stats).length === 0) {
         stats = {
