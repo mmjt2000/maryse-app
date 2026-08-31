@@ -4,25 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#8b5cf6">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Maryse">
     <title>Maryse · Aprende, Crece, Conecta</title>
-<style>
-    /* ORACIÓN DE LA MAÑANA */
-.oracion-card {
-    background: linear-gradient(135deg, #fdf2f8, #f8e8ff);
-    border-radius: 32px;
-    padding: 20px 24px;
-    margin: 20px 0;
-    text-align: center;
-    border-left: 6px solid #db2777;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    font-size: 1rem;
-    font-style: italic;
-    color: #4a1d6d;
-    line-height: 1.5;
-}
+    <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #8b5cf6; --primary-light: #c084fc; --bg: #f5f3ff; --card: white; --text: #1e1b4b; --subtext: #8b79c9; --border: #eeeef7; --accent: #10b981; }
         body { background: var(--bg); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; padding-bottom: 80px; color: var(--text); transition: background 0.3s, color 0.3s; }
@@ -576,7 +562,14 @@
     font-size: 0.75rem;
     color: #a5a5d4;
 }
-
+<!-- ORACIÓN DE LA MAÑANA -->
+<div class="oracion-card" style="background: linear-gradient(135deg, #fdf2f8, #f8e8ff); border-radius: 32px; padding: 20px 24px; margin: 20px 0; text-align: center; border-left: 6px solid #db2777; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <div style="font-size: 1rem; font-style: italic; color: #4a1d6d; line-height: 1.5;">
+        🙏 Buenos días, Dios.<br>
+        Te entrego mi día. Avanzo paso a paso, me cuido, me conecto y respiro.<br>
+        Estoy en paz y lista para lo que venga, con tu guía, Señor.
+    </div>
+</div>
         /* === RELOJ CLÁSICO ELEGANTE === */
 .reloj-clasico {
     display: flex;
@@ -860,76 +853,6 @@
     margin-top: 6px;
     color: var(--text);
 }
-/* ====== ESTILOS PARA "MI ESTILO" (NUEVO) ====== */
-.diary-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 8px;
-}
-.diary-tabs button {
-  background: transparent; border: none; padding: 10px 22px;
-  border-radius: 30px; font-weight: 600; font-size: 1rem;
-  color: var(--text-secondary); cursor: pointer; transition: all 0.3s;
-}
-.diary-tabs button:hover { background: var(--accent-light); color: var(--text-primary); }
-.diary-tabs button.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(155,127,212,0.4); }
-.diary-tab-content { display: none; animation: fadeIn 0.4s ease; }
-.diary-tab-content.active { display: block; }
-
-.style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 16px; }
-.style-card { background: var(--bg-card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); transition: all 0.3s; border: 2px solid transparent; position: relative; cursor: pointer; }
-.style-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: var(--accent-light); }
-.style-card .card-image { width: 100%; height: 180px; border-radius: 12px; background: linear-gradient(135deg, var(--accent-light), var(--bg-secondary)); display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 14px; }
-.style-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
-.style-card .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.85rem; color: var(--text-secondary); margin: 8px 0 12px; }
-.style-card .card-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-.style-card .card-actions button { background: transparent; border: 2px solid var(--border-color); border-radius: 40px; padding: 6px 16px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 6px; }
-.style-card .card-actions button:hover { background: var(--accent-light); border-color: var(--accent); }
-.style-card .card-actions .favorite-btn.active { color: var(--heart); border-color: var(--heart); background: #fff0f3; }
-.style-card .card-actions .tried-btn.active { color: var(--star); border-color: var(--star); background: #fff9e6; }
-.style-card .tried-badge { position: absolute; top: 12px; right: 12px; background: var(--star); color: white; border-radius: 30px; padding: 4px 12px; font-size: 0.7rem; font-weight: 700; display: none; }
-.style-card .tried-badge.show { display: block; }
-.filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-.filter-bar button { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 40px; padding: 6px 18px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; transition: all 0.3s; }
-.filter-bar button:hover { border-color: var(--accent); color: var(--text-primary); }
-.filter-bar button.active { background: var(--accent); color: white; border-color: var(--accent); }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
-.modal-overlay.active { display: flex; }
-.modal-content { background: var(--bg-secondary); max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; border-radius: var(--radius); padding: 32px 36px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); position: relative; animation: fadeIn 0.3s ease; }
-.modal-content .close-modal { position: sticky; top: 0; float: right; background: var(--bg-card); border: none; border-radius: 40px; width: 40px; height: 40px; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
-.modal-content .close-modal:hover { background: var(--accent); color: white; }
-.modal-content .modal-meta { display: flex; flex-wrap: wrap; gap: 16px; background: var(--bg-primary); padding: 12px 18px; border-radius: 12px; margin: 12px 0 20px; }
-.modal-content .step-list { list-style: none; padding: 0; margin: 16px 0; }
-.modal-content .step-list li { padding: 10px 0; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; }
-.modal-content .step-list li::before { content: "▸"; color: var(--accent); font-weight: 700; }
-.modal-content .tip-box { background: var(--bg-primary); border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 8px; margin: 12px 0; }
-.modal-content .mistake-box { background: #fff0f0; border-left: 4px solid var(--heart); padding: 14px 18px; border-radius: 8px; margin: 12px 0; color: #b33; }
-body.dark .modal-content .mistake-box { background: #3a2a2a; color: #ff9a9a; }
-.album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; }
-.album-item { background: var(--bg-card); border-radius: 16px; padding: 16px; text-align: center; box-shadow: var(--shadow); transition: all 0.3s; border: 2px solid var(--border-color); }
-.album-item:hover { transform: scale(1.02); border-color: var(--accent); }
-.look-builder { display: flex; flex-direction: column; gap: 20px; margin: 20px 0; }
-.look-builder .look-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; background: var(--bg-primary); padding: 16px 20px; border-radius: var(--radius); }
-.look-builder .look-row label { font-weight: 600; min-width: 120px; }
-.look-builder .look-row select { flex: 1; padding: 10px 14px; border-radius: 30px; border: 2px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-size: 1rem; min-width: 180px; }
-.look-builder .look-row select:focus { outline: none; border-color: var(--accent); }
-.look-builder .look-result { background: var(--bg-card); border-radius: var(--radius); padding: 20px 24px; border: 2px dashed var(--accent-light); text-align: center; font-size: 1.2rem; }
-.curiosity-card { background: var(--bg-card); border-radius: var(--radius); padding: 20px 24px; margin: 16px 0; box-shadow: var(--shadow); border-left: 6px solid var(--accent); }
-.curiosity-card .options { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
-.curiosity-card .options button { background: var(--bg-primary); border: 2px solid var(--border-color); border-radius: 40px; padding: 8px 20px; cursor: pointer; transition: all 0.3s; font-weight: 500; color: var(--text-primary); }
-.curiosity-card .options button:hover { border-color: var(--accent); background: var(--accent-light); }
-.curiosity-card .options button.correct { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
-.curiosity-card .options button.wrong { border-color: #c62828; background: #ffebee; color: #c62828; }
-.curiosity-card .answer-reveal { margin-top: 12px; padding: 12px 16px; background: var(--bg-primary); border-radius: 12px; display: none; }
-.curiosity-card .answer-reveal.show { display: block; }
-.tag-facil { background: #c8e6c9; color: #2e7d32; }
-.tag-intermedio { background: #fff9c4; color: #f57f17; }
-.tag-experta { background: #f8bbd0; color: #ad1457; }
-body.dark .tag-facil { background: #2e7d32; color: #c8e6c9; }
-body.dark .tag-intermedio { background: #f57f17; color: #fff9c4; }
-body.dark .tag-experta { background: #ad1457; color: #f8bbd0; }
     </style>
 </head>
 <body>
@@ -1144,49 +1067,6 @@ body.dark .tag-experta { background: #ad1457; color: #f8bbd0; }
     <div id="viewDad" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="clock-card"><div class="clock-time" id="dadLiveClock">--:--:--</div><div class="clock-date" id="dadLiveDate"></div></div><div id="dadContainer"></div></div>
     <div id="viewKaraoke" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button><div class="card"><div class="card-title">🎤 Karaoke</div><div style="display:flex;gap:8px;margin-bottom:12px;"><button class="btn" onclick="filterKaraokeSongs('all')" style="background:var(--primary);color:white;">Todas</button><button class="btn" onclick="filterKaraokeSongs('en')">🇬🇧 English (24)</button><button class="btn" onclick="filterKaraokeSongs('fr')">🇫🇷 Français (12)</button></div><div class="karaoke-song-list" id="karaokeSongList"></div></div></div>
     <div id="viewDiary" class="view"><button class="back-btn" onclick="showView('home')">← Volver</button>
-        <div class="diary-tabs">
-    <button class="active" data-tab="diary">📖 Diario</button>
-    <button data-tab="beauty">💅 Mi Estilo</button>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.diary-tabs:not(.sub) button');
-    const contents = document.querySelectorAll('.diary-tab-content');
-
-    tabs.forEach(btn => {
-        btn.addEventListener('click', function() {
-            tabs.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            contents.forEach(c => c.classList.remove('active'));
-            
-            const targetId = this.getAttribute('data-tab');
-            const targetContent = document.getElementById(targetId);
-            if (targetContent) {
-                targetContent.classList.add('active');
-
-                // Gérer l'affichage par défaut de "Mi Estilo"
-                if (targetId === 'beauty') {
-                    const activeSubTab = document.querySelector('#beauty .diary-tabs .active');
-                    if (activeSubTab) {
-                        showSubTab(activeSubTab.dataset.subtab);
-                    } else {
-                        const firstSubTab = document.querySelector('#beauty .diary-tabs button[data-subtab="hairstyles"]');
-                        if (firstSubTab) firstSubTab.classList.add('active');
-                        showSubTab('hairstyles');
-                    }
-                }
-            }
-        });
-    });
-
-    // Déclencher l'onglet actif au chargement
-    const initialTab = document.querySelector('.diary-tabs:not(.sub) button.active');
-    if (initialTab) {
-        const initialContent = document.getElementById(initialTab.dataset.tab);
-        if (initialContent) initialContent.classList.add('active');
-    }
-});
-</script>
         <!-- === ESTADO DE ÁNIMO (movido del Home) === -->
     <div class="section-title">😊 ¿Cómo te sientes?</div>
     <div class="mood-grid" id="moodGridDiary">
@@ -1210,84 +1090,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="badge">💪 COSAS DE LA VIDA · 10 SUPERPODERES</div>
         <div id="lifeSkillsContainer" class="skills-grid"></div>
     </div>
-  <!-- TAB 2: MI ESTILO (NUEVO) -->
-  <div id="beauty" class="diary-tab-content">
-    <!-- MENSAJE DE BIENVENIDA -->
-    <div style="background:var(--bg-primary); border-radius:var(--radius); padding:20px 24px; margin-bottom:24px; border-left:6px solid var(--accent);">
-      <p style="font-size:1.1rem; font-weight:500;">🌿 <strong>Aquí no hay reglas ni exámenes.</strong> Solo ideas para que juegues con tu estilo cuando te apetezca. Guarda lo que te inspire, prueba lo que te divierta y olvida el resto. <span style="color:var(--accent);">¡Esto es tu rincón de creatividad!</span></p>
-    </div>
 
-    <!-- Subtabs de Estilo -->
-    <div class="diary-tabs" style="margin-bottom:16px;">
-      <button class="active" data-subtab="hairstyles">💇‍♀️ Cabello</button>
-      <button data-subtab="makeup">💄 Maquillaje</button>
-      <button data-subtab="care">🧴 Cuidado</button>
-      <button data-subtab="look">🎨 Mi look</button>
-      <button data-subtab="album">🌟 Álbum</button>
-    </div>
-
-    <div id="sub-hairstyles" class="diary-tab-content active">
-      <div class="filter-bar" id="hairstyleFilters">
-        <button class="active" data-filter="all">Todos</button>
-        <button data-filter="facil">🌱 Fácil</button>
-        <button data-filter="intermedio">🌸 Intermedio</button>
-        <button data-filter="experta">👑 Experta</button>
-      </div>
-      <div id="hairstyleGrid" class="style-grid"></div>
-    </div>
-
-    <div id="sub-makeup" class="diary-tab-content">
-      <div class="filter-bar" id="makeupFilters">
-        <button class="active" data-filter="all">Todos</button>
-        <button data-filter="natural">🌸 Natural</button>
-        <button data-filter="ojos">👁️ Ojos</button>
-        <button data-filter="labios">👄 Labios</button>
-        <button data-filter="especial">✨ Look especial</button>
-      </div>
-      <div id="makeupGrid" class="style-grid"></div>
-    </div>
-
-    <div id="sub-care" class="diary-tab-content">
-      <div id="careGrid" class="style-grid"></div>
-    </div>
-
-    <div id="sub-look" class="diary-tab-content">
-      <div class="look-builder">
-        <div class="look-row"><label>💇‍♀️ Peinado</label><select id="lookHairstyle"></select></div>
-        <div class="look-row"><label>💄 Maquillaje</label><select id="lookMakeup"></select></div>
-        <div class="look-row"><label>🎀 Accesorio</label>
-          <select id="lookAccessory">
-            <option value="Ninguno">Ninguno</option><option value="Scrunchie">Scrunchie</option>
-            <option value="Diadema">Diadema</option><option value="Pañuelo">Pañuelo</option>
-            <option value="Pinzas">Pinzas</option><option value="Lazo">Lazo</option>
-          </select>
-        </div>
-        <div class="look-row"><button id="saveLookBtn" style="background:var(--accent); color:white; border:none; padding:10px 28px; border-radius:40px; font-weight:600; cursor:pointer;">💾 Guardar look</button></div>
-        <div class="look-result" id="lookResult">
-          <div style="font-size:2rem;">✨</div>
-          <div><strong>Tu look está listo</strong></div>
-          <div class="result-detail" id="lookDetail">Elige un peinado y maquillaje.</div>
-        </div>
-      </div>
-      <div style="margin-top:20px;"><h4>📸 Looks guardados</h4><div id="savedLooksList" style="display:flex; flex-wrap:wrap; gap:12px; margin-top:10px;"></div></div>
-    </div>
-
-    <div id="sub-album" class="diary-tab-content">
-      <p style="color:var(--text-secondary); margin-bottom:12px;">🌟 Tu colección personal de favoritos y probados.</p>
-      <div id="albumGrid" class="album-grid"></div>
-      <div id="albumEmpty" style="text-align:center; padding:40px 0; color:var(--text-secondary);">
-        <div style="font-size:3rem;">📭</div>
-        <p>Todavía no has guardado nada. Explora y marca lo que te guste ❤️ o lo que hayas probado ✨</p>
-      </div>
-    </div>
-
-    <!-- DATOS CURIOSOS -->
-    <div style="margin-top:40px; border-top:2px solid var(--border-color); padding-top:20px;">
-      <h3 style="display:flex; align-items:center; gap:10px;">🧠 Dato curioso <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">(sin puntuación)</span></h3>
-      <div id="curiosityContainer"></div>
-    </div>
-  </div>
-</section>
     <!-- ===== NUEVA SECCIÓN: CONSEJOS DE SABIDURÍA ===== -->
     <div class="sabiduria-seccion">
         <div class="sabiduria-titulo-principal">
@@ -1456,7 +1259,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="super-topic-content" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
                 <p><strong>📌 México (POLICIA O BOMBEROS O AMBULANCIA):</strong> 911</p>
                 <p><strong>📌 MAMA (Ines Alejandra):</strong> +52 55 6514 5626</p>
-                <p><strong>📌 PAPA (Jean Thomas):</strong> +1 438 860 6766</p> 
+                <p><strong>📌 PAPA (Jean Thomas):</strong> +1 581 899 1062</p> 
                 <p><strong>📌 ABUELA (Magdalena):</strong> + 52 442 381 3418</p>
                 <p><strong>📌 TIO (Carlos):</strong> +52 1 775 133 8003</p>
                 <p><strong>📌 TIO (Adrian):</strong> +52 1 56 1278 2120</p>
@@ -4643,17 +4446,32 @@ function showView(vn){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const target=document.getElementById('view'+vn.charAt(0).toUpperCase()+vn.slice(1));
     if(target)target.classList.add('active');
+    function showView(vn) {
+    // ... code existant ...
     
-    if(vn==='home'){
+    if (vn === 'home') {
         renderMarysePlaylist();
-        renderWeekSelector(); 
+        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
         updateWeeklyDisplay();
     }
-    if(vn==='academy'){
-        renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation();
-        renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards();
-        renderLessons(); renderAcademyProgress(); renderWeekSelector();
+    
+    if (vn === 'academy') {
+        renderVocab();
+        renderPronunciation();
+        renderPodcasts();
+        renderConjugation();
+        renderGrammar();
+        renderExam();
+        renderFlashcardModes();
+        loadFlashcards();
+        renderLessons();
+        renderAcademyProgress();
+        renderWeekSelector(); // 👈 AJOUTE CETTE LIGNE
     }
+    
+    // ... suite du code ...
+}
+    if(vn==='academy'){ renderVocab(); renderPronunciation(); renderPodcasts(); renderConjugation(); renderGrammar(); renderExam(); renderFlashcardModes(); loadFlashcards(); renderLessons();renderAcademyProgress(); }
     if(vn==='discover'){ renderDiscoverFilters(); renderArticles(); renderMomActivities(); }
     if(vn==='games'){ switchGame(currentGame); }
     if(vn==='dad'){ renderDad(); updateDadClock(); }
@@ -4664,8 +4482,8 @@ function showView(vn){
     if(vn==='theme') loadTheme();
     if(vn==='profile'){ updateProfile(); loadNotifSettings(); }
     if(vn==='lifeskills') renderLifeSkills();
-    
     window.scrollTo(0,0);
+        // Ocultar la nueva Agenda
     let agendaNueva = document.getElementById('viewAgendaNueva');
     if (agendaNueva) agendaNueva.classList.remove('active');
 }
@@ -5896,12 +5714,11 @@ function removeGuestAdmin(index) {
         cargarStatsAdmin();
     }
 }
+
 function initAdminView() {
     inicializarStatsDePrueba();
     cargarStatsAdmin();
     cargarGuestListAdmin();
-}
-
 function inicializarStatsDePrueba() {
     if (Object.keys(stats).length === 0) {
         stats = {
@@ -5949,6 +5766,7 @@ function inicializarStatsDePrueba() {
         };
         reader.readAsText(file);
     };
+}
 
 // Modificar showView para que al abrir Admin ejecute la carga
 const originalShowView = showView;
@@ -6415,516 +6233,6 @@ function mostrarAdminDirecto() {
         html += '</ul>';
         container.innerHTML = html;
     }
-}
-
-// Add this function to make the button work
-function marcarActividadDad(dia) {
-    completarActividadPapa(dia);
-}
-</script>
-<!-- MODAL PARA DETALLE -->
-<div class="modal-overlay" id="detailModal">
-  <div class="modal-content">
-    <button class="close-modal" id="closeModal">✕</button>
-    <div id="modalBody"></div>
-  </div>
-</div>
-<script>
-// ================================================================
-// DATOS DE BEAUTY (NUEVO)
-// ================================================================
-const HAIRSTYLES_DATA = [
-  { id: 'rizos-definidos', name: 'Rizos naturales definidos', difficulty: 'facil', time: 10, occasion: 'Cualquier día', materials: ['Crema para rizos', 'Difusor'], steps: ['Lava tu cabello con champú suave.', 'Aplica crema para rizos en cabello húmedo.', 'Seca con difusor a baja temperatura sin tocar los rizos.'], tips: ['No toques los rizos mientras se secan para evitar el encrespamiento.'], mistakes: ['Cepillar el cabello en seco.'], image: '🌊' },
-  { id: 'media-coleta-alta', name: 'Media coleta alta', difficulty: 'facil', time: 5, occasion: 'Escuela, paseo', materials: ['Liga o scrunchie'], steps: ['Desenreda suavemente el cabello.', 'Separa la parte superior del cabello.', 'Recoge esa sección con una liga.', 'Deja los rizos inferiores sueltos.'], tips: ['No aprietes demasiado para conservar el volumen.'], mistakes: ['Tirar del cabello al recogerlo.'], image: '🎀' },
-  { id: 'media-coleta-scrunchie', name: 'Media coleta con scrunchie', difficulty: 'facil', time: 5, occasion: 'Día casual', materials: ['Scrunchie'], steps: ['Haz una media coleta alta.', 'Enrolla el scrunchie alrededor de la liga.'], tips: ['Elige un scrunchie de color que combine con tu atuendo.'], mistakes: ['Usar un scrunchie muy apretado.'], image: '🧶' },
-  { id: 'coleta-alta', name: 'Coleta alta', difficulty: 'facil', time: 3, occasion: 'Deporte, día activo', materials: ['Liga elástica'], steps: ['Recoge todo el cabello en la parte superior de la cabeza.', 'Asegura con una liga.'], tips: ['Usa una liga sin metal para no dañar el cabello.'], mistakes: ['Hacerla demasiado tirante.'], image: '🐎' },
-  { id: 'coleta-baja', name: 'Coleta baja', difficulty: 'facil', time: 3, occasion: 'Clase, reunión', materials: ['Liga'], steps: ['Recoge el cabello en la nuca.', 'Asegura con liga.'], tips: ['Deja algunos rizos sueltos alrededor de la cara.'], mistakes: ['Dejar el cabello enredado.'], image: '↘️' },
-  { id: 'coleta-lateral', name: 'Coleta lateral', difficulty: 'facil', time: 4, occasion: 'Fin de semana', materials: ['Liga', 'Scrunchie opcional'], steps: ['Recoge el cabello hacia un lado (derecho o izquierdo).', 'Asegura con liga.'], tips: ['Puedes hacer una trenza con el cabello de la coleta.'], mistakes: ['Que quede muy desordenada.'], image: '➡️' },
-  { id: 'half-up-bun', name: 'Half-up bun', difficulty: 'intermedio', time: 8, occasion: 'Quedada con amigas', materials: ['Liga', 'Horquillas'], steps: ['Separa la parte superior del cabello.', 'Haz un moño con esa sección.', 'Asegura con horquillas.'], tips: ['No uses demasiadas horquillas para que se vea natural.'], mistakes: ['Moño demasiado apretado.'], image: '🍩' },
-  { id: 'messy-bun', name: 'Messy bun', difficulty: 'intermedio', time: 6, occasion: 'Día desenfadado', materials: ['Liga', 'Horquillas', 'Scrunchie'], steps: ['Recoge todo el cabello en una coleta alta.', 'Envuelve el cabello alrededor de la base y asegura con horquillas.', 'Deja algunos mechones sueltos.'], tips: ['Cuanto más desordenado, mejor.'], mistakes: ['Que quede demasiado pulcro.'], image: '🌀' },
-  { id: 'chignon-bajo', name: 'Chignon bajo', difficulty: 'intermedio', time: 10, occasion: 'Evento elegante', materials: ['Liga', 'Horquillas'], steps: ['Recoge el cabello en una coleta baja.', 'Gira el cabello y enróllalo formando un rodete.', 'Asegura con horquillas.'], tips: ['Puedes dejar algunos rizos sueltos para un look más romántico.'], mistakes: ['Que quede demasiado tirante.'], image: '🎩' },
-  { id: 'chignon-alto', name: 'Chignon alto', difficulty: 'intermedio', time: 12, occasion: 'Fiesta', materials: ['Liga', 'Horquillas', 'Scrunchie'], steps: ['Recoge el cabello en una coleta alta.', 'Forma un rodete con el cabello.', 'Asegura con horquillas y decora con scrunchie.'], tips: ['Usa horquillas en forma de U para mayor sujeción.'], mistakes: ['Que se deshaga por falta de fijación.'], image: '👑' },
-  { id: 'dos-trenzas', name: 'Dos trenzas', difficulty: 'facil', time: 8, occasion: 'Día de campo', materials: ['Ligas'], steps: ['Divide el cabello en dos partes.', 'Haz una trenza simple con cada parte.', 'Asegura con ligas.'], tips: ['Puedes aflojar las trenzas para un efecto más voluminoso.'], mistakes: ['Trenzar demasiado apretado.'], image: '👧' },
-  { id: 'dos-trenzas-francesas', name: 'Dos trenzas francesas', difficulty: 'experta', time: 20, occasion: 'Evento especial', materials: ['Ligas'], steps: ['Divide el cabello en dos partes.', 'Comienza una trenza francesa desde la raíz en cada lado.', 'Continúa hasta el final y asegura.'], tips: ['Mantén las manos relajadas para que la trenza quede suave.'], mistakes: ['Hacer las trenzas desiguales.'], image: '🇫🇷' },
-  { id: 'trenza-lateral', name: 'Trenza lateral', difficulty: 'intermedio', time: 12, occasion: 'Cualquier día', materials: ['Liga'], steps: ['Recoge todo el cabello hacia un lado.', 'Haz una trenza simple o francesa.', 'Asegura con liga.'], tips: ['Tira suavemente de los bordes de la trenza para darle volumen.'], mistakes: ['Que la trenza quede muy apretada.'], image: '🌾' },
-  { id: 'corona-trenzada', name: 'Corona trenzada', difficulty: 'experta', time: 25, occasion: 'Bodas, eventos', materials: ['Ligas', 'Horquillas'], steps: ['Divide el cabello en dos partes.', 'Haz dos trenzas laterales.', 'Cruza las trenzas por encima de la cabeza y asegura con horquillas.'], tips: ['Puedes añadir flores para un look más romántico.'], mistakes: ['Que las trenzas no cubran bien la cabeza.'], image: '👸' },
-  { id: 'space-buns', name: 'Space buns', difficulty: 'intermedio', time: 10, occasion: 'Fiesta, festival', materials: ['Ligas', 'Horquillas'], steps: ['Divide el cabello en dos partes.', 'Haz dos coletas altas.', 'Enrolla cada coleta en un moño y asegura.'], tips: ['Deja algunos mechones sueltos para un look desenfadado.'], mistakes: ['Moños demasiado pequeños.'], image: '🚀' },
-  { id: 'dos-coletas-altas', name: 'Dos coletas altas', difficulty: 'facil', time: 5, occasion: 'Día deportivo', materials: ['Ligas'], steps: ['Divide el cabello en dos partes.', 'Haz dos coletas altas a los lados.'], tips: ['Usa ligas de colores para darle vida.'], mistakes: ['Que queden muy bajas.'], image: '🐰' },
-  { id: 'dos-coletas-bajas', name: 'Dos coletas bajas', difficulty: 'facil', time: 4, occasion: 'Clase', materials: ['Ligas'], steps: ['Divide el cabello en dos partes.', 'Haz dos coletas bajas detrás de las orejas.'], tips: ['Puedes rizar las puntas para más volumen.'], mistakes: ['Dejar el cabello muy liso.'], image: '🐻' },
-  { id: 'rizos-diadema', name: 'Rizos con diadema', difficulty: 'facil', time: 3, occasion: 'Cualquier día', materials: ['Diadema'], steps: ['Coloca una diadema sobre el cabello.', 'Deja los rizos sueltos o recoge algunos mechones.'], tips: ['Elige una diadema que combine con tu look.'], mistakes: ['Diadema demasiado apretada.'], image: '🌸' },
-  { id: 'rizos-panuelo', name: 'Rizos con pañuelo', difficulty: 'facil', time: 5, occasion: 'Verano, playa', materials: ['Pañuelo'], steps: ['Dobla el pañuelo en forma de banda.', 'Colócalo sobre la cabeza y haz un nudo.'], tips: ['Usa un pañuelo de colores vivos.'], mistakes: ['Que el pañuelo resbale.'], image: '🧣' },
-  { id: 'pinzas-decorativas', name: 'Peinado con pinzas', difficulty: 'facil', time: 4, occasion: 'Cualquier día', materials: ['Pinzas decorativas'], steps: ['Recoge algunos mechones laterales y sujétalos con pinzas.'], tips: ['Combina pinzas de diferentes tamaños.'], mistakes: ['Usar demasiadas pinzas.'], image: '📎' },
-  { id: 'rizos-definidos-2', name: 'Rizos con gel definidor', difficulty: 'intermedio', time: 15, occasion: 'Cualquier día', materials: ['Gel para rizos', 'Difusor'], steps: ['Aplica gel sobre el cabello húmedo.', 'Define los rizos con los dedos.', 'Seca con difusor.'], tips: ['No uses demasiado gel para evitar el efecto acartonado.'], mistakes: ['Secar con toalla frotando.'], image: '💧' },
-  { id: 'trenza-espiga', name: 'Trenza de espiga', difficulty: 'experta', time: 20, occasion: 'Evento especial', materials: ['Liga'], steps: ['Divide el cabello en dos partes.', 'Toma un mechón del exterior de una parte y crúzalo a la otra.', 'Repite alternando lados.'], tips: ['Mantén las secciones pequeñas para una trenza más definida.'], mistakes: ['Mezclar los mechones.'], image: '🐟' },
-  { id: 'moño-bajo-despeinado', name: 'Moño bajo despeinado', difficulty: 'intermedio', time: 8, occasion: 'Cena informal', materials: ['Liga', 'Horquillas'], steps: ['Recoge el cabello en una coleta baja.', 'Saca el cabello por el centro de la liga (efecto ballerina).', 'Asegura con horquillas.'], tips: ['Despeina un poco para darle textura.'], mistakes: ['Dejar el moño demasiado pulcro.'], image: '🩰' },
-  { id: 'media-coleta-trenzada', name: 'Media coleta trenzada', difficulty: 'intermedio', time: 12, occasion: 'Escuela', materials: ['Liga'], steps: ['Separa la parte superior del cabello.', 'Haz una trenza con esa sección.', 'Asegura con liga.'], tips: ['Puedes hacer una trenza francesa en la parte superior.'], mistakes: ['Trenzar muy apretado.'], image: '🧝' },
-  { id: 'rizos-con-gorro', name: 'Rizos con gorro de lana', difficulty: 'facil', time: 3, occasion: 'Invierno', materials: ['Gorro de lana'], steps: ['Coloca el gorro sin aplastar los rizos.', 'Deja algunos rizos asomando.'], tips: ['Elige un gorro de punto suelto.'], mistakes: ['Aplastar los rizos al ponértelo.'], image: '⛄' },
-  { id: 'coleta-con-trenza', name: 'Coleta con trenza envolvente', difficulty: 'intermedio', time: 10, occasion: 'Cualquier día', materials: ['Liga', 'Horquilla'], steps: ['Haz una coleta baja.', 'Toma un mechón de la coleta y enróllalo alrededor de la liga.', 'Asegura con horquilla.'], tips: ['Usa un mechón no demasiado grueso.'], mistakes: ['Que el mechón se deshaga.'], image: '🎗️' },
-  { id: 'ondas-suaves', name: 'Ondas suaves con tenacillas', difficulty: 'intermedio', time: 20, occasion: 'Fiesta', materials: ['Tenacillas', 'Protector térmico'], steps: ['Aplica protector térmico.', 'Divide el cabello en mechones.', 'Enrolla cada mechón en la tenacilla durante unos segundos.'], tips: ['No uses temperatura demasiado alta.'], mistakes: ['Dejar la tenacilla mucho tiempo.'], image: '🌊' },
-  { id: 'recogido-bajo-lateral', name: 'Recogido bajo lateral', difficulty: 'intermedio', time: 12, occasion: 'Cena', materials: ['Liga', 'Horquillas'], steps: ['Recoge el cabello hacia un lado y haz un moño bajo.', 'Asegura con horquillas.'], tips: ['Añade un accesorio floral.'], mistakes: ['Que se vea demasiado tirante.'], image: '🌺' },
-  { id: 'trenza-de-raiz', name: 'Trenza desde la raíz (cornrow)', difficulty: 'experta', time: 30, occasion: 'Evento deportivo', materials: ['Ligas pequeñas'], steps: ['Haz una trenza pegada al cuero cabelludo desde la raíz.', 'Continúa hasta la nuca.'], tips: ['Mantén la tensión uniforme.'], mistakes: ['Tirones excesivos.'], image: '🌽' },
-  { id: 'semirecogido-con-trenza', name: 'Semirecogido con trenza', difficulty: 'intermedio', time: 14, occasion: 'Boda', materials: ['Liga', 'Horquillas'], steps: ['Toma dos mechones laterales y haz dos trenzas.', 'Únelas en la parte trasera con una liga.'], tips: ['Añade flores en la unión.'], mistakes: ['Trenzas desiguales.'], image: '💐' },
-  { id: 'rizos-volumen', name: 'Rizos con volumen extremo', difficulty: 'experta', time: 25, occasion: 'Fiesta de noche', materials: ['Mousse', 'Difusor', 'Peine de púas'], steps: ['Aplica mousse en cabello húmedo.', 'Seca con difusor inclinando la cabeza hacia abajo.', 'Despeina con los dedos para dar volumen.'], tips: ['Usa un peine de púas anchas para desenredar suavemente.'], mistakes: ['Usar demasiado producto.'], image: '☁️' }
-];
-
-const MAKEUP_DATA = [
-  { id: 'look-natural-escuela', name: 'Look natural para la escuela', category: 'natural', steps: ['Limpia e hidrata tu rostro.', 'Aplica un poco de corrector si lo necesitas.', 'Usa una máscara de pestañas ligera.', 'Añade un toque de blush en las mejillas.', 'Finaliza con bálsamo labial.'], tips: ['Menos es más.'], mistakes: ['Exagerar el maquillaje para el colegio.'], image: '🏫' },
-  { id: 'cejas-naturales', name: 'Cejas naturales', category: 'natural', steps: ['Cepilla tus cejas con un cepillo.', 'Rellena suavemente con sombra o lápiz.', 'Difumina con el cepillo para que se vean naturales.'], tips: ['Usa un tono similar a tu color de ceja.'], mistakes: ['Dibujarlas muy marcadas.'], image: '✏️' },
-  { id: 'mascara-pestanas', name: 'Máscara de pestañas', category: 'ojos', steps: ['Coloca el cepillo en la raíz de las pestañas.', 'Desliza hacia arriba con movimiento en zigzag.', 'Aplica dos capas si quieres más volumen.'], tips: ['No bombear el cepillo dentro del tubo (introduce aire y se seca).'], mistakes: ['Dejar grumos en las pestañas.'], image: '👁️' },
-  { id: 'sombra-sencilla', name: 'Sombra de ojos sencilla', category: 'ojos', steps: ['Aplica una sombra clara en todo el párpado.', 'Añade una sombra más oscura en la cuenca del ojo.', 'Difumina bien para que no se noten las líneas.'], tips: ['Usa tonos tierra o rosas suaves.'], mistakes: ['No difuminar correctamente.'], image: '🎨' },
-  { id: 'delineado-basico', name: 'Delineado básico', category: 'ojos', steps: ['Tira suavemente del párpado.', 'Dibuja una línea fina cerca de las pestañas superiores.', 'Si quieres, haz un pequeño rabillo.'], tips: ['Usa un delineador en gel o lápiz para más control.'], mistakes: ['Hacer la línea demasiado gruesa.'], image: '✒️' },
-  { id: 'blush-natural', name: 'Blush natural', category: 'natural', steps: ['Sonríe para localizar las manzanas de tus mejillas.', 'Aplica el blush en círculos pequeños.', 'Difumina hacia las sienes.'], tips: ['Elige un tono rosado o melocotón.'], mistakes: ['Poner demasiado producto.'], image: '🍑' },
-  { id: 'iluminador-ligero', name: 'Iluminador ligero', category: 'natural', steps: ['Aplica iluminador en los pómulos, arco de la ceja y lagrimal.', 'Difumina con los dedos o una brocha.'], tips: ['Menos es más.'], mistakes: ['Exagerar el brillo.'], image: '✨' },
-  { id: 'labios-naturales', name: 'Labios naturales', category: 'labios', steps: ['Hidrata tus labios con bálsamo.', 'Aplica un gloss o un labial de tono nude.'], tips: ['Usa un labial que sea hidratante.'], mistakes: ['Usar colores muy oscuros para el día.'], image: '💋' },
-  { id: 'lip-gloss', name: 'Lip gloss', category: 'labios', steps: ['Aplica el gloss directamente del aplicador.', 'Difumina con los dedos si quieres un efecto más suave.'], tips: ['El gloss con brillo aporta volumen visual.'], mistakes: ['Poner demasiado que se vea pegajoso.'], image: '✨' },
-  { id: 'look-fiesta', name: 'Look para una fiesta', category: 'especial', steps: ['Prepara la piel con base ligera.', 'Aplica sombras más intensas (tonos dorados o rosas).', 'Delineado y máscara de pestañas.', 'Labial de tono vibrante pero no oscuro.'], tips: ['Añade un poco de iluminador extra.'], mistakes: ['Recargar demasiado el maquillaje.'], image: '🎉' },
-  { id: 'look-fin-semana', name: 'Look de fin de semana', category: 'natural', steps: ['Solo usa corrector donde lo necesites.', 'Un poco de máscara de pestañas.', 'Blush y bálsamo labial con color.'], tips: ['Un look fresco y sencillo.'], mistakes: ['Olvidar el protector solar.'], image: '☀️' },
-  { id: 'combinacion-colores', name: 'Combinación de colores', category: 'ojos', steps: ['Elige dos sombras que combinen (ej: rosa y dorado).', 'Aplica la más clara en el párpado y la más oscura en la cuenca.'], tips: ['Prueba con colores que realcen el color de tus ojos.'], mistakes: ['Combinar colores que chocan.'], image: '🌈' },
-  { id: 'preparar-piel', name: 'Cómo preparar la piel antes del maquillaje', category: 'natural', steps: ['Limpia tu rostro con agua y jabón suave.', 'Aplica una crema hidratante.', 'Espera unos minutos antes de maquillarte.'], tips: ['La hidratación es clave para que el maquillaje dure.'], mistakes: ['Maquillarte sobre la piel seca.'], image: '🧴' },
-  { id: 'retirar-maquillaje', name: 'Cómo retirar correctamente el maquillaje', category: 'higiene', steps: ['Usa un desmaquillante suave (agua micelar o leche desmaquillante).', 'Empapa un disco de algodón y pásalo suavemente por el rostro.', 'Aclara con agua y seca sin frotar.'], tips: ['Nunca te duermas con maquillaje.'], mistakes: ['Frotar bruscamente la piel.'], image: '🧽' },
-  { id: 'limpiar-pinceles', name: 'Cómo limpiar los pinceles', category: 'higiene', steps: ['Moja el pincel con agua tibia.', 'Aplica un poco de champú suave y masajea.', 'Enjuaga hasta que el agua salga clara.', 'Deja secar horizontalmente.'], tips: ['Límpialos cada dos semanas.'], mistakes: ['Sumergir el pincel hasta el mango.'], image: '🖌️' },
-];
-
-const CARE_DATA = [
-  { id: 'desenredar-rizos', name: 'Cómo desenredar el cabello rizado', description: 'Usa un peine de dientes anchos y comienza desde las puntas hacia la raíz. Hazlo con el cabello húmedo y con acondicionador.', image: '🔀' },
-  { id: 'hidratar-rizos', name: 'Cómo hidratar los rizos', description: 'Aplica una mascarilla hidratante una vez por semana. Deja actuar 15-20 minutos y aclara con agua tibia.', image: '💧' },
-  { id: 'reducir-frizz', name: 'Cómo reducir el frizz', description: 'Evita tocar el cabello mientras se seca. Usa un suero o aceite ligero en las puntas.', image: '🌀' },
-  { id: 'dormir-rizos', name: 'Cómo dormir con cabello rizado', description: 'Usa una funda de almohada de satén o seda. Recoge el cabello en un "piña" (coleta alta muy suelta).', image: '🌙' },
-  { id: 'proteger-rizos', name: 'Cómo proteger los rizos del sol', description: 'Usa sombrero o productos con protección UV. Hidrata bien antes y después de la exposición.', image: '☀️' },
-  { id: 'despues-lavado', name: 'Qué hacer después de lavarse el cabello', description: 'No frotes con la toalla, mejor presiona suavemente para eliminar el exceso de agua. Aplica productos para rizos en húmedo.', image: '🚿' },
-  { id: 'peine-ancho', name: 'Cómo utilizar un peine de dientes anchos', description: 'Siempre con el cabello mojado y con acondicionador. Desenreda de abajo hacia arriba.', image: '🔧' },
-  { id: 'atomizador', name: 'Cómo utilizar un atomizador', description: 'Llena el atomizador con agua y un poco de acondicionador. Rocía sobre los rizos para reactivarlos entre lavados.', image: '💨' },
-  { id: 'productos-definir', name: 'Cómo utilizar productos para definir los rizos', description: 'Aplica crema o gel para rizos en cabello muy húmedo. Distribuye con los dedos peinando desde la raíz. No toques hasta que se seque.', image: '🧴' },
-];
-
-const CURIOSITIES = [
-  { question: '¿Cuál es la mejor manera de desenredar el cabello rizado?', options: ['Tirar rápidamente del cabello', 'Usar un peine de dientes anchos y trabajar suavemente', 'Cepillar agresivamente el cabello seco'], correct: 1, explanation: 'Lo mejor es un peine de dientes anchos y hacerlo con el cabello húmedo y acondicionado para no romper los rizos.' },
-  { question: '¿Con qué frecuencia se recomienda hidratar los rizos?', options: ['Todos los días', 'Una vez por semana con mascarilla', 'Nunca, el cabello rizado no necesita hidratación'], correct: 1, explanation: 'Una mascarilla hidratante semanal ayuda a mantener los rizos definidos y saludables.' },
-  { question: '¿Qué tipo de funda de almohada es mejor para el cabello rizado?', options: ['Algodón', 'Seda o satén', 'Lino'], correct: 1, explanation: 'La seda o satén reducen la fricción, evitando el encrespamiento y la rotura.' },
-  { question: '¿Por qué no se debe frotar el cabello con la toalla?', options: ['Porque se ensucia más', 'Porque provoca encrespamiento y rotura', 'Porque no hay motivo'], correct: 1, explanation: 'Frotar daña la cutícula y genera frizz. Es mejor presionar suavemente.' },
-  { question: '¿Qué es mejor para definir los rizos?', options: ['Aplicar producto en cabello seco', 'Aplicar producto en cabello muy húmedo', 'No usar producto'], correct: 1, explanation: 'El producto se distribuye mejor en cabello húmedo, ayudando a formar los rizos.' },
-];
-// ================================================================
-// FUNCIONES DE BEAUTY
-// ================================================================
-function getStorage(key, defaultVal) {
-  try { const data = localStorage.getItem(key); return data ? JSON.parse(data) : defaultVal; } catch { return defaultVal; }
-}
-function setStorage(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
-
-let hairstyles = getStorage('beauty_hairstyles', null);
-if (!hairstyles) { hairstyles = HAIRSTYLES_DATA.map(h => ({ ...h, favorite: false, tried: false })); setStorage('beauty_hairstyles', hairstyles); }
-let makeup = getStorage('beauty_makeup', null);
-if (!makeup) { makeup = MAKEUP_DATA.map(m => ({ ...m, favorite: false, tried: false })); setStorage('beauty_makeup', makeup); }
-let care = getStorage('beauty_care', null);
-if (!care) { care = CARE_DATA.map(c => ({ ...c, favorite: false })); setStorage('beauty_care', care); }
-let savedLooks = getStorage('beauty_saved_looks', []);
-
-function renderHairstyles(filter = 'all') {
-  const grid = document.getElementById('hairstyleGrid'); if (!grid) return;
-  const filtered = filter === 'all' ? hairstyles : hairstyles.filter(h => h.difficulty === filter);
-  grid.innerHTML = filtered.map(h => `
-    <div class="style-card" data-id="${h.id}" data-type="hairstyle">
-      <div class="tried-badge ${h.tried ? 'show' : ''}">✨ Probado</div>
-      <div class="card-image">${h.image}</div>
-      <h3>${h.name}</h3>
-      <div class="meta"><span class="tag tag-${h.difficulty}">${h.difficulty === 'facil' ? '🌱 Fácil' : h.difficulty === 'intermedio' ? '🌸 Intermedio' : '👑 Experta'}</span><span>⏱️ ${h.time} min</span></div>
-      <div class="card-actions">
-        <button class="favorite-btn ${h.favorite ? 'active' : ''}" data-action="favorite">${h.favorite ? '❤️' : '🤍'} Favorito</button>
-        <button class="tried-btn ${h.tried ? 'active' : ''}" data-action="tried">${h.tried ? '✨' : '☆'} Lo probé</button>
-      </div>
-    </div>
-  `).join('');
-  attachCardEvents('hairstyle');
-}
-
-function renderMakeup(filter = 'all') {
-  const grid = document.getElementById('makeupGrid'); if (!grid) return;
-  const filtered = filter === 'all' ? makeup : makeup.filter(m => m.category === filter);
-  grid.innerHTML = filtered.map(m => `
-    <div class="style-card" data-id="${m.id}" data-type="makeup">
-      <div class="tried-badge ${m.tried ? 'show' : ''}">✨ Probado</div>
-      <div class="card-image">${m.image}</div>
-      <h3>${m.name}</h3>
-      <div class="meta"><span class="tag">${m.category}</span></div>
-      <div class="card-actions">
-        <button class="favorite-btn ${m.favorite ? 'active' : ''}" data-action="favorite">${m.favorite ? '❤️' : '🤍'} Favorito</button>
-        <button class="tried-btn ${m.tried ? 'active' : ''}" data-action="tried">${m.tried ? '✨' : '☆'} Lo probé</button>
-      </div>
-    </div>
-  `).join('');
-  attachCardEvents('makeup');
-}
-
-function renderCare() {
-  const grid = document.getElementById('careGrid'); if (!grid) return;
-  grid.innerHTML = care.map(c => `
-    <div class="style-card" data-id="${c.id}" data-type="care">
-      <div class="card-image">${c.image}</div>
-      <h3>${c.name}</h3>
-      <p style="color:var(--text-secondary); font-size:0.95rem; margin:8px 0;">${c.description}</p>
-      <div class="card-actions">
-        <button class="favorite-btn ${c.favorite ? 'active' : ''}" data-action="favorite">${c.favorite ? '❤️' : '🤍'} Favorito</button>
-      </div>
-    </div>
-  `).join('');
-  attachCardEvents('care');
-}
-
-function attachCardEvents(type) {
-  document.querySelectorAll('.style-card').forEach(card => {
-    const id = card.dataset.id;
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('button')) return;
-      let data;
-      if (type === 'hairstyle') data = hairstyles.find(h => h.id === id);
-      else if (type === 'makeup') data = makeup.find(m => m.id === id);
-      else if (type === 'care') data = care.find(c => c.id === id);
-      if (data) openDetailModal(data, type);
-    });
-    card.querySelectorAll('.card-actions button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const action = btn.dataset.action;
-        if (action === 'favorite') toggleFavorite(id, type);
-        else if (action === 'tried') toggleTried(id, type);
-      });
-    });
-  });
-}
-
-function toggleFavorite(id, type) {
-  let item;
-  if (type === 'hairstyle') { item = hairstyles.find(h => h.id === id); if (item) { item.favorite = !item.favorite; setStorage('beauty_hairstyles', hairstyles); } }
-  else if (type === 'makeup') { item = makeup.find(m => m.id === id); if (item) { item.favorite = !item.favorite; setStorage('beauty_makeup', makeup); } }
-  else if (type === 'care') { item = care.find(c => c.id === id); if (item) { item.favorite = !item.favorite; setStorage('beauty_care', care); } }
-  refreshCurrentTab();
-}
-
-function toggleTried(id, type) {
-  let item;
-  if (type === 'hairstyle') { item = hairstyles.find(h => h.id === id); if (item) { item.tried = !item.tried; setStorage('beauty_hairstyles', hairstyles); } }
-  else if (type === 'makeup') { item = makeup.find(m => m.id === id); if (item) { item.tried = !item.tried; setStorage('beauty_makeup', makeup); } }
-  refreshCurrentTab();
-}
-
-function refreshCurrentTab() {
-  const activeSubtab = document.querySelector('#beauty .diary-tabs .active');
-  if (activeSubtab) {
-    const tab = activeSubtab.dataset.subtab;
-    if (tab === 'hairstyles') { const filter = document.querySelector('#hairstyleFilters .active')?.dataset.filter || 'all'; renderHairstyles(filter); }
-    else if (tab === 'makeup') { const filter = document.querySelector('#makeupFilters .active')?.dataset.filter || 'all'; renderMakeup(filter); }
-    else if (tab === 'care') { renderCare(); }
-    else if (tab === 'album') { renderAlbum(); }
-    else if (tab === 'look') { populateLookSelects(); renderSavedLooks(); }
-  }
-}
-
-function openDetailModal(data, type) {
-  const modal = document.getElementById('detailModal'); const body = document.getElementById('modalBody');
-  if (!modal || !body) return;
-  let html = `<h2>${data.name}</h2>`;
-  if (data.difficulty) { html += `<div class="modal-meta"><span>📊 Dificultad: ${data.difficulty}</span><span>⏱️ ${data.time} min</span><span>🎯 ${data.occasion || 'Cualquier ocasión'}</span></div>`; }
-  if (data.materials && data.materials.length) { html += `<p><strong>🧰 Materiales:</strong> ${data.materials.join(', ')}</p>`; }
-  if (data.steps && data.steps.length) { html += `<h4>📋 Pasos:</h4><ul class="step-list">${data.steps.map(s => `<li>${s}</li>`).join('')}</ul>`; }
-  if (data.tips && data.tips.length) { html += `<div class="tip-box"><strong>💡 Consejos:</strong><br>${data.tips.join('<br>')}</div>`; }
-  if (data.mistakes && data.mistakes.length) { html += `<div class="mistake-box"><strong>⚠️ Errores a evitar:</strong><br>${data.mistakes.join('<br>')}</div>`; }
-  body.innerHTML = html;
-  modal.classList.add('active');
-}
-
-document.getElementById('closeModal')?.addEventListener('click', () => { document.getElementById('detailModal')?.classList.remove('active'); });
-document.getElementById('detailModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) e.target.classList.remove('active'); });
-
-function renderAlbum() {
-  const grid = document.getElementById('albumGrid'); const empty = document.getElementById('albumEmpty');
-  if (!grid) return;
-  const favs = [];
-  hairstyles.forEach(h => { if (h.favorite || h.tried) favs.push({ ...h, type: 'Peinado' }); });
-  makeup.forEach(m => { if (m.favorite || m.tried) favs.push({ ...m, type: 'Maquillaje' }); });
-  care.forEach(c => { if (c.favorite) favs.push({ ...c, type: 'Cuidado' }); });
-  if (favs.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
-  if (empty) empty.style.display = 'none';
-  grid.innerHTML = favs.map(item => `
-    <div class="album-item">
-      <div class="album-emoji">${item.image || '📌'}</div>
-      <div class="album-label">${item.name}</div>
-      <div class="album-tag">${item.type} ${item.favorite ? '❤️' : ''} ${item.tried ? '✨' : ''}</div>
-    </div>
-  `).join('');
-}
-
-function populateLookSelects() {
-  const hs = document.getElementById('lookHairstyle'); const ms = document.getElementById('lookMakeup');
-  if (!hs || !ms) return;
-  hs.innerHTML = '<option value="">Elige un peinado</option>' + hairstyles.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
-  ms.innerHTML = '<option value="">Elige un maquillaje</option>' + makeup.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
-}
-
-function updateLookResult() {
-  const hId = document.getElementById('lookHairstyle')?.value;
-  const mId = document.getElementById('lookMakeup')?.value;
-  const acc = document.getElementById('lookAccessory')?.value || 'Ninguno';
-  const detail = document.getElementById('lookDetail');
-  if (!detail) return;
-  const h = hairstyles.find(h => h.id === hId);
-  const m = makeup.find(m => m.id === mId);
-  if (h && m) { detail.innerHTML = `💇‍♀️ ${h.name} + 💄 ${m.name} + 🎀 ${acc} <br><span style="font-size:0.9rem; color:var(--text-secondary);">¡Combinación perfecta!</span>`; }
-  else { detail.innerHTML = 'Elige un peinado y maquillaje para empezar.'; }
-}
-
-document.getElementById('lookHairstyle')?.addEventListener('change', updateLookResult);
-document.getElementById('lookMakeup')?.addEventListener('change', updateLookResult);
-document.getElementById('lookAccessory')?.addEventListener('change', updateLookResult);
-
-document.getElementById('saveLookBtn')?.addEventListener('click', () => {
-  const hId = document.getElementById('lookHairstyle')?.value; const mId = document.getElementById('lookMakeup')?.value; const acc = document.getElementById('lookAccessory')?.value || 'Ninguno';
-  if (!hId || !mId) { alert('Por favor, elige un peinado y un maquillaje.'); return; }
-  const h = hairstyles.find(h => h.id === hId); const m = makeup.find(m => m.id === mId);
-  const look = { id: Date.now(), hairstyle: h.name, makeup: m.name, accessory: acc, date: new Date().toLocaleDateString() };
-  savedLooks.push(look); setStorage('beauty_saved_looks', savedLooks); renderSavedLooks(); alert('¡Look guardado!');
-});
-
-function renderSavedLooks() {
-  const container = document.getElementById('savedLooksList'); if (!container) return;
-  if (savedLooks.length === 0) { container.innerHTML = '<span style="color:var(--text-secondary);">No tienes looks guardados aún.</span>'; return; }
-  container.innerHTML = savedLooks.map(l => `
-    <div style="background:var(--bg-card); border-radius:12px; padding:12px 16px; box-shadow:var(--shadow); border:1px solid var(--border-color);">
-      <div style="font-weight:600;">${l.hairstyle}</div>
-      <div style="font-size:0.9rem; color:var(--text-secondary);">+ ${l.makeup} · ${l.accessory}</div>
-      <div style="font-size:0.7rem; color:var(--text-secondary);">${l.date}</div>
-    </div>
-  `).join('');
-}
-
-function renderCuriosities() {
-  const container = document.getElementById('curiosityContainer'); if (!container) return;
-  container.innerHTML = CURIOSITIES.map((c, idx) => `
-    <div class="curiosity-card" data-idx="${idx}">
-      <div class="question">❓ ${c.question}</div>
-      <div class="options">${c.options.map((opt, oi) => `<button data-opt="${oi}">${opt}</button>`).join('')}</div>
-      <div class="answer-reveal"><strong>✅ ${c.options[c.correct]}</strong><br><span style="color:var(--text-secondary);">${c.explanation}</span></div>
-    </div>
-  `).join('');
-  container.querySelectorAll('.curiosity-card .options button').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const card = btn.closest('.curiosity-card'); const idx = parseInt(card.dataset.idx); const selected = parseInt(btn.dataset.opt); const correct = CURIOSITIES[idx].correct;
-      const allBtns = card.querySelectorAll('.options button');
-      allBtns.forEach(b => { b.disabled = true; const val = parseInt(b.dataset.opt); if (val === correct) b.classList.add('correct'); else if (val === selected && val !== correct) b.classList.add('wrong'); });
-      card.querySelector('.answer-reveal').classList.add('show');
-    });
-  });
-}
-</script>
-<script>
-// CORRECTION D'URGENCE (Ne pas toucher au reste du code)
-if (typeof getStorage === 'undefined') {
-    function getStorage(key, defaultVal) { try { const data = localStorage.getItem(key); return data ? JSON.parse(data) : defaultVal; } catch { return defaultVal; } }
-    function setStorage(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
-}
-if (typeof loadDiary === 'undefined') {
-    function loadDiary() {
-        const text = localStorage.getItem('diary_text') || '';
-        const textarea = document.getElementById('diaryText');
-        if (textarea) textarea.value = text;
-        renderDiaryEntries();
-    }
-    function renderDiaryEntries() {
-        const entries = getStorage('diary_entries', []);
-        const list = document.getElementById('diaryEntriesList');
-        if (!list) return;
-        if (entries.length === 0) { list.innerHTML = '<span style="color:var(--text-secondary);">No hay entradas anteriores.</span>'; return; }
-        list.innerHTML = entries.slice(0, 10).map(e => `<div style="padding:8px 0; border-bottom:1px solid var(--border-color);"><span style="font-size:0.8rem; color:var(--text-secondary);">${e.date}</span><span style="margin-left:12px;">${e.mood || ''}</span><div>${e.text}</div></div>`).join('');
-    }
-}
-
-// Correction de la fonction showView (pour éviter le crash de renderWeekSelector)
-window.showView = function(vn) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    const target = document.getElementById('view' + vn.charAt(0).toUpperCase() + vn.slice(1));
-    if (target) target.classList.add('active');
-    if (vn === 'home' && typeof renderMarysePlaylist === 'function') renderMarysePlaylist();
-    if (vn === 'academy' && typeof renderAcademyProgress === 'function') renderAcademyProgress();
-    if (vn === 'diary') loadDiary();
-};
-
-// Forcer les onglets Diario / Mi Estilo à fonctionner
-document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.diary-tabs:not(.sub) button');
-    if (!btn) return;
-    const tabId = btn.getAttribute('data-tab');
-    document.querySelectorAll('.diary-tabs:not(.sub) button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.diary-tab-content').forEach(c => c.classList.remove('active'));
-    const target = document.getElementById(tabId);
-    if (target) target.classList.add('active');
-
-    if (tabId === 'beauty') {
-        const subContents = target.querySelectorAll('.diary-tab-content');
-        subContents.forEach(c => c.classList.remove('active'));
-        let firstSub = target.querySelector('.diary-tabs button[data-subtab="hairstyles"]');
-        if (firstSub) {
-            firstSub.classList.add('active');
-            const subTarget = document.getElementById('sub-hairstyles');
-            if (subTarget) subTarget.classList.add('active');
-        }
-    }
-});
-
-// Réparer l'erreur TypeError à la ligne 6428 (bouton null)
-if (document.getElementById('saveDiary')) {
-    document.getElementById('saveDiary').addEventListener('click', function() {
-        const textarea = document.getElementById('diaryText');
-        if (!textarea) return;
-        const text = textarea.value;
-        const mood = document.querySelector('.mood-selector .active')?.dataset.mood || '';
-        localStorage.setItem('diary_text', text);
-        localStorage.setItem('diary_mood', mood);
-        const entries = getStorage('diary_entries', []);
-        if (text.trim()) { entries.unshift({ date: new Date().toLocaleString(), text: text.substring(0, 80), mood: mood }); setStorage('diary_entries', entries); }
-        renderDiaryEntries();
-    });
-}
-</script>
-<script>
-// PATCH ULTIME - NE PAS TOUCHER AU VIEUX CODE
-if (typeof getStorage === 'undefined') {
-    function getStorage(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e) { return d; } }
-    function setStorage(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
-}
-if (typeof renderDiaryEntries === 'undefined') {
-    function renderDiaryEntries() {
-        var list = document.getElementById('diaryEntriesList');
-        if (!list) return;
-        var entries = getStorage('diary_entries', []);
-        if (entries.length === 0) { list.innerHTML = '<p>No hay entradas anteriores.</p>'; return; }
-        list.innerHTML = entries.map(function(e) { return '<div style="padding:8px 0; border-bottom:1px solid #ccc;"><span>'+e.date+'</span><span> '+e.mood+'</span><div>'+e.text+'</div></div>'; }).join('');
-    }
-    function loadDiary() {
-        var textarea = document.getElementById('diaryText');
-        if (textarea) textarea.value = localStorage.getItem('diary_text') || '';
-        renderDiaryEntries();
-    }
-}
-
-// Forcer les boutons Diario / Mi Estilo à fonctionner
-document.addEventListener('click', function(e) {
-    var btn = e.target.closest('.diary-tabs:not(.sub) button');
-    if (!btn) return;
-    var tab = btn.getAttribute('data-tab');
-    document.querySelectorAll('.diary-tabs:not(.sub) button').forEach(function(b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    document.querySelectorAll('.diary-tab-content').forEach(function(c) { c.classList.remove('active'); });
-    var target = document.getElementById(tab);
-    if (target) target.classList.add('active');
-
-    // Afficher coiffures par défaut si Mi Estilo
-    if (tab === 'beauty') {
-        var sub = target.querySelector('.diary-tabs button[data-subtab="hairstyles"]');
-        if (sub) sub.classList.add('active');
-        var subTarget = document.getElementById('sub-hairstyles');
-        if (subTarget) subTarget.classList.add('active');
-    }
-});
-
-// Charger le journal immédiatement
-document.addEventListener('DOMContentLoaded', function() {
-    loadDiary();
-});
-</script>
-<script>
-// Réactivation des onglets Diario / Mi Estilo
-document.addEventListener('DOMContentLoaded', function() {
-    // Gérer l'onglet principal (Diario vs Mi Estilo)
-    const mainTabs = document.querySelectorAll('.diary-tabs:not(.sub) button');
-    const mainContents = document.querySelectorAll('.diary-tab-content');
-
-    mainTabs.forEach(btn => {
-        btn.addEventListener('click', function() {
-            mainTabs.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            mainContents.forEach(c => c.classList.remove('active'));
-            
-            const targetId = this.getAttribute('data-tab');
-            const targetContent = document.getElementById(targetId);
-            if (targetContent) {
-                targetContent.classList.add('active');
-
-                // Si on ouvre "Mi Estilo", on affiche les coiffures par défaut
-                if (targetId === 'beauty') {
-                    const subTabs = targetContent.querySelectorAll('.diary-tabs button');
-                    const subContents = targetContent.querySelectorAll('.diary-tab-content');
-                    
-                    subContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Activer le premier onglet (Cabello) et afficher son contenu
-                    if (subTabs.length > 0) {
-                        subTabs.forEach(b => b.classList.remove('active'));
-                        subTabs[0].classList.add('active');
-                        const firstSub = document.getElementById('sub-hairstyles');
-                        if (firstSub) firstSub.classList.add('active');
-                        renderHairstyles();
-                    }
-                }
-            }
-        });
-    });
-
-    // Gérer les sous-onglets à l'intérieur de "Mi Estilo"
-    const subTabs = document.querySelectorAll('#beauty .diary-tabs button');
-    const subContents = document.querySelectorAll('#beauty .diary-tab-content');
-
-    subTabs.forEach(btn => {
-        btn.addEventListener('click', function() {
-            subTabs.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            subContents.forEach(c => c.classList.remove('active'));
-            
-            const subId = this.getAttribute('data-subtab');
-            const targetSub = document.getElementById('sub-' + subId);
-            if (targetSub) targetSub.classList.add('active');
-
-            // Charger le bon contenu selon l'onglet
-            if (subId === 'hairstyles') renderHairstyles();
-            else if (subId === 'makeup') renderMakeup();
-            else if (subId === 'care') renderCare();
-            else if (subId === 'album') renderAlbum();
-            else if (subId === 'look') { populateLookSelects(); renderSavedLooks(); }
-        });
-    });
-
-    // Charger les données au démarrage
-    if (document.getElementById('beauty')) {
-        renderHairstyles();
-        renderCuriosities();
-    }
-});
-</script>
-<script>
-// FONCTIONS MANQUANTES (Ne pas toucher au reste)
-function renderWeekSelector() {
-    var select = document.getElementById("weekSelector");
-    if (!select) return;
-    // On garde le select tel quel pour ne pas casser le choix de la semaine
-    console.log("renderWeekSelector chargé");
-}
-
-function showSubTab(sub) {
-    // Cacher tous les sous-onglets de Mi Estilo
-    document.querySelectorAll('#beauty .diary-tab-content').forEach(function(c) { c.classList.remove('active'); });
-    
-    // Afficher le bon sous-onglet
-    var target = document.getElementById('sub-' + sub);
-    if (target) target.classList.add('active');
-
-    // Charger les données si les fonctions existent
-    if (typeof renderHairstyles === 'function' && sub === 'hairstyles') renderHairstyles();
-    else if (typeof renderMakeup === 'function' && sub === 'makeup') renderMakeup();
-    else if (typeof renderCare === 'function' && sub === 'care') renderCare();
-    else if (typeof renderAlbum === 'function' && sub === 'album') renderAlbum();
-    else if (typeof populateLookSelects === 'function' && sub === 'look') populateLookSelects();
-    
-    if (typeof renderCuriosities === 'function') renderCuriosities();
 }
 </script>
 </body>
