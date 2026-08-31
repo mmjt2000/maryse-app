@@ -6249,6 +6249,7 @@ function mostrarAdminDirecto() {
         <button class="active" onclick="showBeautySub('hairstyles')">💇‍♀️ Cabello</button>
         <button onclick="showBeautySub('makeup')">💄 Maquillaje</button>
         <button onclick="showBeautySub('care')">🧴 Cuidado</button>
+        <button onclick="showBeautySub('nails')">💅 Uñas</button>
         <button onclick="showBeautySub('look')">🎨 Mi look</button>
         <button onclick="showBeautySub('album')">🌟 Álbum</button>
     </div>
@@ -6264,6 +6265,10 @@ function mostrarAdminDirecto() {
     <div id="sub-care" class="beauty-content">
         <div id="careGrid" class="style-grid"></div>
     </div>
+
+    <div id="sub-nails" class="beauty-content">
+    <div id="nailsGrid" class="style-grid"></div>
+</div>
 
     <div id="sub-look" class="beauty-content">
         <select id="lookHairstyle"></select>
@@ -6334,12 +6339,36 @@ const CARE = [
   { id:6, name: 'Qué hacer después de lavarse', image: '🚿', desc: 'Presiona suavemente con una toalla, no frotes.' }
 ];
 
+const NAILS = [
+  { id:1, name: 'Francesitas', image: '🤍', desc: 'Base transparente y puntas blancas. ¡Un clásico elegante!' },
+  { id:2, name: 'Colores pastel', image: '💅', desc: 'Rosa, lavanda o menta. Suaves y perfectas para la escuela.' },
+  { id:3, name: 'Brillo glam', image: '✨', desc: 'Esmalte con glitter o purpurina. Ideal para fiestas.' },
+  { id:4, name: 'Puntitos divertidos', image: '🎨', desc: 'Decora con un palillo y puntos de colores sobre esmalte liso.' },
+  { id:5, name: 'Corazones', image: '💖', desc: 'Dibuja pequeños corazones con un pincel fino.' },
+  { id:6, name: 'Flores sencillas', image: '🌸', desc: 'Cinco puntitos hacen una flor. ¡Muy fácil y adorable!' },
+  { id:7, name: 'Efecto mármol', image: '🌀', desc: 'Mezcla esmaltes blanco y gris, pasa un palillo para el efecto.' },
+  { id:8, name: 'Uñas de gel', image: '🌟', desc: 'Más duraderas y brillantes. Pide ayuda profesional.' }
+];
+
+function renderNails() {
+  const grid = document.getElementById('nailsGrid');
+  if (!grid) return;
+  grid.innerHTML = NAILS.map(n => `
+    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
+      <div style="font-size:3rem;">${n.image}</div>
+      <h4>${n.name}</h4>
+      <p style="font-size:0.8rem; color:#666;">${n.desc}</p>
+    </div>`).join('');
+}
+
 // Fonctions globales (pour qu'elles soient accessibles partout)
 window.showBeauty = function() {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('viewBeauty').classList.add('active');
   showBeautySub('hairstyles'); // Affiche par défaut Cabello
 };
+
+
 
 window.showBeautySub = function(sub) {
   // Cacher tous les contenus
