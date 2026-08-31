@@ -6212,5 +6212,38 @@ function mostrarAdminDirecto() {
     }
 }
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.diary-tabs:not(.sub) button');
+    const contents = document.querySelectorAll('.diary-tab-content');
+
+    tabs.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabs.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            contents.forEach(c => c.classList.remove('active'));
+            const targetId = this.getAttribute('data-tab');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                if (targetId === 'beauty') {
+                    const subBtns = targetContent.querySelectorAll('.diary-tabs button');
+                    if (subBtns.length > 0) {
+                        subBtns[0].classList.add('active');
+                        const subTarget = document.getElementById('sub-' + subBtns[0].dataset.subtab);
+                        if (subTarget) subTarget.classList.add('active');
+                    }
+                }
+            }
+        });
+    });
+
+    const activeTab = document.querySelector('.diary-tabs:not(.sub) button.active');
+    if (activeTab) {
+        const initialContent = document.getElementById(activeTab.dataset.tab);
+        if (initialContent) initialContent.classList.add('active');
+    }
+});
+</script>
 </body>
 </html>
