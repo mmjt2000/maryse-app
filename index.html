@@ -6257,51 +6257,8 @@ function mostrarAdminDirecto() {
     }
 }
 </script>
-<!-- NOUVELLE VUE BEAUTY (SÉPARÉE) -->
-<div id="viewBeauty" class="view">
-    <button class="back-btn" onclick="showView('home')">← Volver</button>
-    <div class="diary-tabs">
-        <button class="active" onclick="showBeautySub('hairstyles')">💇‍♀️ Cabello</button>
-        <button onclick="showBeautySub('makeup')">💄 Maquillaje</button>
-        <button onclick="showBeautySub('care')">🧴 Cuidado</button>
-        <button onclick="showBeautySub('nails')">💅 Uñas</button>
-        <button onclick="showBeautySub('look')">🎨 Mi look</button>
-        <button onclick="showBeautySub('album')">🌟 Álbum</button>
-    </div>
-
-    <div id="sub-hairstyles" class="beauty-content active">
-        <div id="hairstyleGrid" class="style-grid"></div>
-    </div>
-
-    <div id="sub-makeup" class="beauty-content">
-        <div id="makeupGrid" class="style-grid"></div>
-    </div>
-
-    <div id="sub-care" class="beauty-content">
-        <div id="careGrid" class="style-grid"></div>
-    </div>
-
-    <div id="sub-nails" class="beauty-content">
-    <div id="nailsGrid" class="style-grid"></div>
-</div>
-
-    <div id="sub-look" class="beauty-content">
-        <select id="lookHairstyle"></select>
-        <select id="lookMakeup"></select>
-        <button id="saveLookBtn" onclick="saveLook()">💾 Guardar</button>
-        <div id="savedLooksList"></div>
-    </div>
-
-    <div id="sub-album" class="beauty-content">
-        <div id="albumGrid"></div>
-    </div>
-</div>
-
-<!-- Bouton flottant pour ouvrir Beauty -->
-<button class="btn" style="position: fixed; bottom: 120px; right: 16px; z-index: 9999; background: #ec4899; color: white;" onclick="showBeauty()">💅 Mi Estilo</button>
 <script>
-// ======== SCRIPT AUTONOME POUR BEAUTY ========
-// Données complètes
+// ======== SCRIPT UNIQUE BEAUTY (OCCASIONS + PASOS) ========
 const HAIR = [
   { id:1, name: 'Rizos definidos', image: '🌊', ocasion: 'Escuela o día casual', pasos: ['Moja tu cabello ligeramente.', 'Aplica crema para rizos.', 'Usa un difusor.'] },
   { id:2, name: 'Media coleta', image: '🎀', ocasion: 'Deporte o actividades físicas', pasos: ['Desenreda.', 'Separa la parte superior.', 'Recoge con una liga.'] },
@@ -6313,16 +6270,6 @@ const HAIR = [
   { id:8, name: 'Moño despeinado', image: '🩰', ocasion: 'Fin de semana o café con amigas', pasos: ['Coleta baja.', 'Saca por el centro.', 'Ajusta.'] }
 ];
 
-function renderHairstyles() {
-  const grid = document.getElementById('hairstyleGrid');
-  if (!grid) return;
-  grid.innerHTML = HAIR.map(h => `
-    <div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${h.name}', '${h.ocasion}', ${JSON.stringify(h.pasos)})">
-      <div style="font-size:3rem;">${h.image}</div>
-      <h4>${h.name}</h4>
-      <div class="card-ocasion">✨ ${h.ocasion}</div>
-    </div>`).join('');
-}
 const MAKEUP = [
   { id:1, name: 'Look natural', image: '🏫', ocasion: 'Escuela, clases o trámites', pasos: ['Limpia e hidrata.', 'Aplica corrector.', 'Máscara ligera y bálsamo.'] },
   { id:2, name: 'Cejas naturales', image: '✏️', ocasion: 'Todos los días', pasos: ['Cepilla.', 'Rellena.', 'Difumina.'] },
@@ -6334,16 +6281,6 @@ const MAKEUP = [
   { id:8, name: 'Retirar maquillaje', image: '🧽', ocasion: 'Noche, antes de dormir', pasos: ['Agua micelar.', 'Disco de algodón.', 'Pasa suavemente.'] }
 ];
 
-function renderMakeup() {
-  const grid = document.getElementById('makeupGrid');
-  if (!grid) return;
-  grid.innerHTML = MAKEUP.map(m => `
-    <div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${m.name}', '${m.ocasion}', ${JSON.stringify(m.pasos)})">
-      <div style="font-size:3rem;">${m.image}</div>
-      <h4>${m.name}</h4>
-      <div class="card-ocasion">✨ ${m.ocasion}</div>
-    </div>`).join('');
-}
 const CARE = [
   { id:1, name: 'Desenredar', image: '🔀', ocasion: 'Justo después de lavarse', pasos: ['Aplica acondicionador.', 'Usa peine ancho.', 'Empieza por puntas.'] },
   { id:2, name: 'Hidratar', image: '💧', ocasion: 'Una vez por semana', pasos: ['Aplica mascarilla.', 'Deja actuar 15 min.', 'Enjuaga.'] },
@@ -6352,6 +6289,7 @@ const CARE = [
   { id:5, name: 'Proteger del sol', image: '☀️', ocasion: 'Verano, piscina o playa', pasos: ['Usa sombrero.', 'Aplica protección UV.'] },
   { id:6, name: 'Después de lavar', image: '🚿', ocasion: 'Después de cada ducha', pasos: ['Presiona con toalla.', 'Aplica productos en húmedo.'] }
 ];
+
 const NAILS = [
   { id:1, name: 'Francesitas', image: '🤍', ocasion: 'Escuela o eventos formales', pasos: ['Base transparente.', 'Puntas blancas.', 'Sella con brillo.'] },
   { id:2, name: 'Colores pastel', image: '💅', ocasion: 'Escuela o día casual', pasos: ['Lima.', 'Aplica color pastel.', 'Brillo.'] },
@@ -6363,23 +6301,6 @@ const NAILS = [
   { id:8, name: 'Uñas de gel', image: '🌟', ocasion: 'Viajes o vacaciones largas', pasos: ['Pide ayuda profesional.', 'Sigue cuidados.'] }
 ];
 
-function renderNails() {
-  const grid = document.getElementById('nailsGrid');
-  if (!grid) return;
-  grid.innerHTML = NAILS.map(n => `
-    <div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${n.name}', '${n.ocasion}', ${JSON.stringify(n.pasos)})">
-      <div style="font-size:3rem;">${n.image}</div>
-      <h4>${n.name}</h4>
-      <div class="card-ocasion">✨ ${n.ocasion}</div>
-    </div>`).join('');
-}
-
-// Fonctions globales (pour qu'elles soient accessibles partout)
-window.showBeauty = function() {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('viewBeauty').classList.add('active');
-  showBeautySub('hairstyles'); // Affiche par défaut Cabello
-};
 function abrirPasos(titulo, ocasion, pasos) {
     document.getElementById('modalPasosTitulo').textContent = titulo;
     document.getElementById('modalPasosOcasion').textContent = "💡 Ocasión perfecta: " + ocasion;
@@ -6393,43 +6314,45 @@ function abrirPasos(titulo, ocasion, pasos) {
     document.getElementById('modalPasos').classList.add('active');
 }
 
+function renderHairstyles() {
+  const grid = document.getElementById('hairstyleGrid'); if (!grid) return;
+  grid.innerHTML = HAIR.map(h => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${h.name}', '${h.ocasion}', ${JSON.stringify(h.pasos)})"><div style="font-size:3rem;">${h.image}</div><h4>${h.name}</h4><div class="card-ocasion">✨ ${h.ocasion}</div></div>`).join('');
+}
+function renderMakeup() {
+  const grid = document.getElementById('makeupGrid'); if (!grid) return;
+  grid.innerHTML = MAKEUP.map(m => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${m.name}', '${m.ocasion}', ${JSON.stringify(m.pasos)})"><div style="font-size:3rem;">${m.image}</div><h4>${m.name}</h4><div class="card-ocasion">✨ ${m.ocasion}</div></div>`).join('');
+}
+function renderCare() {
+  const grid = document.getElementById('careGrid'); if (!grid) return;
+  grid.innerHTML = CARE.map(c => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${c.name}', '${c.ocasion}', ${JSON.stringify(c.pasos)})"><div style="font-size:3rem;">${c.image}</div><h4>${c.name}</h4><div class="card-ocasion">✨ ${c.ocasion}</div></div>`).join('');
+}
+function renderNails() {
+  const grid = document.getElementById('nailsGrid'); if (!grid) return;
+  grid.innerHTML = NAILS.map(n => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${n.name}', '${n.ocasion}', ${JSON.stringify(n.pasos)})"><div style="font-size:3rem;">${n.image}</div><h4>${n.name}</h4><div class="card-ocasion">✨ ${n.ocasion}</div></div>`).join('');
+}
+
+window.showBeauty = function() {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('viewBeauty').classList.add('active');
+  showBeautySub('hairstyles');
+};
 
 window.showBeautySub = function(sub) {
-  // Cacher tous les contenus
   document.querySelectorAll('#viewBeauty .beauty-content').forEach(c => c.classList.remove('active'));
-  // Retirer la classe active de tous les boutons
   document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(b => b.classList.remove('active'));
-  
-  // Activer le bon bouton (le premier bouton correspond au sub passé)
   const buttons = document.querySelectorAll('#viewBeauty .diary-tabs button');
-  const subNames = ['hairstyles', 'makeup', 'care', 'look', 'album'];
+  const subNames = ['hairstyles', 'makeup', 'care', 'nails', 'look', 'album'];
   const index = subNames.indexOf(sub);
   if (index !== -1) buttons[index].classList.add('active');
-
-  // Afficher le bon contenu
   const content = document.getElementById('sub-' + sub);
   if (content) content.classList.add('active');
-
-  // Rendre le contenu
   if (sub === 'hairstyles') renderHairstyles();
   if (sub === 'makeup') renderMakeup();
   if (sub === 'care') renderCare();
-  if (sub === 'nails') renderNails();  // <-- ESTA LÍNEA ES NUEVA
+  if (sub === 'nails') renderNails();
   if (sub === 'look') populateLook();
   if (sub === 'album') renderAlbum();
 };
-
-// Fonctions de rendu
-function renderCare() {
-  const grid = document.getElementById('careGrid');
-  if (!grid) return;
-  grid.innerHTML = CARE.map(c => `
-    <div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="abrirPasos('${c.name}', '${c.ocasion}', ${JSON.stringify(c.pasos)})">
-      <div style="font-size:3rem;">${c.image}</div>
-      <h4>${c.name}</h4>
-      <div class="card-ocasion">✨ ${c.ocasion}</div>
-    </div>`).join('');
-}
 
 function populateLook() {
   const hs = document.getElementById('lookHairstyle');
@@ -6447,19 +6370,8 @@ window.saveLook = function() {
   const h = document.getElementById('lookHairstyle')?.value;
   const m = document.getElementById('lookMakeup')?.value;
   const list = document.getElementById('savedLooksList');
-  if (list) list.innerHTML += `<div style="background: white; padding:10px; border-radius:10px; margin-top:10px;">${h} + ${m}</div>`;
+  if (list) list.innerHTML += `<div style="border:1px solid #ccc;padding:10px;border-radius:10px;margin-top:10px;">${h} + ${m}</div>`;
 };
-
-// Au chargement, ne rien faire de spécial, tout est déjà prêt
 </script>
-<div id="modalPasos" class="modal-pasos-overlay">
-    <div class="modal-pasos-content">
-        <h3 id="modalPasosTitulo"></h3>
-        <div class="occ-sug" id="modalPasosOcasion"></div>
-        <p><strong>Pasos:</strong></p>
-        <ol id="modalPasosLista"></ol>
-        <button class="modal-pasos-close" onclick="document.getElementById('modalPasos').classList.remove('active')">Entendido</button>
-    </div>
-</div>
 </body>
 </html>
