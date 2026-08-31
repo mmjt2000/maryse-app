@@ -6300,15 +6300,57 @@ const HAIR = [
 ];
 
 function renderHairstyles() {
-  const grid = document.getElementById('hairstyleGrid');
-  if (!grid) return;
+  const grid = document.getElementById('hairstyleGrid'); if (!grid) return;
   grid.innerHTML = HAIR.map(h => `
     <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
       <div style="font-size:3rem;">${h.image}</div>
       <h4>${h.name}</h4>
       <p style="font-size:0.8rem; color:#666;">${h.desc}</p>
+      <div style="font-size:0.75rem; color:#8b79c9; font-style:italic; margin-top:5px;">✨ ${h.ocasion}</div>
+      <div style="background:#f8f6ff; border-radius:10px; padding:10px 15px; margin-top:10px; text-align:left;">
+        <strong>Pasos:</strong>
+        <ol style="margin:0; padding-left:20px;">
+          ${h.pasos.map(p => `<li style="font-size:0.85rem; margin-bottom:4px;">${p}</li>`).join('')}
+        </ol>
+      </div>
     </div>`).join('');
 }
+
+function renderMakeup() {
+  const grid = document.getElementById('makeupGrid'); if (!grid) return;
+  grid.innerHTML = MAKEUP.map(m => `
+    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
+      <div style="font-size:3rem;">${m.image}</div>
+      <h4>${m.name}</h4>
+      <p style="font-size:0.8rem; color:#666;">${m.desc}</p>
+      <div style="font-size:0.75rem; color:#8b79c9; font-style:italic; margin-top:5px;">✨ ${m.ocasion}</div>
+      <div style="background:#f8f6ff; border-radius:10px; padding:10px 15px; margin-top:10px; text-align:left;">
+        <strong>Pasos:</strong>
+        <ol style="margin:0; padding-left:20px;">
+          ${m.pasos.map(p => `<li style="font-size:0.85rem; margin-bottom:4px;">${p}</li>`).join('')}
+        </ol>
+      </div>
+    </div>`).join('');
+}
+
+function renderCare() {
+  const grid = document.getElementById('careGrid'); if (!grid) return;
+  grid.innerHTML = CARE.map(c => `
+    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
+      <div style="font-size:3rem;">${c.image}</div>
+      <h4>${c.name}</h4>
+      <p style="font-size:0.8rem; color:#666;">${c.desc}</p>
+      <div style="font-size:0.75rem; color:#8b79c9; font-style:italic; margin-top:5px;">✨ ${c.ocasion}</div>
+      <div style="background:#f8f6ff; border-radius:10px; padding:10px 15px; margin-top:10px; text-align:left;">
+        <strong>Pasos:</strong>
+        <ol style="margin:0; padding-left:20px;">
+          ${c.pasos.map(p => `<li style="font-size:0.85rem; margin-bottom:4px;">${p}</li>`).join('')}
+        </ol>
+      </div>
+    </div>`).join('');
+}
+
+
 const MAKEUP = [
   { id:1, name: 'Look natural', image: '🏫', desc: 'Limpia e hidrata. Aplica un toque de corrector y bálsamo labial.', ocasion: 'Escuela, clases o trámites', pasos: ['Limpia e hidrata.', 'Aplica corrector.', 'Máscara ligera y bálsamo.'] },
   { id:2, name: 'Cejas naturales', image: '✏️', desc: 'Cepilla, rellena suavemente y difumina para un look natural.', ocasion: 'Todos los días', pasos: ['Cepilla.', 'Rellena.', 'Difumina.'] },
@@ -6321,16 +6363,7 @@ const MAKEUP = [
   { id:9, name: 'Delineado sencillo', image: '✒️', desc: 'Un delineado fino para realzar la mirada sin exagerar.', ocasion: 'Salidas con amigas', pasos: ['Aplica delineador en gel o lápiz.', 'Traza una línea fina en el párpado superior.', 'Haz un pequeño rabillo y sella.'] }
 ];
 
-function renderMakeup() {
-  const grid = document.getElementById('makeupGrid');
-  if (!grid) return;
-  grid.innerHTML = MAKEUP.map(m => `
-    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
-      <div style="font-size:3rem;">${m.image}</div>
-      <h4>${m.name}</h4>
-      <p style="font-size:0.8rem; color:#666;">${m.desc}</p>
-    </div>`).join('');
-}
+
 
 const CARE = [
   { id:1, name: 'Desenredar', image: '🔀', desc: 'Usa un peine de dientes anchos, comienza desde las puntas.', ocasion: 'Justo después de lavarse', pasos: ['Aplica acondicionador.', 'Usa peine ancho.', 'Empieza por puntas.'] },
@@ -6356,25 +6389,12 @@ const NAILS = [
   { id:9, name: 'Glitter degradado', image: '💫', desc: 'El glitter solo en la base o en las puntas para un look moderno.', ocasion: 'Fiestas o eventos especiales', pasos: ['Aplica color base.', 'Aplica glitter en la mitad inferior.', 'Sella con brillo transparente.'] }
 ];
 
-function renderNails() {
-  const grid = document.getElementById('nailsGrid');
-  if (!grid) return;
-  grid.innerHTML = NAILS.map(n => `
-    <div style="background: white; padding:15px; border-radius:15px; text-align:center;">
-      <div style="font-size:3rem;">${n.image}</div>
-      <h4>${n.name}</h4>
-      <p style="font-size:0.8rem; color:#666;">${n.desc}</p>
-    </div>`).join('');
-}
-
 // Fonctions globales (pour qu'elles soient accessibles partout)
 window.showBeauty = function() {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('viewBeauty').classList.add('active');
   showBeautySub('hairstyles'); // Affiche par défaut Cabello
 };
-
-
 
 window.showBeautySub = function(sub) {
   // Cacher tous les contenus
