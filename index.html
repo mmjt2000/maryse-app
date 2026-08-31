@@ -6365,11 +6365,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="viewBeauty" class="view">
     <button class="back-btn" onclick="showView('home')">← Volver</button>
     <div class="diary-tabs">
-        <button class="active" data-subtab="hairstyles">💇‍♀️ Cabello</button>
-        <button data-subtab="makeup">💄 Maquillaje</button>
-        <button data-subtab="care">🧴 Cuidado</button>
-        <button data-subtab="look">🎨 Mi look</button>
-        <button data-subtab="album">🌟 Álbum</button>
+        <button class="active" onclick="showBeautySub('hairstyles')">💇‍♀️ Cabello</button>
+        <button onclick="showBeautySub('makeup')">💄 Maquillaje</button>
+        <button onclick="showBeautySub('care')">🧴 Cuidado</button>
+        <button onclick="showBeautySub('look')">🎨 Mi look</button>
+        <button onclick="showBeautySub('album')">🌟 Álbum</button>
     </div>
 
     <div id="sub-hairstyles" class="beauty-content active">
@@ -6387,7 +6387,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="sub-look" class="beauty-content">
         <select id="lookHairstyle"></select>
         <select id="lookMakeup"></select>
-        <button id="saveLookBtn">💾 Guardar</button>
+        <button id="saveLookBtn" onclick="saveLook()">💾 Guardar</button>
         <div id="savedLooksList"></div>
     </div>
 
@@ -6400,7 +6400,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <button class="btn" style="position: fixed; bottom: 120px; right: 16px; z-index: 9999; background: #ec4899; color: white;" onclick="showBeauty()">💅 Mi Estilo</button>
 <script>
 // ======== SCRIPT AUTONOME POUR BEAUTY ========
-// Données (exemples)
+// Données complètes
 const HAIR = [
   { id:1, name: 'Rizos naturales definidos', image: '🌊', steps: '1. Lava tu cabello.\n2. Aplica crema para rizos en cabello húmedo.\n3. Seca con difusor a baja temperatura.' },
   { id:2, name: 'Media coleta alta', image: '🎀', steps: '1. Desenreda suavemente.\n2. Separa la parte superior.\n3. Recoge con una liga.' },
@@ -6432,16 +6432,42 @@ const CARE = [
   { id:6, name: 'Qué hacer después de lavarse', image: '🚿', desc: 'Presiona suavemente con una toalla, no frotes.' }
 ];
 
-function showBeauty() {
+// Fonctions globales (pour qu'elles soient accessibles partout)
+window.showBeauty = function() {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('viewBeauty').classList.add('active');
-  renderHairstyles();
-}
+  showBeautySub('hairstyles'); // Affiche par défaut Cabello
+};
 
+window.showBeautySub = function(sub) {
+  // Cacher tous les contenus
+  document.querySelectorAll('#viewBeauty .beauty-content').forEach(c => c.classList.remove('active'));
+  // Retirer la classe active de tous les boutons
+  document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(b => b.classList.remove('active'));
+  
+  // Activer le bon bouton (le premier bouton correspond au sub passé)
+  const buttons = document.querySelectorAll('#viewBeauty .diary-tabs button');
+  const subNames = ['hairstyles', 'makeup', 'care', 'look', 'album'];
+  const index = subNames.indexOf(sub);
+  if (index !== -1) buttons[index].classList.add('active');
+
+  // Afficher le bon contenu
+  const content = document.getElementById('sub-' + sub);
+  if (content) content.classList.add('active');
+
+  // Rendre le contenu
+  if (sub === 'hairstyles') renderHairstyles();
+  if (sub === 'makeup') renderMakeup();
+  if (sub === 'care') renderCare();
+  if (sub === 'look') populateLook();
+  if (sub === 'album') renderAlbum();
+};
+
+// Fonctions de rendu
 function renderHairstyles() {
   const grid = document.getElementById('hairstyleGrid');
   if (!grid) return;
-  grid.innerHTML = HAIR.map(h => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="alert('${h.steps}')"><div style="font-size:3rem;">${h.image}</div><h4>${h.name}</h4></div>`).join('');
+  grid.innerHTML = HAIR.map(h => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="alert('${h.steps.replace(/\n/g, '\\n')}')"><div style="font-size:3rem;">${h.image}</div><h4>${h.name}</h4></div>`).join('');
 }
 
 function renderMakeup() {
@@ -6456,10 +6482,6 @@ function renderCare() {
   grid.innerHTML = CARE.map(c => `<div style="background: white; padding:15px; border-radius:15px; text-align:center;"><div style="font-size:3rem;">${c.image}</div><h4>${c.name}</h4><p>${c.desc}</p></div>`).join('');
 }
 
-function renderAlbum() {
-  document.getElementById('albumGrid').innerHTML = '<p>Tu álbum está vacío por ahora.</p>';
-}
-
 function populateLook() {
   const hs = document.getElementById('lookHairstyle');
   const ms = document.getElementById('lookMakeup');
@@ -6467,36 +6489,19 @@ function populateLook() {
   if (ms) ms.innerHTML = MAKEUP.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
 }
 
-// Gestion des onglets
-document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('#viewBeauty .beauty-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    const id = this.dataset.subtab;
-    document.getElementById('sub-' + id).classList.add('active');
-    if (id === 'hairstyles') renderHairstyles();
-    if (id === 'makeup') renderMakeup();
-    if (id === 'care') renderCare();
-    if (id === 'look') populateLook();
-    if (id === 'album') renderAlbum();
-  });
-});
+function renderAlbum() {
+  const grid = document.getElementById('albumGrid');
+  if (grid) grid.innerHTML = '<p>Tu álbum está vacío por ahora. Guarda looks para verlos aquí.</p>';
+}
 
-document.getElementById('saveLookBtn')?.addEventListener('click', function() {
+window.saveLook = function() {
   const h = document.getElementById('lookHairstyle')?.value;
   const m = document.getElementById('lookMakeup')?.value;
   const list = document.getElementById('savedLooksList');
   if (list) list.innerHTML += `<div style="background: white; padding:10px; border-radius:10px; margin-top:10px;">${h} + ${m}</div>`;
-});
+};
 
-// Chargement initial
-document.addEventListener('DOMContentLoaded', function() {
-  renderHairstyles();
-  renderMakeup();
-  renderCare();
-  populateLook();
-});
+// Au chargement, ne rien faire de spécial, tout est déjà prêt
 </script>
 </body>
 </html>
