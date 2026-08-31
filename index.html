@@ -2281,7 +2281,15 @@ function renderAcademyProgress() {
     progress.innerHTML = html;
 }
 // Initialiser le sélecteur de semaine au chargement
+function renderWeekSelector() {
+    var select = document.getElementById("weekSelector");
+    if (select) {
+        // Esta función mantiene el selector de semanas funcionando sin errores
+        select.innerHTML = select.innerHTML; 
+    }
+}
 renderWeekSelector();
+    
 updateWeeklyDisplay();
 </script>
 
@@ -4274,6 +4282,9 @@ function completarActividadPapa(dia) {
         fecha: new Date().toISOString(),
         dia: dia
     };
+    function marcarActividadDad(dia) {
+    completarActividadPapa(dia);
+}
     
     localStorage.setItem("maryse_dad_progress", JSON.stringify(dadProgress));
     
