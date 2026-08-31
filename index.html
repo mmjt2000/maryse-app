@@ -6288,14 +6288,15 @@ function mostrarAdminDirecto() {
 // ======== SCRIPT AUTONOME POUR BEAUTY ========
 // Données complètes
 const HAIR = [
-  { id:1, name: 'Rizos definidos', image: '🌊', desc: 'Aplica crema de peinado en cabello húmedo y seca con difusor.' },
-  { id:2, name: 'Media coleta', image: '🎀', desc: 'Separa la parte superior del cabello y recógela con una liga.' },
-  { id:3, name: 'Trenza lateral', image: '🌾', desc: 'Recoge el cabello hacia un lado y haz una trenza simple.' },
-  { id:4, name: 'Dos trenzas', image: '👧', desc: 'Divide el cabello en dos partes y haz una trenza en cada lado.' },
-  { id:5, name: 'Chongo bajo', image: '🎩', desc: 'Haz una coleta baja, enróllala y sujeta con horquillas.' },
-  { id:6, name: 'Space buns', image: '🚀', desc: 'Haz dos coletas altas y enróllalas en forma de moño.' },
-  { id:7, name: 'Corona trenzada', image: '👸', desc: 'Haz dos trenzas laterales y crúzalas sobre la cabeza.' },
-  { id:8, name: 'Moño despeinado', image: '🩰', desc: 'Haz una coleta baja, saca el cabello por el centro de la liga y ajusta.' }
+  { id:1, name: 'Rizos definidos', image: '🌊', desc: 'Aplica crema de peinado en cabello húmedo y seca con difusor.', ocasion: 'Escuela o día casual', pasos: ['Moja tu cabello ligeramente.', 'Aplica crema para rizos.', 'Usa un difusor.'] },
+  { id:2, name: 'Media coleta', image: '🎀', desc: 'Separa la parte superior del cabello y recógela con una liga.', ocasion: 'Deporte o actividades físicas', pasos: ['Desenreda.', 'Separa la parte superior.', 'Recoge con una liga.'] },
+  { id:3, name: 'Trenza lateral', image: '🌾', desc: 'Recoge el cabello hacia un lado y haz una trenza simple.', ocasion: 'Salida con amigas o día de campo', pasos: ['Peina hacia un lado.', 'Haz la trenza.', 'Asegura con liga.'] },
+  { id:4, name: 'Dos trenzas', image: '👧', desc: 'Divide el cabello en dos partes y haz una trenza en cada lado.', ocasion: 'Escuela o día tranquilo', pasos: ['Divide en dos.', 'Haz trenzas.', 'Asegura.'] },
+  { id:5, name: 'Chongo bajo', image: '🎩', desc: 'Haz una coleta baja, enróllala y sujeta con horquillas.', ocasion: 'Cena familiar o evento formal', pasos: ['Coleta baja.', 'Gira y enrolla.', 'Asegura con horquillas.'] },
+  { id:6, name: 'Space buns', image: '🚀', desc: 'Haz dos coletas altas y enróllalas en forma de moño.', ocasion: 'Conciertos, fiestas o festivales', pasos: ['Divide en dos.', 'Haz coletas altas.', 'Enrolla en moños.'] },
+  { id:7, name: 'Corona trenzada', image: '👸', desc: 'Haz dos trenzas laterales y crúzalas sobre la cabeza.', ocasion: 'Bodas, quinceañera o eventos especiales', pasos: ['Divide en dos.', 'Haz trenzas laterales.', 'Cruza sobre la cabeza.'] },
+  { id:8, name: 'Moño despeinado', image: '🩰', desc: 'Haz una coleta baja, saca el cabello por el centro de la liga y ajusta.', ocasion: 'Fin de semana o café con amigas', pasos: ['Coleta baja.', 'Saca por el centro.', 'Ajusta.'] },
+  { id:9, name: 'Coleta con trenza', image: '🎗️', desc: 'Haz una coleta baja y envuelve la liga con un mechón de cabello.', ocasion: 'Escuela o salida casual', pasos: ['Haz una coleta baja.', 'Toma un mechón.', 'Envuelve la liga y asegura.'] }
 ];
 
 function renderHairstyles() {
@@ -6309,14 +6310,15 @@ function renderHairstyles() {
     </div>`).join('');
 }
 const MAKEUP = [
-  { id:1, name: 'Look natural', image: '🏫', desc: 'Limpia e hidrata. Aplica un toque de corrector y bálsamo labial.' },
-  { id:2, name: 'Cejas naturales', image: '✏️', desc: 'Cepilla, rellena suavemente y difumina para un look natural.' },
-  { id:3, name: 'Máscara de pestañas', image: '👁️', desc: 'Aplica en zigzag desde la raíz para más volumen.' },
-  { id:4, name: 'Sombra de ojos', image: '🎨', desc: 'Usa un tono claro en el párpado y uno oscuro en la cuenca.' },
-  { id:5, name: 'Blush natural', image: '🍑', desc: 'Sonríe y aplica el rubor en círculos sobre las mejillas.' },
-  { id:6, name: 'Labios naturales', image: '💋', desc: 'Hidrata y aplica un gloss o tono nude.' },
-  { id:7, name: 'Look fiesta', image: '🎉', desc: 'Base ligera, sombras doradas, delineado y labial vibrante.' },
-  { id:8, name: 'Retirar maquillaje', image: '🧽', desc: 'Usa agua micelar con un disco de algodón y pasa suavemente.' }
+  { id:1, name: 'Look natural', image: '🏫', desc: 'Limpia e hidrata. Aplica un toque de corrector y bálsamo labial.', ocasion: 'Escuela, clases o trámites', pasos: ['Limpia e hidrata.', 'Aplica corrector.', 'Máscara ligera y bálsamo.'] },
+  { id:2, name: 'Cejas naturales', image: '✏️', desc: 'Cepilla, rellena suavemente y difumina para un look natural.', ocasion: 'Todos los días', pasos: ['Cepilla.', 'Rellena.', 'Difumina.'] },
+  { id:3, name: 'Máscara de pestañas', image: '👁️', desc: 'Aplica en zigzag desde la raíz para más volumen.', ocasion: 'Salidas sencillas', pasos: ['Raíz.', 'Zigzag.', 'Dos capas.'] },
+  { id:4, name: 'Sombra de ojos', image: '🎨', desc: 'Usa un tono claro en el párpado y uno oscuro en la cuenca.', ocasion: 'Juntas escolares o reuniones', pasos: ['Sombra clara.', 'Oscura en cuenca.', 'Difumina.'] },
+  { id:5, name: 'Blush natural', image: '🍑', desc: 'Sonríe y aplica el rubor en círculos sobre las mejillas.', ocasion: 'Todos los días', pasos: ['Sonríe.', 'Aplica círculos.', 'Difumina.'] },
+  { id:6, name: 'Labios naturales', image: '💋', desc: 'Hidrata y aplica un gloss o tono nude.', ocasion: 'Escuela', pasos: ['Hidrata.', 'Gloss o tono nude.'] },
+  { id:7, name: 'Look fiesta', image: '🎉', desc: 'Base ligera, sombras doradas, delineado y labial vibrante.', ocasion: 'Cumpleaños o fiestas escolares', pasos: ['Base ligera.', 'Sombras doradas.', 'Delineado y labial.'] },
+  { id:8, name: 'Retirar maquillaje', image: '🧽', desc: 'Usa agua micelar con un disco de algodón y pasa suavemente.', ocasion: 'Noche, antes de dormir', pasos: ['Agua micelar.', 'Disco de algodón.', 'Pasa suavemente.'] },
+  { id:9, name: 'Delineado sencillo', image: '✒️', desc: 'Un delineado fino para realzar la mirada sin exagerar.', ocasion: 'Salidas con amigas', pasos: ['Aplica delineador en gel o lápiz.', 'Traza una línea fina en el párpado superior.', 'Haz un pequeño rabillo y sella.'] }
 ];
 
 function renderMakeup() {
@@ -6331,23 +6333,27 @@ function renderMakeup() {
 }
 
 const CARE = [
-  { id:1, name: 'Cómo desenredar el cabello', image: '🔀', desc: 'Usa un peine de dientes anchos, comienza desde las puntas.' },
-  { id:2, name: 'Cómo hidratar los rizos', image: '💧', desc: 'Aplica una mascarilla hidratante una vez por semana.' },
-  { id:3, name: 'Cómo reducir el frizz', image: '🌀', desc: 'Evita tocar el cabello mientras se seca, usa un suero ligero.' },
-  { id:4, name: 'Cómo dormir con cabello rizado', image: '🌙', desc: 'Usa una funda de seda o satén, recoge el cabello en una piña.' },
-  { id:5, name: 'Cómo proteger los rizos del sol', image: '☀️', desc: 'Usa sombrero o productos con protección UV.' },
-  { id:6, name: 'Qué hacer después de lavarse', image: '🚿', desc: 'Presiona suavemente con una toalla, no frotes.' }
+  { id:1, name: 'Desenredar', image: '🔀', desc: 'Usa un peine de dientes anchos, comienza desde las puntas.', ocasion: 'Justo después de lavarse', pasos: ['Aplica acondicionador.', 'Usa peine ancho.', 'Empieza por puntas.'] },
+  { id:2, name: 'Hidratar', image: '💧', desc: 'Aplica una mascarilla hidratante una vez por semana.', ocasion: 'Una vez por semana', pasos: ['Aplica mascarilla.', 'Deja actuar 15 min.', 'Enjuaga.'] },
+  { id:3, name: 'Reducir frizz', image: '🌀', desc: 'Evita tocar el cabello mientras se seca, usa un suero ligero.', ocasion: 'Días de humedad', pasos: ['No toques mientras seca.', 'Aplica suero.'] },
+  { id:4, name: 'Dormir con rizos', image: '🌙', desc: 'Usa una funda de seda o satén, recoge el cabello en una piña.', ocasion: 'Cada noche', pasos: ['Usa funda de seda.', 'Recoge en piña.'] },
+  { id:5, name: 'Proteger del sol', image: '☀️', desc: 'Usa sombrero o productos con protección UV.', ocasion: 'Verano, piscina o playa', pasos: ['Usa sombrero.', 'Aplica protección UV.'] },
+  { id:6, name: 'Después de lavar', image: '🚿', desc: 'Presiona suavemente con una toalla, no frotes.', ocasion: 'Después de cada ducha', pasos: ['Presiona con toalla.', 'Aplica productos en húmedo.'] },
+  { id:7, name: 'Cortar puntas', image: '✂️', desc: 'Cortar las puntas abiertas ayuda a que el cabello crezca sano.', ocasion: 'Cada 2 o 3 meses', pasos: ['Pide cita en el salón.', 'Pide que corten solo las puntas dañadas.', 'Hidrata después del corte.'] },
+  { id:8, name: 'Alimentación para el cabello', image: '🥑', desc: 'Comer proteínas y vitaminas fortalece el cabello desde la raíz.', ocasion: 'Todos los días', pasos: ['Come alimentos ricos en biotina (huevos, aguacate).', 'Bebe suficiente agua.', 'Evita dietas extremas.'] },
+  { id:9, name: 'Evitar calor excesivo', image: '🔥', desc: 'Protege tu cabello del daño por planchas y secadores.', ocasion: 'Antes de usar herramientas de calor', pasos: ['Aplica protector térmico.', 'Usa la temperatura más baja posible.', 'No uses calor todos los días.'] }
 ];
 
 const NAILS = [
-  { id:1, name: 'Francesitas', image: '🤍', desc: 'Base transparente y puntas blancas. ¡Un clásico elegante!' },
-  { id:2, name: 'Colores pastel', image: '💅', desc: 'Rosa, lavanda o menta. Suaves y perfectas para la escuela.' },
-  { id:3, name: 'Brillo glam', image: '✨', desc: 'Esmalte con glitter o purpurina. Ideal para fiestas.' },
-  { id:4, name: 'Puntitos divertidos', image: '🎨', desc: 'Decora con un palillo y puntos de colores sobre esmalte liso.' },
-  { id:5, name: 'Corazones', image: '💖', desc: 'Dibuja pequeños corazones con un pincel fino.' },
-  { id:6, name: 'Flores sencillas', image: '🌸', desc: 'Cinco puntitos hacen una flor. ¡Muy fácil y adorable!' },
-  { id:7, name: 'Efecto mármol', image: '🌀', desc: 'Mezcla esmaltes blanco y gris, pasa un palillo para el efecto.' },
-  { id:8, name: 'Uñas de gel', image: '🌟', desc: 'Más duraderas y brillantes. Pide ayuda profesional.' }
+  { id:1, name: 'Francesitas', image: '🤍', desc: 'Base transparente y puntas blancas. ¡Un clásico elegante!', ocasion: 'Escuela o eventos formales', pasos: ['Base transparente.', 'Puntas blancas.', 'Sella con brillo.'] },
+  { id:2, name: 'Colores pastel', image: '💅', desc: 'Rosa, lavanda o menta. Suaves y perfectas para la escuela.', ocasion: 'Escuela o día casual', pasos: ['Lima.', 'Aplica color pastel.', 'Brillo.'] },
+  { id:3, name: 'Brillo glam', image: '✨', desc: 'Esmalte con glitter o purpurina. Ideal para fiestas.', ocasion: 'Fiestas', pasos: ['Base.', 'Glitter.', 'Top coat.'] },
+  { id:4, name: 'Puntitos', image: '🎨', desc: 'Decora con un palillo y puntos de colores sobre esmalte liso.', ocasion: 'Día con amigas', pasos: ['Color liso.', 'Puntitos con palillo.', 'Sella.'] },
+  { id:5, name: 'Corazones', image: '💖', desc: 'Dibuja pequeños corazones con un pincel fino.', ocasion: 'San Valentín u ocasión especial', pasos: ['Pincel fino.', 'Dibuja el corazón.', 'Rellena y sella.'] },
+  { id:6, name: 'Flores', image: '🌸', desc: 'Cinco puntitos hacen una flor. ¡Muy fácil y adorable!', ocasion: 'Primavera o eventos diurnos', pasos: ['Cinco puntitos.', 'Une con línea.', 'Brillo.'] },
+  { id:7, name: 'Efecto mármol', image: '🌀', desc: 'Mezcla esmaltes blanco y gris, pasa un palillo para el efecto.', ocasion: 'Looks modernos y juveniles', pasos: ['Base blanca.', 'Gotas grises.', 'Mezcla con palillo.'] },
+  { id:8, name: 'Uñas de gel', image: '🌟', desc: 'Más duraderas y brillantes. Pide ayuda profesional.', ocasion: 'Viajes o vacaciones largas', pasos: ['Pide ayuda profesional.', 'Sigue cuidados.'] },
+  { id:9, name: 'Glitter degradado', image: '💫', desc: 'El glitter solo en la base o en las puntas para un look moderno.', ocasion: 'Fiestas o eventos especiales', pasos: ['Aplica color base.', 'Aplica glitter en la mitad inferior.', 'Sella con brillo transparente.'] }
 ];
 
 function renderNails() {
