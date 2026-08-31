@@ -1077,68 +1077,6 @@
         <div class="mood-card" data-mood="motivated"><div class="mood-emoji">🤩</div><div class="mood-label">Motivada</div></div>
         <div class="mood-card" data-mood="tired"><div class="mood-emoji">😴</div><div class="mood-label">Cansada</div></div>
     </div>
-            <!-- DÉBUT DE LA NOUVELLE PARTIE (NE PAS TOUCHER AU RESTE) -->
-    <div class="diary-tabs">
-        <button class="active" data-tab="diary">📖 Diario</button>
-        <button data-tab="beauty">💅 Mi Estilo</button>
-    </div>
-
-    <div id="diary" class="diary-tab-content active">
-        <!-- ICI COMMENCE TON DIARIO D'ORIGINE (ne rien changer, juste le laisser tel quel) -->
-            </div> <!-- Fin de la div diary -->
-
-    <!-- DÉBUT DE LA PARTIE BEAUTY -->
-    <div id="beauty" class="diary-tab-content">
-        <div style="background: var(--bg); border-radius: 24px; padding: 20px 24px; margin-bottom: 24px; border-left: 6px solid var(--accent);">
-            <p style="font-size:1.1rem; font-weight:500;">🌿 <strong>Aquí no hay reglas ni exámenes.</strong> Solo ideas para que juegues con tu estilo. Guarda lo que te inspire, prueba lo que te divierta y olvida el resto.</p>
-        </div>
-        <div class="diary-tabs" style="margin-bottom:16px;">
-            <button class="active" data-subtab="hairstyles">💇‍♀️ Cabello</button>
-            <button data-subtab="makeup">💄 Maquillaje</button>
-            <button data-subtab="care">🧴 Cuidado</button>
-            <button data-subtab="look">🎨 Mi look</button>
-            <button data-subtab="album">🌟 Álbum</button>
-        </div>
-
-        <div id="sub-hairstyles" class="diary-tab-content active">
-            <div class="filter-bar" id="hairstyleFilters" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
-                <button class="active" data-filter="all" style="background: var(--card); border: 2px solid var(--border); border-radius: 40px; padding: 6px 18px; cursor: pointer;">Todos</button>
-                <button data-filter="facil" style="background: var(--card); border: 2px solid var(--border); border-radius: 40px; padding: 6px 18px; cursor: pointer;">🌱 Fácil</button>
-                <button data-filter="intermedio" style="background: var(--card); border: 2px solid var(--border); border-radius: 40px; padding: 6px 18px; cursor: pointer;">🌸 Intermedio</button>
-                <button data-filter="experta" style="background: var(--card); border: 2px solid var(--border); border-radius: 40px; padding: 6px 18px; cursor: pointer;">👑 Experta</button>
-            </div>
-            <div id="hairstyleGrid" class="style-grid"></div>
-        </div>
-
-        <div id="sub-makeup" class="diary-tab-content">
-            <div id="makeupGrid" class="style-grid"></div>
-        </div>
-
-        <div id="sub-care" class="diary-tab-content">
-            <div id="careGrid" class="style-grid"></div>
-        </div>
-
-        <div id="sub-look" class="diary-tab-content">
-            <div class="look-builder" style="display: flex; flex-direction: column; gap: 20px; margin: 20px 0;">
-                <div style="display: flex; gap: 16px; align-items: center;">
-                    <label>💇‍♀️ Peinado</label>
-                    <select id="lookHairstyle"></select>
-                </div>
-                <div style="display: flex; gap: 16px; align-items: center;">
-                    <label>💄 Maquillaje</label>
-                    <select id="lookMakeup"></select>
-                </div>
-                <button id="saveLookBtn" style="background: var(--primary); color:white; border:none; padding:10px 28px; border-radius:40px; cursor:pointer;">💾 Guardar look</button>
-                <div id="lookResult">✨ Tu look está listo</div>
-            </div>
-            <div id="savedLooksList" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
-        </div>
-
-        <div id="sub-album" class="diary-tab-content">
-            <div id="albumGrid" style="display: flex; flex-wrap: wrap; gap: 16px;"></div>
-        </div>
-    </div> 
-    <!-- FIN DE LA PARTIE BEAUTY -->
 <!-- Acróstico de Maryse -->
         
     <div id="acrosticoMaryse" class="acrostico" style="margin: 20px auto; padding: 20px; max-width: 90%;"></div>
@@ -1535,6 +1473,14 @@
 .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 16px; }
 </style>
 <style>
+/* Styles Beauty */
+.beauty-content { display: none; }
+.beauty-content.active { display: block; }
+.style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 10px; }
+.diary-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+.diary-tabs button { background: transparent; border: none; padding: 10px 22px; border-radius: 30px; font-weight: 600; font-size: 1rem; color: var(--subtext); cursor: pointer; }
+.diary-tabs button.active { background: var(--primary); color: white; }
+    
 .super-topic-content {
     font-size: 0.9rem;
     line-height: 1.5;
@@ -6413,6 +6359,125 @@ document.addEventListener('DOMContentLoaded', function() {
   renderHairstyles();
   renderCuriosities();
   if (document.getElementById('beauty')) showSubTab('hairstyles');
+});
+</script>
+<!-- NOUVELLE VUE BEAUTY (SÉPARÉE) -->
+<div id="viewBeauty" class="view">
+    <button class="back-btn" onclick="showBeauty()">← Volver</button>
+    <div class="diary-tabs">
+        <button class="active" data-subtab="hairstyles">💇‍♀️ Cabello</button>
+        <button data-subtab="makeup">💄 Maquillaje</button>
+        <button data-subtab="care">🧴 Cuidado</button>
+        <button data-subtab="look">🎨 Mi look</button>
+        <button data-subtab="album">🌟 Álbum</button>
+    </div>
+
+    <div id="sub-hairstyles" class="beauty-content active">
+        <div id="hairstyleGrid" class="style-grid"></div>
+    </div>
+
+    <div id="sub-makeup" class="beauty-content">
+        <div id="makeupGrid" class="style-grid"></div>
+    </div>
+
+    <div id="sub-care" class="beauty-content">
+        <div id="careGrid" class="style-grid"></div>
+    </div>
+
+    <div id="sub-look" class="beauty-content">
+        <select id="lookHairstyle"></select>
+        <select id="lookMakeup"></select>
+        <button id="saveLookBtn">💾 Guardar</button>
+        <div id="savedLooksList"></div>
+    </div>
+
+    <div id="sub-album" class="beauty-content">
+        <div id="albumGrid"></div>
+    </div>
+</div>
+
+<!-- Bouton flottant pour ouvrir Beauty -->
+<button class="btn" style="position: fixed; bottom: 120px; right: 16px; z-index: 9999; background: #ec4899; color: white;" onclick="showBeauty()">💅 Mi Estilo</button>
+<script>
+// ======== SCRIPT AUTONOME POUR BEAUTY ========
+// Données (exemples)
+const HAIR = [
+  { id:1, name: 'Media coleta', image: '🎀', steps: 'Desenreda, recoge, asegura.' },
+  { id:2, name: 'Rizos definidos', image: '🌊', steps: 'Aplica crema, seca con difusor.' }
+];
+const MAKEUP = [
+  { id:1, name: 'Look natural', image: '🏫' },
+  { id:2, name: 'Look fiesta', image: '🎉' }
+];
+const CARE = [
+  { id:1, name: 'Desenredar', image: '🔀', desc: 'Usa peine ancho.' },
+  { id:2, name: 'Hidratar', image: '💧', desc: 'Mascarilla semanal.' }
+];
+
+function showBeauty() {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('viewBeauty').classList.add('active');
+  renderHairstyles();
+}
+
+function renderHairstyles() {
+  const grid = document.getElementById('hairstyleGrid');
+  if (!grid) return;
+  grid.innerHTML = HAIR.map(h => `<div style="background: white; padding:15px; border-radius:15px; text-align:center; cursor:pointer;" onclick="alert('${h.steps}')"><div style="font-size:3rem;">${h.image}</div><h4>${h.name}</h4></div>`).join('');
+}
+
+function renderMakeup() {
+  const grid = document.getElementById('makeupGrid');
+  if (!grid) return;
+  grid.innerHTML = MAKEUP.map(m => `<div style="background: white; padding:15px; border-radius:15px; text-align:center;"><div style="font-size:3rem;">${m.image}</div><h4>${m.name}</h4></div>`).join('');
+}
+
+function renderCare() {
+  const grid = document.getElementById('careGrid');
+  if (!grid) return;
+  grid.innerHTML = CARE.map(c => `<div style="background: white; padding:15px; border-radius:15px; text-align:center;"><div style="font-size:3rem;">${c.image}</div><h4>${c.name}</h4><p>${c.desc}</p></div>`).join('');
+}
+
+function renderAlbum() {
+  document.getElementById('albumGrid').innerHTML = '<p>Tu álbum está vacío por ahora.</p>';
+}
+
+function populateLook() {
+  const hs = document.getElementById('lookHairstyle');
+  const ms = document.getElementById('lookMakeup');
+  if (hs) hs.innerHTML = HAIR.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
+  if (ms) ms.innerHTML = MAKEUP.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+}
+
+// Gestion des onglets
+document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#viewBeauty .beauty-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('#viewBeauty .diary-tabs button').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const id = this.dataset.subtab;
+    document.getElementById('sub-' + id).classList.add('active');
+    if (id === 'hairstyles') renderHairstyles();
+    if (id === 'makeup') renderMakeup();
+    if (id === 'care') renderCare();
+    if (id === 'look') populateLook();
+    if (id === 'album') renderAlbum();
+  });
+});
+
+document.getElementById('saveLookBtn')?.addEventListener('click', function() {
+  const h = document.getElementById('lookHairstyle')?.value;
+  const m = document.getElementById('lookMakeup')?.value;
+  const list = document.getElementById('savedLooksList');
+  if (list) list.innerHTML += `<div style="background: white; padding:10px; border-radius:10px; margin-top:10px;">${h} + ${m}</div>`;
+});
+
+// Chargement initial
+document.addEventListener('DOMContentLoaded', function() {
+  renderHairstyles();
+  renderMakeup();
+  renderCare();
+  populateLook();
 });
 </script>
 </body>
