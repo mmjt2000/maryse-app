@@ -5559,15 +5559,7 @@ window.openArticle = function(id) {
 };
 
 // Evento global para cerrar modales (funciona para TODOS los botones con data-close)
-document.addEventListener('click', function(e) {
-    if (e.target.getAttribute('data-close') === 'true') {
-        cerrarTodosModales();
-    }
-    // También cerrar si se hace clic fuera del contenido
-    if (e.target.classList && e.target.classList.contains('modal-overlay')) {
-        cerrarTodosModales();
-    }
-});
+document.addEventListener('click', function() {});
 
 // Cerrar con tecla ESC
 document.addEventListener('keydown', function(e) {
